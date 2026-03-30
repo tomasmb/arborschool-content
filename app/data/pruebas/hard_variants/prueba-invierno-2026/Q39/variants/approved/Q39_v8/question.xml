@@ -1,0 +1,156 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q39_v8" title="Q39_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una imprenta se ofrecen dos servicios de impresión de afiches, A y B. El costo total, en pesos, de imprimir <m:math><m:mi>x</m:mi></m:math> afiches con cada servicio se modela mediante las siguientes funciones:</p>
+    <p>
+      Servicio A:
+      <m:math>
+        <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn>
+      </m:math><br />
+      Servicio B:
+      <m:math>
+        <m:mi>B</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1200</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>15&#160;000</m:mn>
+      </m:math>
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Solo considerando el servicio A, ¿cuál de las siguientes afirmaciones describe correctamente cómo se estructura su cobro?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">En el servicio A se cobra una tarifa fija de $900 por usar el servicio, más $20 000 por cada afiche impreso.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn></m:math>, el término constante es <m:math><m:mn>20&#160;000</m:mn></m:math>, por lo que la tarifa fija es $20 000, y el coeficiente de <m:math><m:mi>x</m:mi></m:math> es <m:math><m:mn>900</m:mn></m:math>, por lo que cada afiche cuesta $900. Además, si <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, entonces <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>20&#160;900</m:mn></m:math>; eso corresponde a $20 000 fijos más $900 por un afiche, no al revés.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En el servicio A se cobra una tarifa fija de $20 000 por el solo hecho de usar el servicio, más $900 por cada afiche impreso.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La función del servicio A es <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn></m:math>. El término <m:math><m:mn>20&#160;000</m:mn></m:math> no depende de <m:math><m:mi>x</m:mi></m:math>, así que representa una tarifa fija de $20 000. El término <m:math><m:mn>900</m:mn><m:mi>x</m:mi></m:math> sí depende de la cantidad de afiches, así que representa $900 por cada afiche impreso. Por ejemplo, para <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:math>, se obtiene <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>×</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>2700</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>22&#160;700</m:mn></m:math>, es decir, $20 000 fijos más $2 700 por 3 afiches.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En el servicio A se cobra una tarifa fija de $15 000 y, además, $1 200 por cada afiche impreso.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esos valores corresponden a la función del servicio B, porque <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1200</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>15&#160;000</m:mn></m:math>. Pero la pregunta pide solo el servicio A, cuya función es <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn></m:math>. Por ejemplo, si <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>, entonces <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>1800</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>21&#160;800</m:mn></m:math>, mientras que con $15 000 fijos y $1 200 por afiche se obtendría <m:math><m:mn>1200</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>15&#160;000</m:mn><m:mo>=</m:mo><m:mn>2400</m:mn><m:mo>+</m:mo><m:mn>15&#160;000</m:mn><m:mo>=</m:mo><m:mn>17&#160;400</m:mn></m:math>, que no coincide.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">En el servicio A cada afiche cuesta $20 900 y no existe un cobro fijo independiente del número de afiches.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La expresión <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn></m:math> sí tiene un cobro fijo independiente de <m:math><m:mi>x</m:mi></m:math>, que es <m:math><m:mn>20&#160;000</m:mn></m:math>. Un contraejemplo concreto es tomar <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>: entonces <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>×</m:mo><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>20&#160;000</m:mn></m:math>. Por lo tanto, existe un cobro fijo. Además, para <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, el costo total es <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>20&#160;900</m:mn></m:math>, pero eso es el total por 1 afiche, no el precio de cada afiche.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Interpretación de una función lineal de costo</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la función que se debe analizar</strong></p>
+            <p>La pregunta pide considerar solo el servicio A. Su costo total está dado por:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Reconocer la estructura de la función</strong></p>
+            <p>Una función de la forma</p>
+            <p>
+              <m:math>
+                <m:mi>costo</m:mi><m:mo>=</m:mo><m:mi>valor</m:mi><m:mo> </m:mo><m:mi>por</m:mi><m:mo> </m:mo><m:mi>unidad</m:mi><m:mo>×</m:mo><m:mi>cantidad</m:mi><m:mo>+</m:mo><m:mi>tarifa</m:mi><m:mo> </m:mo><m:mi>fija</m:mi>
+              </m:math>
+            </p>
+            <p>se interpreta así:</p>
+            <ul>
+              <li>el coeficiente de <m:math><m:mi>x</m:mi></m:math> es el cobro por cada afiche;</li>
+              <li>el término constante es el cobro fijo, porque no depende de <m:math><m:mi>x</m:mi></m:math>.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar esa interpretación al servicio A</strong></p>
+            <p>En</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>20&#160;000</m:mn>
+              </m:math>
+            </p>
+            <p>el coeficiente de <m:math><m:mi>x</m:mi></m:math> es <m:math><m:mn>900</m:mn></m:math>, entonces cada afiche cuesta $900.</p>
+            <p>El término constante es <m:math><m:mn>20&#160;000</m:mn></m:math>, entonces la tarifa fija es $20 000.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con un valor concreto</strong></p>
+            <p>Si se imprimen 3 afiches, entonces:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>×</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>2700</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>22&#160;700</m:mn>
+              </m:math>
+            </p>
+            <p>Esto muestra que el costo total se forma sumando $20 000 fijos más $900 por cada uno de los 3 afiches.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es: en el servicio A se cobra una tarifa fija de $20 000 por el solo hecho de usar el servicio, más $900 por cada afiche impreso.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

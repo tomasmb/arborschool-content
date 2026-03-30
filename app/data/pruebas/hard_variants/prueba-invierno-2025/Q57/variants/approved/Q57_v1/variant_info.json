@@ -1,0 +1,140 @@
+{
+  "variant_id": "Q57_v1",
+  "source_question_id": "Q57",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q57_v1",
+    "scenario_description": "Se presenta una pequeña tabla con dos columnas: 'Estudiante' (A, B, C, D, E) y 'Puntaje en el ensayo' (por ejemplo 4, 6, 8, 10 y 12). Luego se indica que se incorporarán dos estudiantes nuevos y se pregunta: '¿Cuál de los siguientes pares de puntajes se puede agregar a la tabla para que el promedio de puntajes del curso se mantenga igual?'. Las alternativas son pares numéricos; solo uno hace que la suma total aumente exactamente en el doble del promedio original.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe entender que el promedio depende de la suma total dividida por la cantidad de datos, calcular (o identificar por simetría) el promedio original a partir de la tabla, determinar cuánto debe aumentar la suma al añadir 2 datos y luego identificar el par cuyo total coincide con ese aumento, evitando caer en distractores diseñados para quien iguala solo el promedio del par con el promedio del grupo.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "distractor_focus"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea sigue siendo calcular y usar la media aritmética para mantenerla al agregar dos datos, sin convertirla en un problema de cálculo extenso ni cambiar la medida estadística objetivo."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-15"
+    ],
+    "primary_atom_titles": [
+      "Cálculo del promedio aritmético"
+    ],
+    "family_id": "descriptive_statistics",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "distractor_focus",
+        "description": "Mantener la representación original (ej. gráfico, tabla, caja) con nuevos valores, PERO enfocar la pregunta en aislar un sesgo o trampa estadística clásica (ej. confundir dispersión/rango con cantidad, entender frecuencias cruzadas).",
+        "required_changes": [
+          "Re-enfoque de la pregunta puntual para cazar el sesgo",
+          "Distractores que mimetizan exactamente esos errores lógicos"
+        ],
+        "forbidden_changes": [
+          "Cambiar el constructo o tipo de gráfico visualmente exigido"
+        ],
+        "difficulty_offset": "Aumentar la demanda lógica o conceptual."
+      },
+      {
+        "shape_id": "polarity_switch_analysis",
+        "description": "Cambiar radicalmente la polaridad de las afirmaciones deducibles. Si la fuente pide 'cuál afirmación es siempre verdadera' cambiar el contexto empírico e inventar 4 opciones plausibles donde deba elegirse la FALSA.",
+        "required_changes": [
+          "Polaridad conceptual",
+          "Las 4 elecciones deben reescribirse enteras"
+        ],
+        "forbidden_changes": [
+          "Convertir el ejercicio en uno de sumas calculadas netas"
+        ],
+        "difficulty_offset": "Aumentar, requiere capacidad de falsación exhaustiva."
+      },
+      {
+        "shape_id": "dataset_inversion",
+        "description": "Darle al alumno la conclusión estadística o medidas abstractas base en el enunciado, y exigirle que determine cuál de las alternativas (presentadas como configuraciones o propiedades de un dataset) genera ese resultado.",
+        "required_changes": [
+          "Invertir Causa (dataset) y Efecto (medida estadistica)"
+        ],
+        "forbidden_changes": [
+          "Cambiar la métrica objetivo principal"
+        ],
+        "difficulty_offset": "Aumentar, lectura estadística trasera mucho más profunda."
+      },
+      {
+        "shape_id": "subgroup_comparison",
+        "description": "Transformar el dataset en una sub-agrupación muy simétrica (ej. Curso A vs Curso B). Pedir una rápida conclusión comparativa de la misma medida sobre ambos grupos (ej. Cuál tiene mayor dispersión relativa).",
+        "required_changes": [
+          "Estructura del dataset de un nivel a nivel dual",
+          "Forma de la pregunta hacia comparación visual o teórica simple"
+        ],
+        "forbidden_changes": [
+          "No añadir operaciones aritméticas extensas de cientos de datos"
+        ],
+        "difficulty_offset": "Mayor dificultad abstracta."
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "descriptive_statistics",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_statistic",
+    "solution_structure": "statistic_computation",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 0,
+    "data_burden_score": 5,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "statistic_over_raw_values",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=descriptive_statistics",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

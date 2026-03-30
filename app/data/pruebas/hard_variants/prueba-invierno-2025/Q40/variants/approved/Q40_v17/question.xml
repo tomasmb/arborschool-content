@@ -1,0 +1,197 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v17" title="Q40_v17" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una hoja de cálculo se programa el costo C (en pesos) que cobra cada una de dos empresas de encomiendas en función del tiempo T (en horas) que dura el viaje.</p>
+    <p>Para calcular el costo en pesos, se escriben las siguientes fórmulas en las celdas de la hoja de cálculo:</p>
+    <p>Celda B2 (Empresa 1):
+      <m:math>
+        <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2000</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>·</m:mo><m:mi>T</m:mi>
+      </m:math>
+    </p>
+    <p>Celda C2 (Empresa 2):
+      <m:math>
+        <m:mi>C</m:mi><m:mo>=</m:mo><m:mo>?</m:mo><m:mo>+</m:mo><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>T</m:mi>
+      </m:math>
+      donde ? representa un número fijo aún desconocido.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Se desea que, para T = 30, ambas celdas entreguen el mismo valor de costo. ¿Qué número debe reemplazar a «?» en la fórmula de la Empresa 2?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">3200<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si se reemplaza ? por 3200, entonces en la Empresa 2 resulta 3200 + 25 × 30 = 3200 + 750 = 3950. Ese valor no coincide con el de la Empresa 1, que para T = 30 es 2000 + 40 × 30 = 2000 + 1200 = 3200.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">450<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si se reemplaza ? por 450, entonces en la Empresa 2 resulta 450 + 25 × 30 = 450 + 750 = 1200. Ese valor no coincide con el de la Empresa 1, que para T = 30 es 2000 + 40 × 30 = 2000 + 1200 = 3200.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2450<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Para T = 30, la Empresa 1 cobra 2000 + 40 × 30 = 2000 + 1200 = 3200. Si ? = 2450, la Empresa 2 cobra 2450 + 25 × 30 = 2450 + 750 = 3200. Ambas celdas entregan el mismo costo.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">3950<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se reemplaza ? por 3950, entonces en la Empresa 2 resulta 3950 + 25 × 30 = 3950 + 750 = 4700. Ese valor no coincide con el de la Empresa 1, que para T = 30 es 2000 + 40 × 30 = 2000 + 1200 = 3200.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular el costo de la Empresa 1 cuando T = 30</strong></p>
+            <p>La fórmula de la Empresa 1 es:</p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2000</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>·</m:mo><m:mi>T</m:mi>
+              </m:math>
+            </p>
+            <p>Reemplazando <m:math><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>30</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2000</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>·</m:mo><m:mn>30</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2000</m:mn><m:mo>+</m:mo><m:mn>1200</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>3200</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Igualar el costo de la Empresa 2 a 3200</strong></p>
+            <p>La fórmula de la Empresa 2 es:</p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mo>?</m:mo><m:mo>+</m:mo><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>T</m:mi>
+              </m:math>
+            </p>
+            <p>Como se desea que para <m:math><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>30</m:mn></m:math> ambas empresas entreguen el mismo costo, se debe cumplir:</p>
+            <p>
+              <m:math>
+                <m:mo>?</m:mo><m:mo>+</m:mo><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>30</m:mn><m:mo>=</m:mo><m:mn>3200</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la igualdad</strong></p>
+            <p>
+              <m:math>
+                <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>30</m:mn><m:mo>=</m:mo><m:mn>750</m:mn>
+              </m:math>
+            </p>
+            <p>Entonces:</p>
+            <p>
+              <m:math>
+                <m:mo>?</m:mo><m:mo>+</m:mo><m:mn>750</m:mn><m:mo>=</m:mo><m:mn>3200</m:mn>
+              </m:math>
+            </p>
+            <p>Restando 750 en ambos lados:</p>
+            <p>
+              <m:math>
+                <m:mo>?</m:mo><m:mo>=</m:mo><m:mn>3200</m:mn><m:mo>−</m:mo><m:mn>750</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mo>?</m:mo><m:mo>=</m:mo><m:mn>2450</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar</strong></p>
+            <p>Empresa 2 con <m:math><m:mo>?</m:mo><m:mo>=</m:mo><m:mn>2450</m:mn></m:math> y <m:math><m:mi>T</m:mi><m:mo>=</m:mo><m:mn>30</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2450</m:mn><m:mo>+</m:mo><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>30</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>2450</m:mn><m:mo>+</m:mo><m:mn>750</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>=</m:mo><m:mn>3200</m:mn>
+              </m:math>
+            </p>
+            <p>Coincide con la Empresa 1.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El número que debe reemplazar a «?» es <strong>2450</strong>, es decir, la alternativa <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

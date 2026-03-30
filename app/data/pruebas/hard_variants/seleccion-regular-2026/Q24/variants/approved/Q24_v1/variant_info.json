@@ -1,0 +1,122 @@
+{
+  "variant_id": "Q24_v1",
+  "source_question_id": "Q24",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q24_v1",
+    "scenario_description": "En el registro de precios de una cafetería aparece un producto con el siguiente desglose: \n- Precio base del almuerzo ejecutivo: $25 000.\n- Primera promoción: descuento de 20 % sobre el precio base.\n- Segunda promoción: descuento de 25 % sobre el precio ya rebajado por la primera promoción.\nSe pregunta: «¿Cuál de las siguientes expresiones representa el precio del almuerzo después de aplicar los dos descuentos, en pesos?». \nLas alternativas mantienen la misma lógica de la fuente, adaptadas al contexto: \nA) 0,2·0,25·25 000 (multiplica solo los porcentajes de descuento por la base).\nB) (0,2+0,25)·25 000 (suma los porcentajes de descuento y los aplica a la base).\nC) 0,8·0,75·25 000 (producto de los factores que dejan el precio después de cada descuento, opción correcta).\nD) (0,8+0,75)·25 000 (suma de los factores complementarios, generando un sobreprecio).",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El registro tipo ‘libro de precios’ separa cada etapa (precio base, primer descuento, segundo descuento), obligando a comprender que cada descuento se aplica sobre el valor vigente en esa etapa y que por ello se usan factores multiplicativos complementarios (0,8 y 0,75) y no la suma de descuentos ni de factores. Para elegir la expresión correcta el estudiante debe entender por qué se multiplican factores que representan lo que queda del precio tras cada rebaja, preservando la misma estructura de cálculo que en la fuente.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "ledger_context"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Se verificó no convertir el problema en un cálculo numérico del precio final, sino mantener la selección de la expresión simbólica correcta tras dos descuentos sucesivos."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-11"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas contextualizados con porcentajes"
+    ],
+    "family_id": "percentage_context_application",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "MOD",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "percentage_increase_application",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "routine_procedural",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "small",
+    "percentage_change_pattern": "decrease_then_decrease",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=percentage_increase_application",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

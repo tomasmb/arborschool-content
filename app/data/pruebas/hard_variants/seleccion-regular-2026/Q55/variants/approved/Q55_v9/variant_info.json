@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q55_v9",
+  "source_question_id": "Q55",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q55_v9",
+    "scenario_description": "Se muestra un panel con cinco indicadores tipo velocímetro (semicírculos con aguja) que representan el nivel de cumplimiento (0 a 100) de una empresa en cinco estándares de calidad: Seguridad, Eficiencia, Atención al cliente, Innovación y Satisfacción del personal. En uno de los indicadores (por ejemplo, Innovación) la aguja apunta mucho más cerca de 0 que los demás. La pregunta plantea: '¿En cuál de los estándares mostrados la empresa tiene el nivel de cumplimiento más bajo?'. Esta variante sigue la shape 'single_series_visual_claim' al usar una única serie con una representación diferente (velocímetros), rótulos nuevos y una afirmación nueva centrada en el estándar mínimo.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe interpretar la posición de cada aguja en la escala como un valor, comparar visualmente qué aguja está más cerca de 0 y relacionarla con el estándar correspondiente, evitando confundirse por diferencias moderadas en otras agujas.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Cinco velocímetros en fila, cada uno con escala 0–100 y etiquetas: 'Seguridad' (~85), 'Eficiencia' (~75), 'Atención al cliente' (~70), 'Innovación' (~30), 'Satisfacción del personal' (~80). La aguja de 'Innovación' apunta claramente a un valor más bajo que las demás.",
+    "selected_shape_id": "single_series_visual_claim"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué no cambiar el foco de mínimo a máximo ni agregar más de una serie; la interpretación sigue siendo lectura directa de la representación principal (velocímetros) para identificar el valor más bajo."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.3,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "minimum_target",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -1,0 +1,143 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q65_v9" title="Q65_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un club deportivo se registró cuántos partidos jugó cada integrante durante una temporada. En la siguiente tabla se muestran, en orden creciente, los partidos jugados por 19 de los 20 integrantes del club (en todos los casos, entre 0 y 6 partidos):</p>
+    <div>
+      <table>
+        <tr>
+          <td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td><td>3</td><td>3</td><td>3</td><td>3</td>
+        </tr>
+        <tr>
+          <td>3</td><td>4</td><td>4</td><td>4</td><td>4</td><td>5</td><td>5</td><td>5</td><td>5</td>
+        </tr>
+      </table>
+      <p>Se sabe que falta por registrar el dato de un vigésimo integrante. El siguiente diagrama de caja representa la distribución completa de los 20 integrantes:</p>
+      <img src="requiere_nueva_imagen.png" alt="[DIBUJAR UN DIAGRAMA DE CAJA SOBRE UN EJE HORIZONTAL MARCADO DE 0 A 6 PARTIDOS. LA CAJA DEBE EXTENDERSE DESDE 2 HASTA 4 PARTIDOS, CON UNA LÍNEA GRUESA DE LA MEDIANA EN 3 PARTIDOS. EL BIGOTE IZQUIERDO VA DESDE 1 HASTA 2 PARTIDOS Y EL BIGOTE DERECHO DESDE 4 HASTA 5 PARTIDOS. MARCAR CLARAMENTE LOS VALORES 1, 2, 3, 4 Y 5 COMO MÍNIMO, Q1, MEDIANA, Q3 Y MÁXIMO RESPECTIVAMENTE.]" />
+    </div>
+    <p>Si el valor que falta es un número entero y puede ser solamente uno de los siguientes: 0, 1, 5 o 6, 
+    
+    ¿cuál de ellos es compatible con el diagrama de caja mostrado?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">0<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si el dato faltante fuera 0, al ordenar los 20 datos el mínimo sería 0. El diagrama de caja mostrado tiene mínimo 1, por lo tanto 0 no es compatible con el gráfico.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">1<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si el dato faltante es 1, los 20 datos ordenados quedan 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5. Entonces el mínimo es 1, la mediana es el promedio del 10° y 11° dato, ambos 3, así que vale 3, el cuartil inferior es el promedio del 5° y 6° dato de la mitad inferior, ambos 2, así que vale 2, el cuartil superior es el promedio del 5° y 6° dato de la mitad superior, ambos 4, así que vale 4, y el máximo es 5. Coincide exactamente con el diagrama.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">5<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el dato faltante fuera 5, los 20 datos ordenados tendrían en la mitad superior los valores 3, 4, 4, 4, 4, 5, 5, 5, 5, 5. Entonces el cuartil superior sería el promedio del 5° y 6° dato de esa mitad, es decir <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4,5</mn></mrow></math>. El diagrama muestra cuartil superior 4, por lo tanto 5 no es compatible.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">6<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el dato faltante fuera 6, el máximo sería 6, pero el diagrama de caja mostrado tiene máximo 5. Además, en la mitad superior quedarían 3, 4, 4, 4, 4, 5, 5, 5, 5, 6 y el cuartil superior sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4,5</mn></mrow></math>, no 4.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer la información del diagrama de caja</strong></p>
+            <p>El diagrama representa estos cinco valores:</p>
+            <p>mínimo = 1, cuartil inferior = 2, mediana = 3, cuartil superior = 4 y máximo = 5.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir los 19 datos conocidos en orden</strong></p>
+            <p>Los datos son:</p>
+            <p>1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5.</p>
+            <p>Falta un dato, que puede ser 0, 1, 5 o 6.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Probar la opción 1</strong></p>
+            <p>Si agregamos 1, los 20 datos ordenados quedan:</p>
+            <p>1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5.</p>
+            <p>Como hay 20 datos, la mediana es el promedio del 10° y 11° dato:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>3</mn><mo>+</mo><mn>3</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>3</mn></mrow></math></p>
+            <p>El cuartil inferior es la mediana de los primeros 10 datos, o sea el promedio del 5° y 6° dato de esa mitad:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>2</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>2</mn></mrow></math></p>
+            <p>El cuartil superior es la mediana de los últimos 10 datos, o sea el promedio del 5° y 6° dato de esa mitad:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>4</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4</mn></mrow></math></p>
+            <p>Además, el mínimo es 1 y el máximo es 5. Todo coincide con el diagrama.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Ver por qué las otras opciones no sirven</strong></p>
+            <p>Si el dato fuera 0, el mínimo sería 0 y no 1.</p>
+            <p>Si el dato fuera 5, en la mitad superior aparecerían 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, y el cuartil superior sería:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>4</mn><mo>+</mo><mn>5</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4,5</mn></mrow></math></p>
+            <p>Si el dato fuera 6, el máximo sería 6 y no 5, y además el cuartil superior también sería 4,5.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El único valor compatible con el diagrama de caja es 1.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

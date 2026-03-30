@@ -1,0 +1,147 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v5" title="Q5_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Un repartidor registró las distancias recorridas en cuatro entregas.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Entrega</th>
+          <th>Distancia (km)</th>
+        </tr>
+        <tr>
+          <td>Casa A</td>
+          <td>12,4</td>
+        </tr>
+        <tr>
+          <td>Casa B</td>
+          <td>12,35</td>
+        </tr>
+        <tr>
+          <td>Casa C</td>
+          <td>12,405</td>
+        </tr>
+        <tr>
+          <td>Casa D</td>
+          <td>12,39</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿En qué entregas la distancia fue mayor que en la entrega a Casa D?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Solo en la entrega a Casa A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La distancia a Casa A sí es mayor que 12,39 km, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,4</mn><mo>=</mo><mn>12,40</mn><mo>&gt;</mo><mn>12,39</mn></mrow></math>. Pero Casa C también es mayor, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,405</mn><mo>&gt;</mo><mn>12,390</mn><mo>=</mo><mn>12,39</mn></mrow></math>. Por lo tanto, no es solo la entrega a Casa A.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En las entregas a Casa A y Casa C<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al comparar con Casa D, que tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>12,39</mn></math> km: Casa A tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,4</mn><mo>=</mo><mn>12,40</mn><mo>&gt;</mo><mn>12,39</mn></mrow></math>, Casa B tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,35</mn><mo>&lt;</mo><mn>12,39</mn></mrow></math> y Casa C tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,405</mn><mo>&gt;</mo><mn>12,390</mn><mo>=</mo><mn>12,39</mn></mrow></math>. Entonces, las entregas con distancia mayor que la de Casa D son Casa A y Casa C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En las entregas a Casa B y Casa C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Casa C sí tiene una distancia mayor que Casa D, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,405</mn><mo>&gt;</mo><mn>12,390</mn><mo>=</mo><mn>12,39</mn></mrow></math>. Pero Casa B no es mayor que Casa D, ya que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,35</mn><mo>&lt;</mo><mn>12,39</mn></mrow></math>. En cambio, Casa A sí es mayor porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,4</mn><mo>=</mo><mn>12,40</mn><mo>&gt;</mo><mn>12,39</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">En ninguna entrega<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí hay entregas con distancia mayor que la de Casa D. Por ejemplo, Casa A tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,4</mn><mo>=</mo><mn>12,40</mn><mo>&gt;</mo><mn>12,39</mn></mrow></math>. Además, Casa C tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,405</mn><mo>&gt;</mo><mn>12,390</mn><mo>=</mo><mn>12,39</mn></mrow></math>. Por lo tanto, no es cierto que en ninguna entrega la distancia fue mayor.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la distancia de referencia</strong></p>
+            <p>La entrega a Casa D tiene una distancia de 12,39 km. Debemos buscar qué entregas tienen una distancia mayor que 12,39 km.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar la distancia de Casa A con la de Casa D</strong></p>
+            <p>Casa A registra 12,4 km. Para comparar decimales, escribimos la misma cantidad de cifras decimales:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,4</mn><mo>=</mo><mn>12,40</mn></mrow></math></p>
+            <p>Ahora comparamos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,40</mn><mo>&gt;</mo><mn>12,39</mn></mrow></math></p>
+            <p>Entonces, Casa A sí tiene una distancia mayor que Casa D.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar la distancia de Casa B con la de Casa D</strong></p>
+            <p>Casa B registra 12,35 km. Comparamos directamente:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,35</mn><mo>&lt;</mo><mn>12,39</mn></mrow></math></p>
+            <p>Entonces, Casa B no tiene una distancia mayor que Casa D.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar la distancia de Casa C con la de Casa D</strong></p>
+            <p>Casa C registra 12,405 km. Para comparar, escribimos 12,39 con tres cifras decimales:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,39</mn><mo>=</mo><mn>12,390</mn></mrow></math></p>
+            <p>Ahora comparamos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12,405</mn><mo>&gt;</mo><mn>12,390</mn></mrow></math></p>
+            <p>Entonces, Casa C sí tiene una distancia mayor que Casa D.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Concluir</strong></p>
+            <p>Las entregas con distancia mayor que la de Casa D son Casa A y Casa C.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>En las entregas a Casa A y Casa C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

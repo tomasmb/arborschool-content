@@ -1,0 +1,127 @@
+{
+  "source_question_id": "Q29",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q29_v1",
+      "scenario_description": "Se presenta un listado tipo ficha en lugar de una tabla: \"Servicio de fotocopias: - 5 copias: 250 pesos. - 10 copias: 500 pesos. - 15 copias: 750 pesos. El precio depende proporcionalmente de la cantidad de copias.\" Luego se pregunta: \"¿Cuál de las siguientes expresiones representa el precio, en pesos, por x copias?\" con alternativas análogas a la fuente (una del tipo kx correcta, una tipo k/x, dos del tipo x + c o k + x). Se mantiene una sola relación de proporcionalidad directa (copias-precio), pero los datos se entregan en registro enumerado, no en tabla, y el estudiante debe inferir el factor constante y modelar P(x) sin apoyo tabular.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que la razón precio/copia es constante (250/5 = 500/10 = 750/15) y concluir que el modelo debe ser del tipo k·x, descartando expresiones aditivas o de división. No basta aplicar una 'receta de leer tabla'; debe comprender que en una proporcionalidad directa el precio es el producto de una tarifa fija por la cantidad x.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q29_v2",
+      "scenario_description": "Se describe un servicio de arriendo de canchas: \"En un complejo deportivo se cobra un precio proporcional al tiempo de uso de la cancha. Se sabe que 30 minutos cuestan 9000 pesos.\" Luego se pregunta: \"¿Cuál de las siguientes fórmulas es consistente con esta información, si P(t) representa el precio en pesos por t minutos de arriendo?\" Las opciones incluyen una expresión correcta del tipo 300t (porque 300·30 = 9000), una del tipo 9000/t, y dos expresiones aditivas del tipo t + c o kt + c. El foco está en verificar cuál fórmula mantiene la razón correcta y pasa por el dato dado, en vez de solo 'leer' la constante.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para decidir, el estudiante debe verificar la coherencia de cada expresión con el dato clave (P(30) = 9000) y entender que la proporcionalidad directa implica un precio nulo cuando t = 0 y una razón constante P(t)/t. Así se descartan expresiones con término fijo o con t dividiendo, obligando a aplicar el concepto de razón constante más que una mera lectura mecánica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q29_v3",
+      "scenario_description": "Se entrega un registro de un plan de datos móviles: \"Plan de internet prepago: - 1 GB: 1500 pesos. - 4 GB: 6000 pesos. - 6 GB: 9000 pesos. El costo es proporcional a la cantidad de GB comprados.\" Luego se pregunta: \"Si x representa los GB de datos que se compran, ¿cuál expresión da el precio, en pesos, por x GB?\" Las alternativas siguen el patrón de la fuente (una kx correcta; una k/x; dos del tipo x + c o k + x). Se cambian contexto y formato (lista con viñetas) manteniendo una única relación GB-precio.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe darse cuenta de que la razón precio/GB es la misma en todos los registros (1500/1 = 6000/4 = 9000/6), identificar el valor de k y comprender que el modelo proporcional es P(x) = kx. Esto exige entender la noción de tarifa por unidad y por qué las expresiones aditivas no representan una proporcionalidad directa, en vez de apoyarse en la lectura directa de una tabla fija de minutos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q29_v4",
+      "scenario_description": "Se plantea un servicio de aseo: \"Una empresa de limpieza cobra en forma proporcional al número de horas trabajadas. Por 3 horas de servicio se cobraron 24 000 pesos.\" Luego se pide: \"Si C(h) representa el costo en pesos por h horas de servicio, ¿cuál de las siguientes fórmulas es compatible con esa información?\" Se ofrecen expresiones como 8000h (correcta), 24 000/h, h + 23 999 y 8000h + 2000. El estudiante debe comprobar qué fórmula produce 24 000 cuando h = 3 y corresponde a un cobro estrictamente proporcional.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se requiere verificar consistencia usando el dato C(3) = 24 000 y la idea de proporcionalidad directa (relación lineal que pasa por el origen y mantiene razón C(h)/h constante). Hay que aplicar el valor h = 3 en cada fórmula y descartar aquellas que no cumplen, entendiendo por qué un término constante rompe la proporcionalidad o por qué dividir por h no representa un costo directo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q29_v5",
+      "scenario_description": "Se entrega un registro de venta de jugo al por mayor: \"En un negocio se vende jugo a granel y el precio es proporcional al número de botellas de 1 litro. Se registraron las siguientes ventas: - 2 botellas: 1800 pesos. - 5 botellas: 4500 pesos. - 8 botellas: 7200 pesos.\" Luego se pregunta: \"Si x es la cantidad de botellas compradas, ¿cuál expresión da el precio, en pesos, por x botellas?\" Las alternativas siguen el patrón (una tarifa por botella · x, una división, y dos variantes aditivas). Los datos están en formato de lista, no en tabla.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "Se debe detectar que la razón precio/botella es constante (1800/2 = 4500/5 = 7200/8) y usarla como coeficiente de x en un modelo de la forma P(x) = kx, descartando modelos no proporcionales. Esto obliga a comprender el significado de esa constante como precio por unidad, no solo reconocer un patrón visual en una tabla idéntica a la fuente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q29_v6",
+      "scenario_description": "Se presenta un servicio de impresión 3D: \"En un taller de impresión 3D se cobra un precio proporcional al número de horas de uso de la máquina. Por 5 horas se pagan 35 000 pesos.\" Luego se pregunta: \"Sea P(h) el precio en pesos por h horas de uso. ¿Cuál de estas fórmulas describe correctamente esa regla de cobro?\" Se ofrecen opciones como 7000h (coherente con P(5) = 35 000), 35 000/h, h + 34 995 y 7000h + 1000. El estudiante debe determinar cuál fórmula es consistente con los datos y la proporcionalidad directa.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Es necesario razonar que P(5) debe ser 35 000 y que la relación es proporcional (la gráfica pasaría por el origen y P(h)/h es constante). El estudiante debe probar mentalmente o por sustitución cada opción, descartando aquellas que generan un costo distinto para 5 horas o incluyen un cargo fijo, demostrando que entiende la estructura P(h) = tarifa·h como modelo de la situación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q29_v7",
+      "scenario_description": "Se da un registro de un taller de afiches: \"Un taller imprime afiches y cobra un precio proporcional a la cantidad de afiches solicitados. Algunos ejemplos de cobro son: - 10 afiches: 3500 pesos. - 20 afiches: 7000 pesos. - 50 afiches: 17 500 pesos.\" Luego se pregunta: \"Si x es la cantidad de afiches, ¿cuál expresión representa el precio, en pesos, que cobra el taller por x afiches?\" con alternativas tipo kx (correcta), k/x, x + c y k + x. La info se da como lista de ejemplos en texto.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe inferir la tarifa por afiche observando que la razón precio/cantidad es constante (3500/10 = 7000/20 = 17 500/50) y construir el modelo P(x) = kx. Debe comprender por qué en una proporción directa el costo se obtiene multiplicando la cantidad por una constante, descartando funciones que incluyan suma fija o inversa, en lugar de limitarse a repetir la estructura de la pregunta original con solo otros números.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q29_v8",
+      "scenario_description": "Se describe un arriendo de bicicletas: \"En una tienda, el costo de arriendo de una bicicleta es proporcional a la duración del arriendo. Se sabe que 40 minutos de arriendo cuestan 3200 pesos.\" Luego se pide: \"Sea C(t) el costo en pesos por t minutos de arriendo. ¿Cuál de las siguientes expresiones es consistente con esta información?\" Se ofrecen opciones como 80t (correcta, pues 80·40 = 3200), 3200/t, t + 3160 y 80t + 500. La tarea es elegir la fórmula que coincide con el dato y con una relación puramente proporcional.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe relacionar la información C(40) = 3200 con la forma general C(t) = k·t, calculando k como razón constante y usando ese criterio para descartar expresiones aditivas o inversas. Entender que la proporcionalidad implica costo cero en t = 0 y razón C(t)/t constante es clave; no basta reconocer visualmente un número como en una tabla prefabricada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q29_v9",
+      "scenario_description": "Se entrega un registro de compra de fruta: \"En una feria, el precio de cierto tipo de manzana es proporcional al peso comprado. Algunas compras registradas son: - 1 kg: 900 pesos. - 3 kg: 2700 pesos. - 5 kg: 4500 pesos.\" Luego se pregunta: \"Si x representa los kilogramos comprados, ¿cuál de estas expresiones da el precio, en pesos, por x kilogramos?\" con alternativas de la misma familia (una kx correcta, una k/x, y dos sumas o formas no proporcionales). La presentación es textual en forma de lista, no como tabla numérica.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante necesita identificar la constante de proporcionalidad como precio por kilogramo (900/1 = 2700/3 = 4500/5) y usarla como factor de x en el modelo P(x). Debe comprender el significado de esa constante y por qué expresiones que suman una cantidad fija o ponen a x en el denominador no describen una proporcionalidad directa peso-precio.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q29_v10",
+      "scenario_description": "Se plantea la venta de entradas para un espectáculo: \"El valor total a pagar es proporcional al número de entradas compradas. Se sabe que por 8 entradas se pagaron 40 000 pesos.\" Luego se pregunta: \"Si V(n) es el valor en pesos por n entradas, ¿cuál de las siguientes expresiones es coherente con esa situación?\" entre alternativas como 5000n (correcta), 40 000/n, n + 39 992 y 5000n + 2000. La tarea es identificar la única fórmula que produce el monto observado y mantiene la proporcionalidad directa.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe ver que V(8) = 40 000 impone una razón constante de 5000 por entrada y que, en una relación proporcional, el modelo debe tener la forma V(n) = k·n sin término independiente. Para resolver, debe probar mentalmente cada alternativa con n = 8 y descartar las que tienen estructura no proporcional o no satisfacen el dato, aplicando el concepto de constante de proporcionalidad más allá de una aplicación mecánica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    }
+  ]
+}

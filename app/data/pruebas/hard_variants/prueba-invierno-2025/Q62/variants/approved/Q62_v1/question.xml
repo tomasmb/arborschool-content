@@ -1,0 +1,219 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v1" title="Q62 Variante 1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En una caja hay quince cuadernos del mismo modelo: doce están en buen estado y tres tienen las hojas sueltas (están defectuosos).</p>
+    <p>En el registro de revisión se anota lo siguiente: (1) Ana revisa y elige un cuaderno que está en buen estado y se lo lleva. (2) Más tarde, Bruno también elige un cuaderno que sabe que está en buen estado y se lo lleva. (3) Finalmente, Carla toma al azar uno de los cuadernos que quedan en la caja. ¿Cuál es la probabilidad de que el cuaderno que se lleva Carla esté defectuoso?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>15</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al comienzo hay 15 cuadernos, pero antes de que Carla elija ya se retiraron 2 cuadernos en buen estado. Entonces quedan 13 cuadernos en la caja y los 3 defectuosos siguen allí. Por eso la probabilidad correcta se calcula con 3 casos favorables entre 13 casos posibles, no con 3 entre 15.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>13</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Inicialmente hay 12 cuadernos en buen estado y 3 defectuosos. Ana se lleva 1 cuaderno en buen estado y luego Bruno se lleva otro cuaderno en buen estado. Entonces quedan 10 cuadernos en buen estado y 3 defectuosos, en total 13 cuadernos. Como Carla elige al azar entre esos 13 y 3 son defectuosos, la probabilidad es 3 de 13.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>14</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El denominador 14 correspondería a que solo se hubiera retirado 1 cuaderno antes de la elección de Carla. Pero en el enunciado se indica que Ana se lleva 1 cuaderno en buen estado y después Bruno también se lleva 1 cuaderno en buen estado. Por lo tanto, se retiran 2 cuadernos y quedan 13, no 14. Como los 3 defectuosos permanecen en la caja, la probabilidad correcta es 3 de 13.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mn>2</m:mn>
+            <m:mn>13</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Después de que Ana y Bruno se llevan cuadernos en buen estado, no cambia la cantidad de cuadernos defectuosos, porque ninguno de ellos retira un defectuoso. Por eso siguen quedando 3 cuadernos defectuosos en la caja. Como además quedan 13 cuadernos en total, la probabilidad correcta es 3 de 13 y no 2 de 13.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la situación inicial</strong></p>
+            <p>En la caja hay 15 cuadernos en total.</p>
+            <p>De ellos, 12 están en buen estado y 3 están defectuosos.</p>
+            <p>Esto se puede resumir así:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>15</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Considerar lo que hace Ana</strong></p>
+            <p>Ana elige un cuaderno que está en buen estado y se lo lleva.</p>
+            <p>Entonces disminuye en 1 la cantidad de cuadernos en buen estado.</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>11</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Los defectuosos no cambian, porque Ana no retiró uno defectuoso. Siguen siendo 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Considerar lo que hace Bruno</strong></p>
+            <p>Bruno también elige un cuaderno que sabe que está en buen estado y se lo lleva.</p>
+            <p>Entonces vuelve a disminuir en 1 la cantidad de cuadernos en buen estado.</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>11</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>10</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Los defectuosos siguen siendo 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Determinar cuántos cuadernos quedan para Carla</strong></p>
+            <p>Después de que Ana y Bruno se llevan 2 cuadernos en buen estado, quedan:</p>
+            <p>10 cuadernos en buen estado y 3 defectuosos.</p>
+            <p>En total quedan:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>13</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Calcular la probabilidad de que Carla obtenga un cuaderno defectuoso</strong></p>
+            <p>Carla elige al azar entre los 13 cuadernos que quedan.</p>
+            <p>De esos 13, hay 3 defectuosos.</p>
+            <p>Entonces la probabilidad es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>3</m:mn>
+                  <m:mn>13</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de que el cuaderno que se lleva Carla esté defectuoso es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>3</m:mn>
+                  <m:mn>13</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

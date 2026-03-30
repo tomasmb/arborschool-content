@@ -1,0 +1,130 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q10_v11" title="Q10_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La regla de Naegele es un método que permite determinar la fecha probable de parto de una mujer, a partir de la fecha de su última menstruación.</p>
+    <p>En el siguiente registro se muestran dos pacientes, donde en ambos casos se aplica la misma regla sobre el día, el mes y el año de la FUM (fecha de última menstruación):<br /><br />
+Paciente A:<br />
+FUM 08/09/2022 → Día: 8 + 7 = 15; Mes: 9 − 3 = 6; Año: 2022 + 1 = 2023; FPP: 15/06/2023.<br /><br />
+Paciente B:<br />
+FUM 03/10/2022 → Día: 3 + 7 = __; Mes: 10 − 3 = __; Año: 2022 + 1 = __; FPP: __/__/__.</p>
+    <p>¿Cuál es la fecha probable de parto de la paciente B según este registro?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">03/07/2023<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Aplicando el mismo registro de la paciente A a la paciente B se obtiene: día <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></mrow></math>, mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>7</mn></mrow></math> y año <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2022</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2023</mn></mrow></math>. Por lo tanto, la fecha es 10/07/2023, no 03/07/2023.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">10/07/2023<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Siguiendo el mismo procedimiento del registro: día <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></mrow></math>, mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>7</mn></mrow></math> y año <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2022</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2023</mn></mrow></math>. Entonces la FPP es 10/07/2023.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">10/10/2023<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El día sí resulta <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></mrow></math> y el año sí resulta <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2022</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2023</mn></mrow></math>, pero el mes debe calcularse como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>7</mn></mrow></math>, no como 10. Por eso la fecha correcta es 10/07/2023, no 10/10/2023.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">10/07/2022<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aplicando la regla del registro: día <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></mrow></math>, mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>7</mn></mrow></math> y año <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2022</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2023</mn></mrow></math>. El año final es 2023, no 2022. Por eso la fecha correcta es 10/07/2023.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la FUM de la paciente B</strong></p>
+            <p>La fecha de última menstruación de la paciente B es 03/10/2022.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el día</strong></p>
+            <p>Según el registro, al día se le suman 7 días:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></mrow></math></p>
+            <p>Entonces, el día es 10.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el mes</strong></p>
+            <p>Según el registro, al mes se le restan 3 meses:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>7</mn></mrow></math></p>
+            <p>Entonces, el mes es 07.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el año</strong></p>
+            <p>Según el registro, al año se le suma 1:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2022</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2023</mn></mrow></math></p>
+            <p>Entonces, el año es 2023.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Escribir la fecha probable de parto</strong></p>
+            <p>Reuniendo día, mes y año, se obtiene:</p>
+            <p>10/07/2023</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La fecha probable de parto de la paciente B según este registro es <strong>10/07/2023</strong>, que corresponde a la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

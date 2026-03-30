@@ -1,0 +1,155 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q3_v5" title="Q3_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una salida de curso, un bus parte de la escuela E, pasa por un parque P y llega a un museo M. Para la ida, las distancias son:</p>
+    <p>- De E a P: 8 km<br />- De P a M: 12 km</p>
+    <p>De regreso, el bus no vuelve por la misma ruta, sino que regresa del museo M directamente a la escuela E por una autopista de 15 km.</p>
+    <p>El bus rinde 
+      <m:math>
+        <m:mn>10</m:mn>
+        <m:mtext> kilómetros por litro</m:mtext>
+      </m:math>, es decir, recorre 10 km con 1 litro de bencina.
+    </p>
+    <p>¿Cuántos litros de bencina se necesitan para realizar el viaje completo de ida y vuelta entre la escuela y el museo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">2<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El viaje completo mide 8 + 12 + 15 = 35 km. Si el bus recorre 10 km con 1 litro, entonces necesita 35 ÷ 10 = 3,5 litros. Con 2 litros solo recorrería 20 km, que es menos que 35 km.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3,5<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La distancia total es 8 + 12 + 15 = 35 km. Como el bus rinde 10 km por litro, se calcula 35 ÷ 10 = 3,5 litros. Por eso, la respuesta correcta es 3,5.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">1,5<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El viaje completo mide 35 km, porque 8 + 12 + 15 = 35. Entonces la bencina necesaria es 35 ÷ 10 = 3,5 litros. Con 1,5 litros el bus recorrería 15 km, que no alcanza para todo el recorrido.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La distancia total del recorrido es 35 km, ya que 8 + 12 + 15 = 35. Si el rendimiento es 10 km por litro, la cantidad exacta es 35 ÷ 10 = 3,5 litros. Con 4 litros se podrían recorrer 40 km, que es más que lo necesario.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular la distancia de ida</strong></p>
+            <p>Desde la escuela E hasta el parque P hay 8 km y desde P hasta el museo M hay 12 km.</p>
+            <p>Entonces, la distancia de ida es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>8</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>20</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La ida mide 20 km.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Incorporar la distancia de regreso</strong></p>
+            <p>El regreso no es por la misma ruta. Desde el museo M hasta la escuela E hay 15 km.</p>
+            <p>Entonces, la distancia total del viaje es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>20</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>35</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El viaje completo mide 35 km.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Usar el rendimiento del bus</strong></p>
+            <p>El bus recorre 10 km con 1 litro de bencina. Para saber cuántos litros necesita para 35 km, dividimos la distancia total por el rendimiento:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>35</m:mn>
+                  <m:mo>÷</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>3,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Se necesitan 3,5 litros de bencina para realizar el viaje completo de ida y vuelta entre la escuela y el museo.</p>
+            <p>La alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

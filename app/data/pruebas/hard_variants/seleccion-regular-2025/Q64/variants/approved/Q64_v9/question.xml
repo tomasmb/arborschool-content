@@ -1,0 +1,126 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v9" title="Q64_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la siguiente cuadrícula de 8×8 casillas se muestra un minijuego de tesoro. La ficha del jugador está en una casilla inicial marcada con un círculo azul y el cofre del tesoro está en otra casilla marcada con un ícono de cofre o estrella.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Cuadrícula de 8 por 8 casillas, sin letras ni números. En la casilla de la tercera columna desde la izquierda y segunda fila desde abajo hay un círculo azul que representa la posición inicial de la ficha del jugador. En la casilla de la cuarta columna desde la izquierda y séptima fila desde abajo hay un pequeño dibujo de cofre del tesoro (o una estrella) que indica la casilla del tesoro. No hay otras marcas en la cuadrícula." />
+    </p>
+    <p>Cada movimiento desplaza la ficha exactamente una casilla y se indica mediante una letra: U (una casilla hacia arriba), D (una hacia abajo), R (una a la derecha), L (una a la izquierda) y X (una casilla en diagonal hacia arriba y hacia la derecha, combinando un movimiento U y uno R al mismo tiempo).</p>
+    <p>Considerando la posición inicial y la posición del cofre del tesoro en la cuadrícula, ¿cuál de las siguientes rutas de movimientos permite que la ficha termine exactamente sobre el cofre?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">X, U, U, U, U, L<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Desde la casilla inicial se necesita avanzar 1 casilla a la derecha y 5 casillas hacia arriba para llegar al cofre. En esta ruta, X aporta 1 a la derecha y 1 hacia arriba, luego U, U, U, U aportan 4 hacia arriba más, y L resta 1 a la derecha. El desplazamiento total es 0 casillas a la derecha y 5 hacia arriba, por lo que la ficha termina una columna a la izquierda del cofre.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">X, X, X, L, L, U, U<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde la posición inicial hasta el cofre hay que avanzar 1 casilla a la derecha y 5 hacia arriba. En esta ruta, X, X, X aportan 3 a la derecha y 3 hacia arriba; luego L, L restan 2 a la derecha; y U, U suman 2 hacia arriba. El desplazamiento total es 1 casilla a la derecha y 5 hacia arriba, exactamente la posición del cofre.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">X, R, U, X, L, L, U<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Desde la casilla inicial se requiere un desplazamiento de 1 casilla a la derecha y 5 hacia arriba. En esta ruta, X aporta 1 a la derecha y 1 hacia arriba, R aporta 1 a la derecha, U aporta 1 hacia arriba, el segundo X aporta 1 a la derecha y 1 hacia arriba, luego L, L restan 2 a la derecha, y U suma 1 hacia arriba. El total es 1 casilla a la derecha y 4 hacia arriba, así que la ficha queda una fila debajo del cofre.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">X, X, X, L, L, U, U, R<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La ruta X, X, X, L, L, U, U ya produce 1 casilla a la derecha y 5 hacia arriba, que coincide con el cofre. Pero esta opción agrega además un movimiento R, que suma 1 casilla más a la derecha. El desplazamiento total queda en 2 casillas a la derecha y 5 hacia arriba, por lo que la ficha sobrepasa el cofre una columna hacia la derecha.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la posición inicial y la posición del cofre</strong></p>
+            <p>La ficha parte en la tercera columna desde la izquierda y segunda fila desde abajo.</p>
+            <p>El cofre está en la cuarta columna desde la izquierda y séptima fila desde abajo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el desplazamiento necesario</strong></p>
+            <p>Para pasar de la columna 3 a la columna 4, se necesita avanzar 1 casilla a la derecha.</p>
+            <p>Para pasar de la fila 2 a la fila 7, se necesita avanzar 5 casillas hacia arriba.</p>
+            <p>Entonces, la ruta correcta debe producir exactamente: 1 derecha y 5 arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada alternativa</strong></p>
+            <p><em>Opción A:</em> X, U, U, U, U, L</p>
+            <p>X aporta 1 derecha y 1 arriba; cuatro movimientos U aportan 4 arriba; L resta 1 derecha.</p>
+            <p>Total: 0 derecha y 5 arriba. No llega al cofre.</p>
+            <p><em>Opción B:</em> X, X, X, L, L, U, U</p>
+            <p>Tres movimientos X aportan 3 derecha y 3 arriba; dos movimientos L restan 2 derecha; dos movimientos U suman 2 arriba.</p>
+            <p>Total: 1 derecha y 5 arriba. Sí llega al cofre.</p>
+            <p><em>Opción C:</em> X, R, U, X, L, L, U</p>
+            <p>Los desplazamientos suman 1 derecha y 4 arriba.</p>
+            <p>Falta 1 casilla hacia arriba, así que no llega al cofre.</p>
+            <p><em>Opción D:</em> X, X, X, L, L, U, U, R</p>
+            <p>Hasta X, X, X, L, L, U, U ya se obtiene 1 derecha y 5 arriba. El movimiento R final agrega 1 derecha extra.</p>
+            <p>Total: 2 derecha y 5 arriba. Se pasa del cofre.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única ruta que termina exactamente sobre el cofre es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

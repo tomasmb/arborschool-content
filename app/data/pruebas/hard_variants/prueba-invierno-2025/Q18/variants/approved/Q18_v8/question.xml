@@ -1,0 +1,231 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v8" title="Q18_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Según un experimento, la cantidad P(t) de individuos de una población de insectos, t horas después de comenzar la observación, se modela mediante la expresión:</p>
+    <p>
+      <m:math>
+        <m:mi>P</m:mi>
+        <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+        <m:mo>·</m:mo>
+        <m:msup>
+          <m:mn>1,12</m:mn>
+          <m:mi>t</m:mi>
+        </m:msup>
+      </m:math>
+    </p>
+    <p>donde P₀ es la cantidad inicial de insectos. Se sabe que la población aumenta un 12 % cada hora.</p>
+    <p>¿Cuál de las siguientes explicaciones justifica correctamente que en el modelo aparezca el factor 1,12 elevado a t?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Porque 1,12 representa el 1,12 %, que es el porcentaje que se suma cada hora a la cantidad inicial de insectos.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El número 1,12 no representa 1,12 %, sino 112 % del valor anterior. Un aumento de 12 % significa multiplicar por 1 + 0,12 = 1,12. Por ejemplo, si al inicio hay 100 insectos, después de 1 hora hay 100 × 1,12 = 112 insectos. En cambio, sumar 1,12 % daría 100 × 1,0112 = 101,12, que no coincide con el modelo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Porque cada hora la cantidad de insectos se multiplica por 1 + 0,12 = 1,12, y al aplicar el mismo aumento del 12 % durante t horas se multiplica por 1,12 en cada hora, lo que se representa como 1,12 elevado a t.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Un aumento de 12 % cada hora significa que en cada hora la población pasa a ser 1 + 0,12 = 1,12 veces la anterior. Así, después de 1 hora queda P₀ × 1,12; después de 2 horas queda P₀ × 1,12 × 1,12 = P₀ × 1,12²; y después de t horas queda P₀ × 1,12ᵗ.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Porque al cabo de t horas el aumento total es de 0,12·t, de modo que el factor debe ser 1 + 0,12·t, lo cual se escribe como 1,12 elevado a t.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El factor 1 + 0,12·t no es igual a 1,12 elevado a t. Basta un contraejemplo: si t = 2, entonces 1 + 0,12·2 = 1,24, mientras que 1,12² = 1,2544. Como 1,24 ≠ 1,2544, esa explicación no justifica el modelo dado.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Porque cada hora se suman siempre 0,12·P₀ insectos a la población inicial, por lo que al cabo de t horas la cantidad total queda dada por P₀ multiplicado por 1,12^t.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si cada hora se sumara siempre 0,12·P₀, el crecimiento sería aditivo y no multiplicativo. Por ejemplo, tras 1 hora se tendría P₀ + 0,12·P₀ = 1,12·P₀, pero en la segunda hora el modelo exponencial aumenta sobre la nueva población, de modo que el aumento es 0,12 × 1,12·P₀ = 0,1344·P₀, que no es igual a 0,12·P₀. Por eso esa explicación no corresponde a P₀ × 1,12ᵗ.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar el 12 % de aumento por hora</strong></p>
+            <p>Un aumento de 12 % significa conservar el 100 % de la población anterior y agregar 12 % más.</p>
+            <p>Entonces, en cada hora el factor multiplicativo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>0,12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>1,12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir qué ocurre en las primeras horas</strong></p>
+            <p>Si la población inicial es</p>
+            <p>
+              <m:math>
+                <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+              </m:math>
+            </p>
+            <p>después de 1 hora se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+                  <m:mo>·</m:mo>
+                  <m:mn>1,12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Después de 2 horas se vuelve a multiplicar por 1,12:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+                  <m:mo>·</m:mo>
+                  <m:mn>1,12</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>1,12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+                  <m:mo>·</m:mo>
+                  <m:msup><m:mn>1,12</m:mn><m:mn>2</m:mn></m:msup>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Generalizar para t horas</strong></p>
+            <p>Como en cada hora se aplica el mismo factor 1,12, después de t horas la población queda:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+                  <m:mo>·</m:mo>
+                  <m:msup><m:mn>1,12</m:mn><m:mi>t</m:mi></m:msup>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El exponente t aparece porque el factor 1,12 se multiplica una vez por cada hora.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar por qué las otras explicaciones no justifican el modelo</strong></p>
+            <p>La opción A es falsa porque 1,12 no significa 1,12 %, sino 112 % del valor anterior.</p>
+            <p>La opción C es falsa porque, por ejemplo, para</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>t</m:mi><m:mo>=</m:mo><m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0,12</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>1,24</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>pero</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup><m:mn>1,12</m:mn><m:mn>2</m:mn></m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mn>1,2544</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>y esos valores no son iguales.</p>
+            <p>La opción D es falsa porque si siempre se sumara</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0,12</m:mn><m:mo>·</m:mo><m:msub><m:mi>P</m:mi><m:mn>0</m:mn></m:msub>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>el crecimiento sería lineal. En cambio, en un crecimiento de 12 % por hora, en la segunda hora el aumento se calcula sobre la nueva población.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La explicación correcta es la alternativa B, porque cada hora la población se multiplica por 1,12 y repetir esa multiplicación durante t horas se representa como</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup><m:mn>1,12</m:mn><m:mi>t</m:mi></m:msup>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

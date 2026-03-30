@@ -1,0 +1,144 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v4" title="Q13_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una fábrica se registró la siguiente producción en un día:<br />Turno de la mañana: 120 piezas<br />Turno de la tarde: ___ piezas (se produjeron un 5% más que en la mañana).</p>
+    <p>¿Cuántas piezas se produjeron en el turno de la tarde?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">6<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. 6 es solo el aumento, porque el 5% de 120 es 6. Pero el turno de la tarde produjo 120 + 6 = 126 piezas, no 6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">126<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El 5% de 120 es 6, y como en la tarde se produjo un 5% más que en la mañana, se calcula 120 + 6 = 126.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">125<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El 5% de 120 es 6, así que la producción de la tarde debe ser 120 + 6 = 126. Por eso, 125 no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">132<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si fueran 132 piezas, el aumento respecto de 120 sería 132 − 120 = 12 piezas. Como 12 es el 10% de 120, 132 corresponde a un 10% más, no a un 5% más.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el dato base</strong></p>
+            <p>En el turno de la mañana se produjeron 120 piezas.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el 5% de 120</strong></p>
+            <p>El 5% se puede escribir como:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5</mn>
+                <mo>%</mo>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>100</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Entonces, el 5% de 120 es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>×</mo>
+                <mn>120</mn>
+                <mo>=</mo>
+                <mn>6</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Sumar el aumento a la producción de la mañana</strong></p>
+            <p>Como en la tarde se produjeron un 5% más que en la mañana, se suma ese aumento:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>120</mn>
+                <mo>+</mo>
+                <mn>6</mn>
+                <mo>=</mo>
+                <mn>126</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>En el turno de la tarde se produjeron 126 piezas.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

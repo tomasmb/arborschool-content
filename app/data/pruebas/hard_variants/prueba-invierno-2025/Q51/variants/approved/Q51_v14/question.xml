@@ -1,0 +1,152 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v14" title="Q51_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un mapa cuadriculado de una ciudad, la plaza central está marcada como punto de partida y un folleto turístico indicaba originalmente cómo llegar a un teatro: desde la plaza, avance ocho cuadras hacia el norte y cuatro cuadras hacia el este.</p>
+    <p>Con el tiempo, el teatro cambió dos veces de ubicación. Primero se trasladó cinco cuadras hacia el sur y siete cuadras hacia el oeste, y luego se movió tres cuadras hacia el norte y dos cuadras hacia el este. En el mapa se muestra un recuadro con el resumen de estos tres desplazamientos (desde la plaza al teatro original y los dos cambios de ubicación sucesivos).</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Mapa cuadriculado con una plaza central marcada con un punto y un rótulo 'Plaza'. Una flecha desde la plaza hacia arriba con una etiqueta '8 cuadras al norte hasta el teatro original' y otra flecha hacia la derecha con etiqueta '4 cuadras al este'. A un lado del mapa, un recuadro con borde delgado que contiene, en tres líneas de texto, los siguientes desplazamientos: '1) Desde la plaza al teatro original: 8 cuadras hacia el norte y 4 cuadras hacia el este.' '2) Cambio de ubicación 1: 5 cuadras hacia el sur y 7 cuadras hacia el oeste.' '3) Cambio de ubicación 2: 3 cuadras hacia el norte y 2 cuadras hacia el este.' También se incluye una rosa de los vientos pequeña indicando N (arriba), S (abajo), E (derecha), O (izquierda)." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>El municipio quiere preparar un nuevo folleto que indique directamente el desplazamiento total desde la plaza hasta la ubicación actual del teatro. ¿Cuál de las siguientes indicaciones coincide con el desplazamiento total resultante de combinar los tres movimientos descritos?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Avance dieciséis cuadras hacia el norte y trece cuadras hacia el este.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento vertical total es 8 cuadras al norte, luego 5 al sur y después 3 al norte, por lo que queda 6 cuadras al norte, no 16. El desplazamiento horizontal total es 4 cuadras al este, luego 7 al oeste y después 2 al este, por lo que queda 1 cuadra al oeste, no 13 al este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Avance seis cuadras hacia el norte y una cuadra hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al combinar los movimientos verticales, 8 al norte menos 5 al sur más 3 al norte da 6 cuadras al norte. Al combinar los movimientos horizontales, 4 al este menos 7 al oeste más 2 al este da 1 cuadra al oeste. Por eso el desplazamiento total es 6 cuadras hacia el norte y 1 cuadra hacia el oeste.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Avance seis cuadras hacia el norte y nueve cuadras hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento vertical sí resulta en 6 cuadras al norte, porque 8 al norte menos 5 al sur más 3 al norte da 6 al norte. Pero horizontalmente no son 9 cuadras al oeste: 4 al este, luego 7 al oeste y después 2 al este deja solo 1 cuadra al oeste.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Avance diez cuadras hacia el norte y una cuadra hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento horizontal sí termina en 1 cuadra al oeste, porque 4 al este menos 7 al oeste más 2 al este deja 1 al oeste. Pero verticalmente no son 10 cuadras al norte: 8 al norte menos 5 al sur más 3 al norte da 6 cuadras al norte.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Separar los movimientos verticales y horizontales</strong></p>
+            <p>Movimientos verticales: 8 cuadras al norte, 5 cuadras al sur y 3 cuadras al norte.</p>
+            <p>Movimientos horizontales: 4 cuadras al este, 7 cuadras al oeste y 2 cuadras al este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el desplazamiento vertical total</strong></p>
+            <p>Tomamos norte como positivo y sur como negativo.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>8</mn>
+                  <mo>−</mo>
+                  <mn>5</mn>
+                  <mo>+</mo>
+                  <mn>3</mn>
+                  <mo>=</mo>
+                  <mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, el teatro queda 6 cuadras hacia el norte respecto de la plaza.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el desplazamiento horizontal total</strong></p>
+            <p>Tomamos este como positivo y oeste como negativo.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn>
+                  <mo>−</mo>
+                  <mn>7</mn>
+                  <mo>+</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El resultado negativo indica que el desplazamiento es hacia el oeste, por lo tanto queda 1 cuadra hacia el oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Combinar ambos resultados</strong></p>
+            <p>Desde la plaza hasta la ubicación actual del teatro, el desplazamiento total es:</p>
+            <p>6 cuadras hacia el norte y 1 cuadra hacia el oeste.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

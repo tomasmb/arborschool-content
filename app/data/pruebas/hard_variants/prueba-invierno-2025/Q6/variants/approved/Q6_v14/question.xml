@@ -1,0 +1,133 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v14" title="Q6_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Un juego de mesa tiene un tablero con casillas especiales de tres colores: azul, verde y roja. Cada vez que una ficha cae en una casilla especial, se suman puntos al jugador.</p>
+    <p>Las casillas azules otorgan 2 puntos, las casillas verdes 5 puntos y las casillas rojas 9 puntos, como se ilustra a continuación.</p>
+    <p><img src="q6.png" alt="Ilustración de una caja con tres agujeros numerados con puntajes." /></p>
+    <p>En una partida, una persona realizó exactamente cinco visitas a casillas especiales y se sabe que, durante la partida, la ficha cayó al menos una vez en cada uno de los tres colores. Se registraron cuatro posibles recorridos con el número de visitas a cada color y el puntaje total anotado por el jugador.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes recorridos podría corresponder al máximo puntaje posible que se podía obtener en estas condiciones?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Recorrido 1: 0 azules, 1 verde y 4 rojas. El jugador anota 41 puntos.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Este recorrido no cumple la condición “al menos una vez en cada uno de los tres colores”, porque tiene 0 azules. Además, su puntaje sí sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>4</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>0</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>36</mn><mo>=</mo><mn>41</mn></mrow></math>, pero sigue siendo imposible en estas condiciones.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Recorrido 2: 1 azul, 1 verde y 3 rojas. El jugador anota 34 puntos.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Para maximizar el puntaje, conviene usar la mayor cantidad posible de casillas rojas, que valen 9 puntos. Como debe haber al menos 1 azul y 1 verde, quedan <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>1</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow></math> visitas rojas. Entonces el máximo puntaje es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>3</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>27</mn><mo>=</mo><mn>34</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Recorrido 3: 1 azul, 2 verdes y 2 rojas. El jugador anota 34 puntos.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Este recorrido sí cumple las condiciones de visitas, pero su puntaje no es 34. El cálculo correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>18</mn><mo>=</mo><mn>30</mn></mrow></math>. Por lo tanto, no corresponde al máximo puntaje posible.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Recorrido 4: 2 azules, 1 verde y 2 rojas. El jugador anota 27 puntos.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El puntaje indicado es correcto, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>18</mn><mo>=</mo><mn>27</mn></mrow></math>. Sin embargo, no es el máximo posible, porque el recorrido <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>3</mn></mrow></math> da <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>34</mn></mrow></math> puntos, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>34</mn><mo>&gt;</mo><mn>27</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las restricciones del problema</strong></p>
+            <p>Se realizan exactamente 5 visitas a casillas especiales.</p>
+            <p>Además, la ficha cae al menos una vez en azul, al menos una vez en verde y al menos una vez en roja.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar qué color conviene repetir más veces</strong></p>
+            <p>Según el enunciado, los puntajes son:</p>
+            <p>Azul: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2</mn></mrow></math> puntos, verde: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn></mrow></math> puntos, roja: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn></mrow></math> puntos.</p>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn><mo>&gt;</mo><mn>5</mn><mo>&gt;</mo><mn>2</mn></mrow></math>, para obtener el máximo puntaje conviene tener la mayor cantidad posible de visitas rojas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Cumplir primero la condición de visitar cada color al menos una vez</strong></p>
+            <p>Tomamos 1 visita azul, 1 visita verde y 1 visita roja. Eso usa</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>3</mn></mrow></math> visitas.</p>
+            <p>Como en total son 5 visitas, faltan</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>2</mn></mrow></math> visitas.</p>
+            <p>Para maximizar el puntaje, esas 2 visitas restantes deben ser rojas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Determinar el recorrido de máximo puntaje</strong></p>
+            <p>Entonces la distribución óptima es:</p>
+            <p>1 azul, 1 verde y 3 rojas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Calcular el puntaje máximo</strong></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>3</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>2</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>27</mn><mo>=</mo><mn>34</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar con las alternativas</strong></p>
+            <p>Alternativa A: no sirve, porque tiene 0 azules y no cumple la condición.</p>
+            <p>Alternativa B: 1 azul, 1 verde y 3 rojas; da 34 puntos.</p>
+            <p>Alternativa C: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>30</mn></mrow></math>, no 34.</p>
+            <p>Alternativa D: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2</mn><mo>×</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>×</mo><mn>5</mn><mo>+</mo><mn>2</mn><mo>×</mo><mn>9</mn><mo>=</mo><mn>27</mn></mrow></math>, que es menor que 34.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El máximo puntaje posible es 34 puntos, y corresponde al recorrido de la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+  <qti-response-condition>
+    <qti-response-if>
+      <qti-match>
+        <qti-variable identifier="RESPONSE"/>
+        <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+      </qti-match>
+      <qti-set-outcome-value identifier="SCORE">
+        <qti-base-value base-type="float">1</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="FEEDBACK">
+        <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="SOLUTION">
+        <qti-base-value base-type="identifier">show</qti-base-value>
+      </qti-set-outcome-value>
+    </qti-response-if>
+    <qti-response-else-if>
+      <qti-match>
+        <qti-variable identifier="RESPONSE"/>
+        <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+      </qti-match>
+      <qti-set-outcome-value identifier="FEEDBACK">
+        <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="SOLUTION">
+        <qti-base-value base-type="identifier">show</qti-base-value>
+      </qti-set-outcome-value>
+    </qti-response-else-if>
+    <qti-response-else-if>
+      <qti-match>
+        <qti-variable identifier="RESPONSE"/>
+        <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+      </qti-match>
+      <qti-set-outcome-value identifier="FEEDBACK">
+        <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="SOLUTION">
+        <qti-base-value base-type="identifier">show</qti-base-value>
+      </qti-set-outcome-value>
+    </qti-response-else-if>
+    <qti-response-else-if>
+      <qti-match>
+        <qti-variable identifier="RESPONSE"/>
+        <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+      </qti-match>
+      <qti-set-outcome-value identifier="FEEDBACK">
+        <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="SOLUTION">
+        <qti-base-value base-type="identifier">show</qti-base-value>
+      </qti-set-outcome-value>
+    </qti-response-else-if>
+    <qti-response-else>
+      <qti-set-outcome-value identifier="FEEDBACK">
+        <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+      </qti-set-outcome-value>
+      <qti-set-outcome-value identifier="SOLUTION">
+        <qti-base-value base-type="identifier">show</qti-base-value>
+      </qti-set-outcome-value>
+    </qti-response-else>
+  </qti-response-condition>
+</qti-response-processing></qti-assessment-item>

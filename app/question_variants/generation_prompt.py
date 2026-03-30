@@ -380,12 +380,31 @@ Responde con un JSON con esta estructura:
 }}}}
 </formato_respuesta>
 
+<reglas_encoding>
+CRÍTICO — ENCODING UTF-8:
+- Escribe SIEMPRE los caracteres españoles directamente en UTF-8.
+- CORRECTO: é, ó, á, ú, í, ñ, ü, ¿, ¡, Á, É, Í, Ó, Ú, Ñ
+- INCORRECTO: &oacute; &aacute; &eacute; &iacute; &uacute; &ntilde; &nbsp;
+  (esas son entidades HTML — NUNCA las uses, rompen el XML)
+- Escribe símbolos directamente: × ÷ ≥ ≤ → ° · « » − ² ³
+  NO uses &times; &divide; &ge; &le; &rarr; &deg; &middot; etc.
+- Las ÚNICAS entidades permitidas en XML son: &amp; &lt; &gt; &quot; &apos;
+</reglas_encoding>
+
 <restriccion_critica>
-IMPORTANTE: El QTI XML debe:
+IMPORTANTE — ESTRUCTURA XML:
 - Usar namespace xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
 - INCLUIR OBLIGATORIAMENTE 'title' y 'timeDependent="false"' en la etiqueta raíz
 - Tener un identifier único (diferente al original)
 - Mantener la estructura exacta de la pregunta original
 - Usar MathML para expresiones matemáticas si la original las usa
 - CRÍTICO: Si la pregunta contiene <mtable>, <mtr>, <mtd>, INCLUIRLAS COMPLETAS.
+
+IMPORTANTE — CALIDAD XML:
+- Usa SIEMPRE nombres de etiqueta QTI 3.0 kebab-case:
+  CORRECTO: qti-simple-choice, qti-item-body, qti-choice-interaction
+  INCORRECTO: simpleChoice, qti-simpleChoice, choiceInteraction, itemBody
+- Etiquetas vacías deben cerrarse: <img src="..." alt="..." />  (NO <img ...>)
+- NO uses comillas escapadas (\") dentro del XML. Usa comillas normales.
+- NO incluyas declaración <?xml ...?> al inicio.
 </restriccion_critica>"""

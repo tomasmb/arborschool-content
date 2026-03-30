@@ -1,0 +1,129 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v15" title="Q54_v15" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el siguiente gráfico se representa la cantidad de plantas regadas diariamente en un parque, por cuatro jardineros de lunes a viernes. El eje vertical está titulado Cantidad de plantas regadas y va de 0 a 25. Una línea horizontal punteada marca la meta diaria mínima de 10 plantas.<br />
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales agrupadas por día de la semana (Lunes, Martes, Miércoles, Jueves y Viernes). En el eje horizontal se ubican los días y en el eje vertical la cantidad de plantas regadas de 0 a 25. Hay una línea horizontal punteada a la altura de 10 plantas que indica la meta diaria mínima. Para cada día hay cuatro barras de distinto color que representan a los jardineros Bruno, Claudia, Esteban y Fernanda. Las alturas de las barras son: Lunes: Bruno 7 plantas, Claudia 9 plantas, Esteban 3 plantas, Fernanda 10 plantas. Martes: Bruno 6 plantas, Claudia 9 plantas, Esteban 4 plantas, Fernanda 10 plantas. Miércoles: Bruno 10 plantas, Claudia 8 plantas, Esteban 12 plantas, Fernanda 10 plantas. Jueves: Bruno 9 plantas, Claudia 9 plantas, Esteban 13 plantas, Fernanda 8 plantas. Viernes: Bruno 10 plantas, Claudia 11 plantas, Esteban 14 plantas, Fernanda 12 plantas." />
+    </p>
+    <p>Según el gráfico, aproximadamente, durante la semana: Bruno riega 7, 6, 10, 9 y 10 plantas de lunes a viernes, respectivamente; Claudia riega 9, 9, 8, 9 y 11 plantas; Esteban riega 3, 4, 12, 13 y 14 plantas; y Fernanda riega 10, 10, 10, 8 y 12 plantas.</p>
+    <p>La meta diaria mínima del parque es regar al menos 10 plantas por día. El encargado del parque quiere identificar al jardinero que estuvo más lejos de la meta, es decir, el que tuvo el MAYOR número de días con MENOS de 10 plantas regadas. ¿Según el gráfico, qué jardinero estuvo más lejos de la meta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Bruno<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Bruno riega menos de 10 plantas en 3 días: lunes 7, martes 6 y jueves 9. En cambio, Claudia riega menos de 10 plantas en 4 días: lunes 9, martes 9, miércoles 8 y jueves 9. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>&gt;</mo><mn>3</mn></math>, Bruno no es quien estuvo más lejos de la meta.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Claudia<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Claudia riega menos de 10 plantas en 4 días: lunes 9, martes 9, miércoles 8 y jueves 9. Solo el viernes riega 11 plantas. Los demás jardineros tienen menos días bajo la meta: Bruno 3 días, Esteban 2 días y Fernanda 1 día. Por eso, Claudia es quien estuvo más lejos de la meta.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Esteban<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esteban riega menos de 10 plantas en 2 días: lunes 3 y martes 4. Los otros días supera la meta con 12, 13 y 14 plantas. Claudia, en cambio, está bajo 10 plantas en 4 días: 9, 9, 8 y 9. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>&gt;</mo><mn>2</mn></math>, Esteban no es quien estuvo más lejos de la meta.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Fernanda<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Fernanda riega menos de 10 plantas en 1 solo día: jueves 8. Los demás días riega 10, 10, 10 y 12 plantas, así que cumple o supera la meta. Claudia, en cambio, tiene 4 días con menos de 10 plantas: 9, 9, 8 y 9. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>&gt;</mo><mn>1</mn></math>, Fernanda no es la jardinera más alejada de la meta.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Entender qué se debe contar</strong></p>
+            <p>La meta diaria mínima es regar al menos 10 plantas por día. Entonces hay que contar, para cada jardinero, cuántos días tuvo una cantidad menor que 10.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Contar los días de Bruno con menos de 10 plantas</strong></p>
+            <p>Bruno riega 7, 6, 10, 9 y 10 plantas.</p>
+            <p>Los valores menores que 10 son 7, 6 y 9. Por lo tanto, Bruno estuvo bajo la meta en 3 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar los días de Claudia con menos de 10 plantas</strong></p>
+            <p>Claudia riega 9, 9, 8, 9 y 11 plantas.</p>
+            <p>Los valores menores que 10 son 9, 9, 8 y 9. Por lo tanto, Claudia estuvo bajo la meta en 4 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Contar los días de Esteban con menos de 10 plantas</strong></p>
+            <p>Esteban riega 3, 4, 12, 13 y 14 plantas.</p>
+            <p>Los valores menores que 10 son 3 y 4. Por lo tanto, Esteban estuvo bajo la meta en 2 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Contar los días de Fernanda con menos de 10 plantas</strong></p>
+            <p>Fernanda riega 10, 10, 10, 8 y 12 plantas.</p>
+            <p>El único valor menor que 10 es 8. Por lo tanto, Fernanda estuvo bajo la meta en 1 día.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar los resultados</strong></p>
+            <p>Bruno: 3 días.</p>
+            <p>Claudia: 4 días.</p>
+            <p>Esteban: 2 días.</p>
+            <p>Fernanda: 1 día.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El mayor número de días con menos de 10 plantas regadas es 4, y corresponde a Claudia. Por eso, la alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

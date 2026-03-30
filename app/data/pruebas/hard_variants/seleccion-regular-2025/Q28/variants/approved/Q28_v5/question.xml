@@ -1,0 +1,151 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q28_v5" title="Q28_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Registro del caso:</p><p>Se dispone de la siguiente ficha de un medicamento líquido:<br />Nombre: jarabe expectorante<br />Concentración: 5 mL contienen 100 mg del principio activo<br />Dosis requerida para un paciente: 180 mg</p>
+    <p>Según esta información, ¿cuántos mL de jarabe se deben administrar para entregar aproximadamente 180 mg del principio activo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">3 mL<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si 5 mL contienen 100 mg, entonces 1 mL contiene 20 mg. Por lo tanto, 3 mL contienen 3 × 20 = 60 mg, y 60 mg no corresponde a aproximadamente 180 mg.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">9 mL<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si 5 mL contienen 100 mg, entonces 1 mL contiene 20 mg. Por lo tanto, para obtener 180 mg se necesitan 180 ÷ 20 = 9 mL. Así, 9 mL entregan aproximadamente 180 mg del principio activo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">5 mL<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La ficha indica que 5 mL contienen 100 mg. Como la dosis requerida es 180 mg, 100 mg no alcanza para entregar aproximadamente 180 mg.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">10 mL<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si 5 mL contienen 100 mg, entonces 10 mL contienen 2 × 100 = 200 mg. Como 200 mg es mayor que 180 mg, esta opción no corresponde a la dosis aproximada pedida.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la relación entre mililitros y miligramos</strong></p>
+            <p>La ficha indica que 5 mL contienen 100 mg del principio activo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular cuántos miligramos hay en 1 mL</strong></p>
+            <p>Dividimos los 100 mg entre los 5 mL:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mn>100</mn>
+                    <mn>5</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>20</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, 1 mL contiene 20 mg.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular cuántos mL se necesitan para 180 mg</strong></p>
+            <p>Si cada 1 mL aporta 20 mg, dividimos 180 mg entre 20 mg por mL:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mn>180</mn>
+                    <mn>20</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>9</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Por lo tanto, se necesitan 9 mL.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar la respuesta</strong></p>
+            <p>Comprobamos que 9 mL entregan 180 mg:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>9</mn>
+                  <mo>×</mo>
+                  <mn>20</mn>
+                  <mo>=</mo>
+                  <mn>180</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad de jarabe que se debe administrar es <strong>9 mL</strong>, que corresponde a la alternativa <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

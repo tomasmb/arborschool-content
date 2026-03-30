@@ -1,0 +1,190 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v8" title="Q11_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una escalera interna de un gimnasio, cada tramo entre descansos tiene 16 peldaños de igual altura.</p>
+    <p>Un entrenador pide a sus alumnos que, contando peldaños desde el primer peldaño, usen una regla con la cantidad de peldaños subidos, <m:math><m:mi>n</m:mi></m:math>, para saber si han llegado exactamente a un descanso. Propone las siguientes reglas. ¿Cuál de ellas garantiza que el alumno termina exactamente en un descanso?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Seleccione una opción.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>8</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ser divisible por 8 no garantiza llegar a un descanso, porque hay múltiplos de 8 que no son múltiplos de 16. Por ejemplo, 24 es divisible por 8, ya que 24 = 8 × 3, pero 24 no es divisible por 16, porque 24 ÷ 16 = 1,5. Entonces con 24 peldaños no se termina exactamente en un descanso.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>16</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Cada descanso aparece cada 16 peldaños, así que se llega exactamente a un descanso cuando la cantidad de peldaños subidos es 16, 32, 48, 64, etcétera. Todos esos valores son múltiplos de 16. Por eso, si n es divisible por 16, entonces n = 16 × k para algún número entero k, y el alumno termina exactamente en un descanso.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>32</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Ser divisible por 32 es una condición demasiado exigente. Por ejemplo, 16 corresponde exactamente a un descanso, porque el primer descanso está después de 16 peldaños, pero 16 no es divisible por 32, ya que 16 ÷ 32 = 0,5. Entonces esta regla no garantiza reconocer todos los casos en que sí se llega exactamente a un descanso.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Que <m:math><m:mn>16</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>16</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta regla siempre se cumple para cualquier número entero n, porque 16 × n siempre es divisible por 16. Por ejemplo, si n = 5, entonces 16 × 5 = 80, y 80 ÷ 16 = 5, así que la condición se cumple. Pero 5 peldaños no corresponden a un descanso, ya que los descansos están en 16, 32, 48, etcétera. Por eso la regla no garantiza llegar exactamente a un descanso.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar dónde están los descansos</strong></p>
+            <p>Si cada tramo entre descansos tiene 16 peldaños, entonces los descansos se alcanzan al subir 16 peldaños, 32 peldaños, 48 peldaños, 64 peldaños, y así sucesivamente.</p>
+            <p>En lenguaje matemático, esos números son los múltiplos de 16.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Traducir la situación a una condición sobre <m:math><m:mi>n</m:mi></m:math></strong></p>
+            <p>Para terminar exactamente en un descanso, la cantidad de peldaños subidos debe poder escribirse como:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>16</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mi>k</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>donde <m:math><m:mi>k</m:mi></m:math> es un número entero positivo.</p>
+            <p>Eso significa exactamente que <m:math><m:mi>n</m:mi></m:math> es divisible por 16.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada alternativa</strong></p>
+            <p><strong>Opción A:</strong> “<m:math><m:mi>n</m:mi></m:math> es divisible por 8”.</p>
+            <p>No basta, porque hay números divisibles por 8 que no llegan a un descanso. Por ejemplo:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>24</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>8</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>pero</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>24</m:mn>
+                  <m:mo>÷</m:mo>
+                  <m:mn>16</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>1,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces 24 no corresponde a un descanso.</p>
+
+            <p><strong>Opción B:</strong> “<m:math><m:mi>n</m:mi></m:math> es divisible por 16”.</p>
+            <p>Esta condición coincide exactamente con los peldaños en que hay descanso: 16, 32, 48, 64, etcétera.</p>
+            <p>Por lo tanto, sí garantiza llegar exactamente a un descanso.</p>
+
+            <p><strong>Opción C:</strong> “<m:math><m:mi>n</m:mi></m:math> es divisible por 32”.</p>
+            <p>No sirve como regla general, porque deja fuera casos válidos. Por ejemplo, 16 sí es un descanso, pero:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>16</m:mn>
+                  <m:mo>÷</m:mo>
+                  <m:mn>32</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>0,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Así, 16 no es divisible por 32.</p>
+
+            <p><strong>Opción D:</strong> “<m:math><m:mn>16</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>16</m:mn></m:math>”.</p>
+            <p>Eso ocurre para cualquier número entero <m:math><m:mi>n</m:mi></m:math>, porque:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>16</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>÷</m:mo>
+                  <m:mn>16</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por ejemplo, si <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>5</m:mn></m:math>, la condición se cumple, pero 5 no es un descanso.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La regla que garantiza que el alumno termina exactamente en un descanso es que <m:math><m:mi>n</m:mi></m:math> sea divisible por <m:math><m:mn>16</m:mn></m:math>.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

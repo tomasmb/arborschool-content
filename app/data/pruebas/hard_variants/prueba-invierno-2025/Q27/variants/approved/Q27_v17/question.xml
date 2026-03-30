@@ -1,0 +1,225 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q27_v17" title="Q27_v17" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Registro del caso:</p>
+    <p>En una caminata a paso constante, una persona recorre 750 metros en 12 minutos.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="[Dibujo de una persona caminando en una pista recta. Debajo, una línea horizontal con dos marcas alineadas: en el extremo izquierdo se indica '0 min' arriba y '0 m' abajo; en el extremo derecho se indica '12 min' arriba y '750 m' abajo. Las marcas de tiempo y distancia están alineadas para mostrar que 12 minutos corresponden a 750 metros.]" />
+    </p>
+    <p>Si 
+      <m:math>
+        <m:mi>t</m:mi>
+      </m:math>
+      representa el tiempo en minutos y 
+      <m:math>
+        <m:mrow>
+          <m:mi>D</m:mi>
+          <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>
+      la distancia recorrida en metros, ¿cuál de las siguientes expresiones es coherente con esta información?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Según el registro, ¿qué cantidad mantiene correctamente la razón indicada?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>12</m:mn>
+              <m:mn>750</m:mn>
+            </m:mfrac>
+            <m:mi>t</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La razón de distancia por minuto se obtiene dividiendo 750 entre 12, no 12 entre 750. Por ejemplo, si t = 12, esta expresión da 12/750 × 12 = 144/750 = 0,192 metros, pero el enunciado indica 750 metros.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>750</m:mn>
+              <m:mn>12</m:mn>
+            </m:mfrac>
+            <m:mi>t</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! A paso constante, la distancia es proporcional al tiempo. La tasa es 750/12 metros por minuto. Entonces D(t) = (750/12)t. Verificación: si t = 12, se obtiene (750/12) × 12 = 750 metros, exactamente lo dado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>t</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>750</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si t = 0, esta expresión da D(0) = 0 + 750 = 750 metros, pero al inicio del recorrido corresponden 0 metros. Además, si t = 12, da 12 + 750 = 762 metros, que no coincide con 750 metros.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mi>D</m:mi>
+            <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>t</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>750</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si t = 0, esta expresión da D(0) = 0 − 750 = −750 metros, y una distancia recorrida no coincide con el registro inicial de 0 metros. Además, si t = 12, da 12 − 750 = −738 metros, que no es 750 metros.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la relación entre tiempo y distancia</strong></p>
+            <p>El enunciado dice que la persona camina a paso constante y recorre 750 metros en 12 minutos. Eso significa que la distancia recorrida es proporcional al tiempo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la razón de cambio</strong></p>
+            <p>La razón de cambio es distancia dividida por tiempo:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:mn>750</m:mn>
+                    <m:mn>12</m:mn>
+                  </m:mfrac>
+                  <m:mtext> metros por minuto</m:mtext>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la función</strong></p>
+            <p>Si <m:math><m:mi>t</m:mi></m:math> es el tiempo en minutos, entonces la distancia recorrida es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>750</m:mn>
+                    <m:mn>12</m:mn>
+                  </m:mfrac>
+                  <m:mi>t</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con el dato del problema</strong></p>
+            <p>Como el enunciado indica que en 12 minutos se recorren 750 metros, reemplazamos <m:math><m:mi>t</m:mi></m:math> por 12:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>D</m:mi>
+                  <m:mo>(</m:mo><m:mn>12</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>750</m:mn>
+                    <m:mn>12</m:mn>
+                  </m:mfrac>
+                  <m:mo>×</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La expresión coincide exactamente con la información entregada.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión coherente con el registro es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

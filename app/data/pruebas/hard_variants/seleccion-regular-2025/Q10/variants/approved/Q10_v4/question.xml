@@ -1,0 +1,180 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q10_v4" title="Q10_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En un consultorio pediátrico se utiliza la siguiente regla para calcular la <strong>fecha del refuerzo</strong> de una vacuna aplicada a un recién nacido:
+    </p>
+    <p>
+      "Fecha del refuerzo: <strong>día de aplicación + 7</strong>; <strong>mes de aplicación − 3</strong>; si la aplicación fue entre <strong>abril y diciembre</strong>, <strong>sumar 1 al año</strong>."
+    </p>
+    <p>
+      La vacuna fue aplicada el día <strong>15/09/2022</strong>. Cuatro técnicos del consultorio hicieron propuestas para la fecha del refuerzo, indicando cómo entendieron la regla. ¿Cuál de las siguientes propuestas es coherente con la regla entregada?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <p>
+          <strong>Técnico 1:</strong> propone <strong>22/06/2022</strong>, porque suma 7 al día (15 + 7) y resta 3 al mes (9 − 3), pero mantiene el año igual ya que piensa que solo cambia si la aplicación fue a comienzos de año.
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Aplicando la regla al 15/09/2022 se obtiene día: 15 + 7 = 22; mes: 9 − 3 = 6; y como septiembre está entre abril y diciembre, al año 2022 se le suma 1, quedando 2023. Por eso la fecha coherente es 22/06/2023, no 22/06/2022.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <p>
+          <strong>Técnico 2:</strong> propone <strong>22/06/2023</strong>, porque suma 7 al día (15 + 7), resta 3 al mes (9 − 3) y, como la aplicación fue en septiembre (entre abril y diciembre), suma 1 al año.
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La regla indica calcular 15 + 7 = 22 para el día, 9 − 3 = 6 para el mes, y como septiembre está entre abril y diciembre, 2022 + 1 = 2023 para el año. Así, la fecha del refuerzo es 22/06/2023.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <p>
+          <strong>Técnico 3:</strong> propone <strong>08/06/2023</strong>, porque resta 7 al día (15 − 7), resta 3 al mes (9 − 3) y suma 1 al año por haberse aplicado la vacuna en septiembre.
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La regla dice día de aplicación + 7, no − 7. Con la fecha 15/09/2022, el día correcto es 15 + 7 = 22, no 15 − 7 = 8. El mes sí queda 9 − 3 = 6 y el año sí pasa de 2022 a 2023 porque septiembre está entre abril y diciembre. Por eso la fecha coherente es 22/06/2023, no 08/06/2023.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <p>
+          <strong>Técnico 4:</strong> propone <strong>22/12/2023</strong>, porque suma 7 al día (15 + 7), suma 3 al mes (9 + 3) y además suma 1 al año ya que la aplicación fue entre abril y diciembre.
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La regla indica mes de aplicación − 3. Con mes 9, el cálculo correcto es 9 − 3 = 6, no 9 + 3 = 12. El día correcto sí es 15 + 7 = 22 y el año correcto sí es 2022 + 1 = 2023 porque septiembre está entre abril y diciembre. Entonces la fecha coherente es 22/06/2023, no 22/12/2023.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Aplicar la regla al día</strong></p>
+            <p>La fecha de aplicación es 15/09/2022. La regla dice: día de aplicación + 7.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>15</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>=</mo>
+                  <mn>22</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El día del refuerzo es 22.</p>
+          </li>
+          <li>
+            <p><strong>Aplicar la regla al mes</strong></p>
+            <p>El mes de aplicación es 9, es decir, septiembre. La regla dice: mes de aplicación − 3.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>9</mn>
+                  <mo>−</mo>
+                  <mn>3</mn>
+                  <mo>=</mo>
+                  <mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El mes del refuerzo es 6, es decir, junio.</p>
+          </li>
+          <li>
+            <p><strong>Aplicar la condición del año</strong></p>
+            <p>La regla agrega: si la aplicación fue entre abril y diciembre, sumar 1 al año.</p>
+            <p>Septiembre está entre abril y diciembre, así que al año 2022 se le suma 1.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2022</mn>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                  <mo>=</mo>
+                  <mn>2023</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El año del refuerzo es 2023.</p>
+          </li>
+          <li>
+            <p><strong>Formar la fecha completa</strong></p>
+            <p>Con los resultados anteriores, la fecha del refuerzo es 22/06/2023.</p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La única propuesta que coincide exactamente con 22/06/2023 es la del Técnico 2.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>: <strong>22/06/2023</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,166 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q42_v10" title="Q42_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un programa de simulación, la posición vertical <em>y</em> (en metros) de un dron se calcula en función del tiempo <em>x</em> (en segundos) mediante la expresión
+      <m:math>
+        <m:mi>y</m:mi>
+        <m:mo>=</m:mo>
+        <m:mi>a</m:mi>
+        <m:msup>
+          <m:mi>x</m:mi>
+          <m:mn>2</m:mn>
+        </m:msup>
+        <m:mo>+</m:mo>
+        <m:mi>b</m:mi>
+        <m:mi>x</m:mi>
+        <m:mo>+</m:mo>
+        <m:mi>c</m:mi>
+      </m:math>.
+    </p>
+    <p>
+      El equipo de trabajo exige que al inicio de la simulación, es decir, cuando
+      <m:math>
+        <m:mi>x</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>0</m:mn>
+      </m:math>,
+      la posición del dron sea exactamente
+      <m:math>
+        <m:mi>y</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>10</m:mn>
+      </m:math>
+      metros. ¿Cuál de las siguientes instrucciones en el código garantiza de manera directa esta condición inicial?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Aumentar el valor de <em>b</em> hasta que, según la simulación, el dron comience a 10 metros de altura.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al evaluar la función en <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, se obtiene <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>a</m:mi><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>+</m:mo><m:mi>b</m:mi><m:mn>0</m:mn><m:mo>+</m:mo><m:mi>c</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:math>. El término con <em>b</em> vale <m:math><m:mi>b</m:mi><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, así que cambiar <em>b</em> no garantiza la condición inicial. Por ejemplo, si <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:math>, <m:math><m:mi>b</m:mi><m:mo>=</m:mo><m:mn>100</m:mn></m:math> y <m:math><m:mi>c</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:math>, entonces <m:math><m:mi>y</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>4</m:mn></m:math>, no <m:math><m:mn>10</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Asignar directamente a <em>c</em> el valor 10, manteniendo sin cambios los valores actuales de <em>a</em> y <em>b</em>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al inicio de la simulación, <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, entonces <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>a</m:mi><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>+</m:mo><m:mi>b</m:mi><m:mn>0</m:mn><m:mo>+</m:mo><m:mi>c</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:math>. Para que la posición inicial sea exactamente <m:math><m:mn>10</m:mn></m:math> metros, debe cumplirse <m:math><m:mi>c</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Multiplicar el coeficiente <em>a</em> por 10 para que la trayectoria alcance 10 metros cuando comience la simulación.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Al evaluar en <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, el término cuadrático vale <m:math><m:mi>a</m:mi><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mi>a</m:mi><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:math>. Por eso, cambiar <em>a</em> no modifica la altura inicial. Por ejemplo, si <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>, <m:math><m:mi>b</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math> y <m:math><m:mi>c</m:mi><m:mo>=</m:mo><m:mn>7</m:mn></m:math>, entonces <m:math><m:mi>y</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>7</m:mn></m:math>. Si se multiplica <em>a</em> por <m:math><m:mn>10</m:mn></m:math>, queda <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:math>, pero sigue siendo <m:math><m:mi>y</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>7</m:mn></m:math>, no <m:math><m:mn>10</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Sumar 10 a los tres coeficientes <em>a</em>, <em>b</em> y <em>c</em> para que toda la trayectoria quede 10 metros más arriba.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si a los coeficientes se les suma <m:math><m:mn>10</m:mn></m:math>, la nueva función es <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mo>(</m:mo><m:mi>a</m:mi><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>)</m:mo><m:msup><m:mi>x</m:mi><m:mn>2</m:mn></m:msup><m:mo>+</m:mo><m:mo>(</m:mo><m:mi>b</m:mi><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>)</m:mo><m:mi>x</m:mi><m:mo>+</m:mo><m:mo>(</m:mo><m:mi>c</m:mi><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>)</m:mo></m:math>. Al evaluar en <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, resulta <m:math><m:mi>y</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>c</m:mi><m:mo>+</m:mo><m:mn>10</m:mn></m:math>, lo que no garantiza que sea exactamente <m:math><m:mn>10</m:mn></m:math>. Por ejemplo, si <m:math><m:mi>c</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:math>, entonces la nueva altura inicial es <m:math><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>14</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la función</strong></p>
+            <p>La posición del dron está dada por <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>a</m:mi><m:msup><m:mi>x</m:mi><m:mn>2</m:mn></m:msup><m:mo>+</m:mo><m:mi>b</m:mi><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>c</m:mi></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar la condición inicial</strong></p>
+            <p>El enunciado dice que al inicio de la simulación, cuando <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, la posición debe ser <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Reemplazar <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math> en la expresión</strong></p>
+            <p><m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>a</m:mi><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>+</m:mo><m:mi>b</m:mi><m:mn>0</m:mn><m:mo>+</m:mo><m:mi>c</m:mi></m:math></p>
+            <p>Como <m:math><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, entonces <m:math><m:mi>a</m:mi><m:msup><m:mn>0</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mn>0</m:mn></m:math>.</p>
+            <p>Además, <m:math><m:mi>b</m:mi><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:math>.</p>
+            <p>Por lo tanto, <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>+</m:mo><m:mi>c</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Imponer que la altura inicial sea 10</strong></p>
+            <p>Como en el inicio se debe cumplir <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math> y al mismo tiempo <m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>c</m:mi></m:math>, se concluye que <m:math><m:mi>c</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La única instrucción que garantiza directamente esa condición es asignar a <m:math><m:mi>c</m:mi></m:math> el valor <m:math><m:mn>10</m:mn></m:math>, sin necesidad de cambiar <m:math><m:mi>a</m:mi></m:math> ni <m:math><m:mi>b</m:mi></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

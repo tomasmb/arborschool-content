@@ -1,0 +1,139 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v10" title="Nave espacial en mapa cuadriculado" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En una pantalla se muestra un mapa cuadriculado del sector espacial. En una casilla está la nave espacial, marcada con la letra <strong>S</strong>, y en otra casilla está el objetivo, marcado con la letra <strong>T</strong>. En el mapa se observa que el punto T está 4 casillas a la derecha y 6 casillas arriba del punto S.
+      <br />
+      <img src="requiere_nueva_imagen_1.png" alt="[Dibujar un mapa cuadriculado de al menos 8×8 casillas. Ubicar un punto S (nave espacial) en la segunda columna desde la izquierda y la segunda fila desde abajo. Ubicar un punto T (objetivo) en la sexta columna desde la izquierda y la octava fila desde abajo. Etiquetar claramente S y T. La cuadrícula debe mostrar que T está 4 casillas a la derecha y 6 casillas arriba de S.]" />
+    </p>
+    <p>
+      El panel de control tiene una tecla de movimiento corto, llamada <strong>C</strong>, y otra de movimiento diagonal, llamada <strong>D</strong>. Se sabe que cada vez que se presiona C, la nave se mueve exactamente una casilla en dirección vertical (hacia arriba o hacia abajo). Cada vez que se presiona D, la nave se mueve exactamente una casilla en diagonal hacia arriba y una casilla en sentido horizontal (hacia la derecha o hacia la izquierda).
+      <br />
+      <img src="requiere_nueva_imagen_2.png" alt="[Sobre una porción del mismo mapa cuadriculado, mostrar la nave espacial en una casilla y una flecha diagonal ↗ desde esa casilla a la casilla que está una a la derecha y una arriba, ilustrando un posible movimiento con la tecla D.]" />
+    </p>
+    <p>
+      El piloto afirma: "Desde S presioné exactamente 4 veces la tecla D y 2 veces la tecla C, en algún orden, y llegué exactamente al punto T". Es decir, la trayectoria total de la nave equivale a combinar 4 movimientos diagonales y 2 movimientos verticales para pasar de S a T.
+    </p>
+    <p>
+      Considerando que T está 4 casillas a la derecha y 6 casillas arriba de S, ¿cuál de las siguientes interpretaciones de las teclas C y D es compatible con que la nave pase de S a T usando exactamente esos 4 movimientos diagonales y 2 verticales, en algún orden?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">C mueve la nave una casilla hacia arriba (↑) y D mueve la nave una casilla en diagonal hacia arriba y a la izquierda (↖).<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Con 4 movimientos D en dirección ↖, la nave avanza 4 casillas hacia arriba, pero también 4 casillas hacia la izquierda. Con 2 movimientos C hacia arriba, sube 2 casillas más. En total queda 4 casillas a la izquierda y 6 casillas arriba de S, pero T está 4 casillas a la derecha y 6 casillas arriba de S.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">C mueve la nave una casilla hacia arriba (↑) y D mueve la nave una casilla en diagonal hacia arriba y a la derecha (↗).<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Cada movimiento D en dirección ↗ aporta 1 casilla a la derecha y 1 casilla hacia arriba. Entonces 4 movimientos D aportan 4 a la derecha y 4 arriba. Además, 2 movimientos C hacia arriba aportan 2 arriba. En total, la nave avanza 4 casillas a la derecha y 6 casillas arriba, exactamente la posición de T respecto de S.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">C mueve la nave una casilla hacia abajo (↓) y D mueve la nave una casilla en diagonal hacia arriba y a la derecha (↗).<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Con 4 movimientos D en dirección ↗, la nave avanza 4 casillas a la derecha y 4 casillas hacia arriba. Pero con 2 movimientos C hacia abajo, baja 2 casillas. En total queda 4 casillas a la derecha y solo 2 casillas arriba de S, no 6 casillas arriba.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">C mueve la nave una casilla hacia abajo (↓) y D mueve la nave una casilla en diagonal hacia arriba y a la izquierda (↖).<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con 4 movimientos D en dirección ↖, la nave queda 4 casillas a la izquierda y 4 casillas arriba. Luego, con 2 movimientos C hacia abajo, baja 2 casillas. En total queda 4 casillas a la izquierda y 2 casillas arriba de S, pero T está 4 casillas a la derecha y 6 casillas arriba.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el desplazamiento total entre S y T</strong></p>
+            <p>El punto T está 4 casillas a la derecha y 6 casillas arriba de S. Por lo tanto, el movimiento total que se necesita es: 4 a la derecha y 6 hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar qué aporta cada movimiento D</strong></p>
+            <p>Cada vez que se presiona D, la nave siempre sube 1 casilla y además se mueve 1 casilla en sentido horizontal.</p>
+            <p>Si D es ↗, cada D aporta 1 a la derecha y 1 hacia arriba.</p>
+            <p>Si D es ↖, cada D aporta 1 a la izquierda y 1 hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Usar que se presiona D exactamente 4 veces</strong></p>
+            <p>Como se presiona D exactamente 4 veces, la parte horizontal total proviene solo de esos 4 movimientos diagonales.</p>
+            <p>Para llegar 4 casillas a la derecha, los 4 movimientos D deben ser hacia la derecha. Entonces D tiene que ser ↗.</p>
+            <p>Además, esos 4 movimientos D aportan también 4 casillas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Determinar qué debe hacer la tecla C</strong></p>
+            <p>Ya se han conseguido 4 casillas hacia arriba con los 4 movimientos D.</p>
+            <p>Faltan 2 casillas hacia arriba para completar las 6 casillas verticales necesarias.</p>
+            <p>Como se presiona C exactamente 2 veces y cada C mueve 1 casilla en dirección vertical, cada C debe ser hacia arriba.</p>
+            <p>Así, 2 movimientos C aportan 2 casillas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Verificar el total</strong></p>
+            <p>Cuatro movimientos D en dirección ↗ aportan: 4 a la derecha y 4 hacia arriba.</p>
+            <p>Dos movimientos C hacia arriba aportan: 2 hacia arriba.</p>
+            <p>Sumando ambos aportes se obtiene: 4 a la derecha y 6 hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La interpretación compatible es: C mueve una casilla hacia arriba y D mueve una casilla en diagonal hacia arriba y a la derecha. Por eso, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

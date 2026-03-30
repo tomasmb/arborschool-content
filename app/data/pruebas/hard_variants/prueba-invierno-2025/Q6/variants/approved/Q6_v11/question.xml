@@ -1,0 +1,130 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v11" title="Q6_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego de básquetbol, un jugador lanza exactamente cinco veces al aro desde distintas posiciones de la cancha.</p>
+    <p>En la siguiente ilustración se muestran tres tipos de lanzamiento y su puntaje: tiro libre (1 punto), doble (2 puntos) y triple (3 puntos).</p>
+    <p><img src="q6.png" alt="Dibujo esquemático de una cancha de básquetbol con tres zonas marcadas y sus puntajes." /></p>
+    <p>Durante la serie de cinco lanzamientos, el jugador realiza al menos una vez cada tipo de tiro. El puntaje total del jugador es la suma de los puntos obtenidos en cada lanzamiento.</p>
+    <p>¿Cuál es el mayor puntaje total que puede conseguir el jugador al finalizar la serie de cinco lanzamientos?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">9<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si en 5 lanzamientos debe hacer al menos un tiro de 1 punto, uno de 2 puntos y uno de 3 puntos, para maximizar el puntaje conviene usar los 2 lanzamientos restantes como triples. Así, el máximo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>12</mn></mrow></math>, no 9.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">10<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Sí es posible obtener más que 10 cumpliendo la condición de realizar al menos una vez cada tipo de tiro. Por ejemplo, con un tiro libre, un doble y tres triples se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>12</mn></mrow></math>. Por lo tanto, 10 no es el mayor puntaje posible.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">11<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. También se puede superar 11 respetando todas las restricciones. Un ejemplo válido es hacer exactamente un tiro de 1 punto, uno de 2 puntos y tres de 3 puntos. El total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>12</mn></mrow></math>. Entonces, 11 no puede ser el máximo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">12<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Para obtener el mayor puntaje, se debe usar la menor cantidad posible de tiros de menor valor: un tiro libre de 1 punto, un doble de 2 puntos y un triple de 3 puntos. Ya van <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>6</mn></mrow></math>. Quedan 2 lanzamientos, y para maximizar el total ambos deben ser triples: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>12</mn></mrow></math>. Por eso, el mayor puntaje total es 12.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las restricciones</strong></p>
+            <p>El jugador lanza exactamente 5 veces.</p>
+            <p>Además, debe realizar al menos una vez cada tipo de tiro:</p>
+            <p>un tiro libre de 1 punto, un doble de 2 puntos y un triple de 3 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Asegurar una vez cada tipo de tiro</strong></p>
+            <p>Si toma una vez cada tipo, el puntaje acumulado es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>6</mn></mrow></math></p>
+            <p>Con eso ya se han usado 3 lanzamientos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Maximizar los 2 lanzamientos restantes</strong></p>
+            <p>Quedan 2 lanzamientos por hacer.</p>
+            <p>Como se busca el mayor puntaje total, conviene que ambos sean del mayor valor posible, es decir, triples de 3 puntos.</p>
+            <p>Entonces, los 2 lanzamientos restantes aportan:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>6</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sumar el puntaje total</strong></p>
+            <p>Puntaje de los 3 tipos obligatorios:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn></mrow></math></p>
+            <p>Puntaje de los 2 triples adicionales:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn></mrow></math></p>
+            <p>Total:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>12</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El mayor puntaje total que puede conseguir el jugador es <strong>12</strong>.</p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

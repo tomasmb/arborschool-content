@@ -1,0 +1,136 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q49_v3" title="Q49_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un curso, se sabe que la cantidad de libros que poseen los estudiantes tiene como moda el valor 4; es decir, 4 es la única cantidad de libros que más se repite en el curso.</p>
+    <div>
+      <p>A continuación se muestran cuatro posibles distribuciones de cantidad de libros por estudiante, donde en cada caso se indica "cantidad de libros: número de estudiantes".</p>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        1 libro: 3 estudiantes; 2 libros: 4 estudiantes; 3 libros: 5 estudiantes; 4 libros: 5 estudiantes; 5 libros: 2 estudiantes.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En esta distribución, 3 libros se repite 5 veces y 4 libros también se repite 5 veces. Entonces 4 no es la única cantidad que más se repite, porque hay empate entre 3 y 4. Por lo tanto, 4 no es la única moda.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        1 libro: 3 estudiantes; 2 libros: 2 estudiantes; 3 libros: 4 estudiantes; 4 libros: 6 estudiantes; 5 libros: 1 estudiante.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En esta distribución, 4 libros se repite 6 veces. Las demás cantidades se repiten menos: 1 libro, 3 veces; 2 libros, 2 veces; 3 libros, 4 veces; 5 libros, 1 vez. Como 6 es la mayor frecuencia y solo corresponde a 4 libros, la moda es 4 y además es única.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        2 libros: 5 estudiantes; 3 libros: 3 estudiantes; 4 libros: 5 estudiantes; 5 libros: 4 estudiantes; 6 libros: 1 estudiante.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En esta distribución, 2 libros se repite 5 veces y 4 libros también se repite 5 veces. Entonces 4 no es la única cantidad que más se repite, porque hay empate entre 2 y 4. Por lo tanto, 4 no es la única moda.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        1 libro: 7 estudiantes; 2 libros: 4 estudiantes; 3 libros: 6 estudiantes; 4 libros: 4 estudiantes; 5 libros: 2 estudiantes.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En esta distribución, 1 libro se repite 7 veces, 3 libros se repite 6 veces y 4 libros se repite 4 veces. La mayor frecuencia es 7, que corresponde a 1 libro. Por lo tanto, la moda es 1, no 4.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar qué significa moda</strong></p>
+            <p>La moda es la cantidad que más se repite. El enunciado dice además que 4 es la única cantidad de libros que más se repite en el curso. Entonces debemos buscar la opción en que la frecuencia de 4 libros sea la mayor y no esté empatada con otra.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la opción A</strong></p>
+            <p>Frecuencias: 1 libro → 3 estudiantes; 2 libros → 4 estudiantes; 3 libros → 5 estudiantes; 4 libros → 5 estudiantes; 5 libros → 2 estudiantes.</p>
+            <p>La frecuencia mayor es 5, pero aparece en 3 libros y en 4 libros. Entonces hay dos modas y 4 no es única.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar la opción B</strong></p>
+            <p>Frecuencias: 1 libro → 3 estudiantes; 2 libros → 2 estudiantes; 3 libros → 4 estudiantes; 4 libros → 6 estudiantes; 5 libros → 1 estudiante.</p>
+            <p>La frecuencia mayor es 6 y corresponde solo a 4 libros. Entonces la moda es 4 y es única.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar la opción C</strong></p>
+            <p>Frecuencias: 2 libros → 5 estudiantes; 3 libros → 3 estudiantes; 4 libros → 5 estudiantes; 5 libros → 4 estudiantes; 6 libros → 1 estudiante.</p>
+            <p>La frecuencia mayor es 5, pero aparece en 2 libros y en 4 libros. Entonces 4 no es única moda.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar la opción D</strong></p>
+            <p>Frecuencias: 1 libro → 7 estudiantes; 2 libros → 4 estudiantes; 3 libros → 6 estudiantes; 4 libros → 4 estudiantes; 5 libros → 2 estudiantes.</p>
+            <p>La frecuencia mayor es 7 y corresponde a 1 libro. Entonces la moda no es 4.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única distribución en la que 4 libros es la cantidad que más se repite sin empate es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

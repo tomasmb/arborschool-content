@@ -1,0 +1,163 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v5" title="Q64_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una bolsa hay fichas numeradas del 1 al 6. La probabilidad de extraer cada número al sacar una ficha al azar se indica en la siguiente tabla. ¿Cuál de las siguientes opciones describe correctamente los resultados favorables y la forma de calcular la probabilidad de extraer un número impar?</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Número</th>
+          <th>Probabilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>0,2</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>0,4</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>0,1</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Resultados favorables: {1, 3, 5}; probabilidad: 0,2 + 0,1 + 0,4.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Los números impares entre 1 y 6 son 1, 3 y 5, por lo tanto los resultados favorables son {1, 3, 5}. La probabilidad de obtener un número impar se calcula sumando sus probabilidades: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn></mrow></math>. Esta opción describe correctamente tanto los resultados favorables como el cálculo.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Resultados favorables: {1, 3, 5}; probabilidad: (0,2 + 0,1 + 0,4) / 3.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Los resultados favorables sí son {1, 3, 5}, pero la probabilidad no se divide por 3. Se debe sumar directamente: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn></mrow></math>. En cambio, esta opción propone <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>)</mo><mo>/</mo><mn>3</mn><mo>=</mo><mn>0,7</mn><mo>/</mo><mn>3</mn></mrow></math>, que no corresponde a la probabilidad pedida.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Resultados favorables: {2, 4, 6}; probabilidad: 0,1 + 0,1 + 0,1.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Los números 2, 4 y 6 son pares, no impares. Un contraejemplo concreto es el número 3: 3 es impar y no aparece en {2, 4, 6}. Además, la suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></mrow></math> calcula la probabilidad de obtener un número par, no la de obtener un número impar.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Resultados favorables: {1, 3, 5}; probabilidad: 0,2 × 0,1 × 0,4.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Los resultados favorables sí son {1, 3, 5}, pero la probabilidad de extraer un número impar en un solo saque se obtiene sumando las probabilidades de 1, 3 y 5, no multiplicándolas. El cálculo correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn></mrow></math>. En cambio, esta opción usa <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>×</mo><mn>0,1</mn><mo>×</mo><mn>0,4</mn><mo>=</mo><mn>0,008</mn></mrow></math>, que no representa la probabilidad pedida.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los números impares</strong></p>
+            <p>Entre los números 1, 2, 3, 4, 5 y 6, los impares son 1, 3 y 5.</p>
+            <p>Por lo tanto, los resultados favorables son {1, 3, 5}.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Buscar en la tabla las probabilidades correspondientes</strong></p>
+            <p>La probabilidad de extraer 1 es 0,2.</p>
+            <p>La probabilidad de extraer 3 es 0,1.</p>
+            <p>La probabilidad de extraer 5 es 0,4.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las probabilidades de los resultados favorables</strong></p>
+            <p>Como basta con obtener 1 o 3 o 5 en un solo saque, se suman esas probabilidades:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La alternativa A indica exactamente los resultados favorables {1, 3, 5} y propone sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn></mrow></math>, que es el procedimiento correcto.</p>
+            <p>La alternativa B divide entre 3, lo cual no corresponde.</p>
+            <p>La alternativa C usa los números pares {2, 4, 6}, que no son los pedidos.</p>
+            <p>La alternativa D multiplica probabilidades, pero en este problema corresponde sumar.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La opción correcta es la <strong>A</strong>, y la probabilidad de extraer un número impar es <strong>0,7</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

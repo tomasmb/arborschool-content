@@ -1,0 +1,133 @@
+{
+  "source_question_id": "Q1",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q1_v6",
+      "scenario_description": "Se presenta una tabla con 10 filas numeradas (1 a 10). Cada fila corresponde a una carta extraída en orden. La tabla tiene dos columnas: una con el símbolo de la carta (estrella o corazón) y otra con el número escrito. La primera fila está marcada como 'carta inicial' y las demás como 'carta 2', 'carta 3', etc. Se recuerda la regla: la carta inicial fija el puntaje inicial; luego, cada corazón suma su número al puntaje y cada estrella lo resta. Se pide calcular directamente el puntaje final del jugador a partir de la información de la tabla.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar la tabla como un registro de operaciones sucesivas, aplicar correctamente la regla de suma o resta según el símbolo en cada fila y mantener un control del puntaje acumulado, distinguiendo el rol especial de la carta inicial. No basta sumar números sueltos: si no comprende qué filas se suman y cuáles se restan, o confunde la inicial con una operación adicional, obtendrá un resultado distractor.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q1_v7",
+      "scenario_description": "Se describe en texto la misma estructura de juego con cartas: se indica en orden 'carta inicial: corazón con número ..., luego carta 2: estrella con número ..., carta 3: corazón con número ...', hasta completar 10 cartas. Se mantiene la misma regla de puntuación de la fuente. Cuatro jugadores dicen haber obtenido distintos puntajes finales (se entregan 4 números enteros como opciones). La pregunta pide identificar cuál de esos puntajes finales es consistente con la secuencia de cartas y la regla dada.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe reconstruir el cálculo del puntaje final para comparar con las afirmaciones dadas. Debe comprender que el puntaje se obtiene acumulando la contribución de cada carta según su símbolo, respetando el carácter de puntaje inicial de la primera carta. Los distractores se construyen a partir de errores típicos (tratar la inicial como suma añadida, cambiar el signo de una carta, no actualizar algún paso), de modo que sólo quien entienda el procedimiento completo puede elegir la opción correcta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q1_v8",
+      "scenario_description": "Se cambia el contexto a un juego con fichas de dos colores: fichas verdes (ganar puntos) y fichas rojas (perder puntos), cada una con un número. Se explica que primero se toma una ficha inicial y su número es el puntaje inicial. Luego se toman otras fichas: cada ficha verde suma su número al puntaje y cada ficha roja lo resta. Se entrega en texto una secuencia ordenada de 10 fichas indicando color y número (marcando la primera como inicial) y se pide determinar el puntaje final.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe trasladar la regla verbal al nuevo código de colores (verde suma, rojo resta), identificar la ficha inicial como punto de partida y luego realizar correctamente la secuencia de sumas y restas con números enteros. Si trata todas las fichas de la misma forma o no aplica la correspondencia color/signo, los errores serán sistemáticos, lo que fuerza a comprender el método y no solo 'sumar todo'.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q1_v9",
+      "scenario_description": "Se sitúa el problema en el contexto de una cuenta bancaria. Se indica que el saldo inicial del día corresponde a un primer registro y que luego se realizan 9 movimientos: algunos son 'depósitos' (que suman dinero al saldo) y otros son 'giros' o 'pagos' (que restan dinero). Se presenta una tabla con 10 filas: la primera con el 'saldo inicial' y las siguientes con el tipo de movimiento ('depósito' o 'giro') y el monto. Se pide calcular el saldo final de la cuenta al terminar el último movimiento.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden o dependencia de pasos"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que los depósitos se modelan como sumas y los giros como restas de enteros, y que el primer registro es el valor inicial, no una operación adicional. Debe seguir la secuencia de movimientos de la tabla, actualizando el saldo paso a paso. Si no entiende la diferencia entre saldo inicial y movimientos, o asume que todos los montos se suman, obtendrá resultados distractores, por lo que se obliga a aplicar conscientemente el método de cálculo con enteros.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q1_v10",
+      "scenario_description": "Se plantea un videojuego donde un personaje tiene puntos de vida. Se indica que comienza con cierta cantidad de vida (vida inicial) y luego ocurren 9 eventos en orden: algunos le causan daño (pierde vida) y otros lo curan (recupera vida). Se entrega en una lista cada evento con la etiqueta 'daño de n puntos' (se resta n) o 'cura de n puntos' (se suma n). Luego se muestran 4 barras de vida finales posibles, cada una con un número entero de puntos de vida, y se pregunta cuál de esas barras puede corresponder al resultado tras aplicar todos los eventos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir 'daño' y 'cura' en restas y sumas sobre un valor inicial y realizar la operatoria completa para inferir el valor final. Después, debe comparar ese valor con las cuatro opciones gráficas. Los distractores provienen de equivocaciones como invertir el efecto de un evento o ignorar el carácter inicial del primer valor, por lo que solo entendiendo claramente el procedimiento de acumulación con enteros podrá identificar la barra coherente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuatro barras horizontales de vida de distinto largo, cada una etiquetada con un número entero que representa puntos de vida finales.",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q1_v11",
+      "scenario_description": "Se usa el contexto de la temperatura ambiente. Se indica que a cierta hora la temperatura es un valor inicial (por ejemplo, 10 °C). Luego, durante 9 intervalos sucesivos, la temperatura 'sube n grados' o 'baja n grados' según una tabla: cada fila indica el intervalo y el cambio (+n o −n en palabras). La tabla no muestra las temperaturas intermedias, solo el valor inicial y los cambios. Se pregunta cuál es la temperatura final después de todos los cambios.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe entender que 'sube n grados' corresponde a sumar n y 'baja n grados' a restar n, partiendo de la temperatura inicial. Debe aplicar esta regla para todos los intervalos en orden, controlando el resultado acumulado. Si intenta tratar solo los cambios positivos o ignora alguno, caerá en distractores; por tanto, necesita comprender el proceso de acumulación con enteros, no solo hacer una suma parcial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q1_v12",
+      "scenario_description": "Se mantiene el contexto de cartas con estrella o corazón, pero se presenta un registro parcialmente agrupado. Por ejemplo, se indica: 'Con la carta inicial y la segunda, el jugador alcanza en total X puntos', luego se detallan algunas cartas individuales (estrella/corazón con su número) y más adelante otro grupo resumido ('con las siguientes dos cartas pierde en total Y puntos'), hasta completar el efecto de 10 cartas. Toda la información se da como una pequeña tabla o lista mixta con grupos y cartas sueltas. Se pide hallar el puntaje final.",
+      "non_mechanizable_axes": [
+        "orden o dependencia de pasos",
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que algunos efectos ya vienen sumados (por ejemplo, la combinación de dos cartas) y otros deben calcularse aplicando la regla estrella/resta y corazón/suma. Aunque sigue siendo una sucesión de sumas y restas de enteros, no puede limitarse a replicar la receta carta por carta: debe distinguir qué datos son netos y cómo se siguen acumulando en el mismo puntaje. Esto exige entender la lógica de acumulación y la neutralidad del orden de agrupamiento en la suma de enteros.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q1_v13",
+      "scenario_description": "Se describe una partida con cartas de estrella y corazón, indicando en texto la carta inicial (símbolo y número) y luego la secuencia exacta de las 9 cartas siguientes. Se recuerda la regla de sumar o restar según el símbolo. En lugar de pedir directamente el puntaje final, se ofrecen cuatro expresiones diferentes que representan posibles cálculos con enteros (por ejemplo, una incluye el valor inicial como primer término sin signo, otras cambian algún signo o incluyen mal la carta inicial). Se pregunta cuál expresión corresponde correctamente al cálculo del puntaje final de esa partida.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir la descripción de la partida a una expresión de sumas y restas de enteros, respetando que la carta inicial fija el valor inicial y que cada carta posterior aporta un término con signo. Debe detectar errores de signo y de tratamiento del valor inicial en las expresiones propuestas. Para decidir, puede evaluar mentalmente las expresiones o compararlas estructuralmente con la secuencia, pero en ambos casos necesita entender por qué cada carta se suma o se resta, no solo ejecutar un cálculo mecánico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q1_v14",
+      "scenario_description": "Se representa el puntaje como la posición de una ficha sobre una recta numérica horizontal. Se indica en texto que la ficha parte en un cierto número (puntaje inicial). Luego se describen 9 cartas, de dos tipos: una hace que la ficha avance hacia la derecha tantos espacios como indica el número (equivale a sumar) y la otra hace que retroceda hacia la izquierda (equivale a restar). Sobre la recta se dibujan flechas encadenadas hacia derecha o izquierda con la longitud rotulada según cada carta, pero sin marcar la posición final. Se pregunta en qué número de la recta termina la ficha tras aplicar todas las flechas.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar el movimiento sobre la recta como sumas y restas de enteros a partir de una posición inicial. Puede seguir las flechas contando en la recta o traducirlas a una expresión de sumas y restas; en ambos casos debe mantener el control del signo de cada desplazamiento y del valor acumulado. Si no entiende el vínculo entre avance/retroceso y suma/resta, o trata todas las flechas como positivas, caerá en errores sistemáticos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Recta numérica con un punto inicial marcado y una serie de flechas consecutivas hacia la derecha o izquierda, cada una rotulada con un número que indica la cantidad de espacios que se avanza o retrocede.",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q1_v15",
+      "scenario_description": "Se plantea un juego con cartas de estrella y corazón similar al original, pero con una regla intencionalmente invertida: se explica que la carta inicial define el puntaje de partida; luego, cada carta con estrella hace que el jugador gane puntos (se suma su número) y cada carta con corazón hace que pierda puntos (se resta su número). Se entrega, en una breve lista ordenada, la carta inicial y las 9 cartas siguientes con su símbolo y número. Se pide determinar el puntaje final del jugador.",
+      "non_mechanizable_axes": [
+        "distractor_dominante",
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe leer con atención la regla no habitual (estrella suma, corazón resta) y aplicarla correctamente a cada carta a partir de la inicial. Si mecaniza la asociación 'corazón = suma' o asume la regla del problema fuente sin comprenderla, elegirá distractores construidos precisamente con ese error de signo. De este modo, se fuerza a que entienda el porqué de cada suma o resta en la secuencia y no aplique una receta fija independiente del enunciado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    }
+  ]
+}

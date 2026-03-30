@@ -1,0 +1,118 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q61_v5" title="Q61_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente gráfico se muestra la distribución de la cantidad de horas extras trabajadas en una semana por los trabajadores de una empresa.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales. En el eje horizontal aparece la cantidad de horas extras: 0, 1, 2, 3, 4 y 5. En el eje vertical aparece la cantidad de trabajadores. Las alturas de las barras son: 0 horas, 30 trabajadores; 1 hora, 40 trabajadores; 2 horas, 30 trabajadores; 3 horas, 20 trabajadores; 4 horas, 10 trabajadores; 5 horas, 10 trabajadores." />
+    </p>
+    <p>Según el gráfico, ¿cuál fue la cantidad de horas extras que se trabajó con mayor frecuencia?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">1 hora<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! La barra más alta corresponde a 1 hora extra, con 40 trabajadores. Por eso, la cantidad de horas extras que se trabajó con mayor frecuencia fue 1 hora.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">2 horas<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La opción 2 horas corresponde a 30 trabajadores. Sin embargo, la barra más alta del gráfico es la de 1 hora, con 40 trabajadores. Por eso, la cantidad de horas extras más frecuente fue 1 hora.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3 horas<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La opción 3 horas corresponde a 20 trabajadores. Pero la mayor frecuencia del gráfico es 40 trabajadores, y eso ocurre en 1 hora extra. Por lo tanto, la respuesta correcta es 1 hora.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">4 horas<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La opción 4 horas corresponde a 10 trabajadores. La barra más alta es la de 1 hora extra, con 40 trabajadores. Entonces, la cantidad de horas extras que se trabajó con mayor frecuencia fue 1 hora.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>Debías observar cuál es la barra más alta del gráfico. Esa barra corresponde a 1 hora extra, con 40 trabajadores.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la barra más alta</strong></p>
+            <p>En el gráfico, la barra más alta es la correspondiente a <strong>1 hora extra</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Leer su frecuencia</strong></p>
+            <p>Esa barra llega a <strong>40 trabajadores</strong>, que es la mayor cantidad del gráfico.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar con las demás categorías</strong></p>
+            <p>Las otras frecuencias son menores: 0 horas tiene 30 trabajadores, 2 horas tiene 30, 3 horas tiene 20, 4 horas tiene 10 y 5 horas tiene 10.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad de horas extras que se trabajó con mayor frecuencia fue <strong>1 hora</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

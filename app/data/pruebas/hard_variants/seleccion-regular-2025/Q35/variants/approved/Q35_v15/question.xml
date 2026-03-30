@@ -1,0 +1,300 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q35_v15" title="Q35_v15" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un plan de internet, el pago mensual P (en miles de pesos) se relaciona con la cantidad de gigabytes consumidos g mediante la ecuación
+      <m:math>
+        <m:mi>P</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>10</m:mn>
+        <m:mo>+</m:mo>
+        <m:mfrac>
+          <m:mrow>
+            <m:mi>g</m:mi>
+            <m:mo>−</m:mo>
+            <m:mn>40</m:mn>
+          </m:mrow>
+          <m:mn>7</m:mn>
+        </m:mfrac>
+      </m:math>.
+      
+      Un mes, una persona recibe una boleta de 20 miles de pesos (P = 20) y un estudiante intenta calcular cuántos gigabytes consumió, siguiendo estos pasos:
+      <br />Paso 1:
+      <m:math>
+        <m:mn>20</m:mn>
+        <m:mo>=</m:mo>
+        <m:mn>10</m:mn>
+        <m:mo>+</m:mo>
+        <m:mfrac>
+          <m:mrow>
+            <m:mi>g</m:mi>
+            <m:mo>−</m:mo>
+            <m:mn>40</m:mn>
+          </m:mrow>
+          <m:mn>7</m:mn>
+        </m:mfrac>
+      </m:math>
+      <br />Paso 2:
+      <m:math>
+        <m:mn>20</m:mn>
+        <m:mo>−</m:mo>
+        <m:mn>10</m:mn>
+        <m:mo>=</m:mo>
+        <m:mfrac>
+          <m:mrow>
+            <m:mi>g</m:mi>
+            <m:mo>−</m:mo>
+            <m:mn>40</m:mn>
+          </m:mrow>
+          <m:mn>7</m:mn>
+        </m:mfrac>
+      </m:math>
+      <br />Paso 3:
+      <m:math>
+        <m:mn>20</m:mn>
+        <m:mo>−</m:mo>
+        <m:mn>10</m:mn>
+        <m:mo>·</m:mo>
+        <m:mn>7</m:mn>
+        <m:mo>=</m:mo>
+        <m:mi>g</m:mi>
+        <m:mo>−</m:mo>
+        <m:mn>40</m:mn>
+      </m:math>
+      <br />Paso 4:
+      <m:math>
+        <m:mn>20</m:mn>
+        <m:mo>−</m:mo>
+        <m:mn>70</m:mn>
+        <m:mo>=</m:mo>
+        <m:mi>g</m:mi>
+        <m:mo>−</m:mo>
+        <m:mn>40</m:mn>
+      </m:math>
+      <br />Paso 5:
+      <m:math>
+        <m:mo>−</m:mo>
+        <m:mn>50</m:mn>
+        <m:mo>=</m:mo>
+        <m:mi>g</m:mi>
+        <m:mo>−</m:mo>
+        <m:mn>40</m:mn>
+      </m:math>
+      <br />Paso 6:
+      <m:math>
+        <m:mi>g</m:mi>
+        <m:mo>=</m:mo>
+        <m:mo>−</m:mo>
+        <m:mn>10</m:mn>
+      </m:math>
+      <br />¿En cuál paso aparece por primera vez un error en la resolución?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">En el paso 2<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El paso 2 sí es válido, porque desde 20 = 10 + (g − 40)/7 se puede restar 10 en ambos lados y obtener 20 − 10 = (g − 40)/7, es decir, 10 = (g − 40)/7. El primer error aparece después.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">En el paso 5<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El paso 5 también es coherente con el paso 4, ya que 20 − 70 = −50. El error ocurrió antes, porque en el paso 3 se escribió 20 − 10 · 7 = g − 40, cuando al multiplicar por 7 ambos lados debía quedar (20 − 10) · 7 = g − 40, es decir, 10 · 7 = g − 40.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">En el paso 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Desde 20 − 10 = (g − 40)/7, al multiplicar ambos lados por 7 se debe obtener (20 − 10) · 7 = g − 40. Primero 20 − 10 = 10 y luego 10 · 7 = 70. En cambio, el estudiante escribió 20 − 10 · 7, que da 20 − 70 = −50. Por eso el primer error aparece en el paso 3.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">No hay error en ningún paso<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí hay error. Si se resuelve correctamente: 20 = 10 + (g − 40)/7, entonces 10 = (g − 40)/7, luego 70 = g − 40 y finalmente g = 110. Como la resolución correcta da g = 110 y el estudiante obtuvo g = −10, necesariamente hubo un error, y ese primer error está en el paso 3.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Sustituir el valor de P</strong></p>
+            <p>Como la boleta es de 20 miles de pesos, se reemplaza <m:math><m:mi>P</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:math> en la ecuación dada:</p>
+            <p>
+              <m:math>
+                <m:mn>20</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>10</m:mn>
+                <m:mo>+</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>g</m:mi>
+                    <m:mo>−</m:mo>
+                    <m:mn>40</m:mn>
+                  </m:mrow>
+                  <m:mn>7</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Restar 10 en ambos lados</strong></p>
+            <p>
+              <m:math>
+                <m:mn>20</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>10</m:mn>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>g</m:mi>
+                    <m:mo>−</m:mo>
+                    <m:mn>40</m:mn>
+                  </m:mrow>
+                  <m:mn>7</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>10</m:mn>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>g</m:mi>
+                    <m:mo>−</m:mo>
+                    <m:mn>40</m:mn>
+                  </m:mrow>
+                  <m:mn>7</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Multiplicar ambos lados por 7</strong></p>
+            <p>Para eliminar el denominador, se multiplica completo el lado izquierdo por 7:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>20</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+                <m:mo>·</m:mo>
+                <m:mn>7</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>g</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>40</m:mn>
+              </m:math>
+            </p>
+            <p>Primero se calcula la resta:</p>
+            <p>
+              <m:math>
+                <m:mn>10</m:mn>
+                <m:mo>·</m:mo>
+                <m:mn>7</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>g</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>40</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>70</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>g</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>40</m:mn>
+              </m:math>
+            </p>
+            <p>Aquí se ve el error del estudiante: escribió <m:math><m:mn>20</m:mn><m:mo>−</m:mo><m:mn>10</m:mn><m:mo>·</m:mo><m:mn>7</m:mn></m:math> en vez de <m:math><m:mrow><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>−</m:mo><m:mn>10</m:mn><m:mo>)</m:mo></m:mrow><m:mo>·</m:mo><m:mn>7</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sumar 40 en ambos lados</strong></p>
+            <p>
+              <m:math>
+                <m:mn>70</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>40</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>g</m:mi>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>110</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>g</m:mi>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La resolución correcta entrega <m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>110</m:mn></m:math>. Por lo tanto, el procedimiento del estudiante no puede ser correcto y el primer error aparece en el <strong>paso 3</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

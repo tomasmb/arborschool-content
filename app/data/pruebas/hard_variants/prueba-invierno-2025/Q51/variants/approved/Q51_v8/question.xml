@@ -1,0 +1,167 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v8" title="Q51_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un plano que representa una ciudad, la salida de un terminal de buses se ubica en el origen del sistema de coordenadas. La posición de una tienda, medida en cuadras desde esa salida, se expresa mediante un par ordenado <em>(a, b)</em>, donde <em>a</em> indica cuadras al norte (positivo) o al sur (negativo) y <em>b</em> indica cuadras al este (positivo) o al oeste (negativo).</p>
+    <p>Inicialmente, la tienda estaba en la posición (3, 8). Luego se trasladó 5 cuadras hacia el sur y 2 cuadras hacia el este, y después 9 cuadras hacia el norte y 4 cuadras hacia el oeste.</p>
+    <p><img src="requiere_nueva_imagen.png" alt="Plano cartesiano sencillo que representa un plano urbano: eje vertical con flecha hacia arriba rotulada 'Norte (+)' y hacia abajo 'Sur (−)'; eje horizontal con flecha hacia la derecha rotulada 'Este (+)' y hacia la izquierda 'Oeste (−)'. El punto (0,0) está marcado como 'Salida del terminal' y el punto (3,8) está marcado como 'Tienda (posición inicial)'. No se muestran otros desplazamientos ni la posición final." /> ¿Cuál de las siguientes coordenadas representa la ubicación actual de la tienda?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">(7, 10)<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Desde (3, 8), al mover 5 cuadras al sur y 2 al este se obtiene (−2, 10), porque 3 − 5 = −2 y 8 + 2 = 10. Luego, al mover 9 cuadras al norte y 4 al oeste se obtiene (7, 6), porque −2 + 9 = 7 y 10 − 4 = 6. Por lo tanto, la ubicación final no es (7, 10).</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">(−1, 10)<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Desde (3, 8), después de 5 cuadras al sur y 2 al este se llega a (−2, 10). Luego, 9 cuadras al norte cambian la primera coordenada a 7, porque −2 + 9 = 7, y 4 cuadras al oeste cambian la segunda coordenada a 6, porque 10 − 4 = 6. Por lo tanto, la ubicación final no es (−1, 10), sino (7, 6).</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">(7, 6)<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Desde (3, 8), 5 cuadras al sur y 2 al este dan (−2, 10), porque 3 − 5 = −2 y 8 + 2 = 10. Después, 9 cuadras al norte y 4 al oeste dan (7, 6), porque −2 + 9 = 7 y 10 − 4 = 6. Por eso, la ubicación actual de la tienda es (7, 6).</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">(−1, 6)<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Desde (3, 8), al mover 5 cuadras al sur y 2 al este se llega a (−2, 10). Luego, 9 cuadras al norte llevan la primera coordenada a 7, porque −2 + 9 = 7, y 4 cuadras al oeste llevan la segunda coordenada a 6, porque 10 − 4 = 6. Por lo tanto, la ubicación final no es (−1, 6).</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué representa cada coordenada</strong></p>
+            <p>En el par ordenado <em>(a, b)</em>, la primera coordenada indica norte o sur y la segunda coordenada indica este u oeste.</p>
+          </li>
+          <li>
+            <p><strong>Ubicación inicial</strong></p>
+            <p>La tienda parte en:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>(</mo><mn>3</mn><mo>,</mo><mn>8</mn><mo>)</mo>
+                </mrow>
+              </math>
+            </p>
+            <p>Esto significa 3 cuadras al norte y 8 cuadras al este.</p>
+          </li>
+          <li>
+            <p><strong>Primer traslado: 5 cuadras hacia el sur y 2 cuadras hacia el este</strong></p>
+            <p>Ir hacia el sur resta 5 a la primera coordenada:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>3</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>−2</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Ir hacia el este suma 2 a la segunda coordenada:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>8</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>10</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>La nueva posición es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>(</mo><mn>−2</mn><mo>,</mo><mn>10</mn><mo>)</mo>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Segundo traslado: 9 cuadras hacia el norte y 4 cuadras hacia el oeste</strong></p>
+            <p>Ir hacia el norte suma 9 a la primera coordenada:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>−2</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>7</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Ir hacia el oeste resta 4 a la segunda coordenada:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>10</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>La posición final es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>(</mo><mn>7</mn><mo>,</mo><mn>6</mn><mo>)</mo>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La ubicación actual de la tienda es <strong>(7, 6)</strong>, que corresponde a la <strong>alternativa C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

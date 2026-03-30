@@ -1,0 +1,208 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v13" title="Q13_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente figura, cada bloque rectangular con la etiqueta 00 representa dos ceros seguidos y cada bloque con la etiqueta 000 representa tres ceros seguidos.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dos bloques de ejemplo: un rectángulo con la etiqueta 00 y longitud 2, y otro con la etiqueta 000 y longitud 3, indicando que el primero representa dos ceros y el segundo tres ceros."/>
+    </p>
+    <p>Más abajo se muestran cuatro tiras horizontales numeradas del 1 al 4, formadas por varios de estos bloques puestos en fila. Se sabe que la expresión 10^(10) representa un 1 seguido de 10 ceros.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Cuatro tiras horizontales numeradas del 1 al 4. Tira 1: bloques con etiquetas 000, 000, 00 y 00 en ese orden. Tira 2: bloques 000, 000 y 000. Tira 3: bloques 000, 000, 000 y 00. Tira 4: bloques 000, 000, 00, 00 y 00. Cada bloque 00 representa dos ceros y cada bloque 000 representa tres ceros."/>
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes tiras representa una cantidad de ceros equivalente a la de la expresión 
+        <m:math>
+          <m:msup>
+            <m:mn>10</m:mn>
+            <m:mn>10</m:mn>
+          </m:msup>
+        </m:math>?
+      </qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La tira 2.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La tira 2 tiene tres bloques 000, por lo tanto representa 3 + 3 + 3 = 9 ceros. Pero <m:math><m:msup><m:mn>10</m:mn><m:mn>10</m:mn></m:msup></m:math> representa un 1 seguido de 10 ceros, no de 9 ceros.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La tira 1.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La tira 1 tiene dos bloques 000 y dos bloques 00, así que representa 3 + 3 + 2 + 2 = 10 ceros. Eso coincide exactamente con <m:math><m:msup><m:mn>10</m:mn><m:mn>10</m:mn></m:msup></m:math>, que es un 1 seguido de 10 ceros.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La tira 3.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La tira 3 tiene tres bloques 000 y un bloque 00, por lo tanto representa 3 + 3 + 3 + 2 = 11 ceros. Pero <m:math><m:msup><m:mn>10</m:mn><m:mn>10</m:mn></m:msup></m:math> representa un 1 seguido de 10 ceros, no de 11 ceros.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La tira 4.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La tira 4 tiene dos bloques 000 y tres bloques 00, así que representa 3 + 3 + 2 + 2 + 2 = 12 ceros. Pero <m:math><m:msup><m:mn>10</m:mn><m:mn>10</m:mn></m:msup></m:math> representa un 1 seguido de 10 ceros, no de 12 ceros.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar qué representa cada bloque</strong></p>
+            <p>Cada bloque con 00 representa 2 ceros y cada bloque con 000 representa 3 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Recordar qué significa la expresión dada</strong></p>
+            <p>La expresión 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>
+              representa:</p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>10&#160;000&#160;000&#160;000</m:mn>
+              </m:math>
+            </p>
+            <p>Es decir, un 1 seguido de 10 ceros. Entonces la tira correcta debe representar exactamente 10 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar los ceros de cada tira</strong></p>
+            <p><em>Tira 1:</em></p>
+            <p>
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>10</m:mn>
+              </m:math>
+            </p>
+            <p><em>Tira 2:</em></p>
+            <p>
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>9</m:mn>
+              </m:math>
+            </p>
+            <p><em>Tira 3:</em></p>
+            <p>
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>11</m:mn>
+              </m:math>
+            </p>
+            <p><em>Tira 4:</em></p>
+            <p>
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>12</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con 10 ceros</strong></p>
+            <p>Solo la tira 1 representa 10 ceros. Las demás representan 9, 11 y 12 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La tira que representa una cantidad de ceros equivalente a 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>
+              es la <strong>tira 1</strong>, correspondiente a la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

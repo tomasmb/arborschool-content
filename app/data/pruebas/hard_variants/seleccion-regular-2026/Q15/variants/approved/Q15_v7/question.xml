@@ -1,0 +1,220 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q15_v7" title="Q15_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un robot matemático transforma números siguiendo instrucciones fijas.</p>
+    <p>En cierto momento, el robot recibe el número 3.</p>
+    <p>Primero le resta 1. Después toma ese resultado y lo multiplica por sí mismo tres veces.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujo de un robot a la izquierda que recibe el número 3 en una cinta transportadora. Desde el número 3 sale una flecha hacia un primer recuadro que contiene el texto: Resta 1 al número. Desde ese recuadro sale otra flecha hacia un segundo recuadro que contiene el texto: Multiplica el resultado por sí mismo tres veces. Las flechas indican claramente el orden: primero Resta 1 al número y luego Multiplica el resultado por sí mismo tres veces." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes expresiones numéricas corresponde a la transformación que realiza el robot?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+            </m:mrow>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Primero, al número 3 se le resta 1 y se obtiene 2. Luego ese resultado se multiplica por sí mismo tres veces: 2×2×2 = 8. La expresión que representa exactamente ese orden es (3−1)³.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mn>3</m:mn><m:mo>-</m:mo>
+            <m:msup>
+              <m:mn>1</m:mn>
+              <m:mn>3</m:mn>
+            </m:msup>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. En esta opción se calcula 3−1³. Como 1³ = 1, resulta 3−1 = 2. Pero la transformación descrita entrega 8, porque primero 3−1 = 2 y luego 2×2×2 = 8. Como 2 es distinto de 8, esta expresión no corresponde.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:msup>
+              <m:mn>3</m:mn>
+              <m:mn>3</m:mn>
+            </m:msup>
+            <m:mo>-</m:mo>
+            <m:mn>1</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En esta opción se calcula 3³−1. Como 3³ = 27, resulta 27−1 = 26. Pero la transformación pedida es restar 1 antes de multiplicar por sí mismo tres veces: 3−1 = 2 y 2×2×2 = 8. Como 26 es distinto de 8, esta expresión no corresponde.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mn>3</m:mn><m:mo>·</m:mo>
+            <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En esta opción se calcula 3·(3−1). Como 3−1 = 2, resulta 3·2 = 6. Pero la transformación descrita pide tomar el resultado 2 y multiplicarlo por sí mismo tres veces: 2×2×2 = 8. Como 6 es distinto de 8, esta expresión no corresponde.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el orden de las acciones</strong></p>
+            <p>El robot hace dos acciones en este orden:</p>
+            <p>Primero resta 1 al número 3.</p>
+            <p>Después toma ese resultado y lo multiplica por sí mismo tres veces.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Realizar la primera acción</strong></p>
+            <p>Al número inicial 3 se le resta 1:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Interpretar “lo multiplica por sí mismo tres veces”</strong></p>
+            <p>El resultado obtenido es 2. Multiplicarlo por sí mismo tres veces corresponde a:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>2</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>8</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Eso también se puede escribir como una potencia:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  <m:mo>×</m:mo>
+                  <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  <m:mo>×</m:mo>
+                  <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La alternativa A es:</p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Las demás alternativas cambian el orden de las operaciones o representan otra operación distinta.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión numérica que corresponde a la transformación del robot es:</p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mrow>
+                    <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>-</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la respuesta correcta es la alternativa A.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

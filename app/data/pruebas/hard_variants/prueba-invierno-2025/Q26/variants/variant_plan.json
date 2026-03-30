@@ -1,0 +1,130 @@
+{
+  "source_question_id": "Q26",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q26_v1",
+      "scenario_description": "Se presenta una ficha clínica minimalista en formato de lista:\n- Peso del paciente: 79 kg\n- Medicamento Y: dosis indicada 0,06 g por cada kilogramo de peso corporal.\nLuego se pregunta directamente: «¿Cuántos gramos de medicamento Y se deben administrar a este paciente?», con cuatro alternativas numéricas (todas en gramos) que incluyen errores típicos de posición de coma y de operación (multiplicar por 10, dividir en vez de multiplicar, etc.). La única relación es dosis (g) por kg y masa (kg).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar correctamente la ficha como un registro estructurado y reconocer cuál dato corresponde a la razón (0,06 g/kg) y cuál al valor de la magnitud (79 kg). No basta reconocer el patrón 'número pequeño por número grande'; debe comprender que la relación es lineal (más peso implica más dosis) y que se aplica multiplicando masa por razón, cuidando la ubicación de la coma decimal para distinguir, por ejemplo, 4,74 g de 47,4 g.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q26_v2",
+      "scenario_description": "Se describe un caso de bebida de recuperación deportiva: «Para un deportista se recomienda 0,08 g de suplemento por cada kilogramo de masa corporal. Un atleta pesa 60 kg». Luego se muestran cuatro dosis propuestas por distintos entrenadores (por ejemplo: 0,48 g; 3,8 g; 4,8 g; 48 g) y se pregunta: «¿Cuál de estas dosis es consistente con la recomendación?». El estudiante debe determinar cuál resultado mantiene la proporción directa 0,08 g/kg sin realizar pasos adicionales.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para decidir cuál opción es consistente, el estudiante debe aplicar el razonamiento proporcional directo (0,08 × 60) y comparar el resultado con las propuestas, identificando errores de escala (factores 10, 0,1 o 100). No puede limitarse a copiar un número del enunciado; debe entender que la razón fija vincula linealmente masa y dosis, y que una masa mayor no puede corresponder a una dosis menor, descartando opciones absurdas como 0,48 g o 48 g según la magnitud calculada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q26_v3",
+      "scenario_description": "En un contexto de veterinaria, se entrega la pauta en forma de fórmula textual dentro del enunciado: «Para un sedante, la dosis (en gramos) se calcula como: dosis = 0,03 × masa del animal (en kg). Un perro pesa 64 kg.» La pregunta es: «¿Cuál es la dosis de sedante que debe recibir el perro?», con alternativas que reflejan errores de interpretación de la fórmula (usar 0,3 en vez de 0,03, invertir la operación, o desplazar la coma decimal).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que la fórmula expresa una proporcionalidad directa sin término fijo y que la masa se introduce como factor multiplicativo, no aditivo ni divisor. Esto obliga a entender la estructura dosis = razón × masa, no solo a reconocer un texto 'g por kg'. Si confunde el rol de la constante 0,03 o cree que debe dividir 64 entre 0,03, caerá en distractores; por lo tanto, debe aplicar conscientemente la regla de tres directa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q26_v4",
+      "scenario_description": "Se presenta un extracto de ficha técnica de una fábrica de pinturas, en bloque de texto destacado: «Pigmento Z: usar 0,02 g de pigmento por cada kilogramo de resina.» Debajo, en una línea aparte: «Lote de resina a preparar: 185 kg.» Luego se pregunta: «¿Cuántos gramos de pigmento Z se deben añadir al lote?», con alternativas que incluyen el valor correcto y errores por multiplicar por 0,2, por 2 o por introducir un cero extra.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar la ficha técnica como una razón de mezcla lineal y reconocer que la cantidad de pigmento crece proporcionalmente con la masa de resina. Debe decidir que el procedimiento adecuado es multiplicar 0,02 g/kg por 185 kg, no sumar ni usar un porcentaje. Los distractores obligan a distinguir entre 0,02 y 0,2 y a entender el efecto de esta diferencia en la escala del resultado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q26_v5",
+      "scenario_description": "En un contexto de jardinería se incluye una nota de uso con abreviatura de unidades: «Abono concentrado: 0,05 g/kg de sustrato.» Luego se indica: «Una maceta contiene 96 kg de sustrato.» La pregunta dice: «Según la indicación, ¿qué cantidad de abono (en gramos) debe mezclarse con el sustrato de esta maceta?», con opciones que explotan interpretaciones incorrectas del símbolo g/kg (tratarlo como porcentaje o confundir gramos con kilogramos).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar correctamente la notación g/kg como una razón de proporcionalidad directa y no como un porcentaje o una fracción sin unidad. Esto requiere comprender que 0,05 g/kg significa 0,05 gramos por cada kilogramo y que, para 96 kg, la operación adecuada es un producto. Si no entiende el significado de la razón, puede intentar sumar 0,05 a 96 o tratar 0,05 como 5 %, lo que lo lleva a distractores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q26_v6",
+      "scenario_description": "Se presenta una breve «nota de manejo» para un estanque de peces: «Desparasitante líquido: administrar 0,04 g de producto por cada kilogramo de masa total de peces.» Luego se informa: «En el estanque hay en total 52,5 kg de peces.» Se pregunta: «¿Cuántos gramos de desparasitante deben añadirse al agua del estanque?», con alternativas que requieren multiplicar un número decimal por otro (por ejemplo, 2,1 g correctos frente a 21 g, 0,21 g, 210 g).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Además de reconocer la proporcionalidad directa, el estudiante debe razonar cómo se comporta el producto de dos decimales y anticipar el orden de magnitud esperable. Entender que 0,04 g/kg por 52,5 kg debe dar un valor de unos cuantos gramos (no decenas ni centésimas) exige comprender la escala de la relación y no solo efectuar una multiplicación mecánica que podría terminar con una coma mal colocada, alineándose con distractores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q26_v7",
+      "scenario_description": "En un servicio de lavandería industrial, el protocolo indica: «Usar 0,075 g de desinfectante por cada kilogramo de ropa húmeda.» En un turno se procesan 64 kg de ropa. La pregunta: «Según el protocolo, ¿qué cantidad de desinfectante, en gramos, debe utilizarse en este turno?», con opciones donde el error dominante es interpretar 0,075 como 0,75 o 0,0075, generando resultados 10 veces mayores o menores que el correcto.",
+      "non_mechanizable_axes": [
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Los distractores obligan a comprender la relación entre la razón 0,075 g/kg y la magnitud del resultado para 64 kg. El estudiante debe decidir conscientemente si el producto debe dar un número menor que 10 g y mayor que 0,1 g, descartando así opciones desproporcionadas. Esto requiere entender la proporcionalidad y el efecto de la coma decimal sobre la escala, no solo seguir un algoritmo ciego de multiplicación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q26_v8",
+      "scenario_description": "Se entrega una pequeña tabla en texto (sin formato gráfico) con dos columnas: «Cantidad de semillas (kg)» y «Dosis total de fungicida (g)». En la primera fila se muestra la razón unitaria: 1 kg → 0,09 g. En la segunda fila solo se indica 36 kg → __ g. A partir de esto se pregunta: «¿Cuál es la dosis total de fungicida que corresponde a 36 kg de semillas?», con alternativas que representan multiplicar mal el factor (usar 0,9 o 0,009 en vez de 0,09).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar la tabla como una representación de proporcionalidad directa donde la primera fila establece la razón por kilogramo. Debe reconocer que pasar de 1 kg a 36 kg implica multiplicar la dosis por 36, manteniendo la linealidad de la relación. Si no entiende el carácter proporcional de la tabla, puede pensar que la dosis crece de otro modo (por ejemplo, añadiendo una cantidad fija) o equivocarse en el factor decimal del producto, cayendo en distractores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q26_v9",
+      "scenario_description": "En un hospital, una orden de medicación aparece resumida como: «Solución A: 0,055 g por kg de peso corporal (administrar en una sola dosis).» Luego, en un renglón siguiente: «Paciente: 90 kg.» Se pregunta: «¿Qué cantidad de Solución A, en gramos, debe recibir este paciente?», con alternativas cercanas entre sí (por ejemplo: 4,5 g; 4,95 g; 5,5 g; 49,5 g) que exigen distinguir con precisión el producto 0,055 × 90.",
+      "non_mechanizable_axes": [
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe entender que el cálculo corresponde a una proporcionalidad directa exacta y que 0,055 g por cada kg implica un valor total que debe ser algo menor que 0,06 × 90. Esto fuerza a usar el significado de la razón para estimar la escala y luego calcular o comprobar con cuidado la multiplicación de decimales, descartando alternativas demasiado grandes o pequeñas aunque numéricamente similares.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q26_v10",
+      "scenario_description": "En una receta industrial de pan se indica: «Agregar 0,012 g de mejorador por cada kilogramo de harina.» Se especifica que un lote usa 250 kg de harina. Luego se pregunta: «¿Cuántos gramos de mejorador se deben agregar para este lote?», con opciones que incluyen el valor correcto y errores producidos por confundir 0,012 con 0,12 o 0,0012.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe entender que se trata de una mezcla proporcional: la cantidad de mejorador crece linealmente con los kilogramos de harina. Debe decidir que el método es multiplicar 0,012 por 250 y juzgar si el resultado es razonable dada la pequeñez de la razón. Esto requiere manejar con sentido la escala de los decimales y la idea de 'por cada kilogramo', en lugar de aplicar una multiplicación sin reflexión que haría ver verosímiles resultados 10 veces mayores o menores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    }
+  ]
+}

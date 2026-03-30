@@ -1,0 +1,173 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q53_v1" title="Q53_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se resume la distribución de los puntajes de una prueba en un curso. El profesor completó además la tercera columna 'Puntaje × Frecuencia' para calcular el puntaje total acumulado del curso.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Puntaje</th>
+          <th>Frecuencia (número de estudiantes)</th>
+          <th>Puntaje × Frecuencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><m:math><m:mn>1</m:mn></m:math></td>
+          <td><m:math><m:mn>3</m:mn></m:math></td>
+          <td><m:math><m:mn>3</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>2</m:mn></m:math></td>
+          <td><m:math><m:mn>5</m:mn></m:math></td>
+          <td><m:math><m:mn>10</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>3</m:mn></m:math></td>
+          <td><m:math><m:mn>2</m:mn></m:math></td>
+          <td><m:math><m:mn>6</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>4</m:mn></m:math></td>
+          <td><m:math><m:mn>6</m:mn></m:math></td>
+          <td><m:math><m:mn>24</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>5</m:mn></m:math></td>
+          <td><m:math><m:mn>4</m:mn></m:math></td>
+          <td><m:math><m:mn>20</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>6</m:mn></m:math></td>
+          <td><m:math><m:mn>1</m:mn></m:math></td>
+          <td><m:math><m:mn>6</m:mn></m:math></td>
+        </tr>
+        <tr>
+          <td><m:math><m:mn>7</m:mn></m:math></td>
+          <td><m:math><m:mn>3</m:mn></m:math></td>
+          <td><m:math><m:mn>21</m:mn></m:math></td>
+        </tr>
+      </tbody>
+    </table>
+    <p>¿Cuántos estudiantes del curso rindieron la prueba en total?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">7<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El 7 corresponde a la cantidad de puntajes distintos que aparecen en la tabla: 1, 2, 3, 4, 5, 6 y 7. Pero el total de estudiantes se obtiene sumando las frecuencias: 3 + 5 + 2 + 6 + 4 + 1 + 3 = 24, no 7.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">24<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El total de estudiantes del curso se obtiene sumando todas las frecuencias de la segunda columna: 3 + 5 + 2 + 6 + 4 + 1 + 3 = 8 + 2 + 6 + 4 + 1 + 3 = 10 + 6 + 4 + 1 + 3 = 16 + 4 + 1 + 3 = 20 + 1 + 3 = 21 + 3 = 24.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">28<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si se suman correctamente las frecuencias de la tabla, resulta 3 + 5 + 2 + 6 + 4 + 1 + 3 = 24. Por lo tanto, 28 no es el total de estudiantes del curso.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">90<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El 90 se obtiene al sumar la tercera columna: 3 + 10 + 6 + 24 + 20 + 6 + 21 = 90. Ese valor representa el puntaje total acumulado del curso, no la cantidad de estudiantes. El número de estudiantes se obtiene sumando las frecuencias y da 24.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: sumar las frecuencias</strong></p>
+        <ol>
+          <li>
+            <p>La pregunta pide la cantidad total de estudiantes que rindieron la prueba.</p>
+          </li>
+          <li>
+            <p>En una tabla de distribución, esa cantidad se obtiene sumando todas las frecuencias de la segunda columna.</p>
+          </li>
+          <li>
+            <p>Las frecuencias son:</p>
+            <p><m:math><m:mrow><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>,</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mn>6</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>3</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p>Sumamos paso a paso:</p>
+            <p><m:math><m:mrow><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>8</m:mn><m:mo>+</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>10</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>10</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>=</m:mo><m:mn>16</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>16</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>20</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>20</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>21</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>21</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p>Entonces, rindieron la prueba <strong>24 estudiantes</strong>.</p>
+          </li>
+          <li>
+            <p>Observación importante: la tercera columna no se usa para responder esta pregunta. Si se suma esa columna, se obtiene el puntaje total acumulado del curso:</p>
+            <p><m:math><m:mrow><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>24</m:mn><m:mo>+</m:mo><m:mn>20</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>21</m:mn><m:mo>=</m:mo><m:mn>90</m:mn></m:mrow></m:math></p>
+            <p>Ese 90 no es la cantidad de estudiantes.</p>
+          </li>
+          <li>
+            <p>Conclusión: la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

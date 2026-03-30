@@ -1,0 +1,139 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v2" title="Q11_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una bodega, las cajas de un cierto producto se apilan sobre pallets. Cada caja tiene una altura de <m:math><m:mn>25</m:mn></m:math> cm y un pallet se considera exactamente completo cuando se han apilado <m:math><m:mn>16</m:mn></m:math> cajas sobre él.</p>
+    <p>Un encargado propone que, para saber sin usar una huincha de medir si un pallet está exactamente completo, basta con contar la cantidad <m:math><m:mi>n</m:mi></m:math> de cajas apiladas y aplicar uno de los siguientes protocolos de verificación sobre la altura total del pallet. ¿Cuál de estos protocolos garantiza identificar siempre que un pallet está exactamente completo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Que la altura total, <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, sea divisible por <m:math><m:mn>25</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La altura total es <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, y cualquier número de esa forma es divisible por <m:math><m:mn>25</m:mn></m:math>. Por ejemplo, si <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>15</m:mn></m:math>, entonces la altura es <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>15</m:mn><m:mo>=</m:mo><m:mn>375</m:mn></m:math> cm, que sí es divisible por <m:math><m:mn>25</m:mn></m:math>, pero el pallet no está exactamente completo. Esta condición no distingue el caso <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Que la altura total, <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, sea exactamente <m:math><m:mn>400</m:mn></m:math> cm.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Correcto. Un pallet exactamente completo tiene <m:math><m:mn>16</m:mn></m:math> cajas, por lo que su altura es <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>400</m:mn></m:math> cm. Además, si <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>400</m:mn></m:math>, al dividir por <m:math><m:mn>25</m:mn></m:math> se obtiene <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>. Por lo tanto, esta condición identifica exactamente y sin ambigüedad un pallet completo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Que la altura total, <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, sea divisible por <m:math><m:mn>800</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Un pallet exactamente completo tiene <m:math><m:mn>16</m:mn></m:math> cajas, así que su altura es <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>400</m:mn></m:math> cm. Pero <m:math><m:mn>400</m:mn></m:math> no es divisible por <m:math><m:mn>800</m:mn></m:math>. Por lo tanto, esta condición ni siquiera reconoce el caso exactamente completo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Que <m:math><m:mn>25</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:math> sea divisible por <m:math><m:mn>400</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La altura total del pallet se modela con <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, no con <m:math><m:mn>25</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:math>. Además, si el pallet está exactamente completo, entonces <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math> y se obtiene <m:math><m:mn>25</m:mn><m:mo>+</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>41</m:mn></m:math>, que no es divisible por <m:math><m:mn>400</m:mn></m:math>. Esta opción falla incluso cuando el pallet sí está exactamente completo.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Expresar la altura total del pallet</strong></p>
+            <p>Si cada caja mide <m:math><m:mn>25</m:mn></m:math> cm y hay <m:math><m:mi>n</m:mi></m:math> cajas, entonces la altura total del pallet es:</p>
+            <p><m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math> cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Determinar cuándo el pallet está exactamente completo</strong></p>
+            <p>El pallet está exactamente completo solo cuando tiene <m:math><m:mn>16</m:mn></m:math> cajas, es decir, cuando:</p>
+            <p><m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>.</p>
+            <p>En ese caso, la altura total es:</p>
+            <p><m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>400</m:mn></m:math> cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar la opción A</strong></p>
+            <p>La opción A pide que <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math> sea divisible por <m:math><m:mn>25</m:mn></m:math>.</p>
+            <p>Eso ocurre para cualquier valor natural de <m:math><m:mi>n</m:mi></m:math>, porque <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math> siempre tiene factor <m:math><m:mn>25</m:mn></m:math>.</p>
+            <p>Por ejemplo, con <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>15</m:mn></m:math>, la altura es <m:math><m:mn>375</m:mn></m:math> cm y sigue siendo divisible por <m:math><m:mn>25</m:mn></m:math>.</p>
+            <p>Entonces, no permite identificar de manera única el caso <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Analizar la opción B</strong></p>
+            <p>La opción B pide que la altura total sea exactamente <m:math><m:mn>400</m:mn></m:math> cm.</p>
+            <p>Como la altura se modela por <m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:math>, la condición es:</p>
+            <p><m:math><m:mn>25</m:mn><m:mo>·</m:mo><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>400</m:mn></m:math>.</p>
+            <p>Al dividir ambos lados por <m:math><m:mn>25</m:mn></m:math>, se obtiene:</p>
+            <p><m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>.</p>
+            <p>Por lo tanto, esta condición es equivalente a que el pallet tenga exactamente <m:math><m:mn>16</m:mn></m:math> cajas.</p>
+            <p>Así, esta opción sí garantiza identificar siempre que el pallet está exactamente completo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Analizar la opción C</strong></p>
+            <p>La opción C pide divisibilidad por <m:math><m:mn>800</m:mn></m:math>.</p>
+            <p>Pero cuando el pallet está exactamente completo, su altura es <m:math><m:mn>400</m:mn></m:math> cm.</p>
+            <p>Como <m:math><m:mn>400</m:mn></m:math> no es divisible por <m:math><m:mn>800</m:mn></m:math>, esta condición no reconoce el caso correcto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Analizar la opción D</strong></p>
+            <p>La opción D usa <m:math><m:mn>25</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:math>, pero la altura total se calcula multiplicando, no sumando.</p>
+            <p>Además, si <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>, entonces:</p>
+            <p><m:math><m:mn>25</m:mn><m:mo>+</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>41</m:mn></m:math>,</p>
+            <p>y <m:math><m:mn>41</m:mn></m:math> no es divisible por <m:math><m:mn>400</m:mn></m:math>.</p>
+            <p>Por lo tanto, tampoco sirve.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El protocolo correcto es exigir que la altura total sea exactamente <m:math><m:mn>400</m:mn></m:math> cm.</p>
+            <p>Esa condición equivale a <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:math>, por lo que identifica de manera exacta un pallet completo.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

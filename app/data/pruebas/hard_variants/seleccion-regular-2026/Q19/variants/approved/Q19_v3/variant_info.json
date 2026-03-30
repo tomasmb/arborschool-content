@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q19_v3",
+  "source_question_id": "Q19",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q19_v3",
+    "scenario_description": "Contexto de asistencia y aprobación: «En un curso, el 75 % de los estudiantes rinde una prueba. De quienes la rinden, el 75 % la aprueba. Respecto del total de estudiantes del curso, ¿cuál de las siguientes afirmaciones es correcta?». Las opciones son afirmaciones del tipo: \n- «Aprueba el 75 % de los estudiantes» (increment_only),\n- «Aprueba el 150 % de los estudiantes» (o equivalente absurdo por suma de porcentajes, base_plus_increment),\n- «Aprueba el 562,5 % de los estudiantes» (gross_overestimate por error de coma),\n- «Aprueba el 56,25 % de los estudiantes» (correcta).",
+    "non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "required_reasoning": "El estudiante debe reconocer que el porcentaje que aprueba es el resultado de componer 75 % con 75 % (0,75 · 0,75 · 100 = 56,25) y elegir la afirmación coherente, descartando interpretaciones aditivas (75 + 75) o errores de escala.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué que sigue siendo un cálculo directo de composición de dos porcentajes sobre la misma base, sin introducir pasos intermedios adicionales ni selección entre múltiples bases, y que los distractores mantienen los errores típicos de suma de porcentajes, uso de un solo porcentaje y error de coma."
+  },
+  "generator_declared_correct_identifier": "ChoiceD",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-06"
+    ],
+    "primary_atom_titles": [
+      "Cálculo directo del porcentaje de una cantidad"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": true,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "medium",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_preserve_direct_computation"
+    ]
+  },
+  "postprocess_summary": {}
+}

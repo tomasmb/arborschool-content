@@ -1,0 +1,280 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q48_v9" title="Q48_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En una academia se indica que 4 sesiones de repaso equivalen a 10 horas de estudio.</p>
+    <p>Para calcular cuántas horas de estudio T se completan al asistir a x sesiones, se puede utilizar la fórmula 
+      <m:math>
+        <m:mrow>
+          <m:mi>T</m:mi>
+          <m:mo>=</m:mo>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>10</m:mn>
+              <m:mo>⋅</m:mo>
+              <m:mi>x</m:mi>
+            </m:mrow>
+            <m:mn>4</m:mn>
+          </m:mfrac>
+        </m:mrow>
+      </m:math>, donde x representa la cantidad de sesiones asistidas.</p>
+    <p>Un estudiante asiste a varias sesiones de repaso y, además, realiza 3 horas fijas de estudio individual, logrando en total 13,5 horas de estudio. Intenta usar la fórmula anterior y resuelve así:<br />
+      (1) Escribe la ecuación: (10x/4) + 3 = 13,5.<br />
+      (2) Para «eliminar el 4», dice que multiplica ambos lados por 4 y anota: 10x + 3 = 54.<br />
+      (3) Resta 3 en ambos lados: 10x = 51.<br />
+      (4) Divide por 10: x = 5,1.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Según este procedimiento, ¿en qué paso se encuentra el principal error conceptual del estudiante y en qué consiste?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">El error está en el paso (1), porque la fórmula correcta para las horas de estudio debería ser T = (4x/10) en lugar de T = (10x/4).<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Del enunciado se obtiene que 4 sesiones corresponden a 10 horas, por lo que 1 sesión corresponde a 10/4 = 2,5 horas y x sesiones corresponden a (10x)/4. La expresión (4x)/10 daría, por ejemplo, para x = 4 el valor 16/10 = 1,6 horas, que no coincide con las 10 horas indicadas para 4 sesiones.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El error está en el paso (2), porque al multiplicar por 4 solo aplicó esa operación al término (10x/4) y al 13,5, pero no al +3, de modo que la ecuación ya no es equivalente.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si se multiplica toda la ecuación (10x/4) + 3 = 13,5 por 4, debe quedar 4·(10x/4) + 4·3 = 4·13,5, es decir, 10x + 12 = 54. El estudiante escribió 10x + 3 = 54, y esa igualdad ya no es equivalente a la original porque el 3 también debía multiplicarse por 4.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">El error está en el paso (3), porque al pasar el 3 al otro lado debería haber quedado 10x = 57 en lugar de 10x = 51.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si se parte de la igualdad escrita por el estudiante en el paso (2), 10x + 3 = 54, entonces restar 3 en ambos lados sí produce 10x = 51. El problema principal apareció antes: al multiplicar por 4, la ecuación equivalente correcta era 10x + 12 = 54, no 10x + 3 = 54.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">El error está en el paso (4), porque en lugar de dividir por 10 debió multiplicar por 10 para obtener el valor de x.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se tiene 10x = 51, para despejar x se divide ambos lados por 10, obteniendo x = 51/10 = 5,1. Multiplicar por 10 daría 100x = 510, lo que no aísla a x. El error principal no está en ese paso, sino antes, cuando se transformó mal la ecuación al multiplicar por 4.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Plantear correctamente la ecuación</strong></p>
+            <p>La fórmula dada para las horas de estudio por asistir a <em>x</em> sesiones es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>T</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>10</m:mn>
+                      <m:mo>⋅</m:mo>
+                      <m:mi>x</m:mi>
+                    </m:mrow>
+                    <m:mn>4</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Como además realiza 3 horas fijas de estudio individual y el total es 13,5 horas, la ecuación correcta es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>10</m:mn>
+                      <m:mo>⋅</m:mo>
+                      <m:mi>x</m:mi>
+                    </m:mrow>
+                    <m:mn>4</m:mn>
+                  </m:mfrac>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>13,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, el paso (1) está bien planteado.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Multiplicar correctamente ambos lados por 4</strong></p>
+            <p>Si se quiere eliminar el denominador, se debe multiplicar <strong>cada término de ambos lados</strong> por 4:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>4</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mfrac>
+                      <m:mrow>
+                        <m:mn>10</m:mn>
+                        <m:mo>⋅</m:mo>
+                        <m:mi>x</m:mi>
+                      </m:mrow>
+                      <m:mn>4</m:mn>
+                    </m:mfrac>
+                    <m:mo>+</m:mo>
+                    <m:mn>3</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>=</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mn>13,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Esto da:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn>
+                  <m:mi>x</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>54</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Aquí está el principal error conceptual del estudiante: escribió <strong>10x + 3 = 54</strong>, pero el término 3 también debía multiplicarse por 4, por lo que debía quedar 12.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la ecuación correcta</strong></p>
+            <p>Desde</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn>
+                  <m:mi>x</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>54</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>restamos 12 en ambos lados:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn>
+                  <m:mi>x</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>54</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>42</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Ahora dividimos por 10:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>x</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>42</m:mn>
+                    <m:mn>10</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mn>4,2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar el resultado</strong></p>
+            <p>Reemplazamos <m:math><m:mi>x</m:mi></m:math> por <m:math><m:mn>4,2</m:mn></m:math> en la ecuación original:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>10</m:mn>
+                      <m:mo>⋅</m:mo>
+                      <m:mn>4,2</m:mn>
+                    </m:mrow>
+                    <m:mn>4</m:mn>
+                  </m:mfrac>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>42</m:mn>
+                    <m:mn>4</m:mn>
+                  </m:mfrac>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>10,5</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>13,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La verificación funciona.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>: el principal error conceptual está en el paso (2), porque al multiplicar por 4 no aplicó esa operación al término <strong>+3</strong>, y por eso la nueva ecuación dejó de ser equivalente a la original.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

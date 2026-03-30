@@ -1,0 +1,141 @@
+{
+  "source_question_id": "Q5",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q5_v1",
+      "scenario_description": "Se presenta una expresión con fracciones negativas que combina una resta dentro de un paréntesis y un producto fuera, por ejemplo del tipo -((a/b) - (c/d)) + ((e/f)·-(g/h)). Se muestra un procedimiento en 4 pasos: Paso 1 simplifica todas las fracciones, Paso 2 desarrolla la resta del primer paréntesis, Paso 3 desarrolla el producto del segundo paréntesis con signos, y Paso 4 suma los resultados obtenidos. Tres de los pasos contienen errores distintos (uno de simplificación de fracciones, uno de operación con fracciones y uno de manejo de signos), y solo un paso está completamente correcto. La pregunta pide: «¿En cuál de los pasos el cálculo es correcto?» con opciones del tipo «En el Paso 1», «En el Paso 2», etc.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Obliga a revisar conceptualmente cada tipo de operación (simplificar, sumar/restar, multiplicar con signos) para justificar por qué un paso sí respeta las reglas y los otros no; no basta recordar en qué paso suele estar el error, porque ahora el acierto es único y está en un lugar distinto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch"
+    },
+    {
+      "variant_id": "Q5_v2",
+      "scenario_description": "Se da una expresión con dos paréntesis que involucran productos y sumas de fracciones negativas, similar en complejidad a la fuente. Se muestra su resolución en 3 o 4 pasos numerados. Luego se presentan cuatro afirmaciones completas sobre el procedimiento, por ejemplo: A) «En el Paso 1 se simplifican correctamente todas las fracciones», B) «En el Paso 2 se aplica mal la regla de multiplicación de fracciones negativas», C) «En el Paso 3 se suman fracciones con el mismo denominador correctamente», D) «El primer error del procedimiento aparece en el Paso 4». Exactamente una de estas afirmaciones es falsa (por ejemplo, señala ausencia de error donde sí lo hay, o atribuye el error a otro paso). Se pide identificar cuál afirmación es incorrecta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe contrastar cada afirmación con el procedimiento dado, diagnosticando dónde está realmente el error y de qué tipo es. No basta detectar un cálculo raro: hay que decidir si la descripción verbal del error en cada opción se ajusta o no a lo que ocurre en la secuencia de pasos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt"
+    },
+    {
+      "variant_id": "Q5_v3",
+      "scenario_description": "Se presenta una expresión con fracciones negativas y dos paréntesis anidados, por ejemplo con una suma de un producto y una resta de fracciones. Se muestra una resolución en 5 pasos, donde se va transformando la expresión de forma paulatina (primero se simplifica, luego se resuelven paréntesis internos, luego se combinan resultados). El procedimiento tiene un solo error de cálculo, pero los pasos posteriores están construidos coherentemente a partir del valor equivocado (no introducen nuevos errores independientes). La pregunta es: «¿En cuál de los pasos aparece por primera vez un resultado que ya no coincide con el valor correcto de la expresión?» con opciones asociadas a los cinco pasos numerados.",
+      "non_mechanizable_axes": [
+        "orden_o_dependencia_de_pasos",
+        "forma_pregunta",
+        "representacion"
+      ],
+      "required_reasoning": "Además de identificar un cálculo mal hecho, el estudiante debe distinguir entre el paso donde se comete el error original y los pasos que solo lo arrastran. Esto exige comprender cómo se encadenan las transformaciones y qué significa coherencia interna frente a corrección respecto del valor inicial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch"
+    },
+    {
+      "variant_id": "Q5_v4",
+      "scenario_description": "Se da una expresión con fracciones negativas del tipo -(a/b + c/d) - (e/f · -g/h). Se muestra un procedimiento en 4 pasos donde hay exactamente un error de signos (por ejemplo, al eliminar un paréntesis con signo menos) y el resto de los pasos están correctos. Después se presentan cuatro afirmaciones sobre la ubicación del error: A) «El único error es de signo y ocurre en el Paso 1», B) «El único error es de signo y ocurre en el Paso 2», C) «El único error es de signo y ocurre en el Paso 3», D) «El único error es de signo y ocurre en el Paso 4». Todas menos una son falsas; se pide elegir la afirmación incorrecta respecto del procedimiento tal como está escrito.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe revisar dónde se violan las reglas de manejo de signos dentro de la cadena de fracciones, y luego contrastar esa ubicación con cada afirmación. No puede adivinar: necesita justificar mentalmente por qué cada paso sí o no respeta el cambio de signo al quitar paréntesis o multiplicar por un número negativo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt"
+    },
+    {
+      "variant_id": "Q5_v5",
+      "scenario_description": "La expresión trabajada combina una suma y una resta de fracciones con distinto denominador y un factor común negativo delante de un paréntesis, del tipo -k·(a/b - c/d + e/f). El procedimiento se organiza en 4 pasos, pero el orden difiere del habitual: primero se calcula la combinación de fracciones dentro del paréntesis, luego se simplifica el resultado, después se multiplica por el número negativo y finalmente se expresa la fracción simplificada. Hay dos errores: uno en la combinación de fracciones (denominador común mal usado) y otro en la multiplicación por el factor negativo. La consigna pide: «¿En cuál de los pasos se comete el error relacionado con el manejo de fracciones, y no con el manejo de signos?» con opciones por paso.",
+      "non_mechanizable_axes": [
+        "orden_o_dependencia_de_pasos",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe separar conceptualmente dos tipos de errores (fraccionarios vs. de signo) y, al analizar el procedimiento, localizar específicamente el paso donde se violan las reglas de suma/resta de fracciones. No basta identificar un paso “mal hecho” en general: debe entender qué regla concreta se rompe en cada parte.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch"
+    },
+    {
+      "variant_id": "Q5_v6",
+      "scenario_description": "Se presenta una expresión con fracciones negativas que incluye al menos un par de fracciones equivalentes (por ejemplo 2/6, 3/9) y un producto final con un número negativo. Se resuelve en 3 pasos: Paso 1 convierte ciertas fracciones a equivalentes, Paso 2 opera (suma o resta) las fracciones, Paso 3 aplica el signo global o un producto final. Luego se dan cuatro afirmaciones como: A) «En el Paso 1, todas las fracciones se transforman en equivalentes correctas», B) «En el Paso 2, se usa correctamente el mismo denominador para sumar», C) «En el Paso 3, el signo global se aplica como corresponde al producto por un número negativo», D) «Después del Paso 2, el valor de la expresión sigue siendo el mismo que el de la expresión original». Exactamente una es falsa. Se pide identificar la afirmación incorrecta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Requiere verificar equivalencia de fracciones, uso de denominador común y aplicación de signos, y luego decidir cuál enunciado describe erróneamente lo que ocurre en cierto paso. Esto fuerza a entender por qué cada transformación mantiene o no el valor de la expresión, no solo a buscar un número sospechoso.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt"
+    },
+    {
+      "variant_id": "Q5_v7",
+      "scenario_description": "Se da una expresión con dos paréntesis: uno con una suma de fracciones negativas y otro con una resta de fracciones positivas, unidos por un signo menos entre ellos. El procedimiento está en 4 pasos, pero incluye un paso intermedio de simplificación solo al final (primero se trabaja con fracciones no simplificadas, luego se reduce). Hay un único paso en el que se aplica incorrectamente la suma/resta de fracciones (uso errado del denominador común), mientras que las simplificaciones y los signos están bien. La pregunta solicita: «¿En cuál de los pasos se preserva correctamente el valor de la expresión original, a pesar de que en otros se cometen errores de cálculo con fracciones?» Es decir, se pide identificar el paso que es conceptualmente correcto frente a otros incorrectos.",
+      "non_mechanizable_axes": [
+        "orden_o_dependencia_de_pasos",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe revisar la corrección conceptual de cada transformación, distinguiendo los pasos que solo reescriben la expresión sin alterar su valor de aquellos donde se aplica mal la regla de suma/resta. Esto exige entender qué operaciones son equivalencias válidas entre expresiones y cuáles no.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch"
+    },
+    {
+      "variant_id": "Q5_v8",
+      "scenario_description": "Se presenta una expresión con fracciones negativas donde en algún paso se cambian todos los paréntesis y signos para escribir una forma más compacta, por ejemplo pasando de -(a/b - c/d) + (e/f) a una sola suma de fracciones. El procedimiento se da en 4 pasos. Después se proponen cuatro afirmaciones de tipo descriptivo sobre pasos específicos, por ejemplo: A) «En el Paso 1, al quitar el paréntesis con signo menos, se cambian correctamente todos los signos internos», B) «En el Paso 2, se suman fracciones de igual denominador sin cambiar dicho denominador», C) «En el Paso 3, el resultado parcial es equivalente al del Paso 2», D) «En el Paso 4, al simplificar la fracción final, se dividen numerador y denominador por el mismo número». Una de ellas es falsa y se debe seleccionar cuál.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Impone verificar detalladamente el efecto de quitar paréntesis con signo menos, de sumar fracciones con o sin mismo denominador y de simplificar, para decidir qué afirmación describe mal lo que ocurre. Es necesario comprender las reglas paso a paso, no solo encontrar de memoria el 'paso equivocado'.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt"
+    },
+    {
+      "variant_id": "Q5_v9",
+      "scenario_description": "La misma idea de resolución paso a paso se presenta ahora en formato de tabla textual: una columna con el número de paso, otra con la expresión obtenida y otra con una breve explicación («se simplifican fracciones», «se suman fracciones con el mismo denominador», etc.). En uno de los pasos la expresión numérica está mal (por error de suma/resta de fracciones) pero la explicación que la acompaña describe bien la intención; en otro paso, la expresión numérica es correcta pero la explicación verbal que justifica el paso es errónea (por ejemplo, dice que se cambian todos los signos cuando en realidad solo algunos cambian). La pregunta pide: «¿En cuál de los pasos la EXPLICACIÓN del procedimiento es incorrecta, aunque el resultado numérico del paso sea correcto?» con opciones por paso.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe comprender tanto el cálculo con fracciones como la justificación verbal de cada transformación y distinguir entre un error de cálculo y un error en la regla enunciada. Esto profundiza la comprensión del porqué del método, no solo del resultado numérico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch"
+    },
+    {
+      "variant_id": "Q5_v10",
+      "scenario_description": "Se da una expresión con fracciones similares en complejidad a la original, pero donde el orden de operaciones del procedimiento está permutado: primero se multiplican fracciones, luego se simplifican, después se combinan sumas/restas y finalmente se quitan paréntesis con signo menos. Se listan 4 pasos numerados, con exactamente un error de cálculo presente (por ejemplo, al multiplicar fracciones negativas se ignora el signo, pero luego se sigue coherentemente). A continuación se dan cuatro afirmaciones del tipo: A) «Hay un error de signos en el Paso 1», B) «Hay un error de signos en el Paso 2», C) «Hay un error de signos en el Paso 3», D) «Hay un error de signos en el Paso 4». Tres de ellas son verdaderas o falsas según se diseñe el patrón, pero exactamente una es la afirmación incorrecta respecto del procedimiento concreto. Se pide identificar cuál afirmación no coincide con lo que realmente ocurre en los pasos mostrados.",
+      "non_mechanizable_axes": [
+        "orden_o_dependencia_de_pasos",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para decidir qué afirmación es incorrecta, el estudiante debe seguir la secuencia en un orden menos habitual y verificar en qué paso se viola la regla de signos al multiplicar o al quitar paréntesis. No es suficiente ubicar visualmente un número mal: debe entender qué tipo de error (de signos) se está buscando y comprobar si cada afirmación lo atribuye al paso correcto o no.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt"
+    }
+  ]
+}

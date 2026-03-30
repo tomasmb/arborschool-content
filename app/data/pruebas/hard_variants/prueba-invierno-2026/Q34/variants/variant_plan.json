@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q34",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q34_v5",
+      "scenario_description": "Se presenta un nuevo índice médico, el \"Índice de Riesgo Hepático\" (IRH). Se explica verbalmente que se calcula multiplicando la concentración de una enzima hepática en sangre (x, en U/L) por la concentración de triglicéridos (en mmol/L) y dividiendo el resultado por 30. Luego se describe que el IRH se interpreta así: valores menores a 1,5 indican \"riesgo hepático bajo\", entre 1,5 y 2,5 \"riesgo moderado\" y mayores que 2,5 \"riesgo alto\". Se da un valor numérico fijo para los triglicéridos y se pregunta: «¿Cuál de las siguientes inecuaciones en x representa la condición que debe cumplir la enzima para que la persona tenga riesgo hepático bajo?». Las alternativas son solo inecuaciones simbólicas del tipo x < (1,5·30 / triglicéridos), x > (1,5·30 / triglicéridos), y variantes con 30 en el numerador o denominador intercambiado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "La persona debe primero traducir una descripción verbal del modelo (producto y división) a la estructura algebraica correcta y luego vincular la condición verbal \"riesgo hepático bajo\" con la desigualdad IRH < 1,5. Después debe aislar la variable x sin hacer el cálculo numérico, decidiendo correctamente si x queda multiplicando o dividiendo y qué sentido tiene el signo <. No basta aplicar una fórmula memorizada, porque el modelo es nuevo y la regla de clasificación se entrega solo en lenguaje natural.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q34_v6",
+      "scenario_description": "Se mantiene el contexto del índice HOMA-IR con su fórmula explícita y los mismos rangos de interpretación (sin resistencia, sospecha, resistencia), descritos íntegramente en texto. Se indica que una persona tiene glucemia fija de 5,6 mmol/L y que su insulinemia x satisface la inecuación x > (3·22,5 / 5,6). No se pide resolver numéricamente la expresión. La pregunta es: «¿Cuál de las siguientes afirmaciones sobre la situación de esta persona es coherente con la inecuación dada?». Las opciones son frases como: A) \"Su índice HOMA-IR es mayor que 3, por lo que presenta resistencia a la insulina\" (correcta), B) \"Su índice HOMA-IR es menor que 3, por lo que no hay resistencia a la insulina\", C) \"Su índice HOMA-IR es menor que 1,96, por lo que no hay resistencia a la insulina\", D) \"Su índice HOMA-IR está entre 1,96 y 3, por lo que solo hay sospecha de resistencia\".",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe interpretar la forma algebraica x > (3·22,5 / 5,6) como HOMA-IR > 3 al sustituir en la fórmula, y luego vincular ese resultado con la categoría verbal correcta del índice. Las alternativas están construidas sobre errores típicos de interpretación del signo de la desigualdad y de los umbrales, por lo que la persona debe entender la relación modelo-contexto en lugar de limitarse a manipular símbolos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q34_v7",
+      "scenario_description": "Se introduce el índice de masa corporal (IMC) como IMC = peso (kg) / (estatura (m))², expresado claramente como ecuación. Luego se describe en texto: «Se considera 'exceso de peso' cuando el IMC es mayor o igual que 25; 'peso saludable' cuando el IMC está entre 18,5 y 25; y 'bajo peso' cuando es menor que 18,5». Se fija la estatura de una persona (por ejemplo, 1,70 m) y se designa el peso como x. La pregunta es: «¿Cuál de las siguientes inecuaciones en x representa la condición que debe cumplir el peso de esta persona para que tenga exceso de peso?». Las alternativas son desigualdades simbólicas como x ≥ 25·(1,70)² (correcta), x ≤ 25·(1,70)², x ≥ (1,70)²/25, etc.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "La persona debe comprender cómo el contexto de 'exceso de peso' se traduce en IMC ≥ 25 y luego expresar esa condición en términos de la variable peso, entendiendo que la estatura es un dato fijo que aparece al cuadrado. Las alternativas explotan errores conceptuales (invertir la relación, confundir qué magnitud es el numerador o el denominador), por lo que se requiere razonar sobre la estructura del modelo y no solo seguir un esquema memorizado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q34_v8",
+      "scenario_description": "Se plantea un \"índice de estrés hídrico\" E que se define mediante la fórmula E = (tasa_de_evapotranspiración (mm/día) · temperatura (°C)) / 40. Luego se establece verbalmente que E > 2 indica \"estrés hídrico alto\", E entre 1 y 2 \"estrés moderado\" y E < 1 \"sin estrés\". Se fija una temperatura numérica y se entrega directamente una inecuación del tipo tasa_de_evapotranspiración > (2·40 / temperatura). La pregunta pide seleccionar entre varias descripciones verbales cuál corresponde a esa inecuación, por ejemplo: \"Para que haya estrés hídrico alto, la tasa de evapotranspiración debe superar cierto valor mínimo\", frente a alternativas que afirman sin estrés o estrés moderado o que interpretan mal el sentido de la desigualdad.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que la inecuación entregada es la condición E > 2 reescrita en función de la tasa de evapotranspiración y relacionarla con la categoría 'estrés hídrico alto'. Como las opciones mezclan rangos y sentidos de desigualdad, es necesario entender cómo el modelo algebraico refleja las condiciones del contexto, no solo identificar mecánicamente un signo < o >.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q34_v9",
+      "scenario_description": "Se define un \"índice de compromiso de estudio\" C mediante la igualdad C = (horas_diarias_de_estudio (h) · días_a_la_semana) / 14. Verbalmente se indica: «Se considera compromiso alto cuando C es al menos 3; compromiso medio cuando C está entre 1 y 3; y compromiso bajo cuando es menor que 1». Se fija el número de días a la semana y se designa por x las horas de estudio diarias. Se pregunta: «¿Cuál de las siguientes inecuaciones en x representa la condición que deben cumplir las horas diarias de estudio para que el compromiso sea alto?». Las opciones incluyen x ≥ (3·14 / días), x ≤ (3·14 / días), y versiones con el 14 mal ubicado en numerador o denominador.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe traducir la expresión verbal \"compromiso alto\" y la frase \"al menos 3\" a la desigualdad C ≥ 3, y luego plantearla en términos de x usando el modelo dado. Diferenciar ≥ de > y de < es clave, así como decidir si se multiplica o divide por 14 y por el número de días. No se puede responder siguiendo una receta fija porque ni el contexto ni el valor umbral coinciden con el ejemplo fuente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q34_v10",
+      "scenario_description": "Se conserva el índice HOMA-IR y sus rangos descritos en texto. Se indica que para una persona con glucemia fija de 5,6 mmol/L la insulinemia v cumple la condición v < (1,96·22,5 / 5,6). La pregunta no solicita cálculo numérico, sino elegir cuál de varias descripciones verbales corresponde a esa condición. Por ejemplo: A) \"Su HOMA-IR es menor que 1,96, por lo que no presenta resistencia a la insulina\" (correcta); B) \"Su HOMA-IR es mayor que 1,96, por lo que al menos hay sospecha de resistencia\"; C) \"Su HOMA-IR es mayor que 3, por lo que presenta resistencia\"; D) \"Su HOMA-IR está entre 1,96 y 3\".",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe reconstruir mentalmente la sustitución del valor de glucemia en la fórmula de HOMA-IR y relacionar la desigualdad v < (...) con HOMA-IR < 1,96, para luego mapearla a la categoría verbal adecuada. Las distracciones se basan en invertir el sentido de la desigualdad o confundir los umbrales 1,96 y 3, por lo que sólo comprender el significado del modelo permite responder correctamente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q34_v11",
+      "scenario_description": "Se presenta nuevamente el índice HOMA-IR con su fórmula, pero ahora el valor conocido es la insulinemia (en µU/mL) y la glucemia en ayunas es la incógnita x (en mmol/L). Los rangos de interpretación se entregan en párrafo continuo, sin estructura tabular, enfatizando que «a partir de HOMA-IR igual a 1,96 ya se sospecha resistencia a la insulina o se confirma si supera 3». La pregunta es: «Si una persona tiene una insulinemia de cierto valor fijo, ¿cuál de las siguientes inecuaciones en x representa la condición que debe cumplir su glucemia para que al menos se sospeche resistencia a la insulina?». Las alternativas son de la forma x ≥ (1,96·22,5 / insulinemia), x ≤ (1,96·22,5 / insulinemia), y variantes con 22,5 mal colocado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe identificar que \"al menos se sospeche resistencia\" corresponde a HOMA-IR ≥ 1,96, cambiar el rol de la variable desconocida (ahora es glucemia, no insulinemia) y expresar esa condición en términos de x. Esto obliga a entender la simetría del modelo y el efecto de fijar una u otra variable, sin limitarse a repetir la forma usada en la pregunta original.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q34_v12",
+      "scenario_description": "Se define un \"índice de emisión segura\" S = (emisión_diaria_de_CO2 (kg) · número_de_días_del_mes) / 900. Se explica que valores de S menores a 1 indican \"emisión segura\", entre 1 y 1,5 \"emisión moderada\" y mayores a 1,5 \"emisión excesiva\". Se fija el número de días del mes y se proporciona la inecuación emisión_diaria_de_CO2 < (1·900 / días), sin pedir su evaluación numérica. La consigna pide elegir cuál descripción verbal se ajusta a esa inecuación, con alternativas que hablan de mantenerse en rango seguro, de superar el umbral de emisión excesiva o de estar en rango moderado, algunas además invirtiendo la comparación (\"al menos\" vs \"a lo más\").",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para responder se debe reconocer que la desigualdad dada representa la condición S < 1 y vincularla con la categoría 'emisión segura', además de interpretar correctamente expresiones como 'no superar un máximo diario' frente a 'emitir al menos cierta cantidad'. Las opciones buscan errores de lectura contextual del signo y del umbral, lo que fuerza a comprender la traducción modelo-contexto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q34_v13",
+      "scenario_description": "Se introduce un \"índice de hidratación\" H definido como H = (agua_total_bebida_en_el_día (L) · concentración_de_sodio_en_sangre (mmol/L)) / 300. En texto se indica: «Se considera hidratación adecuada cuando H está entre 1 y 2; deshidratación cuando H es menor que 1; y sobrehidratación cuando H es mayor que 2». Se fija la concentración de sodio y se designa por x la cantidad de agua bebida en el día. Se pregunta: «¿Cuál de las siguientes inecuaciones en x representa la condición que debe cumplir el agua consumida para que la persona presente sobrehidratación?». Las alternativas son del tipo x > (2·300 / sodio), x < (2·300 / sodio), o con el 300 mal posicionado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe traducir la categoría 'sobrehidratación' a la condición H > 2, aplicar el modelo para despejar x y cuidar el sentido de la desigualdad. Las alternativas reflejan errores típicos: usar el umbral de hidratación adecuada, invertir el signo o mal ubicar el factor 300. Esto obliga a razonar sobre la estructura del modelo y la interpretación de los rangos, más allá de un procedimiento automático.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q34_v14",
+      "scenario_description": "Se reutiliza el índice de masa corporal (IMC = peso / estatura²) con rangos verbales: «bajo peso si IMC < 18,5; peso normal si está entre 18,5 y 25; sobrepeso si es mayor o igual a 25». Para una persona de estatura fija h, se presenta la inecuación peso < 18,5·h², sin pedir cálculo de h². La pregunta solicita elegir entre varias afirmaciones en lenguaje natural cuál describe correctamente esa condición. Por ejemplo: A) \"Su peso está por debajo del rango considerado saludable\" (correcta); B) \"Tiene un IMC mayor o igual a 25, por lo que presenta sobrepeso\"; C) \"Su IMC está en el rango de peso normal\"; D) \"A partir de ese peso comienza el sobrepeso\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para responder correctamente, la persona debe reconocer que peso < 18,5·h² equivale a IMC < 18,5 y asociarlo con la categoría de 'bajo peso'. Las alternativas inducen errores de interpretación del sentido de la desigualdad y de los umbrales del IMC, de modo que se requiere comprender el vínculo entre la expresión algebraica y la situación descrita, no solo identificar símbolos aislados.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    }
+  ]
+}

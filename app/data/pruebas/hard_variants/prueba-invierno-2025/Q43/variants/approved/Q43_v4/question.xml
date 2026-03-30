@@ -1,0 +1,144 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q43_v4" title="Q43_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona ordena cajas, de un mismo tipo, en una bodega, de tal manera que ubica una caja sobre otra y no deja espacios entre ellas, dejándolas perfectamente alineadas.</p>
+    <p>En el primer nivel, sobre el suelo, coloca 5 cajas formando una fila. En el segundo nivel, sobre estas y centradas, coloca 4 cajas; en el tercer nivel, 3 cajas; en el cuarto nivel, 2 cajas; y en el quinto nivel, una sola caja en la parte superior.</p>
+    <p>¿Cuál de las siguientes afirmaciones describe correctamente el número total de cajas usadas en este apilamiento?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">En total se usaron 14 cajas.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El total se obtiene sumando las cajas de los cinco niveles: 5 + 4 + 3 + 2 + 1 = 15. Por lo tanto, 14 no describe correctamente el apilamiento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En total se usaron 15 cajas.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El número total de cajas se obtiene sumando las cajas de cada nivel: 5 + 4 = 9, 9 + 3 = 12, 12 + 2 = 14 y 14 + 1 = 15. Entonces, en total se usaron 15 cajas.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">En total se usaron 20 cajas.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Al sumar las cajas de cada nivel se obtiene 5 + 4 + 3 + 2 + 1 = 15, no 20. Por eso, 20 no corresponde al total de cajas del apilamiento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">En total se usaron 25 cajas.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El total correcto es 5 + 4 + 3 + 2 + 1 = 15. La afirmación 25 es falsa porque supera en 10 cajas la suma real de los cinco niveles.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar cuántas cajas hay en cada nivel</strong></p>
+            <p>Según el enunciado, los niveles tienen 5, 4, 3, 2 y 1 caja, respectivamente.</p>
+          </li>
+          <li>
+            <p><strong>Sumar las cajas de todos los niveles</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>15</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar la suma en forma gradual</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>9</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>9</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>12</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>12</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>14</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>14</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>15</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El apilamiento usa 15 cajas en total, por lo tanto la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

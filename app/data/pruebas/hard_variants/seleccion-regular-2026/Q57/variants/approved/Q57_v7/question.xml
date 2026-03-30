@@ -1,0 +1,170 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q57_v7" title="Q57_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>En un experimento, se modela el porcentaje de batería B(t) de un teléfono celular en función del tiempo t (en minutos) de uso continuo con la siguiente expresión:
+        <m:math>
+          <m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi>
+        </m:math>
+        Según este modelo, ¿cuál de las siguientes afirmaciones describe correctamente cómo cambia la batería durante este tipo de uso?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        En esta situación, la batería aumenta de manera uniforme: cada minuto la carga sube 5 puntos porcentuales por sobre el valor que tenía al inicio.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El modelo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mi>t</mi></mrow></math>. El signo menos indica disminución, no aumento. Por ejemplo, al inicio <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>0</mn><mo>=</mo><mn>100</mn></mrow></math> y después de 1 minuto <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>1</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>1</mn><mo>=</mo><mn>95</mn></mrow></math>. La batería baja 5 puntos porcentuales por minuto.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        La batería parte en 100 % y se descarga de forma constante, de modo que, si se mantiene este uso durante 10 minutos, habrá perdido 50 puntos porcentuales de carga respecto del nivel inicial.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Del modelo <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mi>t</mi></mrow></math> se obtiene que al inicio <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>100</mn></mrow></math>. Además, en 10 minutos <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>100</mn><mo>-</mo><mn>50</mn><mo>=</mo><mn>50</mn></mrow></math>. Entonces la pérdida respecto del nivel inicial es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>100</mn><mo>-</mo><mn>50</mn><mo>=</mo><mn>50</mn></mrow></math> puntos porcentuales, de forma constante.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        El modelo indica que la batería pierde 100 puntos porcentuales de carga cada 5 minutos de uso continuo, por lo que se descarga por completo en solo 5 minutos.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El coeficiente de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi></math> es <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mn>5</mn></math>, así que la batería pierde 5 puntos porcentuales por minuto, no 100 cada 5 minutos. Un contraejemplo concreto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>5</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>5</mn><mo>=</mo><mn>75</mn></mrow></math>. Después de 5 minutos todavía queda 75 %, por lo tanto no se descarga por completo en 5 minutos.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Este modelo representa un celular que comienza con 5 % de batería y pierde 100 puntos porcentuales en cada minuto, hasta apagarse por completo.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El valor inicial se obtiene con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>B</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>0</mn><mo>=</mo><mn>100</mn></mrow></math>, así que el celular comienza con 100 %, no con 5 %. Además, la variación por minuto es de 5 puntos porcentuales, porque el término es <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mn>5</mn><mi>t</mi></math>, no de 100 puntos porcentuales por minuto.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el valor inicial</strong></p>
+            <p>El modelo es:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mi>B</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mi>t</mi></mrow>
+              </math>
+            </p>
+            <p>Para saber con cuánta batería parte el teléfono, evaluamos en
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow>
+              </math>:
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mi>B</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>0</mn><mo>=</mo><mn>100</mn></mrow>
+              </math>
+            </p>
+            <p>Entonces, la batería parte en 100 %.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar la tasa de cambio</strong></p>
+            <p>El término
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mo>-</mo><mn>5</mn><mi>t</mi></mrow>
+              </math>
+              indica que por cada minuto de uso la batería disminuye en 5 puntos porcentuales.
+            </p>
+            <p>Como el cambio es siempre el mismo, la descarga es constante.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Evaluar el modelo a los 10 minutos</strong></p>
+            <p>Reemplazamos
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mi>t</mi><mo>=</mo><mn>10</mn></mrow>
+              </math>:
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mi>B</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mn>100</mn><mo>-</mo><mn>5</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>100</mn><mo>-</mo><mn>50</mn><mo>=</mo><mn>50</mn></mrow>
+              </math>
+            </p>
+            <p>Después de 10 minutos queda 50 % de batería.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular cuánto perdió respecto del inicio</strong></p>
+            <p>La pérdida es la diferencia entre la batería inicial y la batería después de 10 minutos:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>100</mn><mo>-</mo><mn>50</mn><mo>=</mo><mn>50</mn></mrow>
+              </math>
+            </p>
+            <p>Ha perdido 50 puntos porcentuales de carga.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es la alternativa B: la batería parte en 100 % y se descarga de forma constante; en 10 minutos pierde 50 puntos porcentuales.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

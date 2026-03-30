@@ -1,0 +1,130 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v6" title="Q63_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Observa las siguientes viñetas de un pez nadando cerca del fondo marino, junto a rocas y algas. En una de ellas el pez se ha trasladado en el agua sin girar ni cambiar de tamaño.</p>
+    <p><img src="velero.png" alt="Dibujo del velero" /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        
+        <img src="opcionA.png" alt="Pez en otra posición pero mirando hacia el lado contrario, como reflejado respecto de las mismas rocas y algas." />
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En esta imagen la figura queda invertida: el pez aparece mirando hacia el lado contrario. Una traslación conserva la orientación y el tamaño, por lo que una figura trasladada debe seguir mirando en la misma dirección que la original. Como aquí cambia la orientación, no corresponde a una traslación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <img src="opcionB.png" alt="Pez del mismo tamaño y con la misma orientación que el original, desplazado horizontalmente respecto de las mismas rocas y algas." />
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En esta imagen el pez conserva exactamente su tamaño y su orientación, y solo cambia de posición respecto del entorno. Eso cumple la definición de traslación: desplazar una figura sin girarla, sin reflejarla y sin cambiar su tamaño.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        
+        <img src="opcionC.png" alt="Pez del mismo tamaño, pero ligeramente girado hacia arriba respecto de las mismas rocas y algas." />
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En esta opción la figura mantiene el tamaño, pero cambia su inclinación. Una traslación no modifica la orientación de la figura. Como aquí el pez está girado respecto de la posición original, esta imagen representa un giro y no una traslación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        
+        <img src="opcionD.png" alt="Pez en la misma orientación que el original, pero de mayor tamaño respecto de las mismas rocas y algas." />
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En esta imagen la orientación se mantiene, pero el tamaño de la figura cambia. Una traslación conserva las longitudes y la forma de la figura original. Como aquí el pez aparece más grande, no es una traslación, sino un cambio de escala.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: identificar una traslación</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar qué es una traslación</strong></p>
+            <p>Trasladar una figura significa moverla de un lugar a otro sin girarla, sin invertirla y sin cambiar su tamaño.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la orientación de cada opción</strong></p>
+            <p>Si la figura mira hacia otro lado, entonces no es traslación. Eso ocurre en la opción A, porque la figura está invertida respecto de la original.</p>
+            <p>Si la figura queda inclinada de otra manera, entonces tampoco es traslación. Eso ocurre en la opción C, porque la figura está girada.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar el tamaño</strong></p>
+            <p>Si la figura aparece más grande o más pequeña, entonces no es traslación. Eso ocurre en la opción D, porque cambia el tamaño de la figura.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Identificar la opción que solo cambia de posición</strong></p>
+            <p>En la opción B la figura mantiene la misma orientación y el mismo tamaño, y únicamente se desplaza a otra posición en la imagen.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única imagen que representa una traslación es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

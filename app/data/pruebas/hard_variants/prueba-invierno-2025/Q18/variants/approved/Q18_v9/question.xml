@@ -1,0 +1,183 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v9" title="Q18_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un laboratorio se estudia el crecimiento de una colonia de bacterias. La cantidad N de bacterias observada en distintos instantes es la siguiente: t = 0 h → 1600 bacterias; t = 1 h → 2000 bacterias; t = 2 h → 2500 bacterias; t = 3 h → 3125 bacterias.</p>
+    <p>Un investigador propone el modelo 
+      <m:math>
+        <m:mi>N</m:mi>
+        <m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>1600</m:mn>
+        <m:mo>·</m:mo>
+        <m:msup>
+          <m:mn>1,25</m:mn>
+          <m:mi>t</m:mi>
+        </m:msup>
+      </m:math>
+      para describir la cantidad de bacterias t horas después de comenzar el experimento, y afirma: «La cantidad de bacterias aumenta un 25 % cada hora».</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes explicaciones justifica correctamente esa afirmación a partir del modelo y de los datos entregados?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Cada hora la cantidad de bacterias aumenta en 400, porque se pasa de 1600 a 2000 y luego siempre se iría sumando la misma cantidad. Como ese aumento absoluto se mantiene, el porcentaje de aumento también es siempre el mismo.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los datos muestran que el aumento absoluto no se mantiene: de 1600 a 2000 se suman 400, de 2000 a 2500 se suman 500 y de 2500 a 3125 se suman 625. Además, si el aumento fuera siempre de 400, a las 2 horas habría 2000 + 400 = 2400, pero el dato y el modelo entregan 2500. Por lo tanto, no se justifica un crecimiento de porcentaje constante mediante una suma fija.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Cada hora el modelo multiplica la cantidad anterior por 1,25. Eso significa conservar el 100 % de las bacterias que había y sumar además un 25 % de esa misma cantidad, por lo que el aumento es del 25 % en cada hora.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Multiplicar por 1,25 significa multiplicar por 1 + 0,25, es decir, conservar el 100 % de la cantidad anterior y agregar un 25 % más. Se verifica con los datos: 1600 × 1,25 = 2000, 2000 × 1,25 = 2500 y 2500 × 1,25 = 3125. En cada hora la nueva cantidad es 125 % de la anterior, por lo que el aumento es 25 %.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">El número 1,25 indica que en cada hora se agregan 1,25 bacterias a las 1600 iniciales, de modo que el aumento porcentual es de 1,25 % respecto de la cantidad inicial.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El modelo no suma 1,25 bacterias; multiplica por 1,25. Si se agregaran 1,25 bacterias a las 1600 iniciales, a la hora 1 se obtendría 1601,25, pero el dato y el modelo dan 2000. Además, 1,25 % de 1600 es 20, y 1600 + 20 = 1620, que tampoco coincide con 2000. Por lo tanto, 1,25 representa un factor multiplicativo, no una cantidad que se suma.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Al pasar de 1600 a 2000 hay un aumento de 400 bacterias, es decir, un 25 % sobre 1600. Ese mismo porcentaje se mantiene porque 1,25^t significa que cada hora se suma 0,25·t a la cantidad inicial.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aunque de 1600 a 2000 el aumento sí es 400 y eso corresponde a 25 % de 1600, la expresión 1,25^t no significa sumar 0,25·t a la cantidad inicial. Por ejemplo, para t = 2, sumar 0,25·2 a la cantidad inicial daría 1600 + 0,5 = 1600,5, pero el modelo entrega 1600 × 1,25² = 1600 × 1,5625 = 2500. El exponente indica multiplicación repetida por 1,25, no una suma lineal.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar el modelo</strong></p>
+            <p>El modelo propuesto es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>N</mi><mo>(</mo><mi>t</mi><mo>)</mo><mo>=</mo><mn>1600</mn><mo>·</mo>
+                  <msup>
+                    <mn>1,25</mn>
+                    <mi>t</mi>
+                  </msup>
+                </mrow>
+              </math>
+            </p>
+            <p>El número 1600 corresponde a la cantidad inicial de bacterias, pues cuando <strong>t = 0</strong> se cumple:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>N</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>1600</mn><mo>·</mo>
+                  <msup>
+                    <mn>1,25</mn>
+                    <mn>0</mn>
+                  </msup>
+                  <mo>=</mo><mn>1600</mn><mo>·</mo><mn>1</mn><mo>=</mo><mn>1600</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Reconocer qué significa el factor 1,25</strong></p>
+            <p>Multiplicar por 1,25 equivale a multiplicar por:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1,25</mn><mo>=</mo><mn>1</mn><mo>+</mo><mn>0,25</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Esto significa conservar el <strong>100 %</strong> de la cantidad anterior y agregar un <strong>25 %</strong> adicional de esa misma cantidad. Por eso, un factor 1,25 representa un aumento de 25 %.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con los datos de la tabla</strong></p>
+            <p>Desde la hora 0 a la hora 1:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1600</mn><mo>·</mo><mn>1,25</mn><mo>=</mo><mn>2000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Desde la hora 1 a la hora 2:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2000</mn><mo>·</mo><mn>1,25</mn><mo>=</mo><mn>2500</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Desde la hora 2 a la hora 3:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2500</mn><mo>·</mo><mn>1,25</mn><mo>=</mo><mn>3125</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Los datos coinciden exactamente con una multiplicación por 1,25 en cada hora.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Descartar las explicaciones incorrectas</strong></p>
+            <p>No se suma siempre la misma cantidad, porque los aumentos son 400, 500 y 625 bacterias. Por lo tanto, el crecimiento no es lineal.</p>
+            <p>Tampoco se agregan 1,25 bacterias ni 1,25 % de la cantidad inicial. El número 1,25 es un <strong>factor multiplicativo</strong>.</p>
+            <p>Además, <strong>1,25^t</strong> no significa sumar <strong>0,25·t</strong> a la cantidad inicial; significa multiplicar repetidamente por 1,25.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La explicación correcta es la <strong>opción B</strong>: cada hora la cantidad anterior se multiplica por 1,25, es decir, se conserva el 100 % y se agrega un 25 % adicional. Por eso, la cantidad de bacterias aumenta un <strong>25 % cada hora</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,164 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v17" title="Q51_v17" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un camping, un mapa cerca de la caseta de información indica cómo llegar a un mirador. El mapa dice: "Suba 10 tramos hacia el norte y avance 4 tramos hacia el oeste".</p>
+    <p>Con el tiempo, por trabajos en los senderos, el mirador se movió dos veces. En el siguiente resumen se muestran los tres desplazamientos, medidos en tramos, siempre respecto del punto de partida original (la caseta de información):<br />• Etapa 1 (camino original): 10 tramos hacia el norte y 4 tramos hacia el oeste.<br />• Etapa 2 (primer cambio de ubicación del mirador): 6 tramos hacia el sur y 2 tramos hacia el oeste.<br />• Etapa 3 (segundo cambio de ubicación del mirador): 15 tramos hacia el norte y 7 tramos hacia el este.</p>
+    <p>Varios guardaparques redactaron indicaciones para describir directamente la nueva ruta desde la caseta de información hasta el mirador (sin mencionar las etapas intermedias). Solo una de las siguientes indicaciones es coherente con el resumen anterior. ¿Cuál es?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Suba 19 tramos hacia el norte y avance 5 tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al sumar los desplazamientos verticales se obtiene 10 hacia el norte, luego 6 hacia el sur y luego 15 hacia el norte, por lo que el resultado neto es 10 − 6 + 15 = 19 tramos hacia el norte. Al sumar los desplazamientos horizontales se obtiene 4 hacia el oeste, luego 2 hacia el oeste y luego 7 hacia el este, por lo que el resultado neto es 6 hacia el oeste y 7 hacia el este, es decir 1 tramo hacia el este. Esta opción dice 5 tramos hacia el este, pero el valor correcto es 1.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Suba 19 tramos hacia el norte y avance 1 tramo hacia el este.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los desplazamientos verticales son 10 hacia el norte, 6 hacia el sur y 15 hacia el norte, así que el total es 10 − 6 + 15 = 19 tramos hacia el norte. Los desplazamientos horizontales son 4 hacia el oeste, 2 hacia el oeste y 7 hacia el este, así que el total es 6 hacia el oeste y 7 hacia el este, lo que da 1 tramo hacia el este. Por eso la indicación directa correcta es subir 19 tramos hacia el norte y avanzar 1 tramo hacia el este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Suba 25 tramos hacia el norte y avance 3 tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento vertical neto no es 25. Se debe considerar que en la segunda etapa hay 6 tramos hacia el sur, entonces 10 − 6 + 15 = 19 tramos hacia el norte. Además, horizontalmente 4 hacia el oeste más 2 hacia el oeste son 6 hacia el oeste, y al combinar con 7 hacia el este queda solo 1 tramo hacia el este. Esta opción indica 25 hacia el norte y 3 hacia el este, pero los valores correctos son 19 hacia el norte y 1 hacia el este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Suba 31 tramos hacia el norte y avance 13 tramos hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sumar todas las cantidades sin considerar el sentido no sirve en este problema. Verticalmente, 10 hacia el norte y 15 hacia el norte se compensan parcialmente con 6 hacia el sur, por eso el resultado es 10 − 6 + 15 = 19 tramos hacia el norte, no 31. Horizontalmente, 4 hacia el oeste y 2 hacia el oeste suman 6 hacia el oeste, pero luego 7 hacia el este dejan un resultado neto de 1 tramo hacia el este, no 13 hacia el oeste.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar cada desplazamiento con su sentido</strong></p>
+            <p>Tomamos norte como positivo en vertical y este como positivo en horizontal.</p>
+            <p>Entonces:</p>
+            <ul>
+              <li>Etapa 1: 10 tramos hacia el norte y 4 tramos hacia el oeste.</li>
+              <li>Etapa 2: 6 tramos hacia el sur y 2 tramos hacia el oeste.</li>
+              <li>Etapa 3: 15 tramos hacia el norte y 7 tramos hacia el este.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar los desplazamientos verticales</strong></p>
+            <p>En vertical hay dos movimientos hacia el norte y uno hacia el sur:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>10</mn>
+                  <mo>−</mo>
+                  <mn>6</mn>
+                  <mo>+</mo>
+                  <mn>15</mn>
+                  <mo>=</mo>
+                  <mn>19</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Por lo tanto, el desplazamiento vertical neto es 19 tramos hacia el norte.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar los desplazamientos horizontales</strong></p>
+            <p>Primero se avanza hacia el oeste y luego hacia el este.</p>
+            <p>Hacia el oeste:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn>
+                  <mo>+</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Luego se comparan 6 tramos hacia el oeste con 7 tramos hacia el este:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>7</mn>
+                  <mo>−</mo>
+                  <mn>6</mn>
+                  <mo>=</mo>
+                  <mn>1</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Por lo tanto, el desplazamiento horizontal neto es 1 tramo hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Escribir la indicación directa</strong></p>
+            <p>Desde la caseta de información hasta el mirador se debe:</p>
+            <ul>
+              <li>subir 19 tramos hacia el norte;</li>
+              <li>avanzar 1 tramo hacia el este.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única indicación coherente con el resumen es la alternativa B: “Suba 19 tramos hacia el norte y avance 1 tramo hacia el este”.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

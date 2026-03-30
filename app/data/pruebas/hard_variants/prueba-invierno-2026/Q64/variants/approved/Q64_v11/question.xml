@@ -1,0 +1,179 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v11" title="Q64_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la siguiente tabla se muestran las letras de 8 tarjetas dispuestas en una fila. Todas las tarjetas tienen la misma probabilidad de ser elegidas al azar.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Posición en la fila</th>
+          <th>Letra de la tarjeta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>A</td></tr>
+        <tr><td>2</td><td>A</td></tr>
+        <tr><td>3</td><td>A</td></tr>
+        <tr><td>4</td><td>B</td></tr>
+        <tr><td>5</td><td>B</td></tr>
+        <tr><td>6</td><td>C</td></tr>
+        <tr><td>7</td><td>D</td></tr>
+        <tr><td>8</td><td>D</td></tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Se elige una de estas tarjetas al azar. ¿Cuál de las siguientes fracciones representa correctamente la probabilidad de obtener una tarjeta que no sea B ni C?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">3/8<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las tarjetas que no son B ni C son A, A, A, D y D. Eso da 5 tarjetas favorables de un total de 8, por lo que la probabilidad es 5/8. La fracción 3/8 no representa esta situación.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">5/8<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Las tarjetas que no son B ni C son 3 tarjetas con A y 2 tarjetas con D. En total hay 5 tarjetas favorables de 8 posibles, así que la probabilidad es 5/8.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">6/8<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Las únicas tarjetas que cumplen “no sea B ni C” son A, A, A, D y D. Son 5 casos favorables, no 6. Como el total de tarjetas es 8, la probabilidad correcta es 5/8 y no 6/8.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">7/8<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Hay 3 tarjetas que no sirven: B, B y C. Entonces las tarjetas que sí cumplen son 8 − 3 = 5. Por eso la probabilidad correcta es 5/8. La fracción 7/8 sería incorrecta para esta tabla.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Contar el total de tarjetas</strong></p>
+            <p>En la tabla aparecen 8 tarjetas en total.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>Total de tarjetas</mtext>
+                  <mo>=</mo>
+                  <mn>8</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar cuáles tarjetas no son B ni C</strong></p>
+            <p>Las letras de las tarjetas son: A, A, A, B, B, C, D, D.</p>
+            <p>Las que no son B ni C son: A, A, A, D y D.</p>
+            <p>Eso corresponde a 5 tarjetas favorables.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>Tarjetas favorables</mtext>
+                  <mo>=</mo>
+                  <mn>3</mn>
+                  <mo>+</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mn>5</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la probabilidad como fracción</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>probabilidad</mtext>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mtext>casos favorables</mtext>
+                    </mrow>
+                    <mrow>
+                      <mtext>casos posibles</mtext>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+            <p>Reemplazando:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>probabilidad</mtext>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mn>5</mn>
+                    <mn>8</mn>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La fracción correcta es 5/8, que corresponde a la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

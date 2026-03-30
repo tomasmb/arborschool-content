@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q55",
+  "source_test_id": "seleccion-regular-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q55_v1",
+      "scenario_description": "Se muestra un diagrama de árbol de dos niveles sobre acceso a salud. En el primer nivel, desde la raíz salen tres ramas con la distribución de la población por tipo de previsión: Fonasa, Isapres y Otros (con porcentajes similares al ítem fuente). Desde la rama 'Fonasa' salen cuatro subramas con la distribución por tramos A, B, C y D (con porcentajes internos al grupo, análogos al 20 %, 39 %, etc.). La pregunta NO pide el valor numérico directo, sino elegir entre varias expresiones/afirmaciones la que representa correctamente la probabilidad de que una persona elegida al azar de la población nacional esté en el tramo A de Fonasa. Entre las opciones hay: una que toma solo el 20 % (ignorando que es condicional), otra que suma porcentajes, otra que multiplica la probabilidad de Fonasa por la del tramo A condicionado a Fonasa (correcta), y otra que divide en el orden equivocado (P(Fonasa|A)).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe leer el diagrama de árbol, identificar que el porcentaje de tramos se refiere solo a quienes ya están en Fonasa (probabilidad condicional), y reconocer que la probabilidad de estar en 'tramo A de Fonasa' es un evento conjunto que se obtiene como P(Fonasa)·P(A|Fonasa). No basta con tomar un número del gráfico: hay que entender por qué la opción correcta es una multiplicación de una probabilidad global por una condicional y descartar afirmaciones que usan mal el denominador o confunden condicional con marginal.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Diagrama de árbol con nodo inicial que se separa en tres ramas etiquetadas Fonasa, Isapres y Otros con sus porcentajes, y desde la rama Fonasa cuatro subramas A, B, C, D con porcentajes que suman 100 % dentro de Fonasa.",
+      "selected_shape_id": "conditional_claim_check"
+    },
+    {
+      "variant_id": "Q55_v2",
+      "scenario_description": "Contexto de un programa municipal de salud. Se presenta un esquema tipo flujo (o cuadro paso a paso) con dos etapas: 1) Clasificación por tipo de previsión (Fonasa, Isapres, Otros) con porcentajes sobre la población total. 2) Solo para quienes están en Fonasa, se muestra en un recuadro aparte la distribución por tramos A, B, C y D en porcentaje dentro de ese subgrupo. Un breve texto describe que primero se registra si la persona tiene Fonasa o no, y solo en caso afirmativo se determina el tramo. Luego se pregunta directamente: \"Al escoger al azar una persona de la población registrada, ¿cuál es la probabilidad de que haya quedado en el tramo A de Fonasa?\". Las alternativas incluyen errores típicos de no actualizar el espacio muestral (por ejemplo, usar 100 como base en lugar del porcentaje de Fonasa).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Se obliga a ver el proceso como una selección sucesiva: primero pertenecer o no a Fonasa (espacio muestral total) y luego, dentro del espacio reducido de Fonasa, el tramo. Para responder, la persona debe comprender que la probabilidad buscada corresponde a la intersección de ambos eventos y que la segunda probabilidad se calcula sobre un espacio muestral ya restringido (condicional). Debe integrar la información de las dos etapas, aplicando P(Fonasa y A) = P(Fonasa)·P(A|Fonasa), evitando distractores basados en no restringir el denominador.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Diagrama de flujo en dos pasos: un bloque con porcentajes por tipo de previsión para toda la población y, conectado solo desde 'Fonasa', un segundo bloque con porcentajes por tramos A, B, C y D para quienes están en Fonasa.",
+      "selected_shape_id": "reduced_sample_space_record"
+    },
+    {
+      "variant_id": "Q55_v3",
+      "scenario_description": "Situación de matrícula en educación superior. Un gráfico de barras verticales muestra la distribución porcentual de estudiantes por tipo de institución: Universidades estatales, Universidades privadas, Institutos profesionales/CFT. Junto a él, un gráfico de barras apiladas SOLO para las universidades estatales muestra cómo se distribuyen sus estudiantes según tipo de beca: sin beca, beca parcial, beca completa, con porcentajes que suman 100 % dentro del grupo estatal. Se pide: \"Si se elige al azar un estudiante del sistema de educación superior, ¿cuál es la probabilidad de que estudie en una universidad estatal y tenga beca completa?\". No se dan cifras conjuntas explícitas; hay que combinarlas a partir de los dos gráficos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "La persona debe interpretar que el segundo gráfico entrega la distribución condicional (solo dentro de universitarios estatales) y que la probabilidad buscada es conjunta: P(estatal y beca completa) = P(estatal)·P(beca completa | estatal). Debe evitar distractores que usan el porcentaje de beca completa como si fuera sobre todo el sistema o que suman porcentajes de gráficos distintos. Se requiere comprender por qué se multiplica una probabilidad global por otra que está condicionada al tipo de institución.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Gráfico de barras verticales con tres barras (tipos de institución) con porcentajes sobre el total de estudiantes y, al lado, un gráfico de barra apilada para universidades estatales dividida en segmentos que representan los tipos de beca con sus porcentajes internos.",
+      "selected_shape_id": "reduced_sample_space_record"
+    },
+    {
+      "variant_id": "Q55_v4",
+      "scenario_description": "Contexto laboral. Un diagrama de barras horizontales muestra la proporción de trabajadores por tipo de contrato: Contrato indefinido, Contrato a plazo fijo, Sin contrato. Aparte, un gráfico circular muestra la distribución de jornadas (completa, parcial, por turnos) solo entre quienes tienen contrato indefinido. La pregunta presenta cuatro afirmaciones sobre la probabilidad de que un trabajador elegido al azar tenga contrato indefinido y jornada parcial. Se pide seleccionar la afirmación cuyo cálculo es correcto. Algunas afirmaciones usan solo la proporción de jornada parcial; otras multiplican pero con orden o denominador incorrectos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para decidir qué afirmación es correcta, la persona debe identificar en los gráficos cuál probabilidad es global (tener contrato indefinido) y cuál es condicional (tener jornada parcial dado que se tiene contrato indefinido). Luego debe reconocer que la probabilidad conjunta se expresa como P(contrato indefinido)·P(jornada parcial | contrato indefinido). Debe descartar afirmaciones que tratan la probabilidad condicional como si fuera sobre toda la población o que usan mal el espacio muestral al dividir por el total equivocado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Gráfico de barras horizontales con tres categorías de tipo de contrato y sus porcentajes; a un lado, un gráfico de torta que muestra la distribución de tipos de jornada solo para quienes tienen contrato indefinido.",
+      "selected_shape_id": "conditional_claim_check"
+    },
+    {
+      "variant_id": "Q55_v5",
+      "scenario_description": "Escenario de transporte urbano. En una infografía se describe el registro de viajes diarios: primero se clasifica cada viaje según modo principal (Bus, Metro, Automóvil particular) y se muestra su distribución porcentual en un pequeño gráfico de sectores. Luego, en un recuadro solo para los viajes en Bus, se indica mediante un mini gráfico de columnas cómo se reparten esos viajes por tipo de pasajero (Estudiante, Adulto, Adulto mayor), con porcentajes que suman 100 % dentro del grupo bus. El texto señala explícitamente: \"Una vez identificado que el viaje es en Bus, se clasifica al pasajero según tipo\". Se pregunta la probabilidad de que un viaje elegido al azar sea de bus y de un estudiante.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Se debe entender que el segundo conjunto de porcentajes se aplica solo a los viajes en bus (es decir, el espacio muestral ya está reducido) y que la probabilidad de que un viaje sea 'bus y estudiante' corresponde a P(bus)·P(estudiante | bus). No se puede responder mecánicamente mirando un solo gráfico; hay que articular la secuencia de clasificación y el hecho de que la segunda probabilidad está condicionada al resultado de la primera.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Pequeño gráfico de torta con la proporción de viajes por modo de transporte (bus, metro, auto) y, unido a la sección 'bus', un gráfico de columnas con la proporción de tipos de pasajero (estudiante, adulto, adulto mayor) dentro del conjunto de viajes en bus.",
+      "selected_shape_id": "reduced_sample_space_record"
+    },
+    {
+      "variant_id": "Q55_v6",
+      "scenario_description": "Contexto de participación en talleres culturales de una comuna. Se entrega una tabla de doble entrada: en la primera fila se listan los tipos de institución organizadora (Municipal, Privada, ONG) y en la segunda fila, sus porcentajes sobre el total de participantes. A continuación, en una tabla separada, se muestra la distribución porcentual por rango etario (Niños, Jóvenes, Adultos, Adultos mayores) solo para los talleres municipales, con porcentajes que suman 100 % dentro del grupo municipal. La pregunta pide: \"Si se elige al azar un participante de todos los talleres, ¿cuál es la probabilidad de que participe en un taller municipal y sea joven?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "La persona debe identificar que la primera tabla da una probabilidad sobre el total (ser de taller municipal) y que la segunda tabla da una probabilidad condicional (ser joven dado que es de taller municipal). Debe combinar ambas mediante P(municipal y joven) = P(municipal)·P(joven | municipal) y no caer en distractores que usan el porcentaje de jóvenes como si fuera sobre todos los talleres ni en opciones que suman porcentajes de tablas distintas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "conditional_claim_check"
+    },
+    {
+      "variant_id": "Q55_v7",
+      "scenario_description": "Situación de afiliación previsional con otra representación. Se muestran dos gráficos de líneas: el primero indica, para 2021, la proporción de la población por tipo de previsión (Fonasa, Isapres, Otros), marcando claramente el valor de Fonasa ese año. El segundo, solo para afiliados a Fonasa, muestra en un gráfico de barras la distribución por tramos A, B, C y D. La pregunta no pide el valor, sino elegir cuál de una serie de cálculos corresponde a la probabilidad de \"estar en Fonasa y en el tramo D\" para una persona elegida al azar en 2021. Entre las alternativas, hay un cálculo correcto que multiplica P(Fonasa 2021)·P(D | Fonasa 2021) y cálculos incorrectos que usan P(D) como si fuera global o intercambian condicionante y condicionado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se exige interpretar que el segundo gráfico entrega una distribución interna de Fonasa y que, por tanto, el porcentaje de tramo D es condicional. El estudiante debe traducir la representación en un modelo probabilístico, identificando claramente qué eventos se intersectan y que la probabilidad pedida es conjunción de un evento global y una condición interna. Debe usar la estructura P(Fonasa y D) = P(Fonasa)·P(D | Fonasa) para discriminar entre expresiones, en lugar de hacer un cálculo directo de un solo número extraído del gráfico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Gráfico de líneas que muestra, para un solo año señalado (2021), el porcentaje de población en Fonasa, Isapres y Otros; a un lado, un gráfico de barras verticales con cuatro barras para los tramos A, B, C y D, etiquetado como 'Distribución interna Fonasa 2021'.",
+      "selected_shape_id": "conditional_claim_check"
+    },
+    {
+      "variant_id": "Q55_v8",
+      "scenario_description": "Escenario de un censo educativo. Una infografía muestra que, en una primera etapa, la población escolar se clasifica según tipo de establecimiento (Municipal, Particular subvencionado, Particular pagado) y se presentan los porcentajes respecto del total de estudiantes en un gráfico circular. Luego, en una segunda etapa representada por un diagrama de cajas conectado solo al grupo 'Municipal', se muestra la distribución porcentual de esos estudiantes municipales según jornada (Mañana, Tarde, Completa) con porcentajes que suman 100 % dentro del grupo municipal. El texto enfatiza el procedimiento secuencial: \"Primero se identifica el tipo de establecimiento y, solo si es municipal, se registra la jornada\". Se pide la probabilidad de que un estudiante escogido al azar sea de establecimiento municipal y tenga jornada completa.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender que el paso a la clasificación de jornada ocurre solo dentro del subconjunto municipal, por lo que los porcentajes de jornada son condicionales a estar en establecimiento municipal. Para hallar la probabilidad conjunta 'municipal y jornada completa', debe aplicar la regla multiplicativa P(municipal)·P(jornada completa | municipal), reconociendo el cambio de espacio muestral y evitando usar esos porcentajes como si fueran sobre toda la población escolar.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Gráfico circular que muestra la proporción de estudiantes por tipo de establecimiento, desde cuya sección 'Municipal' parte un diagrama que muestra tres recuadros (Mañana, Tarde, Completa) con porcentajes que suman 100 % dentro de los municipales.",
+      "selected_shape_id": "reduced_sample_space_record"
+    },
+    {
+      "variant_id": "Q55_v9",
+      "scenario_description": "Contexto de vacunación. Un gráfico de barras apiladas representa la población adulta separada por tipo de sistema de salud (Público, Privado, Sin cobertura). Cada barra tiene la misma altura (100 % de la población) pero está segmentada de manera que la barra 'Público' aparece destacada con su proporción sobre el total anotada aparte (por ejemplo, 70 %). En otro gráfico, tipo torta, se presenta la distribución de los adultos del sistema público según estado de vacunación (Sin dosis, Esquema incompleto, Esquema completo), con porcentajes internos que suman 100 % en el grupo público. Se pregunta: \"Si se elige al azar un adulto del país, ¿cuál es la probabilidad de que pertenezca al sistema público y tenga esquema de vacunación completo?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Es necesario distinguir entre la información global sobre qué porcentaje de adultos está en el sistema público y la distribución condicional del estado de vacunación solo dentro de ese sistema. Para resolver, la persona debe identificar la probabilidad conjunta como P(público)·P(esquema completo | público), evitando errores de tratar el porcentaje de esquema completo como si fuera sobre toda la población o de sumar porcentajes de gráficos distintos. Así se fuerza la comprensión del carácter condicional del segundo gráfico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Gráfico de barras apiladas para tres categorías de sistema de salud, con la barra de sistema público marcada con su porcentaje sobre la población; junto a él, gráfico de torta con la proporción de adultos del sistema público según estado de vacunación.",
+      "selected_shape_id": "reduced_sample_space_record"
+    },
+    {
+      "variant_id": "Q55_v10",
+      "scenario_description": "Escenario de afiliación previsional idéntico al dominio original pero con otra forma de pregunta. Se mantienen dos gráficos de torta: uno con la distribución de la población nacional por tipo de previsión (Fonasa, Isapres, Otros) y otro que muestra la distribución interna de los afiliados a Fonasa por tramos A, B, C y D. En vez de pedir directamente la probabilidad numérica, se proponen cuatro afirmaciones sobre la probabilidad de que una persona escogida al azar pertenezca al tramo C de Fonasa. Cada afirmación da un cálculo distinto (por ejemplo, '0,XX', '0,YY', 'P(Fonasa)·P(C|Fonasa)', 'P(C)/P(Fonasa)'), expresado en palabras o fórmulas. Se pide seleccionar la afirmación que describe correctamente cómo calcular esa probabilidad.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Aunque la representación visual es muy similar a la original, la forma de respuesta obliga a explicitar el modelo probabilístico que une ambos gráficos. La persona debe reconocer que el segundo gráfico es condicional a Fonasa y, por tanto, que la probabilidad de 'estar en Fonasa y en el tramo C' se obtiene mediante P(Fonasa)·P(C | Fonasa). Debe identificar y rechazar distractores que usan el porcentaje de C como si fuera global o que construyen razones con un denominador equivocado, demostrando comprensión del porqué del método más que una aplicación mecánica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Dos gráficos de torta: uno con la distribución de la población por tipo de previsión de salud (Fonasa, Isapres, Otros) y otro con la distribución de los afiliados a Fonasa por tramos A, B, C y D, etiquetados con sus porcentajes.",
+      "selected_shape_id": "conditional_claim_check"
+    }
+  ]
+}

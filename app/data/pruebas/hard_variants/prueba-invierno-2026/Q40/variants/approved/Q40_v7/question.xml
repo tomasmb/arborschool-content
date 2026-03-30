@@ -1,0 +1,229 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v7" title="Q40_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El costo total, en pesos, de un viaje en taxi depende solo de la distancia recorrida x, en kilómetros.</p>
+    <p>Este costo se modela mediante la función 
+      <m:math>
+        <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>750</m:mn><m:mi>x</m:mi>
+      </m:math>,
+      donde x es la distancia recorrida, en kilómetros.</p>
+    <p>En la siguiente tabla se muestran algunos ejemplos de este modelo:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Distancia recorrida (km)</th>
+          <th>Costo del viaje (pesos)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2</td>
+          <td>1500</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>2250</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>3750</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Según este modelo, ¿cuál de las siguientes afirmaciones describe correctamente el costo del viaje en taxi?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Un viaje de 4 km cuesta $3500, porque se cobran $750 por cada kilómetro recorrido.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Con el modelo <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mi>x</m:mi></m:mrow></m:math>, para 4 km se obtiene <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>3000</m:mn></m:mrow></m:math>. Por lo tanto, un viaje de 4 km cuesta $3000 y no $3500.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Al duplicar la distancia recorrida, el costo del viaje también se duplica y no existe un cobro fijo inicial.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El modelo es <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mi>x</m:mi></m:mrow></m:math>. Si se duplica la distancia, entonces <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mrow><m:mn>2</m:mn><m:mi>x</m:mi></m:mrow><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mo>×</m:mo><m:mrow><m:mn>2</m:mn><m:mi>x</m:mi></m:mrow><m:mo>=</m:mo><m:mn>2</m:mn><m:mo>×</m:mo><m:mn>750</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:mrow></m:math>, así que el costo también se duplica. Además, como la expresión no tiene término fijo sumando, para 0 km se cumple <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mo>×</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, por lo que no existe cobro fijo inicial.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">El costo del viaje aumenta $1500 por cada kilómetro recorrido, ya que por 2 km se pagan $1500.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Que 2 km cuesten $1500 significa <m:math><m:mrow><m:mn>1500</m:mn><m:mo>÷</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>750</m:mn></m:mrow></m:math> pesos por kilómetro. Además, entre 2 km y 3 km el costo pasa de $1500 a $2250, y <m:math><m:mrow><m:mn>2250</m:mn><m:mo>−</m:mo><m:mn>1500</m:mn><m:mo>=</m:mo><m:mn>750</m:mn></m:mrow></m:math>. Entonces el aumento es de $750 por cada kilómetro, no de $1500.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Un viaje de 0 km tendría un costo de $750, porque siempre se cobra esa cantidad aunque el taxi no se mueva.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con el modelo <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mi>x</m:mi></m:mrow></m:math>, para 0 km se obtiene <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mo>×</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. Por lo tanto, un viaje de 0 km tendría costo $0 y no $750.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Revisa el modelo <m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>750</m:mn><m:mi>x</m:mi></m:mrow></m:math> y analiza cómo cambia el costo según la distancia recorrida.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer la función del costo</strong></p>
+            <p>El modelo dado es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Esto significa que el costo se obtiene multiplicando la distancia recorrida por 750.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar si existe cobro fijo inicial</strong></p>
+            <p>Un cobro fijo inicial aparecería como un número sumando, por ejemplo:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>500</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Pero en este caso no hay ninguna suma. Entonces no existe cobro fijo inicial.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar qué ocurre al duplicar la distancia</strong></p>
+            <p>Si la distancia es x, el costo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Si la distancia se duplica a 2x, el costo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mrow><m:mn>2</m:mn><m:mi>x</m:mi></m:mrow><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mrow><m:mn>2</m:mn><m:mi>x</m:mi></m:mrow>
+                  <m:mo>=</m:mo>
+                  <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>750</m:mn><m:mi>x</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>2</m:mn><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, al duplicar la distancia, el costo también se duplica.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar las alternativas con cálculos concretos</strong></p>
+            <p><em>Opción A:</em> para 4 km,</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mo>·</m:mo><m:mn>4</m:mn>
+                  <m:mo>=</m:mo><m:mn>3000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>No cuesta $3500, así que es falsa.</p>
+            <p><em>Opción C:</em> entre 2 km y 3 km, el costo cambia de 1500 a 2250.</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>2250</m:mn><m:mo>−</m:mo><m:mn>1500</m:mn>
+                  <m:mo>=</m:mo><m:mn>750</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces el aumento por 1 km es $750, no $1500.</p>
+            <p><em>Opción D:</em> para 0 km,</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>750</m:mn><m:mo>·</m:mo><m:mn>0</m:mn>
+                  <m:mo>=</m:mo><m:mn>0</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>No cuesta $750, así que es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es la <strong>opción B</strong>: al duplicar la distancia recorrida, el costo también se duplica y no existe un cobro fijo inicial.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

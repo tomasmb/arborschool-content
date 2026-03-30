@@ -1,0 +1,192 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q57_v3" title="Tanque de agua y función lineal" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      Se registra la cantidad de agua que queda en un estanque, en función del tiempo (en minutos) desde que se abre una llave. Los datos obtenidos son:
+      <br />- Después de 0 minutos, hay 640 litros de agua.
+      <br />- Después de 4 minutos, hay 616 litros de agua.
+      <br />- Después de 8 minutos, hay 592 litros de agua.
+      <br />- Después de 12 minutos, hay 568 litros de agua.
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>
+        ¿Cuál de las siguientes funciones modela la cantidad de agua que queda en el estanque en función de los minutos que la llave permanece abierta, tal que 
+        <m:math>
+          <m:mi>x</m:mi>
+        </m:math>
+        representa los minutos transcurridos desde que se abre la llave?
+      </qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>f</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>x</m:mi>
+          <m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>6</m:mn>
+          <m:mi>x</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>640</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta función no coincide con los datos. Por ejemplo, para <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:math>, se obtiene <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>6</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mn>24</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mn>664</m:mn></m:math>, pero en la tabla a los 4 minutos hay <m:math><m:mn>616</m:mn></m:math> litros.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>g</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>x</m:mi>
+          <m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>6</m:mn>
+          <m:mi>x</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>640</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La cantidad inicial es <m:math><m:mn>640</m:mn></m:math> litros y cada <m:math><m:mn>4</m:mn></m:math> minutos disminuye en <m:math><m:mn>24</m:mn></m:math> litros, por lo que la tasa es <m:math><m:mfrac><m:mrow><m:mo>-</m:mo><m:mn>24</m:mn></m:mrow><m:mn>4</m:mn></m:mfrac><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn></m:math> litros por minuto. Entonces el modelo es <m:math><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>640</m:mn></m:math>. Verificación: <m:math><m:mi>g</m:mi><m:mo>(</m:mo><m:mn>8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn><m:mo>×</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>48</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mn>592</m:mn></m:math>, que coincide con la tabla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>p</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>x</m:mi>
+          <m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>4</m:mn>
+          <m:mi>x</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>640</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esta función tiene tasa de cambio <m:math><m:mo>-</m:mo><m:mn>4</m:mn></m:math> litros por minuto, pero los datos muestran una disminución de <m:math><m:mn>24</m:mn></m:math> litros en <m:math><m:mn>4</m:mn></m:math> minutos, es decir, <m:math><m:mfrac><m:mrow><m:mo>-</m:mo><m:mn>24</m:mn></m:mrow><m:mn>4</m:mn></m:mfrac><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn></m:math>. Además, para <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:math>, resulta <m:math><m:mi>p</m:mi><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>4</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>16</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mn>624</m:mn></m:math>, y no <m:math><m:mn>616</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>h</m:mi>
+          <m:mo>(</m:mo>
+          <m:mi>x</m:mi>
+          <m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>6</m:mn>
+          <m:mi>x</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>616</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aunque la pendiente <m:math><m:mo>-</m:mo><m:mn>6</m:mn></m:math> es consistente con la variación, el valor inicial no coincide. Según el enunciado, cuando <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math> hay <m:math><m:mn>640</m:mn></m:math> litros, pero esta función da <m:math><m:mi>h</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn><m:mo>×</m:mo><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>616</m:mn><m:mo>=</m:mo><m:mn>616</m:mn></m:math>, que no coincide con los <m:math><m:mn>640</m:mn></m:math> litros iniciales.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el valor inicial</strong></p>
+            <p>El enunciado dice que después de 0 minutos hay 640 litros de agua. Entonces, la función debe cumplir:</p>
+            <p><m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mi>m</m:mi><m:mi>x</m:mi><m:mo>+</m:mo><m:mi>b</m:mi></m:math> con <m:math><m:mi>b</m:mi><m:mo>=</m:mo><m:mn>640</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la tasa de cambio</strong></p>
+            <p>Entre 0 y 4 minutos, la cantidad de agua pasa de 640 a 616 litros.</p>
+            <p>La variación en agua es:</p>
+            <p><m:math><m:mn>616</m:mn><m:mo>-</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>24</m:mn></m:math></p>
+            <p>La variación en tiempo es:</p>
+            <p><m:math><m:mn>4</m:mn><m:mo>-</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:math></p>
+            <p>Entonces la pendiente es:</p>
+            <p><m:math><m:mi>m</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mo>-</m:mo><m:mn>24</m:mn></m:mrow><m:mn>4</m:mn></m:mfrac><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn></m:math></p>
+            <p>La cantidad de agua disminuye 6 litros por minuto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la función lineal</strong></p>
+            <p>Usando pendiente <m:math><m:mo>-</m:mo><m:mn>6</m:mn></m:math> e intercepto <m:math><m:mn>640</m:mn></m:math>, se obtiene:</p>
+            <p><m:math><m:mi>y</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>640</m:mn></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con otro dato de la tabla</strong></p>
+            <p>Probamos con <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>12</m:mn></m:math>:</p>
+            <p><m:math><m:mo>-</m:mo><m:mn>6</m:mn><m:mo>×</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>72</m:mn><m:mo>+</m:mo><m:mn>640</m:mn><m:mo>=</m:mo><m:mn>568</m:mn></m:math></p>
+            <p>Coincide exactamente con el dato entregado.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La función que modela la situación es <m:math><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>6</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>640</m:mn></m:math>, correspondiente a la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

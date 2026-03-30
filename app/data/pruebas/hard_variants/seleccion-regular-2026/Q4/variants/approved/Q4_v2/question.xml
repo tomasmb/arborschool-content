@@ -1,0 +1,138 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q4_v2" title="Q4_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una promoción, se paga solo la tercera parte del precio de un cuaderno. Una persona pagó $<m:math><m:mn>0,12</m:mn></m:math> por el cuaderno con esta promoción. ¿Cuál era el precio original del cuaderno?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">0,04<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si el precio original fuera 0,04, la tercera parte sería 0,04 ÷ 3 = 0,0133..., que no coincide con 0,12. Además, 0,04 es menor que 0,12, y el precio original debe ser mayor que lo pagado en la promoción.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">0,36<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si 0,12 corresponde a la tercera parte del precio original, entonces el precio completo se obtiene multiplicando por 3: 0,12 × 3 = 0,36. Por lo tanto, el precio original del cuaderno era 0,36.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">0,12<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el precio original fuera 0,12, la tercera parte sería 0,12 ÷ 3 = 0,04. Pero la persona pagó 0,12 en la promoción, así que 0,12 no puede ser el precio original.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">0,24<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el precio original fuera 0,24, la tercera parte sería 0,24 ÷ 3 = 0,08. Como la persona pagó 0,12, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la promoción</strong></p>
+            <p>El enunciado dice que se paga solo la tercera parte del precio original. Eso significa que el valor pagado corresponde a dividir el precio original entre 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar el dato</strong></p>
+            <p>La persona pagó:</p>
+            <p><m:math><m:mn>0,12</m:mn></m:math></p>
+            <p>Ese valor representa la tercera parte del precio original.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Recuperar el precio completo</strong></p>
+            <p>Si una tercera parte es <m:math><m:mn>0,12</m:mn></m:math>, entonces el total se obtiene multiplicando por 3:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0,12</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>0,36</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar el resultado</strong></p>
+            <p>Comprobamos que la tercera parte de <m:math><m:mn>0,36</m:mn></m:math> es <m:math><m:mn>0,12</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0,36</m:mn>
+                  <m:mo>÷</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>0,12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La verificación coincide con lo indicado en el enunciado.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El precio original del cuaderno era <m:math><m:mn>0,36</m:mn></m:math>.</p>
+            <p>La alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,147 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q16_v1" title="Q16_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La variación porcentual anual del costo de la vivienda se calcula comparando el valor del índice de un mes con el valor del mismo mes del año anterior.</p>
+    <p>En la siguiente ficha se muestran los valores del "Índice de costo de la vivienda" para abril en dos años consecutivos:
+    <br />- Abril 2023: 80 puntos
+    <br />- Abril 2024: 92 puntos</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál fue la variación porcentual anual del índice de costo de la vivienda entre abril de 2023 y abril de 2024?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">12 %<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El aumento del índice fue de 12 puntos, porque 92 − 80 = 12, pero la variación porcentual se calcula respecto del valor inicial: 12 ÷ 80 = 0,15, es decir, 15 %.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">15 %<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La diferencia entre los índices es 92 − 80 = 12 puntos. Luego, la variación porcentual anual es 12 ÷ 80 = 0,15. Como 0,15 equivale a 15 %, la respuesta correcta es 15 %.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">92 %<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. 92 corresponde al valor del índice en abril de 2024, no a la variación porcentual. La variación se obtiene comparando ambos valores: 92 − 80 = 12 y 12 ÷ 80 = 0,15, que equivale a 15 %.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">115 %<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se compara el valor final con el inicial, se obtiene 92 ÷ 80 = 1,15, lo que significa que el índice final es 115 % del valor inicial. Pero la variación porcentual anual es solo el aumento respecto del inicial: 1,15 − 1 = 0,15, es decir, 15 %.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el valor inicial y el valor final</strong></p>
+            <p>El índice en abril de 2023 es 80 puntos y el índice en abril de 2024 es 92 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular cuánto aumentó el índice</strong></p>
+            <p>La diferencia es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>92</mn>
+                <mo>−</mo>
+                <mn>80</mn>
+                <mo>=</mo>
+                <mn>12</mn>
+              </mrow>
+            </math>
+            <p>El índice aumentó 12 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Dividir el aumento por el valor inicial</strong></p>
+            <p>La variación porcentual anual se calcula respecto del valor del año anterior, que es 80.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>12</mn>
+                  <mn>80</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,15</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Convertir a porcentaje</strong></p>
+            <p>Para pasar de decimal a porcentaje, se multiplica por 100.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,15</mn>
+                <mo>×</mo>
+                <mn>100</mn>
+                <mo>=</mo>
+                <mn>15</mn>
+              </mrow>
+            </math>
+            <p>Entonces, la variación porcentual anual fue 15 %.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>15 %</strong>, es decir, <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

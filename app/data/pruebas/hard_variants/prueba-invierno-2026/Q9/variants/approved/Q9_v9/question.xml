@@ -1,0 +1,214 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q9_v9" title="Q9_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un juego de mesa, el puntaje total de un jugador se calcula sumando los puntos aportados por cada ficha que captura.</p>
+    <p>Considera la siguiente situación y la información que se presenta a continuación:</p>
+    <p>En una partida, un jugador captura las siguientes fichas de su rival:</p>
+    <ul>
+      <li>3 torres</li>
+      <li>5 caballos</li>
+      <li>6 peones</li>
+    </ul>
+    <div>
+      <p>Puntaje por tipo de ficha:</p>
+      <table border="1">
+        <tr>
+          <th>Tipo de ficha</th>
+          <th>Puntaje por ficha (puntos)</th>
+        </tr>
+        <tr>
+          <td>Torre</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>Caballo</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>Peón</td>
+          <td>9</td>
+        </tr>
+      </table>
+      <p>
+        <img src="requiere_nueva_imagen.png" alt="Ilustración de un tablero de ajedrez visto desde arriba. En un recuadro a un costado aparecen tres tipos de fichas: una torre, un caballo y un peón, cada una con su nombre debajo. Junto a la torre aparece el número 7, junto al caballo el número 8 y junto al peón el número 9, indicando el puntaje por ficha. No se muestran cantidades capturadas, solo los tipos de fichas y sus puntajes." />
+      </p>
+    </div>
+    <p>¿Cuál de las siguientes expresiones permite calcular el puntaje total obtenido por esas capturas?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mn>7</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mn>9</m:mn>
+          </m:mrow>
+        </m:math>
+        (puntos)
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión solo suma los puntajes de una torre, un caballo y un peón: 7 + 8 + 9 = 24. Pero en el problema se capturaron 3 torres, 5 caballos y 6 peones, así que deben considerarse esas cantidades.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>)</m:mo>
+            <m:mo>⋅</m:mo>
+            <m:mo>(</m:mo><m:mn>7</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mn>9</m:mn><m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        (puntos)
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión calcula primero 3 + 5 + 6 = 14 y 7 + 8 + 9 = 24, y luego 14 × 24 = 336. Ese resultado no representa el puntaje total, porque mezcla todas las cantidades con todos los puntajes al mismo tiempo, en vez de multiplicar cada tipo de ficha por su puntaje correspondiente.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mn>3</m:mn><m:mo>⋅</m:mo><m:mn>7</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>5</m:mn><m:mo>⋅</m:mo><m:mn>8</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>6</m:mn><m:mo>⋅</m:mo><m:mn>9</m:mn>
+          </m:mrow>
+        </m:math>
+        (puntos)
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Esta expresión multiplica cada cantidad de fichas por su puntaje correspondiente: 3 × 7 = 21, 5 × 8 = 40 y 6 × 9 = 54. Luego suma esos aportes: 21 + 40 + 54 = 115. Por eso representa correctamente el puntaje total.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mn>3</m:mn><m:mo>⋅</m:mo><m:mn>8</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>5</m:mn><m:mo>⋅</m:mo><m:mn>9</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>6</m:mn><m:mo>⋅</m:mo><m:mn>7</m:mn>
+          </m:mrow>
+        </m:math>
+        (puntos)
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión usa puntajes que no corresponden a cada ficha. Calcula 3 × 8 = 24, 5 × 9 = 45 y 6 × 7 = 42, y luego 24 + 45 + 42 = 111. Pero según la tabla, la torre vale 7, el caballo vale 8 y el peón vale 9, por lo que esas multiplicaciones no representan la situación dada.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar la cantidad y el puntaje de cada tipo de ficha</strong></p>
+            <p>Se capturaron 3 torres, 5 caballos y 6 peones.</p>
+            <p>Según la tabla: torre = 7 puntos, caballo = 8 puntos y peón = 9 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el aporte de cada tipo de ficha</strong></p>
+            <p>Torres:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mo>⋅</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>21</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Caballos:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>5</m:mn><m:mo>⋅</m:mo><m:mn>8</m:mn><m:mo>=</m:mo><m:mn>40</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Peones:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>6</m:mn><m:mo>⋅</m:mo><m:mn>9</m:mn><m:mo>=</m:mo><m:mn>54</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Sumar los puntajes obtenidos</strong></p>
+            <m:math>
+              <m:mrow>
+                <m:mn>21</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>+</m:mo><m:mn>54</m:mn><m:mo>=</m:mo><m:mn>115</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Escribir la expresión que permite hacer ese cálculo</strong></p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mo>⋅</m:mo><m:mn>7</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>5</m:mn><m:mo>⋅</m:mo><m:mn>8</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>6</m:mn><m:mo>⋅</m:mo><m:mn>9</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión correcta es la alternativa C, porque multiplica cada cantidad de fichas por su puntaje correspondiente y luego suma los resultados.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

@@ -1,0 +1,158 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v7" title="Q64_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la probabilidad de obtener cada cara de un dado cargado al lanzarlo. Se sabe que la suma de las probabilidades de todas las caras es igual a 1, pero falta completar un valor.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Número de la cara</th>
+          <th>Probabilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>0,2</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>?</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>0,1</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>¿Cuál de las siguientes afirmaciones es verdadera con respecto a la información entregada?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La probabilidad de obtener un número mayor que 4 al lanzar este dado es 0,4.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Primero se completa la tabla usando que la suma de probabilidades es 1: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,6</mn></math>, por lo tanto la probabilidad faltante es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>−</mo><mn>0,6</mn><mo>=</mo><mn>0,4</mn></math>. Un número mayor que 4 es 5 o 6, así que su probabilidad es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,5</mn></math>, no 0,4.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La probabilidad de obtener un número impar al lanzar este dado es 0,7.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Primero, la probabilidad faltante es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>−</mo><mn>0,6</mn><mo>=</mo><mn>0,4</mn></math>, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,6</mn></math>. Los números impares son 1, 3 y 5, entonces la probabilidad de obtener un número impar es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La probabilidad de obtener un 1 o un 2 al lanzar este dado es 0,5.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad de obtener un 1 o un 2 se calcula sumando las probabilidades de ambas caras: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math>. Por lo tanto, esa afirmación es falsa, porque el valor correcto es 0,3 y no 0,5.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La probabilidad de obtener un número par al lanzar este dado es 0,6.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Los números pares son 2, 4 y 6. Su probabilidad total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math>. Entonces la probabilidad de obtener un número par no es 0,6, sino 0,3.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Sumar las probabilidades conocidas</strong></p>
+            <p>En la tabla aparecen las probabilidades de las caras 1, 2, 3, 4 y 6:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,6</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Hallar la probabilidad faltante de la cara 5</strong></p>
+            <p>Como la suma de todas las probabilidades debe ser 1, se tiene:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>−</mo><mn>0,6</mn><mo>=</mo><mn>0,4</mn></math></p>
+            <p>Entonces, la probabilidad de obtener la cara 5 es 0,4.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada afirmación</strong></p>
+            <p><strong>Alternativa A:</strong> número mayor que 4 significa 5 o 6.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,5</mn></math></p>
+            <p>No es 0,4, así que es falsa.</p>
+            <p><strong>Alternativa B:</strong> número impar significa 1, 3 o 5.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,4</mn><mo>=</mo><mn>0,7</mn></math></p>
+            <p>Sí es 0,7, así que es verdadera.</p>
+            <p><strong>Alternativa C:</strong> obtener un 1 o un 2.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math></p>
+            <p>No es 0,5, así que es falsa.</p>
+            <p><strong>Alternativa D:</strong> número par significa 2, 4 o 6.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math></p>
+            <p>No es 0,6, así que es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única afirmación verdadera es la alternativa B: la probabilidad de obtener un número impar al lanzar este dado es 0,7.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,194 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v10" title="Q40_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El consumo de combustible de un automóvil es directamente proporcional a la distancia que recorre.</p>
+    <p>El consumo total <em>C</em> (en litros) y la distancia recorrida <em>d</em> (en kilómetros) se relacionan mediante una función de la forma
+      <m:math>
+        <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi>d</m:mi>
+      </m:math>, donde <em>a</em> es constante.
+    </p>
+    <p>En la siguiente tabla se presentan algunos ejemplos de recorridos:</p>
+    <table>
+      <tr>
+        <th>Distancia recorrida</th>
+        <th>Combustible consumido</th>
+      </tr>
+      <tr>
+        <td>180 km</td>
+        <td>12 L</td>
+      </tr>
+      <tr>
+        <td>90 km</td>
+        <td>6 L</td>
+      </tr>
+    </table>
+    <p>¿Cuántos litros de combustible se necesitan para recorrer 30 km?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">12 L<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Según la tabla, 180 km requieren 12 L. Como 30 km es la sexta parte de 180 km, el combustible también debe ser la sexta parte de 12 L: 12 ÷ 6 = 2. Por lo tanto, para 30 km no se necesitan 12 L, sino 2 L.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3 L<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. De la tabla se obtiene una razón constante de 12 ÷ 180 = 6 ÷ 90 = 1 ÷ 15 litro por kilómetro. Entonces, para 30 km se necesita 30 × 1 ÷ 15 = 2 L. Por lo tanto, 3 L no corresponde al consumo para 30 km.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2 L<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Como el consumo es directamente proporcional a la distancia, la razón litros por kilómetro es constante. De la tabla: 12 ÷ 180 = 1 ÷ 15 litro por kilómetro. Entonces, para 30 km se necesita 30 × 1 ÷ 15 = 2 L. También se puede ver que 30 km es la tercera parte de 90 km, por lo que 6 ÷ 3 = 2 L.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">1 L<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si 90 km requieren 6 L y 30 km es la tercera parte de 90 km, entonces el combustible también debe dividirse por 3: 6 ÷ 3 = 2. Por lo tanto, para 30 km se necesitan 2 L y no 1 L.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar que la relación es de proporcionalidad directa</strong></p>
+            <p>El enunciado indica que el consumo de combustible es directamente proporcional a la distancia. Eso significa que existe una constante <m:math><m:mi>a</m:mi></m:math> tal que:</p>
+            <p>
+              <m:math>
+                <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi>d</m:mi>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la razón entre litros y kilómetros debe ser constante.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la constante de proporcionalidad</strong></p>
+            <p>Usando el dato de 180 km y 12 L:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>a</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>12</m:mn><m:mn>180</m:mn></m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Simplificando:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mfrac><m:mn>12</m:mn><m:mn>180</m:mn></m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mfrac><m:mn>1</m:mn><m:mn>15</m:mn></m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces la función es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>15</m:mn></m:mfrac><m:mi>d</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Evaluar la función en 30 km</strong></p>
+            <p>Sustituyendo <m:math><m:mn>30</m:mn></m:math> en la función:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mn>30</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>15</m:mn></m:mfrac><m:mn>30</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mn>30</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mfrac><m:mn>30</m:mn><m:mn>15</m:mn></m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi><m:mo>(</m:mo><m:mn>30</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificación con otro dato de la tabla</strong></p>
+            <p>También se puede usar que 90 km requieren 6 L. Como 30 km es la tercera parte de 90 km:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>6</m:mn><m:mo>÷</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Se obtiene el mismo resultado, lo que confirma la respuesta.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Para recorrer 30 km se necesitan <strong>2 L</strong> de combustible. La alternativa correcta es <strong>ChoiceC</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,203 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v1" title="Q40_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos servicios de taxi cobran en función de la distancia <em>d</em>, en kilómetros, recorrida en un viaje.</p>
+    <p>Para calcular el cobro total, en pesos, se utilizan las siguientes funciones:</p>
+    <p>
+      Taxi 1:
+      <m:math>
+        <m:msub><m:mi>C</m:mi><m:mn>1</m:mn></m:msub>
+        <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>1200</m:mn>
+        <m:mo>+</m:mo>
+        <m:mn>300</m:mn><m:mi>d</m:mi>
+      </m:math>
+        Taxi 2:
+      <m:math>
+        <m:msub><m:mi>C</m:mi><m:mn>2</m:mn></m:msub>
+        <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mi>p</m:mi>
+        <m:mo>+</m:mo>
+        <m:mn>200</m:mn><m:mi>d</m:mi>
+      </m:math>
+    </p>
+    <p>Si para un recorrido de
+      <m:math>
+        <m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn>
+      </m:math>
+      km ambas empresas cobran lo mismo, ¿cuál debe ser el monto fijo, en pesos, que cobre la Empresa 2 (es decir, el valor de
+      <m:math>
+        <m:mi>p</m:mi>
+      </m:math>
+      )?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">1000 pesos<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>, el Taxi 1 cobra <m:math><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>300</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>3&#160;000</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>. Si <m:math><m:mi>p</m:mi><m:mo>=</m:mo><m:mn>1000</m:mn></m:math>, entonces el Taxi 2 cobra <m:math><m:mn>1000</m:mn><m:mo>+</m:mo><m:mn>200</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>+</m:mo><m:mn>2&#160;000</m:mn><m:mo>=</m:mo><m:mn>3&#160;000</m:mn></m:math>. Como <m:math><m:mn>3&#160;000</m:mn><m:mo>≠</m:mo><m:mn>4&#160;200</m:mn></m:math>, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">2200 pesos<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Para <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>, el Taxi 1 cobra <m:math><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>300</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>. Entonces el Taxi 2 debe cumplir <m:math><m:mi>p</m:mi><m:mo>+</m:mo><m:mn>200</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>, es decir, <m:math><m:mi>p</m:mi><m:mo>+</m:mo><m:mn>2&#160;000</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>. Al restar <m:math><m:mn>2&#160;000</m:mn></m:math> en ambos lados, se obtiene <m:math><m:mi>p</m:mi><m:mo>=</m:mo><m:mn>2&#160;200</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">1200 pesos<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Para <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>, el Taxi 1 cobra <m:math><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>300</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>3&#160;000</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>. Si <m:math><m:mi>p</m:mi><m:mo>=</m:mo><m:mn>1200</m:mn></m:math>, entonces el Taxi 2 cobra <m:math><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>200</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>2&#160;000</m:mn><m:mo>=</m:mo><m:mn>3&#160;200</m:mn></m:math>. Como <m:math><m:mn>3&#160;200</m:mn><m:mo>≠</m:mo><m:mn>4&#160;200</m:mn></m:math>, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">4000 pesos<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Para <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>, el Taxi 1 cobra <m:math><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>300</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>1200</m:mn><m:mo>+</m:mo><m:mn>3&#160;000</m:mn><m:mo>=</m:mo><m:mn>4&#160;200</m:mn></m:math>. Si <m:math><m:mi>p</m:mi><m:mo>=</m:mo><m:mn>4000</m:mn></m:math>, entonces el Taxi 2 cobra <m:math><m:mn>4000</m:mn><m:mo>+</m:mo><m:mn>200</m:mn><m:mo>×</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>4000</m:mn><m:mo>+</m:mo><m:mn>2&#160;000</m:mn><m:mo>=</m:mo><m:mn>6&#160;000</m:mn></m:math>. Como <m:math><m:mn>6&#160;000</m:mn><m:mo>≠</m:mo><m:mn>4&#160;200</m:mn></m:math>, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular cuánto cobra el Taxi 1 para 10 km</strong></p>
+            <p>La función del Taxi 1 es:</p>
+            <m:math>
+              <m:msub><m:mi>C</m:mi><m:mn>1</m:mn></m:msub>
+              <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>1200</m:mn>
+              <m:mo>+</m:mo>
+              <m:mn>300</m:mn><m:mi>d</m:mi>
+            </m:math>
+            <p>Reemplazando <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>10</m:mn></m:math>:</p>
+            <m:math>
+              <m:msub><m:mi>C</m:mi><m:mn>1</m:mn></m:msub>
+              <m:mo>(</m:mo><m:mn>10</m:mn><m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>1200</m:mn>
+              <m:mo>+</m:mo>
+              <m:mn>300</m:mn><m:mo>×</m:mo><m:mn>10</m:mn>
+              <m:mo>=</m:mo>
+              <m:mn>1200</m:mn>
+              <m:mo>+</m:mo>
+              <m:mn>3&#160;000</m:mn>
+              <m:mo>=</m:mo>
+              <m:mn>4&#160;200</m:mn>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Igualar el cobro del Taxi 2 a 4 200 pesos</strong></p>
+            <p>La función del Taxi 2 es:</p>
+            <m:math>
+              <m:msub><m:mi>C</m:mi><m:mn>2</m:mn></m:msub>
+              <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mi>p</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>200</m:mn><m:mi>d</m:mi>
+            </m:math>
+            <p>Como para 10 km ambas empresas cobran lo mismo, debe cumplirse:</p>
+            <m:math>
+              <m:msub><m:mi>C</m:mi><m:mn>2</m:mn></m:msub>
+              <m:mo>(</m:mo><m:mn>10</m:mn><m:mo>)</m:mo>
+              <m:mo>=</m:mo>
+              <m:mn>4&#160;200</m:mn>
+            </m:math>
+            <p>Entonces:</p>
+            <m:math>
+              <m:mi>p</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>200</m:mn><m:mo>×</m:mo><m:mn>10</m:mn>
+              <m:mo>=</m:mo>
+              <m:mn>4&#160;200</m:mn>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la ecuación</strong></p>
+            <m:math>
+              <m:mi>p</m:mi>
+              <m:mo>+</m:mo>
+              <m:mn>2&#160;000</m:mn>
+              <m:mo>=</m:mo>
+              <m:mn>4&#160;200</m:mn>
+            </m:math>
+            <p>Restamos <m:math><m:mn>2&#160;000</m:mn></m:math> en ambos lados:</p>
+            <m:math>
+              <m:mi>p</m:mi>
+              <m:mo>=</m:mo>
+              <m:mn>4&#160;200</m:mn>
+              <m:mo>−</m:mo>
+              <m:mn>2&#160;000</m:mn>
+              <m:mo>=</m:mo>
+              <m:mn>2&#160;200</m:mn>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El monto fijo que debe cobrar la Empresa 2 es <strong>2 200 pesos</strong>.</p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,132 @@
+{
+  "source_question_id": "Q19",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q19_v6",
+      "scenario_description": "Se presenta un extracto bancario simplificado: \"Saldo inicial: $100. Operación 1: el banco mantiene el 75 % del saldo. Operación 2: el banco vuelve a mantener el 75 % del nuevo saldo\". Luego se pregunta directamente: \"¿Con cuánto dinero queda finalmente el cliente?\". El estudiante debe calcular el 75 % del 75 % de 100 como producto directo de porcentajes sobre la misma base encadenada. Los distractores se diseñan como: solo aplicar una vez el 75 % (increment_only), sumar al saldo inicial el monto obtenido en el primer 75 % (base_plus_increment) y una sobreestimación por error decimal o tratar 75 como número entero sin porcentaje (gross_overestimate).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "Obliga a entender que cada 75 % se aplica al saldo vigente y no a una cantidad fija separada; no basta recordar la receta de \"sacar porcentaje\", sino comprender que se encadenan dos reducciones sucesivas sobre la misma base inicial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q19_v7",
+      "scenario_description": "Se describe un fondo de becas de $100: \"Primero se asigna el 75 % del fondo a estudiantes seleccionados. Luego, del dinero ya asignado, se destina el 75 % a estudiantes de regiones\". En lugar de preguntar por el valor numérico en forma directa, se plantean varias afirmaciones del tipo: A) \"Los estudiantes de regiones reciben $75 en total\" (solo primer 75 %, increment_only), B) \"Reciben $175 en total\" (base + primer monto, base_plus_increment), C) \"Reciben $56,25 en total\" (producto correcto de 0,75 × 0,75 × 100) y D) una cifra muy grande coherente con tratar 75 como número entero o sin mover la coma (gross_overestimate). Se pide elegir la afirmación correcta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominant"
+      ],
+      "required_reasoning": "Para decidir la afirmación correcta, el estudiante debe modelar la situación como una aplicación encadenada de porcentajes (0,75 del 0,75 de 100), descartando las opciones que interpretan el 75 % solo una vez o lo suman a la base; no basta con ejecutar un cálculo aislado sin interpretar el rol de cada paso.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q19_v8",
+      "scenario_description": "Se presenta un registro de bodega en formato de listado: \"Inventario inicial: 100 cajas. Revisión 1: solo se consideran utilizables el 75 % de las cajas. Revisión 2: de las cajas utilizables, solo el 75 % están en perfecto estado\". Luego se pregunta directamente: \"¿Cuántas cajas en perfecto estado quedan respecto de las 100 iniciales?\". La operación implícita es el 75 % del 75 % de 100. Los distractores siguen la misma lógica: número que representa solo el 75 % de 100 (increment_only), suma de las cajas iniciales más ese 75 % (base_plus_increment) y una cifra muy grande o sin coma desplazada (gross_overestimate).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que el segundo 75 % no se aplica de nuevo sobre 100, sino sobre las cajas ya filtradas en la primera revisión; esto exige entender la estructura encadenada del porcentaje y no solo hacer un cálculo único desligado del contexto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q19_v9",
+      "scenario_description": "Se plantea el uso de puntos en un programa de beneficios: \"Una persona tiene 100 puntos. En la primera compra puede usar el 75 % de sus puntos. En una segunda compra solo puede usar el 75 % de los puntos que le quedaron tras la primera\". En vez de pedir el número directamente, se ofrecen afirmaciones como: A) \"En total utiliza 75 puntos\" (considera solo la primera compra, increment_only), B) \"En total utiliza 175 puntos\" (suma incorrecta con la base, base_plus_increment), C) \"En total utiliza 56,25 puntos\" (75 % del 75 % de 100, correcta) y D) una afirmación con una cantidad exagerada derivada de un cálculo sin porcentaje real (gross_overestimate). Se pide escoger la afirmación verdadera.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominant"
+      ],
+      "required_reasoning": "Para identificar la afirmación correcta, el estudiante debe razonar que el 75 % se aplica sucesivamente: primero a 100 y luego al resto, reconociendo que no se suman porcentajes ni se mantiene la misma base en ambos pasos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q19_v10",
+      "scenario_description": "Se muestra un \"resumen de ajustes\" de un presupuesto en forma de desglose textual: \"Presupuesto original: $100. Ajuste 1: se mantiene el 75 % del presupuesto. Ajuste 2: sobre el nuevo monto, se mantiene nuevamente el 75 %\". Luego se pregunta: \"¿Cuál es el presupuesto final después de los dos ajustes?\". La operación sigue siendo el 75 % del 75 % de 100. Los distractores: valor correspondiente solo al primer 75 % (increment_only), suma del presupuesto original más ese primer 75 % (base_plus_increment) y una cantidad muy superior, coherente con tomar 75 como factor entero (gross_overestimate).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "La estructura en forma de registro obliga a vincular cada ajuste con el nuevo monto resultante, entendiendo que el segundo porcentaje actúa sobre el resultado del primero y no sobre el valor inicial, lo que requiere comprensión del proceso encadenado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q19_v11",
+      "scenario_description": "Se plantea sin contexto numérico adicional: \"Se quiere calcular el 75 % del 75 % de 100\". En vez de preguntar \"¿Cuánto es?\", se proporcionan descripciones de procedimiento como afirmaciones: A) \"Primero se calcula el 75 % de 100 y ese resultado se mantiene igual, porque aplicar de nuevo el 75 % no cambia la cantidad\" (increment_only disfrazado), B) \"Se suman 75 y 75 al 100 inicial\" (base_plus_increment), C) \"Se multiplica 0,75 por 0,75 y luego por 100, obteniendo 56,25\" (procedimiento correcto encadenando porcentajes) y D) \"Se multiplica 75 por 75 y por 100, pues los porcentajes no afectan el resultado\" (gross_overestimate). Se pregunta cuál descripción lleva al resultado correcto.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominant"
+      ],
+      "required_reasoning": "El estudiante debe reconocer la forma correcta de combinar porcentajes como factores decimales sucesivos, distinguiéndola de interpretaciones aditivas o de ignorar la naturaleza porcentual, lo que exige comprender por qué el método correcto es multiplicar 0,75 × 0,75 × 100.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q19_v12",
+      "scenario_description": "Se entrega un mini-registro tipo cronológico: \"Día 1: se dispone de 100 litros de agua. Día 2: solo se conserva el 75 % del agua disponible. Día 3: de lo que quedó, solo se conserva el 75 %\". A continuación se pregunta: \"¿Cuántos litros quedan al final respecto de los 100 litros iniciales?\". Esto equivale al 75 % del 75 % de 100. Los distractores mantienen la lógica: resultado de aplicar solo una vez el 75 % (increment_only), suma de 100 más ese 75 (base_plus_increment) y un valor muy grande que supone ignorar el símbolo de porcentaje (gross_overestimate).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe rastrear correctamente la cantidad a lo largo de los días y entender que el segundo 75 % se aplica a una cantidad ya reducida, no al total inicial, reforzando la comprensión de porcentajes sucesivos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q19_v13",
+      "scenario_description": "Se describe la capacidad de una batería: \"Un dispositivo declara una batería de 100 % de capacidad. Por diseño, solo el 75 % de esa capacidad es realmente utilizable. Tras una actualización, solo el 75 % de la capacidad utilizable sigue disponible\". Se ofrecen afirmaciones como: A) \"La capacidad utilizable final es del 75 % de la original\" (ignora la segunda reducción, increment_only), B) \"La capacidad utilizable final es del 175 % de la original\" (suma porcentual, base_plus_increment), C) \"La capacidad utilizable final es del 56,25 % de la capacidad original\" (0,75 del 0,75 de 100, correcta) y D) una afirmación con un porcentaje mayor que 100 %, derivado de tratar los 75 como números independientes (gross_overestimate). Se pide elegir la afirmación correcta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominant"
+      ],
+      "required_reasoning": "Exige comprender que las dos reducciones del 75 % se componen multiplicativamente respecto de la capacidad inicial, llevando a un porcentaje final menor que 75 %, y descartar razonamientos que suman porcentajes o consideran solo una etapa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q19_v14",
+      "scenario_description": "Se cambia ligeramente la situación manteniendo la misma estructura de cálculo: \"Un taller recibe 100 piezas. En un primer control, se aprueba el 60 % de las piezas. En un segundo control, sobre las piezas ya aprobadas, se aprueba el 80 %\". Se pregunta: \"¿Cuántas piezas quedan finalmente aprobadas de las 100 iniciales?\". Matemáticamente es un cálculo directo del porcentaje compuesto 60 % del 80 % de 100 (o 80 % del 60 % de 100, análogo a la estructura doble porcentaje). Los distractores se generan como: solo el 60 % de 100 (increment_only), 100 más ese 60 % (base_plus_increment) y una cifra muy grande resultante de interpretar 60 y 80 como factores enteros sin porcentaje (gross_overestimate).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe identificar que se trata de dos filtros porcentuales sucesivos sobre la misma base inicial y comprender que el resultado se obtiene multiplicando los factores porcentuales por 100, no sumando porcentajes ni aplicando solo uno de ellos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q19_v15",
+      "scenario_description": "Se plantea un contexto de becas de manera abstracta: \"Sobre un fondo de $100 se aplica primero un 75 % de asignación y luego se aplica de nuevo un 75 % sobre lo ya asignado\". En lugar de preguntar el monto final, se muestran afirmaciones que mezclan explicación y resultado, por ejemplo: A) \"Como se aplican dos veces 75 %, el total asignado es el 150 % de 100, es decir, $150\" (base_plus_increment), B) \"Solo importa el primer 75 %, por lo que se asignan $75\" (increment_only), C) \"Se debe multiplicar 0,75 por 0,75 y luego por 100, por lo que se asignan $56,25\" (correcta) y D) \"Se multiplica 75 por 75 y por 100, pues los signos de porcentaje no modifican el cálculo\" (gross_overestimate). Se pide elegir la explicación correcta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominant"
+      ],
+      "required_reasoning": "Obliga a justificar implícitamente el procedimiento de combinar porcentajes sucesivos como factores decimales y a rechazar razonamientos basados en sumar porcentajes o ignorar el símbolo %, lo que va más allá de ejecutar un cálculo aislado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    }
+  ]
+}

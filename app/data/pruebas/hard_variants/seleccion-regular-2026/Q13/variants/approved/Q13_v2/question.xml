@@ -1,0 +1,252 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v2" title="Q13_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se muestra parte de un teclado de calculadora que tiene, además de las teclas numéricas, unas teclas especiales que escriben varios ceros a la vez.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Teclado de calculadora donde se aprecian las teclas numéricas estándar (0 a 9), una tecla especial etiquetada '00', otra etiquetada '000' y una tecla más grande etiquetada '10^n'. La tecla '10^n' está resaltada para indicar que al presionarla se escribe el número 1 seguido de n ceros de una sola vez." />
+    </p>
+    <p>La tecla especial 
+      <m:math>
+        <m:msup>
+          <m:mn>10</m:mn>
+          <m:mi>n</m:mi>
+        </m:msup>
+      </m:math>
+      escribe de una sola vez el número 1 seguido de <em>n</em> ceros.
+    </p>
+    <p>Una persona presiona sucesivamente las teclas [1], [000], [000] y [00], en ese orden, como se ilustra:</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Secuencia de cuatro botones en fila: primero un botón con '1', luego un botón con '000', luego otro botón con '000' y finalmente un botón con '00'." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Con cuál de las siguientes teclas especiales 
+        <m:math>
+          <m:msup>
+            <m:mn>10</m:mn>
+            <m:mi>n</m:mi>
+          </m:msup>
+        </m:math>
+        se obtendría exactamente el mismo número al presionarla una sola vez?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <p>Tecla especial 
+          <m:math>
+            <m:msup>
+              <m:mn>10</m:mn>
+              <m:mn>6</m:mn>
+            </m:msup>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al presionar [1], [000], [000] y [00] se escribe un 1 seguido de 3 + 3 + 2 = 8 ceros, es decir, 100 000 000. En cambio, la tecla especial <m:math><m:msup><m:mn>10</m:mn><m:mn>6</m:mn></m:msup></m:math> escribe 1 seguido de 6 ceros, o sea, 1 000 000. No es el mismo número.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <p>Tecla especial 
+          <m:math>
+            <m:msup>
+              <m:mn>10</m:mn>
+              <m:mn>7</m:mn>
+            </m:msup>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La secuencia [1], [000], [000] y [00] produce un 1 seguido de 8 ceros porque 3 + 3 + 2 = 8. Eso da 100 000 000. La tecla especial <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math> escribe 1 seguido de 7 ceros, o sea, 10 000 000. No coincide.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <p>Tecla especial 
+          <m:math>
+            <m:msup>
+              <m:mn>10</m:mn>
+              <m:mn>8</m:mn>
+            </m:msup>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La secuencia [1], [000], [000] y [00] deja escrito un 1 seguido de 3 + 3 + 2 = 8 ceros, es decir, 100 000 000. Eso es exactamente lo que escribe la tecla especial <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <p>Tecla especial 
+          <m:math>
+            <m:msup>
+              <m:mn>10</m:mn>
+              <m:mn>9</m:mn>
+            </m:msup>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La secuencia dada forma un 1 seguido de 8 ceros, porque 3 + 3 + 2 = 8. Ese número es 100 000 000. En cambio, la tecla especial <m:math><m:msup><m:mn>10</m:mn><m:mn>9</m:mn></m:msup></m:math> escribe 1 seguido de 9 ceros, o sea, 1 000 000 000. Es un cero más, por lo tanto no es el mismo número.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar qué hace cada tecla especial</strong></p>
+            <p>La tecla [000] agrega 3 ceros y la tecla [00] agrega 2 ceros. La tecla especial 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mi>n</m:mi>
+                </m:msup>
+              </m:math>
+              escribe un 1 seguido de <m:math><m:mi>n</m:mi></m:math> ceros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Contar cuántos ceros se escriben en la secuencia dada</strong></p>
+            <p>La persona presiona, en orden, [1], [000], [000] y [00].</p>
+            <p>Después de [1], hay un 1.</p>
+            <p>Luego, la primera tecla [000] agrega 3 ceros.</p>
+            <p>La segunda tecla [000] agrega otros 3 ceros.</p>
+            <p>La tecla [00] agrega 2 ceros más.</p>
+            <p>En total, la cantidad de ceros es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>8</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir el número obtenido</strong></p>
+            <p>El número final es un 1 seguido de 8 ceros:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>100&#160;000&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>En formato habitual, ese número es 100 000 000.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La tecla especial 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>6</m:mn>
+                </m:msup>
+              </m:math>
+              escribe 1 seguido de 6 ceros.</p>
+            <p>La tecla especial 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>7</m:mn>
+                </m:msup>
+              </m:math>
+              escribe 1 seguido de 7 ceros.</p>
+            <p>La tecla especial 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>8</m:mn>
+                </m:msup>
+              </m:math>
+              escribe 1 seguido de 8 ceros.</p>
+            <p>La tecla especial 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>9</m:mn>
+                </m:msup>
+              </m:math>
+              escribe 1 seguido de 9 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Como la secuencia dada produce un 1 seguido de 8 ceros, la tecla que obtiene exactamente el mismo número es 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>8</m:mn>
+                </m:msup>
+              </m:math>.
+              La alternativa correcta es la C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

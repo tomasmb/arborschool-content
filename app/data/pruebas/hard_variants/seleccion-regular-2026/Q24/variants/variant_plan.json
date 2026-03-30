@@ -1,0 +1,140 @@
+{
+  "source_question_id": "Q24",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q24_v4",
+      "scenario_description": "En un informe interno de una tienda de electrodomésticos se muestra un registro tipo libro diario con las siguientes columnas: \"Producto\", \"Precio de lista\", \"Rebaja de temporada\" y \"Rebaja de liquidación\". Para un televisor se indica: Precio de lista $30 000, rebaja de temporada del 20 %, y luego, sobre el precio ya rebajado, una rebaja de liquidación del 25 %. Más abajo aparecen cuatro posibles fórmulas que el encargado de sistemas podría programar en la caja registradora para que el sistema calcule automáticamente el precio final del televisor a partir del precio de lista. El estudiante debe elegir, entre esas fórmulas, cuál representa correctamente el precio luego de las dos rebajas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Obliga a entender que en el registro se aplican dos rebajas sucesivas sobre un mismo precio base y que, para modelarlo, se debe multiplicar el precio original por los factores que dejan el porcentaje que queda (0,8 y luego 0,75), en lugar de sumar o multiplicar directamente los porcentajes de descuento. El cambio de formato a un libro diario con fórmulas de caja hace que no baste reconocer el patrón superficial, sino identificar qué expresión corresponde al procedimiento descrito en el registro.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q24_v5",
+      "scenario_description": "En un cine, una entrada cuesta $10 000. A los clientes con tarjeta del cine se les hace primero un descuento del 15 % sobre el precio de la entrada, y durante una campaña especial se aplica, además, un 10 % de descuento sobre el precio ya rebajado. Cuatro empleados discuten cómo se calcula el precio final a partir de los $10 000. Cada uno da una afirmación distinta, por ejemplo: \"Hay que multiplicar el precio por 0,85 y luego por 0,9\", \"Como el descuento total es 25 %, basta multiplicar por 0,75\", etc. El estudiante debe elegir cuál afirmación describe correctamente la forma de calcular el precio tras los dos descuentos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe comprender por qué dos descuentos sucesivos del 15 % y 10 % no equivalen simplemente a un descuento único del 25 % sobre el precio original y por qué la expresión correcta usa factores de permanencia (0,85 y 0,9). Al estar formuladas como opiniones de personas, sin mostrar directamente fórmulas simbólicas, se exige reconstruir mentalmente la expresión correcta y discriminar errores típicos (sumar porcentajes, usar solo el descuento total) en vez de reconocer mecánicamente un producto dado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q24_v6",
+      "scenario_description": "Una plataforma de venta online muestra a los vendedores un pequeño panel de \"reglas de precio\" donde se ve para un producto: \"Precio base: $25 000\", \"Descuento por suscriptor: 20 %\", \"Descuento relámpago adicional: 25 % sobre el precio con descuento por suscriptor\". Abajo aparecen cuatro posibles configuraciones de regla, escritas en formato pseudo-código tipo: REGRA 1: precio_final = 0,8*0,75*25000; REGRA 2: precio_final = (0,2+0,25)*25000; etc. El estudiante debe elegir qué regla corresponde a la manera en que la plataforma aplica las dos rebajas sobre el precio base.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para decidir qué regla programar, el estudiante debe identificar que cada descuento reduce el precio, por lo que se deben usar los factores que representan la parte que queda tras cada rebaja y aplicarlos en cadena al mismo precio base. Debe rechazar reglas donde se suman porcentajes, se aplican solo los porcentajes de rebaja o se obtiene un precio final superior al original. El formato de panel de configuración obliga a conectar cada línea de pseudo-código con el proceso descrito, en lugar de solo buscar un patrón familiar de números.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q24_v7",
+      "scenario_description": "En una tienda de ropa, un abrigo tiene un precio original de $40 000. Primero entra a \"oferta de temporada\" con un 25 % de rebaja y, unas semanas después, se agrega un cartel de \"liquidación final\" que indica un 20 % de rebaja sobre el precio ya rebajado. Se presentan cuatro descripciones posibles del cálculo del precio final, por ejemplo: 1) \"Se multiplica el precio original por 0,75 y luego por 0,8\"; 2) \"Se resta en total un 45 % del precio original\"; 3) \"Se calcula primero el 25 % y el 20 % del precio original y luego se multiplican entre sí\"; 4) \"Se suma 0,75 y 0,8 y se multiplica por el precio original\". El estudiante debe escoger la descripción que es coherente con las dos rebajas aplicadas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Debe entender que cada rebaja se aplica sobre el precio vigente en ese momento, por lo que el procedimiento correcto es multiplicar el precio original por 0,75 y por 0,8 en ese orden, y no operar directamente con los porcentajes de descuento ni con sus productos. Al evaluar descripciones textuales del procedimiento y no solo fórmulas aisladas, el estudiante tiene que reconstruir el método y el orden de aplicación de los factores, reforzando la comprensión del porqué de la multiplicación de factores de permanencia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q24_v8",
+      "scenario_description": "En el resumen de caja de un restaurante se muestra el cálculo del precio de un menú del día. El menú tiene un precio de lista de $12 000. El sistema indica: \"Descuento por app: 20 %\" y \"Descuento por pago en efectivo: 10 % sobre el valor ya rebajado por app\". Debajo del resumen aparecen cuatro posibles configuraciones de la fórmula que se podría usar en la caja para calcular el precio final a partir de los $12 000. Cada opción muestra una expresión distinta (una que usa 0,8·0,9·12 000, otra que usa (0,2+0,1)·12 000, otra que suma factores, etc.). El estudiante debe seleccionar cuál expresión del resumen de caja representa correctamente el precio del menú tras ambos descuentos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para vincular el resumen de caja con la expresión correcta, el estudiante debe reconocer que los descuentos se aplican de forma sucesiva al mismo precio y que, por tanto, se conserva un 80 % y luego un 90 % del valor, lo que se modela multiplicando 0,8 y 0,9 por el precio base. Debe descartar configuraciones donde solo se usa el porcentaje total, se opera erróneamente con los porcentajes o se termina con un monto incoherente (mayor o excesivamente menor). El entorno de resumen contable reduce la posibilidad de aplicar una rutina memorística sin comprender el proceso.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q24_v9",
+      "scenario_description": "En una tienda de deportes, una bicicleta cuesta $60 000. Durante una campaña, se hace primero un descuento del 10 % por \"oferta de lanzamiento\" y después, sobre el precio ya rebajado, un 20 % adicional por \"stock limitado\". Cuatro vendedores proponen cómo calcular el precio final a partir de los $60 000, y cada uno da una afirmación verbal que incluye la operación que haría con porcentajes y precio. Por ejemplo, uno dice que multiplicaría por 0,9 y luego por 0,8; otro que restaría directamente el 30 % del precio original; otro que sumaría 0,9 y 0,8 y multiplicaría por 60 000, etc. El estudiante debe decidir cuál vendedor describe el cálculo correcto.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe analizar las explicaciones de los vendedores y reconocer que el cálculo correcto es aplicar secuencialmente los factores que representan el porcentaje que queda en cada rebaja (0,9 y 0,8), no sumar porcentajes ni factores. Debe identificar sutiles errores conceptuales típicos en las afirmaciones y no puede limitarse a reconocer una fórmula escrita; esto enfatiza la comprensión del porqué de la multiplicación de factores de permanencia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q24_v10",
+      "scenario_description": "Un manual interno de una cadena de tiendas describe la política de precios de fin de temporada en formato de esquema: \"Precio original del producto\", luego una flecha que indica \"Rebaja de fin de temporada: 15 %\" y otra flecha desde el nuevo precio que indica \"Rebaja extra socios: 5 % sobre el precio ya rebajado\". Bajo este esquema textual, se listan cuatro posibles fórmulas que el sistema de ventas podría usar para pasar del precio original al precio final. Una opción usa el producto de 0,85 y 0,95 por el precio, otra usa la suma de los porcentajes de descuento aplicada al precio original, otra suma los factores 0,85 y 0,95, etc. El estudiante debe elegir qué fórmula concuerda con el procedimiento del esquema.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Debe traducir un esquema secuencial de rebajas a una expresión simbólica, identificando que en cada flecha se conserva una fracción del precio (85 % y luego 95 %). Debe entender que el orden descrito en el manual implica multiplicar el precio original por ambos factores en cadena, y que las alternativas basadas en sumar descuentos o factores representan interpretaciones equivocadas del mismo procedimiento. El trabajo de traducción de un diagrama de flujo textual a una fórmula reduce la posibilidad de aplicar un algoritmo de memoria sin justificarlo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q24_v11",
+      "scenario_description": "Una librería vende un libro a $18 000. En una promoción, se aplica un 20 % de descuento por \"semana del libro\" y, adicionalmente, un 15 % de descuento sobre el precio ya rebajado si el cliente paga con cierto banco. Se presentan cuatro afirmaciones acerca del precio final y del tipo de descuento total que se obtiene. Una de ellas señala que el precio final se obtiene multiplicando el precio original por 0,8 y luego por 0,85; otra sostiene que equivale exactamente a un único descuento del 35 % sobre el precio original; otra indica que el precio final es (0,2+0,15)·18 000; otra afirma que es (0,8+0,85)·18 000. El estudiante debe seleccionar la afirmación correcta sobre cómo se calcula el precio final a partir de los $18 000.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Debe distinguir entre aplicar dos descuentos sucesivos y aplicar un único descuento igual a la suma de los porcentajes. Esto exige reconocer que la operación correcta es con los factores complementarios al descuento (0,8 y 0,85) multiplicados, y saber por qué expresiones basadas en sumar porcentajes o sumar factores llevan a resultados incoherentes. Al tener que juzgar la veracidad de afirmaciones completas, en vez de escoger solo una fórmula, el estudiante debe justificar mentalmente el procedimiento correcto con porcentajes.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q24_v12",
+      "scenario_description": "En un resumen de beneficios para socios de un supermercado se muestra una ficha para un producto: \"Precio normal: $22 000\", \"Descuento por tarjeta del supermercado: 10 %\", \"Descuento por campaña de puntos: 15 % sobre el precio con descuento por tarjeta\". A continuación, se presentan cuatro líneas rotuladas como distintos \"métodos de cálculo\" del precio final, cada una mostrando una expresión diferente que parte de los $22 000. Una usa 0,9·0,85·22 000, otra usa (0,1+0,15)·22 000, otra usa 22 000·(1−0,1−0,15), otra suma 0,9 y 0,85 y multiplica por 22 000. El estudiante debe elegir qué línea de método de cálculo corresponde a la ficha de beneficios descrita.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Tiene que interpretar el resumen de beneficios como dos rebajas sucesivas sobre un mismo precio normal, comprendiendo que el precio final se obtiene reteniendo el 90 % y luego el 85 % del valor. Debe identificar que fórmulas con (1−0,1−0,15) representan suponer un solo descuento de 25 % y que las que combinan mal los porcentajes o factores producen valores inadecuados. El formato de ficha de beneficios y lista de métodos obliga a conectar el contenido del registro con la estructura de la fórmula, más allá de reconocer un producto de factores aislado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q24_v13",
+      "scenario_description": "En una campaña online, un videojuego tiene un precio original de $35 000. La plataforma anuncia que aplicará primero un descuento del 30 % por \"lanzamiento\" y luego, sobre el nuevo precio, un 10 % adicional por \"fin de semana\". Se muestran cuatro afirmaciones sobre el cálculo del precio final. Por ejemplo: A) \"El precio final se obtiene multiplicando 35 000 por 0,7 y por 0,9\"; B) \"Como el descuento total es 40 %, el precio final es 0,6·35 000\"; C) \"El precio final es (0,3+0,1)·35 000\"; D) \"El precio final es (0,7+0,9)·35 000\". El estudiante debe decidir cuál afirmación describe correctamente cómo obtener el precio final a partir de los $35 000.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Debe reconocer que cada etapa de la campaña aplica una rebaja sobre el precio vigente y que el precio final se calcula manteniendo primero el 70 % y luego el 90 % del valor, por lo que la operación correcta es multiplicar el precio original por 0,7 y por 0,9. Al elegir entre afirmaciones que representan diferentes razonamientos sobre los porcentajes (sumarlos, tomar solo el descuento total o sumar factores), el estudiante debe comprender por qué la multiplicación de los factores de permanencia es el método adecuado en rebajas sucesivas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "variant_id": "Q47_v3",
+  "source_question_id": "Q47",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q47_v3",
+    "scenario_description": "Se muestran en una tabla cuatro terrenos triangulares rectos apoyados contra una calle recta y una pared: cada fila es un triángulo, con columnas \"base junto a la calle\" y \"longitud de la pared\" (catetos). Por ejemplo:\n\n| Terreno | Base (m) | Pared (m) |\n|---|---|---|\n| R | 4 | 5 |\n| S | 6 | 3 |\n| T | 2 | 9 |\n| U | 7 | 4 |\n\nLa pregunta pide: \"¿Cuál de las siguientes afirmaciones es verdadera?\". La afirmación correcta ya no es sobre un triángulo individual con mínimo o máximo, sino una relación entre propiedades extremas: por ejemplo, \"El terreno con mayor hipotenusa es también el que tiene mayor perímetro\". Los distractores mantienen la lógica de la fuente: una opción que identifica erróneamente al triángulo de mayor hipotenusa, otra que se equivoca sobre cuál tiene menor perímetro y otra que afirma una igualdad inexistente entre perímetros o hipotenusas. El conjunto de datos se escoge para que el triángulo con hipotenusa máxima coincida también con el de mayor perímetro, de modo que la afirmación correcta exige reconocer la correlación entre ambas cantidades.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "Requiere entender que tanto la hipotenusa como el perímetro dependen de los catetos y que, al comparar triángulos, hay que identificar primero cuál tiene la hipotenusa mayor y luego verificar si su perímetro también es el mayor; obliga a razonar sobre la relación entre dos magnitudes, no solo a etiquetar el mínimo o máximo aislado.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "claim_archetype_switch"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea siga siendo evaluar la veracidad de afirmaciones geométricas basadas en un conjunto de datos explícito (catetos en una tabla), sin convertirla en un problema de cálculo directo ni alterar el tipo de magnitudes comparadas (hipotenusas y perímetros)."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-GEO-01-14"
+    ],
+    "primary_atom_titles": [
+      "Argumentación y validación de resultados geométricos"
+    ],
+    "family_id": "argumentation_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "claim_archetype_switch",
+        "description": "Mantener la evaluación de afirmaciones, pero cambiar el arquetipo semántico de la afirmación correcta respecto de la fuente.",
+        "required_changes": [
+          "Nuevo arquetipo de afirmación correcta",
+          "Distractores coherentes con el nuevo arquetipo"
+        ],
+        "forbidden_changes": [
+          "Repetir la misma afirmación correcta con números nuevos",
+          "Convertirlo en cálculo directo"
+        ]
+      },
+      {
+        "shape_id": "false_claim_hunt",
+        "description": "Invertir la polaridad local de las opciones para pedir identificar la afirmación incorrecta dentro del mismo conjunto de datos o evidencia.",
+        "required_changes": [
+          "Polaridad local de la pregunta",
+          "Reescritura completa de opciones"
+        ],
+        "forbidden_changes": [
+          "Cambiar el dataset o la evidencia por cálculo puro",
+          "Eliminar la lectura argumentativa"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "claim_evaluation",
+    "operation_signature": "argumentation_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": true,
+    "cognitive_action": "evaluate_claims",
+    "solution_structure": "data_to_claim_check",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "explicit_dataset_and_claims",
+    "explicit_dataset_policy": "required",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=claim_evaluation",
+      "operation_signature=argumentation_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_claim_evaluation",
+      "must_include_explicit_dataset",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

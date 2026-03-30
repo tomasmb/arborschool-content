@@ -1,0 +1,282 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q52_v10" title="Q52_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se muestra el medio de transporte principal que utilizan los trabajadores de una empresa para llegar al trabajo. Cada trabajador indicó solo un medio.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Medio de transporte</th>
+          <th>Número de trabajadores</th>
+        </tr>
+        <tr>
+          <td>Bus</td>
+          <td>80</td>
+        </tr>
+        <tr>
+          <td>Metro</td>
+          <td>60</td>
+        </tr>
+        <tr>
+          <td>Bicicleta</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Automóvil</td>
+          <td>50</td>
+        </tr>
+      </table>
+    </div>
+    <p>Se considera como <strong>transporte público</strong> al Bus y al Metro. Si se elige al azar a uno de estos trabajadores, ¿cuál de las siguientes afirmaciones describe correctamente cómo calcular la probabilidad de que use transporte público?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        La probabilidad de que use transporte público es
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mtext>Frecuencia Bus</m:mtext>
+              <m:mo>+</m:mo>
+              <m:mtext>Frecuencia Metro</m:mtext>
+            </m:mrow>
+            <m:mn>140</m:mn>
+          </m:mfrac>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La frecuencia de Bus más la frecuencia de Metro es 80 + 60 = 140, pero 140 corresponde a los trabajadores que usan transporte público, no al total de trabajadores. El total es 80 + 60 + 30 + 50 = 220. Por eso la probabilidad debe calcularse como 140 / 220, no como 140 / 140 = 1.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        La probabilidad de que use transporte público es
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mtext>Frecuencia Bus</m:mtext>
+              <m:mo>+</m:mo>
+              <m:mtext>Frecuencia Metro</m:mtext>
+            </m:mrow>
+            <m:mn>220</m:mn>
+          </m:mfrac>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los trabajadores que usan transporte público son los que van en Bus o Metro: 80 + 60 = 140. El total de trabajadores es 80 + 60 + 30 + 50 = 220. Entonces la probabilidad se calcula como 140 / 220, que corresponde exactamente a esta opción.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        La probabilidad de que use transporte público es
+        <m:math>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>-</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia Bus</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia Metro</m:mtext>
+              </m:mrow>
+              <m:mn>220</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Con 80 + 60 = 140 y total 220, esta expresión da 1 − 140 / 220 = 80 / 220. Ese valor representa la probabilidad de no usar transporte público, es decir, usar Bicicleta o Automóvil, porque 30 + 50 = 80. El problema pide la probabilidad de usar transporte público.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        La probabilidad de que use transporte público es
+        <m:math>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>-</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia Bus</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia Metro</m:mtext>
+              </m:mrow>
+              <m:mn>140</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Como 80 + 60 = 140, esta expresión queda 1 − 140 / 140 = 1 − 1 = 0. Pero la probabilidad de usar transporte público no puede ser 0, porque sí hay trabajadores que usan Bus o Metro: son 140 de un total de 220. La probabilidad correcta es 140 / 220.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los casos favorables</strong></p>
+            <p>El enunciado dice que <strong>transporte público</strong> corresponde a Bus y Metro.</p>
+            <p>Entonces, los trabajadores que usan transporte público son:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>80</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>60</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>140</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Hay 140 casos favorables.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el total de trabajadores</strong></p>
+            <p>Como cada trabajador indicó solo un medio, el total se obtiene sumando todas las frecuencias:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>80</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>60</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>30</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>50</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>220</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El total de trabajadores es 220.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la definición de probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>casos favorables</m:mtext>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mtext>casos posibles</m:mtext>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>En este caso:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>140</m:mn>
+                  <m:mn>220</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La alternativa correcta es la que expresa:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>Frecuencia Bus</m:mtext>
+                    <m:mo>+</m:mo>
+                    <m:mtext>Frecuencia Metro</m:mtext>
+                  </m:mrow>
+                  <m:mn>220</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Esa corresponde a la <strong>opción B</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de elegir a un trabajador que use transporte público se calcula sumando los que usan Bus y Metro, y dividiendo por el total de trabajadores:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>80</m:mn>
+                    <m:mo>+</m:mo>
+                    <m:mn>60</m:mn>
+                  </m:mrow>
+                  <m:mn>220</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mn>140</m:mn>
+                  <m:mn>220</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la respuesta correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

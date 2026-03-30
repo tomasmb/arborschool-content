@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q23_v2",
+  "source_question_id": "Q23",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q23_v2",
+    "scenario_description": "Se presenta un breve texto narrativo sobre la generación eléctrica:\n\n«En 2021, la electricidad total generada en Chile fue de 80 155 GWh, cifra que corresponde a un 4,5 % más que en 2020.»\n\nEn lugar de pedir una expresión explícita, se plantea: «¿Cuál de las siguientes afirmaciones describe correctamente cómo calcular la electricidad total generada en 2020?» Las opciones son descripciones verbales de procedimientos, por ejemplo: \n- Afirmación correcta: “Dividir 80 155 por 1,045 (o multiplicar 80 155 por 100/104,5)”.\n- Distractores: “Restar el 4,5 % de 80 155 a 80 155”, “Multiplicar 80 155 por 1,045”, “Dividir 80 155 por 4,5 y multiplicar por 100”, etc., alineados con los arquetipos increment_only, base_plus_increment y gross_overestimate.",
+    "non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "required_reasoning": "El estudiante ya no puede limitarse a reconocer una forma algebraica específica: debe identificar, entre descripciones verbales, cuál corresponde al hecho de que 80 155 representa el 104,5 % del valor buscado. Eso fuerza a comprender la relación porcentaje–total y a distinguir conceptualmente entre ‘aumentar un 4,5 %’ y ‘deshacer’ ese aumento, en lugar de seguir una receta superficial basada en la posición de los números.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué no introducir pasos adicionales ni cambiar la relación porcentual (se mantiene un aumento porcentual conocido sobre un valor base desconocido) y que los distractores sigan representando errores típicos al deshacer un aumento porcentual."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-08"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de la cantidad total dado un porcentaje"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "medium",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_support_with_self_containment",
+    "explicit_dataset_policy": "required_or_described",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -1,0 +1,147 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v11" title="Q54_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente gráfico de barras se representa la cantidad de tareas corregidas diariamente por cuatro profesores (Profesor A, B, C y D) durante una semana de trabajo.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales. En el eje horizontal aparecen cuatro grupos etiquetados Profesor A, Profesor B, Profesor C y Profesor D. Sobre cada profesor hay cinco barras delgadas, una por cada día de la semana de lunes a viernes, con colores distintos: lunes azul, martes rojo, miércoles verde, jueves naranja y viernes morado. El eje vertical indica 'Cantidad de tareas corregidas' de 0 a 30, con marcas cada 5 unidades. Para el Profesor A, las barras muestran 18 tareas el lunes, 26 el martes, 27 el miércoles, 24 el jueves y 25 el viernes. Para el Profesor B se muestran 20, 21, 20, 22 y 23 tareas de lunes a viernes, respectivamente. Para el Profesor C se muestran 14, 19, 20, 20 y 20 tareas. Para el Profesor D se muestran 10, 18, 17, 21 y 22 tareas, en el mismo orden. No hay línea de meta dibujada en el gráfico." />
+      Según el gráfico, las cantidades de tareas corregidas por cada profesor de lunes a viernes son:
+      Profesor A: 18, 26, 27, 24 y 25 tareas.
+      Profesor B: 20, 21, 20, 22 y 23 tareas.
+      Profesor C: 14, 19, 20, 20 y 20 tareas.
+      Profesor D: 10, 18, 17, 21 y 22 tareas.
+    </p>
+    <p>La meta diaria de corrección es de al menos 20 tareas por día.</p>
+    <p>Se considera que un profesor no llega a la meta en un día cuando corrige menos de 20 tareas en ese día.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Se quiere reconocer al profesor que tuvo el <strong>menor número de días</strong> en que no llegó a las 20 tareas diarias (es decir, el que más se acercó a cumplir siempre la meta). ¿Cuál profesor será reconocido?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Profesor A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El Profesor A corrigió 18, 26, 27, 24 y 25 tareas. Solo en 18 no llegó a la meta, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>18</mn><mo>&lt;</mo><mn>20</mn></mrow></math>. Entonces tuvo 1 día sin cumplir. Pero el Profesor B tuvo 0 días sin cumplir, porque 20, 21, 20, 22 y 23 son valores mayores o iguales que 20.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Profesor B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El Profesor B corrigió 20, 21, 20, 22 y 23 tareas. En ningún día quedó bajo la meta, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>20</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>21</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>20</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>22</mn><mo>≥</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>23</mn><mo>≥</mo><mn>20</mn></mrow></math>. Por lo tanto, tuvo 0 días en que no llegó a la meta, que es el menor número posible.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Profesor C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El Profesor C corrigió 14, 19, 20, 20 y 20 tareas. No llegó a la meta en 2 días, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>14</mn><mo>&lt;</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>19</mn><mo>&lt;</mo><mn>20</mn></mrow></math>. En cambio, los otros tres días sí cumplen, ya que 20 es igual a la meta. Como 2 no es el menor número de días, esta opción no es correcta.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Profesor D<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El Profesor D corrigió 10, 18, 17, 21 y 22 tareas. No llegó a la meta en 3 días, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>&lt;</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>18</mn><mo>&lt;</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>17</mn><mo>&lt;</mo><mn>20</mn></mrow></math>. Solo en 21 y 22 cumple la meta. Como 3 no es el menor número de días, esta opción no es correcta.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué significa no llegar a la meta</strong></p>
+            <p>La meta es corregir al menos 20 tareas por día. Entonces, un día cuenta como incumplido solo si la cantidad es menor que 20.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar al Profesor A</strong></p>
+            <p>Profesor A: 18, 26, 27, 24 y 25.</p>
+            <p>Solo 18 está bajo 20, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>18</mn><mo>&lt;</mo><mn>20</mn></mrow></math>.</p>
+            <p>Entonces, el Profesor A no llegó a la meta en 1 día.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar al Profesor B</strong></p>
+            <p>Profesor B: 20, 21, 20, 22 y 23.</p>
+            <p>Todas las cantidades son mayores o iguales que 20:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>20</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>21</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>20</mn><mo>≥</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>22</mn><mo>≥</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>23</mn><mo>≥</mo><mn>20</mn></mrow></math>.</p>
+            <p>Entonces, el Profesor B no llegó a la meta en 0 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar al Profesor C</strong></p>
+            <p>Profesor C: 14, 19, 20, 20 y 20.</p>
+            <p>Hay 2 valores bajo 20: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>14</mn><mo>&lt;</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>19</mn><mo>&lt;</mo><mn>20</mn></mrow></math>.</p>
+            <p>Entonces, el Profesor C no llegó a la meta en 2 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar al Profesor D</strong></p>
+            <p>Profesor D: 10, 18, 17, 21 y 22.</p>
+            <p>Hay 3 valores bajo 20: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn><mo>&lt;</mo><mn>20</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>18</mn><mo>&lt;</mo><mn>20</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>17</mn><mo>&lt;</mo><mn>20</mn></mrow></math>.</p>
+            <p>Entonces, el Profesor D no llegó a la meta en 3 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar los resultados</strong></p>
+            <p>Profesor A: 1 día.</p>
+            <p>Profesor B: 0 días.</p>
+            <p>Profesor C: 2 días.</p>
+            <p>Profesor D: 3 días.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El menor número de días en que no se llegó a la meta es 0. Ese resultado corresponde al Profesor B. Por lo tanto, la alternativa correcta es <strong>Profesor B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,128 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q53_v5" title="Q53_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la cuadrícula adjunta se dibuja un triángulo equilátero <m:math><m:mi>A</m:mi><m:mi>B</m:mi><m:mi>C</m:mi></m:math> de lado 2 unidades. El vértice <m:math><m:mi>A</m:mi></m:math> está en el punto <m:math><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:math>. El triángulo se traslada según el vector <m:math><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>)</m:mo></m:mrow></m:math> y luego se refleja respecto del eje <m:math><m:mi>Y</m:mi></m:math>, obteniéndose el triángulo <m:math><m:mi>A</m:mi><m:mo>′</m:mo><m:mi>B</m:mi><m:mo>′</m:mo><m:mi>C</m:mi><m:mo>′</m:mo></m:math>.</p>
+    <p><img src="requiere_nueva_imagen.png" alt="[Plano cartesiano con cuadrícula. Se muestra el eje X horizontal y el eje Y vertical, ambos marcados con números enteros. En el primer cuadrante se dibuja un triángulo equilátero ABC de lado 2 unidades, con A en (1,1), B en (3,1) y C arriba de ellos formando el triángulo equilátero. Solo se muestra el triángulo original ABC; la imagen transformada A'B'C' no se dibuja.]" /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes puntos corresponde a la imagen del vértice A después de aplicar ambas transformaciones?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Partiendo de A en (1,1), al trasladar por (3,4) se obtiene (1+3,1+4)=(4,5). Pero luego falta reflejar respecto del eje Y, y esa reflexión cambia x por su opuesto: (4,5) pasa a (−4,5). Por eso (4,5) no es la imagen final.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math><m:mrow><m:mo>(</m:mo><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde A=(1,1), la traslación por (3,4) da (1+3,1+4)=(4,5). Después, al reflejar respecto del eje Y, la coordenada x cambia de 4 a −4 y la coordenada y se mantiene en 5. Entonces la imagen final es (−4,5).</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math><m:mrow><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La traslación correcta de A=(1,1) por el vector (3,4) es (1+3,1+4)=(4,5), no (2,5). Luego, al reflejar respecto del eje Y, (4,5) se transforma en (−4,5). Como (2,5) no coincide con ese resultado, no satisface el problema.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mo>−</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Después de trasladar A=(1,1) por (3,4) se llega a (4,5). Al reflejar respecto del eje Y, la coordenada que cambia de signo es x, mientras y permanece igual. Por eso (4,5) se convierte en (−4,5), no en (4,−5).</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show"
+        outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el punto inicial</strong></p>
+            <p>El vértice <m:math><m:mi>A</m:mi></m:math> está en</p>
+            <p><m:math><m:mrow><m:mi>A</m:mi><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar la traslación por el vector</strong> <m:math><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>)</m:mo></m:mrow></m:math></p>
+            <p>Al trasladar un punto, se suman las coordenadas del vector:</p>
+            <p><m:math><m:mrow><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>)</m:mo></m:mrow><m:mo>+</m:mo><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>4</m:mn><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>,</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</p>
+            <p>Después de la traslación, la imagen de <m:math><m:mi>A</m:mi></m:math> queda en <m:math><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Reflejar respecto del eje</strong> <m:math><m:mi>Y</m:mi></m:math></p>
+            <p>La reflexión respecto del eje <m:math><m:mi>Y</m:mi></m:math> transforma un punto <m:math><m:mrow><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>,</m:mo><m:mi>y</m:mi><m:mo>)</m:mo></m:mrow></m:math> en <m:math><m:mrow><m:mo>(</m:mo><m:mo>−</m:mo><m:mi>x</m:mi><m:mo>,</m:mo><m:mi>y</m:mi><m:mo>)</m:mo></m:mrow></m:math>.</p>
+            <p>Entonces:</p>
+            <p><m:math><m:mrow><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow><m:mo>→</m:mo><m:mrow><m:mo>(</m:mo><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La imagen final del vértice <m:math><m:mi>A</m:mi></m:math> es <m:math><m:mrow><m:mo>(</m:mo><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>,</m:mo><m:mn>5</m:mn><m:mo>)</m:mo></m:mrow></m:math>.</p>
+            <p>Esa coordenada corresponde a la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

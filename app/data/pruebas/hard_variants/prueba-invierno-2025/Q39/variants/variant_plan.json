@@ -1,0 +1,202 @@
+{
+  "source_question_id": "Q39",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 15,
+  "blueprints": [
+    {
+      "variant_id": "Q39_v4",
+      "scenario_description": "Se plantea el caso de dos servicios de mantención de computadores: TecnoFix y BytePlus. TecnoFix cobra una tarifa fija de visita de $10 000 más $15 000 por cada hora de trabajo, modelo que se entrega explícitamente como F(t)=10 000+15 000t. BytePlus anuncia que su tarifa de visita es un 30 % menor que la de TecnoFix y que cobra un 20 % más por cada hora de servicio que TecnoFix. En lugar de preguntar directamente por la función de BytePlus, se ofrecen varias afirmaciones tipo: «La función que modela el cobro de BytePlus es B(t)=... porque su cargo fijo es ... y su cobro por hora es ...», donde solo una describe correctamente ambos porcentajes (0,7·10 000 y 1,2·15 000). Las demás afirmaciones corresponden a errores típicos: solo ajustar uno de los dos términos (increment_only), sumar o restar 30 y 20 como cantidades fijas en vez de porcentajes (base_plus_increment) o aplicar aumentos en lugar de disminuciones/generar montos muy inflados (gross_overestimate). El estudiante debe seleccionar la afirmación coherente con el anuncio de BytePlus.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe identificar qué parte del modelo F(t) es cargo fijo y cuál depende de t, y luego razonar cómo se traducen '30 % menos' y '20 % más' a factores multiplicativos 0,7 y 1,2 sobre esos montos específicos para decidir qué afirmación es coherente. No basta con reconocer una fórmula parecida: debe comprender el porqué de cada coeficiente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v5",
+      "scenario_description": "Se describe a un servicio de electricista, VoltChile, mediante un extracto de boleta tipo desglose: una tabla corta con dos filas, «Visita domiciliaria: $10 000» y «Mano de obra por hora: $15 000». Luego se indica en texto que otra empresa, LuzPro, cobra por visita un 30 % menos que VoltChile y por hora un 20 % más que VoltChile. Se pide elegir entre varias funciones L(t) aquella que modela correctamente el cobro de LuzPro en función de t horas trabajadas. Las alternativas incluyen: una donde solo se modificó el término fijo (increment_only), otra donde se restaron $30 y se sumaron $20 en lugar de aplicar porcentajes (base_plus_increment), otra con ambos valores sobredimensionados (gross_overestimate) y la correcta que combina 0,7·10 000 en el término constante y 1,2·15 000 en el coeficiente de t.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe leer el desglose tipo boleta, vincular cada fila con su rol en la función (término independiente y término proporcional a t) y luego aplicar correctamente los porcentajes sobre cada monto antes de armar mentalmente la estructura L(t)=...+...t. No puede limitarse a replicar la forma original, ya que la información está separada y reordenada en el 'ledger'.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v6",
+      "scenario_description": "Se presenta un centro de clases particulares, EduPlus, que cobra una matrícula inicial de $12 000 y $15 000 por cada hora de tutoría, información entregada en una lista de dos ítems en texto. Se indica luego que un nuevo centro, AulaMax, ofrece «una matrícula 30 % más barata que EduPlus y un valor por hora 20 % más alto que EduPlus». En vez de pedir la función explícita, se entregan descripciones verbales de posibles reglas de cobro del tipo: «AulaMax cobra 8 400 pesos de matrícula y 18 000 por hora, por lo que su función es A(t)=8 400+18 000t», frente a otras que incorporan errores de porcentaje (solo ajustan la matrícula, ajustan mal el 30 % o confunden la parte fija con la variable). El estudiante debe seleccionar la afirmación cuya combinación de valores corresponde exactamente a aplicar 30 % menos a 12 000 y 20 % más a 15 000.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se obliga a distinguir conceptualmente qué monto sufre el descuento y cuál el aumento, y a verificar numéricamente la coherencia de cada descripción. Los distractores se diseñan para atrapar al que calcula '12 000–30' o '12 000–0,3' o que deja alguna parte sin ajustar, de modo que solo quien comprende el método porcentual y su aplicación diferenciada a cada término elige la opción correcta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v7",
+      "scenario_description": "Se muestra el tarifario de un taller mecánico, MotorSur, como un recuadro tipo lista de precios: «Diagnóstico inicial (visita): $10 000» y «Mano de obra por hora: $15 000». A continuación se dice que otro taller, RápidoMotor, ofrece un 30 % de descuento sobre el diagnóstico inicial de MotorSur y cobra un 20 % más por cada hora de mano de obra que MotorSur. Se pregunta cuál de las siguientes funciones R(t) representa el cobro total de RápidoMotor en función de t horas. Dentro de las alternativas hay una que solo cambió el término por hora manteniendo la visita original (increment_only), otra que sumó y restó 30 y 20 como cantidades planas a los montos (base_plus_increment), otra donde ambos términos están incrementados como si fueran solo aumentos (gross_overestimate), y la correcta con el término fijo reducido en 30 % y el coeficiente de t aumentado en 20 %.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El formato de tarifario obliga a interpretar el rol de cada ítem en una función afín y a decidir a cuál se aplica el descuento y a cuál el recargo. Solo entendiendo la relación entre la tabla y la fórmula se pueden descartar los distractores que modifican el ítem equivocado o aplican mal el porcentaje.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v8",
+      "scenario_description": "Se describe el plan de una empresa de aseo a domicilio, CasaLimpia, indicando en texto que cobra una tarifa de salida de $9 000 y $15 000 por cada hora de trabajo, y se expresa también como función C(t)=9 000+15 000t. Luego se explica que una empresa competidora, BrilloMax, anuncia que su «tarifa de salida es 30 % menor que la de CasaLimpia, pero que su valor por hora es 20 % mayor que el de CasaLimpia». Se presentan varias afirmaciones mixtas texto–fórmula, por ejemplo: «BrilloMax cobra 6 300 pesos por salida y 18 000 por hora, por lo tanto su cobro se modela con B(t)=6 300+18 000t», frente a otras donde se aplican mal los porcentajes o se intercambian los términos fijo y variable. Se pide elegir la afirmación correcta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe interpretarse C(t) como suma de un cargo fijo y otro proporcional a t, asociar correctamente 'tarifa de salida' con el término independiente y 'valor por hora' con el coeficiente de t, y luego evaluar mentalmente si los números declarados en cada afirmación son el 70 % y el 120 % de los valores originales. Esto evita que un enfoque puramente mecánico de 'copiar la forma' funcione.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v9",
+      "scenario_description": "Se entrega un extracto de la página web de un servicio de taxi ejecutivo, con un cuadro tipo boleta: «Bajada de bandera: $10 000» y «Tarifa por hora de espera: $15 000». Luego, en un breve párrafo, se menciona que una segunda empresa, CityVIP, anuncia en la misma página que su bajada de bandera es 30 % menor que la del taxi ejecutivo original y que su tarifa por hora de espera es 20 % mayor. Se pide seleccionar, de entre cuatro funciones propuestas C(t), la que representa el cobro de CityVIP en función de t horas de espera. Las opciones mantienen la estructura 'constante + coeficiente·t', pero difieren en cómo aplican los porcentajes, recuperando los mismos arquetipos de distractor que en la fuente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe ir del cuadro tipo 'ledger' a identificar los dos parámetros que luego se transforman con porcentajes. La información está presentada en un orden y formato distinto al enunciado original, por lo que se exige reconstruir conscientemente la función base y luego ajustar cada parte con 0,7 y 1,2 antes de comparar con las alternativas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v10",
+      "scenario_description": "Se explica que un fotógrafo profesional, FotoArte, cobra por eventos con una «tarifa base» de $11 000 más $15 000 por cada hora de cobertura, sin dar de inmediato la función; luego, en una línea aparte, se indica que esto se puede modelar como F(t)=11 000+15 000t. A continuación se afirma que otro fotógrafo, Luz&Color, ofrece una tarifa base 30 % menor que FotoArte y un valor por hora 20 % mayor. Las alternativas no son solo funciones explícitas, sino frases del tipo: «Luz&Color tiene un cargo base 7 700 y cobra 18 000 por hora, por lo que la función correcta es...», junto a otras donde: (i) solo se ajusta el cargo base, (ii) se rebaja mal el 30 % o se lo interpreta como 11 000–30, o (iii) ambos conceptos resultan mayores que los originales. Se pide decidir cuál descripción es coherente con las condiciones de Luz&Color.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "La doble presentación (texto y luego función) obliga a conectar el significado de 'tarifa base' con el término independiente en F(t), y a reconocer el efecto exacto de cada porcentaje. Los distractores explotan errores conceptuales de porcentaje, de modo que solo quien comprende la estructura de la función y la lógica del descuento/aumento distingue la opción válida.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v11",
+      "scenario_description": "Se presenta el cobro de una empresa de mudanzas, MueveYa, como un pequeño recibo detallado: línea 1 «Tarifa de salida del camión: $10 000», línea 2 «Cobro por hora de trabajo: $15 000». Se señala después que otra empresa, TrasladoPlus, promociona una tarifa de salida 30 % más baja que la de MueveYa y un cobro por hora 20 % más alto que el de MueveYa. Se pregunta cuál de las siguientes funciones T(t) modela el cobro total de TrasladoPlus en función de t. Cada opción mantiene la forma 'constante+coeficiente·t', pero con variaciones que corresponden a aplicar el 30 % y el 20 % sobre el término equivocado, sobre ambos con el mismo signo o solo sobre uno de ellos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El formato de recibo exige traducir un desglose práctico en la estructura de una función afín, identificando qué valores son la base del descuento y del aumento. Los distractores obligan a pensar por qué el 30 % debe operar solo sobre la tarifa de salida y el 20 % solo sobre el valor por hora, y qué pasa si se hace lo contrario.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v12",
+      "scenario_description": "Se describe a un servicio de paseadores de perros, PetWalk, que cobra una inscripción única de $13 000 más $15 000 por cada hora de paseo, y se entrega directamente la función P(t)=13 000+15 000t. Luego se señala que otro servicio, PetPro, ofrece una inscripción 30 % menor que PetWalk y un valor por hora 20 % mayor que PetWalk. En vez de pedir que escriban la función de PetPro, se presentan afirmaciones sobre la comparación entre ambas empresas, por ejemplo: «Por cada hora, PetPro cobra 3 000 pesos más que PetWalk, y su inscripción es 3 900 pesos menor; por eso su cobro se modela con la función ...». Algunas afirmaciones usan correctamente los montos derivados de 0,7·13 000 y 1,2·15 000, mientras que otras asumen diferencias lineales erróneas (como restar 30 y sumar 20) o aplican el 30 % y el 20 % sobre toda la expresión en bloque. Se pide escoger la afirmación correcta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que los porcentajes se aplican por separado a la cuota fija y al valor por hora, y luego traducir esos resultados en diferencias absolutas coherentes con la afirmación. Solo entendiendo esta estructura puede identificar la combinación correcta de cambios porcentuales y descartar las narrativas que implican haber aplicado mal el porcentaje.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v13",
+      "scenario_description": "Se da el cobro de una empresa de jardinería, VerdeVivo, mediante una ficha de precios organizada en dos columnas: «Concepto» y «Precio», con las filas «Visita inicial: $10 000» y «Trabajo por hora: $15 000». Luego se cuenta que una empresa competidora, JardínPro, ofrece «una visita inicial 30 % más barata y un trabajo por hora 20 % más caro» que VerdeVivo. A partir de ese desglose, se piden elegir entre varias funciones J(t) la que representa correctamente el cobro de JardínPro. Las alternativas reflejan, como en el ítem fuente, errores típicos de interpretación de porcentajes aplicados de forma parcial o incorrecta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El alumno debe reconstruir desde la ficha qué tipo de función representa el cobro (constante + término proporcional al tiempo), distinguir cuál casilla sufre descuento y cuál recargo, y aplicar el método porcentual paso a paso. No es posible resolverlo solo imitando una forma, ya que la información relevante no está dada como función desde el inicio.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v14",
+      "scenario_description": "Se presenta una empresa de streaming de clases de fitness, FitOnline, que cobra una cuota de activación de $10 000 y $15 000 por cada hora de clase en vivo tomada en el mes. Se explicita que esto se modela con F(t)=10 000+15 000t. Luego se menciona que una nueva plataforma, FitPro, ofrece una cuota de activación 30 % menor, pero un costo por hora de clase 20 % mayor, ambos referidos a FitOnline. Las alternativas son frases como: «FitPro se modela con Fp(t)=7 000+18 000t porque su activación es el 70 % de 10 000 y su tarifa por hora es el 120 % de 15 000», frente a otras que dicen, por ejemplo, que «la activación es 30 pesos menor» o que «ambos cobros aumentan en un 20 %». Se pide escoger la afirmación que sea totalmente consistente con el anuncio.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar tanto la fórmula dada como el lenguaje del anuncio, asociando cada parte del cobro con la pieza correcta de la función, y luego aplicar los porcentajes adecuados para juzgar la veracidad de cada afirmación. Los distractores explotan malentendidos típicos de expresiones como '30 % menor', por lo que se premia la comprensión conceptual del método porcentual sobre cada componente de la función.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v15",
+      "scenario_description": "Se entrega un comprobante simplificado de una veterinaria a domicilio, VetHome, donde se lee: «Visita a domicilio: $10 000» y «Atención por hora: $15 000». En un párrafo posterior se informa que una segunda veterinaria, VetPlus, indica en su publicidad que cobra un 30 % menos por la visita que VetHome y un 20 % más por cada hora de atención que VetHome. A partir de ese 'ledger', se pide seleccionar la función V(t) que representa el cobro de VetPlus, manteniendo la estructura de función afín pero con términos modificados por los porcentajes indicados.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Es necesario reconocer que la visita corresponde al término independiente y la atención por hora al coeficiente de t, y luego aplicar los porcentajes por separado para construir mentalmente V(t). Las opciones erróneas se diseñan para reflejar fallos conceptuales en esa asignación (aplicar el 20 % al término fijo, por ejemplo), de forma que solo el dominio del método por parte del estudiante conduce a la respuesta correcta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v16",
+      "scenario_description": "Se expone el cobro de una empresa de impresión 3D, Print3D, que cobra una tarifa de preparación del archivo de $14 000 y $15 000 por cada hora de impresión, y se indica que esto se modela por P(t)=14 000+15 000t. Una segunda empresa, ProtoMax, anuncia «30 % menos en la preparación del archivo y 20 % más por cada hora de impresión» que Print3D. Se presentan afirmaciones que mezclan palabras y símbolos, por ejemplo: «ProtoMax cobra 9 800 por preparación (el 70 % de 14 000) y 18 000 por hora (el 120 % de 15 000), de modo que su función es ...», así como otras donde alguna de las dos cifras está mal calculada o donde se ha aplicado el porcentaje sobre toda la expresión. Se pide elegir la única afirmación que respeta exactamente la relación porcentual con P(t).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender la función original como suma de un costo fijo y uno proporcional al tiempo e interpretar la frase publicitaria en términos de factores porcentuales sobre cada parte. Solo puede validar la afirmación correcta si domina la idea de 70 % y 120 % de un valor de referencia y reconoce en qué término se aplica cada uno.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    },
+    {
+      "variant_id": "Q39_v17",
+      "scenario_description": "Se muestra el tarifario de una empresa de mantenimiento de piscinas, AquaServ, como un recuadro con dos líneas: «Salida del técnico: $10 000» y «Trabajo por hora: $15 000». Después se explica que una nueva empresa, AquaPlus, ofrece un 30 % de rebaja en la salida del técnico respecto de AquaServ y un 20 % de recargo en el trabajo por hora respecto de AquaServ. A partir de este formato de 'lista de precios', se piden elegir cuál de cuatro funciones A(t) representa correctamente el cobro de AquaPlus. Las alternativas incorporan errores análogos a los de la pregunta fuente (ajustar solo uno de los montos, sumar/restar porcentajes como si fueran valores absolutos o aumentar ambos términos en vez de disminuir el fijo).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El alumno debe traducir el tarifario a la estructura algebraica de una función afín, decidir a qué ítem se aplica cada porcentaje y calcular los nuevos montos antes de comparar con las opciones. No puede resolver sin reconstruir conscientemente la función base y el efecto de cada porcentaje sobre los dos términos distintos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "ledger_context"
+    },
+    {
+      "variant_id": "Q39_v18",
+      "scenario_description": "Se presenta el plan de una sala de eventos, SalónCentro, que cobra un arriendo base de $16 000 más $15 000 por cada hora extra de uso, y se expresa como S(t)=16 000+15 000t, donde t son las horas adicionales. Luego se indica que otro salón, SalónPremium, ofrece «un arriendo base 30 % más bajo, pero cobra 20 % más por cada hora extra» que SalónCentro. En lugar de pedir directamente la función de SalónPremium, se dan afirmaciones que comparan ambos modelos, como: «El arriendo base de SalónPremium es 4 800 pesos menor que el de SalónCentro y su hora extra cuesta 3 000 más, por ello su función es ...», junto con otras donde se mezclan mal las diferencias o se interpretan mal los porcentajes. Se debe seleccionar la afirmación que refleja correctamente los nuevos montos derivados de aplicar 30 % menos y 20 % más a los componentes de S(t).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "representacion"
+      ],
+      "required_reasoning": "Resolver exige identificar qué partes de S(t) corresponden al arriendo base y a la hora extra, calcular el 70 % del arriendo base y el 120 % del valor de la hora, y luego comprobar si las diferencias mencionadas en cada afirmación son coherentes con esos cálculos. Así se fuerza a entender el método porcentual aplicado a cada término y no solo a reconocer una fórmula por su apariencia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "decision_statement"
+    }
+  ]
+}

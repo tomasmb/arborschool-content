@@ -1,0 +1,118 @@
+{
+  "variant_id": "Q60_v9",
+  "source_question_id": "Q60",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q60_v9",
+    "scenario_description": "Un bloque cilíndrico de madera se obtiene partiendo de un cilindro macizo al que se le hace un rebaje cilíndrico (un agujero ciego) solo en la parte superior, sin atravesarlo por completo. El esquema muestra el diámetro del cilindro original, el diámetro del rebaje y la altura total del bloque, además de la profundidad del rebaje. Se pregunta por el volumen de madera del bloque final entre cuatro opciones numéricas.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "Debe modelarse el volumen final como el volumen del cilindro completo menos el volumen de un cilindro más delgado que ocupa solo una parte de la altura. Requiere distinguir correctamente alturas de cada cilindro, convertir diámetros a radios y aplicar V = πr²h a ambos antes de restar. Comprender la relación entre el rebaje y el sólido original es clave; no basta con una aplicación directa única de la fórmula.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Vista lateral de un cilindro de altura h con una cavidad cilíndrica excavada desde la cara superior, de diámetro menor y profundidad menor que h. Se señalan los dos diámetros y ambas alturas (total y profundidad del rebaje).",
+    "selected_shape_id": "embedded_shape_transfer"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que solo se aplican volúmenes de cilindros (sin introducir otros sólidos ni teoremas nuevos) y que la resolución sigue siendo un modelado directo del sólido a partir de la figura, sin agregar pasos algebraicos adicionales ni cambiar a otro tipo de medida."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-GEO-02-16"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas contextualizados: Prismas Generales y Cilindros"
+    ],
+    "family_id": "geometry_measurement_application",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "embedded_shape_transfer",
+        "description": "Mantener la misma relación geométrica central, pero presentarla a través de una figura inscrita, circunscrita o contenida que obligue a transferir una medida intermedia breve.",
+        "required_changes": [
+          "Relación entre figuras",
+          "Nueva medida objetivo dentro del mismo constructo geométrico"
+        ],
+        "forbidden_changes": [
+          "Agregar un teorema nuevo",
+          "Cambiar a una familia geométrica distinta"
+        ]
+      },
+      {
+        "shape_id": "measurement_claim_selection",
+        "description": "Pedir seleccionar el resultado o afirmación geométrica coherente con la medida calculada, en vez de repetir la misma pregunta directa por el valor final.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación o selección",
+          "Distractores con errores de fórmula o medida plausibles"
+        ],
+        "forbidden_changes": [
+          "Eliminar la aplicación de la fórmula central",
+          "Introducir varias cadenas de cálculo ajenas a la fuente"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "geometry_measurement_application",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "generic_visual_support",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "geometry_formula_application",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "volume_formula",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "length_to_volume",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_structural_support",
+    "explicit_dataset_policy": "not_required_if_geometry_is_explicit",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=geometry_measurement_application",
+      "must_not_introduce_algebraic_unknowns",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

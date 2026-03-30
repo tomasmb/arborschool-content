@@ -1,0 +1,120 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v1" title="Q51_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un usuario tiene un plan de datos móviles. En el siguiente gráfico se muestra, para los días de un mismo mes, el <strong>consumo acumulado de datos del usuario</strong> y la <strong>cantidad acumulada de datos incluidos en su plan</strong>, ambos medidos en GB. El eje horizontal representa los <em>Días del mes</em> (de 0 a 30) y el eje vertical los <em>Datos en GB</em>.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Gráfico cartesiano con eje horizontal etiquetado 'Días del mes' de 0 a 30 y eje vertical etiquetado 'Datos en GB'. Aparecen dos curvas suaves que parten del origen (0, 0). La curva 'Consumo acumulado de datos del usuario' crece de forma cóncava hacia abajo y se encuentra siempre por debajo de la otra hasta aproximadamente el día 18. La curva 'Datos incluidos en el plan (acumulados)' crece algo más rápido al inicio y luego se hace casi horizontal, representando que el plan tiene un tope de datos. Ambas curvas se intersectan cerca del día 18 en un punto marcado con un punto destacado y la letra P." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Qué representa el punto P donde las curvas se intersectan?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Es el día en que el usuario alcanza su mayor consumo acumulado de datos en todo el mes.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Un punto de intersección representa que ambas curvas tienen el mismo valor de datos acumulados en ese día. No representa necesariamente el mayor consumo del mes. Por ejemplo, si después de P la curva de consumo sigue subiendo, entonces existen días posteriores con un consumo acumulado mayor que el de P.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Es el día en que el consumo acumulado de datos del usuario es exactamente igual a la cantidad acumulada de datos incluidos en su plan.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En una intersección, las dos curvas tienen la misma coordenada horizontal y la misma coordenada vertical. Entonces, en el punto P, para un mismo día del mes, el consumo acumulado del usuario es exactamente igual a la cantidad acumulada de datos incluidos en su plan.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Es el día desde el cual el usuario deja de pagar cargos adicionales por excederse del plan de datos.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En el punto P las dos cantidades son iguales: consumo acumulado e inclusión acumulada del plan. Eso no demuestra que desde ese día deje de pagar cargos adicionales. De hecho, si en un día posterior la curva de consumo queda por encima de la curva del plan, entonces sí estaría excediendo el plan, por lo que esta afirmación no está representada por la intersección.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Es el día en que el usuario contrata un nuevo plan con una mayor cantidad de datos disponibles.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El punto de intersección solo indica igualdad entre los valores de ambas curvas en un mismo día. No hay en el gráfico ninguna marca, salto o cambio de plan que indique la contratación de un nuevo servicio. Por lo tanto, P no representa contratar un nuevo plan.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: interpretar la intersección de dos curvas</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué representa cada curva</strong></p>
+            <p>Una curva representa el consumo acumulado de datos del usuario y la otra representa la cantidad acumulada de datos incluidos en su plan.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Recordar qué significa una intersección en un gráfico</strong></p>
+            <p>Cuando dos curvas se intersectan en un punto, ambas tienen el mismo valor de la variable vertical para el mismo valor de la variable horizontal.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar esa idea al punto P</strong></p>
+            <p>En P, el día del mes es el mismo para ambas curvas y también la cantidad de GB es la misma para ambas. Entonces, ese punto representa el día en que el consumo acumulado del usuario coincide exactamente con la cantidad acumulada de datos incluidos en el plan.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar las otras alternativas</strong></p>
+            <p>La alternativa A habla del mayor consumo del mes, pero una intersección no indica un máximo. La alternativa C afirma algo sobre dejar de pagar cargos adicionales, lo que no se deduce solo de que las curvas se crucen. La alternativa D menciona contratar un nuevo plan, pero el gráfico no muestra ese evento.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>: el punto P representa el día en que el consumo acumulado de datos del usuario es exactamente igual a la cantidad acumulada de datos incluidos en su plan.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,201 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q39_v9" title="Q39_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un estacionamiento, la boleta de cobro muestra el siguiente desglose:<br />
+      Cobro por tiempo: $2 500 por cada hora de uso.<br />
+      Cargo único de ingreso: $1 800.<br />
+      Total a pagar: depende de las horas utilizadas.<br />
+      La administración quiere programar una función de cobro automático. Sea 
+      <m:math>
+        <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo>
+      </m:math>
+      el total, en pesos, que debe pagar un automóvil que estuvo 
+      <m:math>
+        <m:mi>h</m:mi>
+      </m:math>
+      horas estacionado. ¿Cuál de las siguientes expresiones puede usar la administración para calcular 
+      <m:math>
+        <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo>
+      </m:math>
+      ?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mi>h</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión solo considera el cobro por tiempo. Por ejemplo, si <span>h = 1</span>, entrega <span>2 500</span>, pero el problema también exige sumar el cargo único de ingreso de <span>1 800</span>, así que el total correcto sería <span>2 500 + 1 800 = 4 300</span>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mi>h</m:mi><m:mo>+</m:mo><m:mn>1800</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El total se forma sumando el cobro variable de <span>2 500 por cada hora</span>, que es <span>2 500h</span>, más el cargo fijo de ingreso de <span>1 800</span>. Por eso la función correcta es <span>T(h) = 2 500h + 1 800</span>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>(</m:mo><m:mn>2500</m:mn><m:mo>+</m:mo><m:mn>1800</m:mn><m:mo>)</m:mo><m:mi>h</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Aquí el cargo de ingreso de <span>1 800</span> también se multiplica por <span>h</span>, pero el enunciado dice que es un cargo único. Por ejemplo, si <span>h = 2</span>, esta expresión da <span>(2 500 + 1 800) × 2 = 4 300 × 2 = 8 600</span>, mientras que el total correcto es <span>2 500 × 2 + 1 800 = 5 000 + 1 800 = 6 800</span>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mo>+</m:mo><m:mn>1800</m:mn><m:mi>h</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión deja fijo el <span>2 500</span> y multiplica por las horas el <span>1 800</span>, pero el enunciado indica lo contrario: <span>2 500</span> es el valor por cada hora y <span>1 800</span> es el cargo único. Por ejemplo, si <span>h = 3</span>, esta opción da <span>2 500 + 1 800 × 3 = 2 500 + 5 400 = 7 900</span>, mientras que el total correcto es <span>2 500 × 3 + 1 800 = 7 500 + 1 800 = 9 300</span>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las partes del cobro</strong></p>
+            <p>El problema indica dos componentes:</p>
+            <p>• Un cobro por tiempo de uso de $2 500 por cada hora.</p>
+            <p>• Un cargo único de ingreso de $1 800.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Expresar el cobro por horas</strong></p>
+            <p>Si el automóvil estuvo <m:math><m:mi>h</m:mi></m:math> horas, entonces el cobro por tiempo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>2500</m:mn><m:mi>h</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Esto representa $2 500 multiplicado por la cantidad de horas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Agregar el cargo fijo</strong></p>
+            <p>Como el cargo de ingreso se cobra una sola vez, se suma al cobro por horas:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mi>h</m:mi><m:mo>+</m:mo><m:mn>1800</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con un valor concreto</strong></p>
+            <p>Si el automóvil estuvo 2 horas, entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>T</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>1800</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>=</m:mo><m:mn>5000</m:mn><m:mo>+</m:mo><m:mn>1800</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>=</m:mo><m:mn>6800</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Esto coincide con “cobro por hora + cargo único”.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión correcta es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>T</m:mi><m:mo>(</m:mo><m:mi>h</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2500</m:mn><m:mi>h</m:mi><m:mo>+</m:mo><m:mn>1800</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

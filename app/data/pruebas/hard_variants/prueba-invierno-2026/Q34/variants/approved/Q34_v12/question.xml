@@ -1,0 +1,276 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q34_v12" title="Q34_v12" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se define un índice de emisión segura S a partir de la emisión diaria de CO₂ de una fábrica y del número de días del mes, mediante la siguiente expresión:
+      <m:math>
+        <m:mi>S</m:mi>
+        <m:mo>=</m:mo>
+        <m:mfrac>
+          <m:mrow>
+            <m:mi>E</m:mi>
+            <m:mo>·</m:mo>
+            <m:mi>d</m:mi>
+          </m:mrow>
+          <m:mn>900</m:mn>
+        </m:mfrac>
+      </m:math>
+      donde E representa la emisión diaria de CO₂ en kg y d el número de días del mes.
+    </p>
+    <p>Según el valor de S, la situación se clasifica de la siguiente manera:</p>
+    <div>
+      <p>• Si
+        <m:math>
+          <m:mi>S</m:mi>
+          <m:mo>&lt;</m:mo>
+          <m:mn>1</m:mn>
+        </m:math>,
+        la situación se clasifica como «emisión segura».</p>
+      <p>• Si
+        <m:math>
+          <m:mn>1</m:mn>
+          <m:mo>≤</m:mo>
+          <m:mi>S</m:mi>
+          <m:mo>≤</m:mo>
+          <m:mn>1,5</m:mn>
+        </m:math>,
+        la situación se clasifica como «emisión moderada».</p>
+      <p>• Si
+        <m:math>
+          <m:mi>S</m:mi>
+          <m:mo>&gt;</m:mo>
+          <m:mn>1,5</m:mn>
+        </m:math>,
+        la situación se clasifica como «emisión excesiva».</p>
+    </div>
+    <p>Para un mes de 30 días, se modela la condición de funcionamiento de una fábrica mediante la siguiente inecuación sobre su emisión diaria E:
+      <m:math>
+        <m:mi>E</m:mi>
+        <m:mo>&lt;</m:mo>
+        <m:mfrac>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>·</m:mo>
+            <m:mn>900</m:mn>
+          </m:mrow>
+          <m:mn>30</m:mn>
+        </m:mfrac>
+      </m:math>.
+      ¿Cuál de las siguientes descripciones es coherente con esta condición?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La fábrica opera con una emisión diaria que hace que su índice S sea exactamente igual a 1, es decir, justo en el límite entre «emisión segura» y «emisión moderada».<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La condición dada es <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mfrac><m:mrow><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>900</m:mn></m:mrow><m:mn>30</m:mn></m:mfrac></m:math>, y <m:math><m:mfrac><m:mrow><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>900</m:mn></m:mrow><m:mn>30</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>30</m:mn></m:math>, por lo tanto <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math>. Si <m:math><m:mi>E</m:mi><m:mo>=</m:mo><m:mn>30</m:mn></m:math>, entonces <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>30</m:mn><m:mo>·</m:mo><m:mn>30</m:mn></m:mrow><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>900</m:mn><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, pero ese valor no cumple la desigualdad estricta <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La fábrica debe mantener su emisión diaria por debajo de cierto valor máximo para que su índice S permanezca dentro de la categoría de «emisión segura» durante el mes de 30 días.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Como <m:math><m:mfrac><m:mrow><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>900</m:mn></m:mrow><m:mn>30</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>30</m:mn></m:math>, la condición es <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math>. Para un mes de 30 días, <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mi>E</m:mi><m:mo>·</m:mo><m:mn>30</m:mn></m:mrow><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mi>E</m:mi><m:mn>30</m:mn></m:mfrac></m:math>. Entonces, si <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math>, se obtiene <m:math><m:mfrac><m:mi>E</m:mi><m:mn>30</m:mn></m:mfrac><m:mo>&lt;</m:mo><m:mfrac><m:mn>30</m:mn><m:mn>30</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, es decir, <m:math><m:mi>S</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:math>. Eso corresponde exactamente a «emisión segura».</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La fábrica debe emitir al menos una cierta cantidad diaria de CO₂ para asegurarse de que su índice S sea mayor que 1,5, es decir, en la categoría de «emisión excesiva».<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La condición del problema es <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math>. Con un valor que sí cumple esa condición, por ejemplo <m:math><m:mi>E</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:math>, resulta <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>20</m:mn><m:mo>·</m:mo><m:mn>30</m:mn></m:mrow><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>600</m:mn><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>2</m:mn><m:mn>3</m:mn></m:mfrac><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:math>. Por lo tanto, la condición no asegura <m:math><m:mi>S</m:mi><m:mo>&gt;</m:mo><m:mn>1,5</m:mn></m:math>; al contrario, mantiene <m:math><m:mi>S</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La fábrica ajusta su emisión diaria de modo que el índice S quede entre 1 y 1,5, es decir, dentro de la categoría de «emisión moderada».<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. De la condición <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math> y de <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mi>E</m:mi><m:mn>30</m:mn></m:mfrac></m:math>, se obtiene <m:math><m:mi>S</m:mi><m:mo>&lt;</m:mo><m:mfrac><m:mn>30</m:mn><m:mn>30</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>1</m:mn></m:math>. Entonces <m:math><m:mi>S</m:mi></m:math> no puede quedar entre <m:math><m:mn>1</m:mn></m:math> y <m:math><m:mn>1,5</m:mn></m:math>. Por ejemplo, si <m:math><m:mi>E</m:mi><m:mo>=</m:mo><m:mn>25</m:mn></m:math>, entonces <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>30</m:mn></m:mrow><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>750</m:mn><m:mn>900</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>5</m:mn><m:mn>6</m:mn></m:mfrac><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Simplificar la inecuación dada</strong></p>
+            <p>La condición es:</p>
+            <p>
+              <m:math>
+                <m:mi>E</m:mi>
+                <m:mo>&lt;</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>·</m:mo>
+                    <m:mn>900</m:mn>
+                  </m:mrow>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Calculamos el lado derecho:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>1</m:mn>
+                    <m:mo>·</m:mo>
+                    <m:mn>900</m:mn>
+                  </m:mrow>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mn>900</m:mn>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>30</m:mn>
+              </m:math>
+            </p>
+            <p>Entonces la inecuación queda:</p>
+            <p>
+              <m:math>
+                <m:mi>E</m:mi>
+                <m:mo>&lt;</m:mo>
+                <m:mn>30</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Reemplazar d = 30 en la fórmula del índice</strong></p>
+            <p>La expresión general es:</p>
+            <p>
+              <m:math>
+                <m:mi>S</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>E</m:mi>
+                    <m:mo>·</m:mo>
+                    <m:mi>d</m:mi>
+                  </m:mrow>
+                  <m:mn>900</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Como el mes tiene 30 días, se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mi>S</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mi>E</m:mi>
+                    <m:mo>·</m:mo>
+                    <m:mn>30</m:mn>
+                  </m:mrow>
+                  <m:mn>900</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mi>E</m:mi>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Relacionar la condición sobre E con el valor de S</strong></p>
+            <p>Sabemos que:</p>
+            <p>
+              <m:math>
+                <m:mi>E</m:mi>
+                <m:mo>&lt;</m:mo>
+                <m:mn>30</m:mn>
+              </m:math>
+            </p>
+            <p>Como <m:math><m:mn>30</m:mn><m:mo>&gt;</m:mo><m:mn>0</m:mn></m:math>, podemos dividir ambos lados por 30 sin cambiar el sentido de la desigualdad:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mi>E</m:mi>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+                <m:mo>&lt;</m:mo>
+                <m:mfrac>
+                  <m:mn>30</m:mn>
+                  <m:mn>30</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:math>
+            </p>
+            <p>Pero <m:math><m:mi>S</m:mi><m:mo>=</m:mo><m:mfrac><m:mi>E</m:mi><m:mn>30</m:mn></m:mfrac></m:math>, así que:</p>
+            <p>
+              <m:math>
+                <m:mi>S</m:mi>
+                <m:mo>&lt;</m:mo>
+                <m:mn>1</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar la clasificación</strong></p>
+            <p>El enunciado indica que si <m:math><m:mi>S</m:mi><m:mo>&lt;</m:mo><m:mn>1</m:mn></m:math>, la situación es «emisión segura».</p>
+            <p>Por lo tanto, la condición <m:math><m:mi>E</m:mi><m:mo>&lt;</m:mo><m:mn>30</m:mn></m:math> significa que la fábrica debe mantener su emisión diaria por debajo de un valor máximo para permanecer en esa categoría.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La descripción coherente es la <strong>opción B</strong>: la fábrica debe mantener su emisión diaria por debajo de cierto valor máximo para que su índice <m:math><m:mi>S</m:mi></m:math> permanezca dentro de la categoría de «emisión segura» durante el mes de 30 días.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

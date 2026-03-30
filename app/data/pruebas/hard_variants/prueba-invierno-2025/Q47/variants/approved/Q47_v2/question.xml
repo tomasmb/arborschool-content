@@ -1,0 +1,301 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q47_v2" title="Q47_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La siguiente tabla muestra cuatro escaleras apoyadas en un muro, que forman triángulos rectángulos con el suelo y el muro.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th />
+          <th>Escalera A</th>
+          <th>Escalera B</th>
+          <th>Escalera C</th>
+          <th>Escalera D</th>
+        </tr>
+        <tr>
+          <td>Base (m)</td>
+          <td>3</td>
+          <td>6</td>
+          <td>9</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>Altura (m)</td>
+          <td>4</td>
+          <td>8</td>
+          <td>12</td>
+          <td>6</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es incorrecta?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La escalera C es la que tiene la hipotenusa de mayor longitud entre todas.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las hipotenusas son: A = 5 m porque 3<sup>2</sup> + 4<sup>2</sup> = 9 + 16 = 25, B = 10 m porque 6<sup>2</sup> + 8<sup>2</sup> = 36 + 64 = 100, C = 15 m porque 9<sup>2</sup> + 12<sup>2</sup> = 81 + 144 = 225, y D = 10 m porque 8<sup>2</sup> + 6<sup>2</sup> = 64 + 36 = 100. Como 15 es la mayor longitud, la afirmación es verdadera y no es la incorrecta.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La escalera A es la que tiene el menor perímetro entre todas.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Los perímetros son: A = 3 + 4 + 5 = 12 m, B = 6 + 8 + 10 = 24 m, C = 9 + 12 + 15 = 36 m y D = 8 + 6 + 10 = 24 m. Como 12 es el menor perímetro, la afirmación es verdadera y no es la incorrecta.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Las escaleras B y D tienen hipotenusas de igual longitud.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Para B, 6<sup>2</sup> + 8<sup>2</sup> = 36 + 64 = 100, así que su hipotenusa mide 10 m. Para D, 8<sup>2</sup> + 6<sup>2</sup> = 64 + 36 = 100, así que su hipotenusa también mide 10 m. Como ambas miden 10 m, la afirmación es verdadera y no es la incorrecta.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La escalera que tiene la hipotenusa de mayor longitud no es la que tiene el mayor perímetro.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! La hipotenusa mayor es la de C, porque mide 15 m. Sus perímetros son: A = 12 m, B = 24 m, C = 36 m y D = 24 m. La escalera C tiene al mismo tiempo la mayor hipotenusa y el mayor perímetro. Por eso la afirmación “no es la que tiene el mayor perímetro” es falsa, y esta es la opción incorrecta.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular la hipotenusa de cada escalera usando el teorema de Pitágoras</strong></p>
+            <p>Para cada triángulo rectángulo se cumple:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup><mi>h</mi><mn>2</mn></msup>
+                <mo>=</mo>
+                <msup><mi>b</mi><mn>2</mn></msup>
+                <mo>+</mo>
+                <msup><mi>a</mi><mn>2</mn></msup>
+              </mrow>
+            </math>
+            <p><em>Escalera A:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup><mi>h</mi><mn>2</mn></msup>
+                <mo>=</mo>
+                <msup><mn>3</mn><mn>2</mn></msup>
+                <mo>+</mo>
+                <msup><mn>4</mn><mn>2</mn></msup>
+                <mo>=</mo>
+                <mn>9</mn>
+                <mo>+</mo>
+                <mn>16</mn>
+                <mo>=</mo>
+                <mn>25</mn>
+              </mrow>
+            </math>
+            <p>Entonces,</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>h</mi>
+                <mo>=</mo>
+                <msqrt><mn>25</mn></msqrt>
+                <mo>=</mo>
+                <mn>5</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera B:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup><mi>h</mi><mn>2</mn></msup>
+                <mo>=</mo>
+                <msup><mn>6</mn><mn>2</mn></msup>
+                <mo>+</mo>
+                <msup><mn>8</mn><mn>2</mn></msup>
+                <mo>=</mo>
+                <mn>36</mn>
+                <mo>+</mo>
+                <mn>64</mn>
+                <mo>=</mo>
+                <mn>100</mn>
+              </mrow>
+            </math>
+            <p>Entonces,</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>h</mi>
+                <mo>=</mo>
+                <msqrt><mn>100</mn></msqrt>
+                <mo>=</mo>
+                <mn>10</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera C:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup><mi>h</mi><mn>2</mn></msup>
+                <mo>=</mo>
+                <msup><mn>9</mn><mn>2</mn></msup>
+                <mo>+</mo>
+                <msup><mn>12</mn><mn>2</mn></msup>
+                <mo>=</mo>
+                <mn>81</mn>
+                <mo>+</mo>
+                <mn>144</mn>
+                <mo>=</mo>
+                <mn>225</mn>
+              </mrow>
+            </math>
+            <p>Entonces,</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>h</mi>
+                <mo>=</mo>
+                <msqrt><mn>225</mn></msqrt>
+                <mo>=</mo>
+                <mn>15</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera D:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup><mi>h</mi><mn>2</mn></msup>
+                <mo>=</mo>
+                <msup><mn>8</mn><mn>2</mn></msup>
+                <mo>+</mo>
+                <msup><mn>6</mn><mn>2</mn></msup>
+                <mo>=</mo>
+                <mn>64</mn>
+                <mo>+</mo>
+                <mn>36</mn>
+                <mo>=</mo>
+                <mn>100</mn>
+              </mrow>
+            </math>
+            <p>Entonces,</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>h</mi>
+                <mo>=</mo>
+                <msqrt><mn>100</mn></msqrt>
+                <mo>=</mo>
+                <mn>10</mn>
+              </mrow>
+            </math>
+            <p>Las hipotenusas son 5 m, 10 m, 15 m y 10 m. La mayor es la de la escalera C.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el perímetro de cada triángulo</strong></p>
+            <p>El perímetro es la suma de sus tres lados.</p>
+            <p><em>Escalera A:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn>
+                <mo>+</mo>
+                <mn>4</mn>
+                <mo>+</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>12</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera B:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>6</mn>
+                <mo>+</mo>
+                <mn>8</mn>
+                <mo>+</mo>
+                <mn>10</mn>
+                <mo>=</mo>
+                <mn>24</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera C:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>9</mn>
+                <mo>+</mo>
+                <mn>12</mn>
+                <mo>+</mo>
+                <mn>15</mn>
+                <mo>=</mo>
+                <mn>36</mn>
+              </mrow>
+            </math>
+            <p><em>Escalera D:</em></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>8</mn>
+                <mo>+</mo>
+                <mn>6</mn>
+                <mo>+</mo>
+                <mn>10</mn>
+                <mo>=</mo>
+                <mn>24</mn>
+              </mrow>
+            </math>
+            <p>Los perímetros son 12 m, 24 m, 36 m y 24 m. El mayor perímetro también corresponde a la escalera C.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Evaluar cada afirmación</strong></p>
+            <p><strong>Opción A:</strong> verdadera, porque la escalera C tiene la mayor hipotenusa: 15 m.</p>
+            <p><strong>Opción B:</strong> verdadera, porque la escalera A tiene el menor perímetro: 12 m.</p>
+            <p><strong>Opción C:</strong> verdadera, porque B y D tienen hipotenusa de 10 m.</p>
+            <p><strong>Opción D:</strong> falsa, porque la escalera con mayor hipotenusa sí es la que tiene mayor perímetro: en ambos casos es la escalera C.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación incorrecta es la <strong>opción D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

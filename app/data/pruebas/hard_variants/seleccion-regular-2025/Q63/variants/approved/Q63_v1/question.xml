@@ -1,0 +1,132 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v1" title="Q63_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Considera el siguiente dibujo de un gato de perfil mirando hacia la derecha, de pie sobre un piso cuadriculado.</p>
+    <p><img src="imagen_principal.png" alt="Dibujo de un gato sobre un piso cuadriculado." /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>¿En cuál de las siguientes opciones se representa el mismo gato mediante una traslación en el piso (manteniendo exactamente su forma, tamaño y orientación)?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <img src="opcion_a.png" alt="" />
+        Gato de perfil mirando hacia la izquierda, de igual tamaño que el original, ubicado en otra posición del piso.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En una traslación la figura conserva su orientación. Aquí la figura queda mirando hacia la izquierda, mientras la original mira hacia la derecha. Ese cambio de orientación muestra que no es una traslación, aunque el tamaño sea el mismo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <img src="opcion_b.png" alt="" />
+        Gato de perfil mirando hacia la derecha, del mismo tamaño que el original, desplazado algunos cuadros hacia un lado sin girarse.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Una traslación solo desplaza la figura de una posición a otra. En esta opción se mantiene exactamente la misma forma, el mismo tamaño y la misma orientación: sigue mirando hacia la derecha y no aparece girado ni agrandado. Por eso sí representa una traslación.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <img src="opcion_c.png" alt="" />
+        Gato de perfil mirando hacia la derecha, más grande que el original, ubicado aproximadamente en la misma zona del piso.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En una traslación el tamaño no cambia. Aquí la figura mantiene la orientación hacia la derecha, pero aparece más grande que la original. Como cambia la escala, no puede ser una traslación.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <img src="opcion_d.png" alt="" />
+        Gato de perfil mirando hacia la derecha, de igual tamaño que el original, pero ligeramente girado respecto al piso cuadriculado.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En una traslación la figura no gira. Aunque aquí se conserva el tamaño y sigue mirando hacia la derecha, aparece ligeramente girada respecto del piso. Ese cambio de inclinación muestra que no es una traslación.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar qué hace una traslación</strong></p>
+            <p>Una traslación mueve una figura de un lugar a otro sin cambiar su forma, sin cambiar su tamaño y sin cambiar su orientación.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la orientación de cada opción</strong></p>
+            <p>La figura original mira hacia la derecha. Si una opción mira hacia la izquierda o aparece girada, entonces no puede ser una traslación.</p>
+            <p>La opción A mira hacia la izquierda, por lo tanto no corresponde.</p>
+            <p>La opción D está girada, por lo tanto tampoco corresponde.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar el tamaño</strong></p>
+            <p>En una traslación el tamaño debe mantenerse exactamente igual.</p>
+            <p>La opción C muestra una figura más grande que la original, así que no corresponde a una traslación.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Identificar la opción que solo se desplaza</strong></p>
+            <p>La opción B conserva la forma, conserva el tamaño y conserva la orientación hacia la derecha. La única diferencia es la posición en el piso.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>opción B</strong>, porque representa la misma figura trasladada a otra posición sin girarla ni cambiar su tamaño.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

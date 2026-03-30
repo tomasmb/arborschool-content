@@ -1,0 +1,162 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q22_v1" title="Q22_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la ficha de registro de una biblioteca se muestra el siguiente resumen de préstamos de libros:<br />- Préstamos realizados en 2023: 5000<br />- Aumento de préstamos en 2024 respecto de 2023: 150</p>
+    <p>Según este registro, ¿qué porcentaje de aumento representó, en 2024, ese incremento respecto del número de préstamos de 2023?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">2,9 %<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El porcentaje de aumento se calcula con 150 ÷ 5000 = 0,03, y 0,03 × 100 = 3 %. Por lo tanto, 2,9 % no corresponde al incremento indicado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3 %<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El porcentaje de aumento es 150 ÷ 5000 = 0,03. Al multiplicar por 100, se obtiene 3 %. Por eso, el incremento representa un 3 % respecto de 2023.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">30 %<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el aumento fuera 30 %, entonces debería cumplirse 0,30 × 5000 = 1500. Pero el aumento real es 150, no 1500. Por eso, 30 % no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">150 %<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el aumento fuera 150 %, entonces debería cumplirse 1,5 × 5000 = 7500. Pero el aumento real es 150, no 7500. Por lo tanto, 150 % no corresponde al registro.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los datos del problema</strong></p>
+            <p>En 2023 hubo 5000 préstamos.</p>
+            <p>En 2024 el aumento fue de 150 préstamos respecto de 2023.</p>
+          </li>
+          <li>
+            <p><strong>Recordar cómo se calcula un porcentaje de aumento</strong></p>
+            <p>El porcentaje se obtiene dividiendo el aumento por la cantidad inicial y luego multiplicando por 100.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mtext>porcentaje de aumento</mtext>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mtext>aumento</mtext>
+                  </mrow>
+                  <mrow>
+                    <mtext>cantidad inicial</mtext>
+                  </mrow>
+                </mfrac>
+                <mo>×</mo>
+                <mn>100</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Reemplazar con los valores del problema</strong></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>150</mn>
+                  <mn>5000</mn>
+                </mfrac>
+                <mo>×</mo>
+                <mn>100</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Calcular la división</strong></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>150</mn>
+                  <mn>5000</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,03</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Convertir a porcentaje</strong></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,03</mn>
+                <mo>×</mo>
+                <mn>100</mn>
+                <mo>=</mo>
+                <mn>3</mn>
+              </mrow>
+            </math>
+            <p>Entonces, el aumento corresponde a 3 %.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>3 %</strong>, es decir, la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

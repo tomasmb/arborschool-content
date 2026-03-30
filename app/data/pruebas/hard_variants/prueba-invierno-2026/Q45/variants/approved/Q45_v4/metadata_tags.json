@@ -1,0 +1,153 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-GEO-01-14",
+      "relevance": "primary",
+      "reasoning": "El estudiante debe analizar un procedimiento paso a paso y detectar en qué momento se rompe la validez geométrica del razonamiento. Identificar que los pasos 1, 2 y 4 son correctos y que el único error está en el conteo de lados del contorno (Paso 3) implica argumentar sobre la validez del procedimiento geométrico.",
+      "atom_title": "Argumentación y validación de resultados geométricos",
+      "atom_eje": "geometria",
+      "atom_standard": "M1-GEO-01"
+    }
+  ],
+  "general_analysis": "La pregunta exige interpretar una figura compuesta por 10 cuadrados congruentes, usar el área total para deducir el área y el lado de cada cuadrado, y luego analizar un procedimiento dado para hallar el perímetro. El estudiante debe revisar críticamente cada paso y reconocer que el error no es numérico sino conceptual: en el Paso 3 se confunde la suma de todos los lados de los cuadrados (incluyendo los interiores compartidos) con el perímetro real de la figura, lo que requiere distinguir claramente entre área y perímetro y comprender qué segmentos forman el contorno externo.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.55,
+    "analysis": "El problema exige varios pasos encadenados: (1) interpretar una figura compuesta por cuadrados congruentes, (2) relacionar área total, cantidad de cuadrados y área de cada uno, (3) obtener la longitud del lado a partir del área de un cuadrado, y (4) razonar sobre qué lados cuentan para el perímetro (distinguir entre lados exteriores e interiores compartidos). No es solo aplicar una fórmula, sino analizar la estructura de la figura y detectar un error de razonamiento en un procedimiento dado. Esto implica pensamiento estratégico y comprensión geométrica básica, pero sin requerir demostraciones formales ni razonamientos muy abstractos. Por eso se ubica en dificultad Media."
+  },
+  "validation": {},
+  "habilidad_principal": {
+    "habilidad_principal": "ARG",
+    "justificacion": "El foco está en revisar y evaluar un procedimiento dado para hallar el perímetro, identificar en qué paso se comete el error y justificar por qué es incorrecto, más que en solo calcular el perímetro correctamente."
+  },
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-GEO-01-14"
+    ],
+    "primary_atom_titles": [
+      "Argumentación y validación de resultados geométricos"
+    ],
+    "family_id": "argumentation_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "claim_archetype_switch",
+        "description": "Mantener la evaluación de afirmaciones, pero cambiar el arquetipo semántico de la afirmación correcta respecto de la fuente.",
+        "required_changes": [
+          "Nuevo arquetipo de afirmación correcta",
+          "Distractores coherentes con el nuevo arquetipo"
+        ],
+        "forbidden_changes": [
+          "Repetir la misma afirmación correcta con números nuevos",
+          "Convertirlo en cálculo directo"
+        ]
+      },
+      {
+        "shape_id": "false_claim_hunt",
+        "description": "Invertir la polaridad local de las opciones para pedir identificar la afirmación incorrecta dentro del mismo conjunto de datos o evidencia.",
+        "required_changes": [
+          "Polaridad local de la pregunta",
+          "Reescritura completa de opciones"
+        ],
+        "forbidden_changes": [
+          "Cambiar el dataset o la evidencia por cálculo puro",
+          "Eliminar la lectura argumentativa"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "claim_evaluation",
+    "operation_signature": "argumentation_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "generic_visual_support",
+    "representation_interpretation": false,
+    "claim_evaluation": true,
+    "cognitive_action": "evaluate_claims",
+    "solution_structure": "data_to_claim_check",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "mixed_selection",
+    "evidence_mode": "explicit_dataset_and_claims",
+    "explicit_dataset_policy": "required",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=claim_evaluation",
+      "operation_signature=argumentation_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_claim_evaluation",
+      "must_include_explicit_dataset",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "source_info": {
+    "source_question_id": "Q45",
+    "source_test_id": "prueba-invierno-2026",
+    "change_description": "Reemplacé la figura irregular de 10 cuadrados por un parque organizado como una cuadrícula 3×3 con un cuadrado central ocupado por una fuente, cambiando el contexto a una cerca alrededor del contorno exterior del césped. Mantengo el mismo esquema de procedimiento (área total → área de un cuadrado → lado del cuadrado → conteo de lados del contorno), pero ahora la pregunta no pide identificar el paso con error, sino detectar cuál afirmación sobre las implicaciones del método NO es compatible con la figura y los datos. Ajusté los valores numéricos (área total de césped 288 m², lado 6 m, conteo errado de 14 lados y perímetro declarado 84 m) y diseñé distractores que representan errores plausibles de interpretación del procedimiento y del contorno, mientras la afirmación correcta a seleccionar se basa en un análisis fino de qué tipos de lados interiores podrían haberse contado."
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué que el ítem sigue exigiendo evaluar la coherencia de afirmaciones con un procedimiento geométrico apoyado en una figura (y no calcular directamente el perímetro), y que el cambio de \"localizar el paso con error\" a \"encontrar la afirmación no compatible\" mantiene el mismo constructo de argumentación sobre conteo de lados del contorno."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "planning_blueprint": {
+    "variant_id": "Q45_v4",
+    "scenario_description": "Se muestra un plano de un parque formado por 9 cuadrados congruentes de césped dispuestos en una cuadrícula 3×3; en el cuadrado central hay una fuente circular, de modo que ese cuadrado no cuenta como área de pasto ni como borde a cercar, pero sí ocupa su lugar en la malla. Se quiere cercar solo el contorno exterior del parque de césped. Un estudiante propone un procedimiento en 4 pasos para hallar la longitud de la cerca, y el enunciado resume su razonamiento (se basa en el área total de césped, luego en el lado de cada cuadrado, y finalmente en contar segmentos del contorno). El ítem NO pregunta directamente en qué paso se equivoca, sino que presenta 4 descripciones alternativas de lo que \"implicaría\" su método (por ejemplo, que está contando lados interiores como parte del perímetro, que está ignorando la fuente, que supone mal el área total, etc.) y pide identificar cuál de esas descripciones NO es compatible con los datos y el esquema de la figura.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe visualizar qué lados realmente forman parte del contorno y qué lados son internos o lindan con la fuente, y luego contrastar esa idea con cada afirmación. Debe detectar qué afirmación describe algo que no puede suceder si se sigue el procedimiento con la figura dada, lo que requiere entender por qué confundir lados interiores con el contorno exterior conduce a un error en el perímetro.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Cuadrícula 3x3 de cuadrados; el cuadrado central está sombreado o marcado como fuente, los demás como césped.",
+    "selected_shape_id": "false_claim_hunt"
+  },
+  "postprocess_summary": {
+    "presentation_normalized": false,
+    "family_repaired": false,
+    "entities_normalized": false,
+    "correct_declaration_synced": true,
+    "qti_canonicalized": true,
+    "choice_identifiers_stripped": false,
+    "comments_stripped": false
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "variant_id": "Q62_v1",
+  "source_question_id": "Q62",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q62_v1",
+    "scenario_description": "Se plantea una caja con 15 cuadernos, de los cuales 3 están defectuosos (hojas sueltas) y 12 están en buen estado. Se presenta la información como un registro de acciones numerado: (1) Ana revisa y elige un cuaderno que está en buen estado y se lo lleva. (2) Bruno, después, también elige un cuaderno que sabe que está en buen estado y se lo lleva. (3) Por último, Carla toma un cuaderno al azar de los que quedan en la caja. Se pregunta la probabilidad de que el cuaderno de Carla esté defectuoso. El estudiante debe actualizar el número de cuadernos totales y defectuosos después de dos extracciones que afectan solo a los cuadernos en buen estado (GG), y luego calcular la probabilidad defectuoso/total restante. Los distractores se diseñan para capturar errores típicos de no actualizar el espacio muestral (usar 3/15, 3/14) o actualizar el total pero no la composición adecuada.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "Obliga a entender que las dos extracciones previas eliminan exclusivamente cuadernos buenos, por lo que el número de defectuosos no cambia pero el total sí, y la probabilidad final se basa en ese espacio muestral reducido, no en los datos iniciales ni en una fórmula memorizada.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "reduced_sample_space_record"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que la situación sigue siendo una extracción sin reposición con dependencia por reducción del espacio muestral, sin convertirla en eventos independientes ni introducir combinatoria adicional."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-10"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de probabilidad condicional por reducción del espacio muestral"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "dependent_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

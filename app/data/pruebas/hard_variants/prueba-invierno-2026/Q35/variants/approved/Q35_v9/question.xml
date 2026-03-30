@@ -1,0 +1,265 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q35_v9" title="Q35_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una feria del libro, una persona compró una novela y un cómic, pagando en total $22 000.</p>
+    <p>La novela se vende a precio normal, mientras que el cómic tiene un descuento de un 35 % sobre su precio original.</p>
+    <p>La situación se modela con el siguiente sistema de ecuaciones, donde N representa el precio de la novela en pesos:</p>
+    <p>
+      <m:math>
+        <m:mi>N</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>0</m:mn>
+        <m:mo>,</m:mo>
+        <m:mn>55</m:mn>
+        <m:mo>·</m:mo>
+        <m:mn>22&#160;000</m:mn>
+      </m:math>
+      <br />
+      <m:math>
+        <m:mi>N</m:mi>
+        <m:mo>+</m:mo>
+        <m:mn>0</m:mn>
+        <m:mo>,</m:mo>
+        <m:mn>65</m:mn>
+        <m:mi>C</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>22&#160;000</m:mn>
+      </m:math>
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Qué representa C en este sistema?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">El precio con descuento del cómic<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la ecuación N + 0,65C = 22 000, el precio con descuento del cómic está representado por 0,65C, no por C. Como 0,65 corresponde al 65 % del precio original, C debe ser el precio original antes del descuento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El precio original del cómic<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En la ecuación N + 0,65C = 22 000, la expresión 0,65C representa el 65 % del precio original del cómic, es decir, su precio con descuento. Por eso, C representa el precio original del cómic.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">La suma de los precios originales de la novela y del cómic<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La suma de los precios originales de la novela y del cómic se escribiría N + C, no solo C. Además, del sistema se obtiene N = 12 100 y C = 15 230,769..., por lo que N + C = 27 330,769..., valor distinto de C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">La suma de los precios finales de la novela y del cómic<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La suma de los precios finales está dada por la ecuación N + 0,65C = 22 000, por lo tanto esa suma es 22 000. En cambio, C es solo una variable y representa un único precio, no una suma.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la información del descuento</strong></p>
+            <p>Si el cómic tiene un descuento de 35 %, entonces se paga el 65 % de su precio original.</p>
+            <p>Eso significa que, si <strong>C</strong> fuera el precio original del cómic, su precio rebajado sería:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>65</m:mn>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Leer la segunda ecuación del sistema</strong></p>
+            <p>La ecuación</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>65</m:mn>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>22&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>indica que al precio normal de la novela se le suma el precio rebajado del cómic.</p>
+            <p>Como el término del cómic es <strong>0,65C</strong>, entonces <strong>C</strong> no es el precio rebajado, sino el precio original.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificarlo con el valor de N</strong></p>
+            <p>De la primera ecuación:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>55</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>22&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>N</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>12&#160;100</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sustituir en la segunda ecuación</strong></p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12&#160;100</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>65</m:mn>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>22&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Restando 12 100 en ambos lados:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>65</m:mn>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>22&#160;000</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>12&#160;100</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>65</m:mn>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>9&#160;900</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces el precio con descuento del cómic es 9 900 pesos, y ese valor está representado por <strong>0,65C</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Concluir qué representa C</strong></p>
+            <p>Si <strong>0,65C</strong> es el precio con descuento, entonces <strong>C</strong> representa el precio original del cómic.</p>
+            <p>Incluso, al dividir:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>9&#160;900</m:mn>
+                    <m:mrow>
+                      <m:mn>0</m:mn>
+                      <m:mo>,</m:mo>
+                      <m:mn>65</m:mn>
+                    </m:mrow>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>15&#160;230</m:mn>
+                  <m:mo>,</m:mo>
+                  <m:mn>769</m:mn>
+                  <m:mo>...</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Ese valor corresponde al precio original, no al precio rebajado.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>El precio original del cómic</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

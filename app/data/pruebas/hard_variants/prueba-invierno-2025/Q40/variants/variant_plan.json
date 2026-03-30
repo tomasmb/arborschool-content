@@ -1,0 +1,139 @@
+{
+  "source_question_id": "Q40",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q40_v8",
+      "scenario_description": "Contexto de planes de telefonía móvil. Se describe en texto: la Compañía A cobra un cargo fijo de 1200 pesos más 30 pesos por cada minuto de llamada (no se usa notación f(x), solo una frase del tipo \"el costo en pesos es 1200 + 30·t\"). La Compañía B cobra un cargo fijo de q pesos más 20 pesos por minuto. Se pregunta: «¿Cuál debe ser el cargo fijo de la Compañía B para que ambas cobren lo mismo por una llamada de 40 minutos?». El estudiante debe traducir el contexto a la ecuación lineal 1200 + 30·40 = q + 20·40 y resolverla para q.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer la estructura costo = cargo fijo + tarifa·tiempo en una descripción verbal, identificar que «cobrar lo mismo por 40 minutos» implica igualar las dos expresiones lineales evaluadas en t = 40 y luego aislar la incógnita q en una ecuación del tipo q + b = c. No basta con aplicar una fórmula memorizada; debe comprender que la condición de igualdad de cobros se traduce en una igualdad de expresiones y que el término desconocido es el cargo fijo del segundo plan.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v9",
+      "scenario_description": "Contexto de traslado en taxi versus aplicación de transporte, representado en una tabla en vez de funciones. Se muestra una tabla de dos columnas (Taxi, Aplicación) y dos filas (Tarifa base, Tarifa por kilómetro). Taxi: tarifa base 700, tarifa por km 400. Aplicación: tarifa base s (celda en blanco), tarifa por km 350. En el enunciado se indica: «Para un viaje de 10 km, ambos servicios cobran el mismo monto total». Se pide completar la celda vacía: hallar el valor de s que hace coincidir los cobros, lo que lleva a la ecuación 700 + 400·10 = s + 350·10.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe leer una tabla y reconstruir, a partir de ella, las expresiones lineales de cada servicio (tarifa base + tarifa·distancia). Luego debe interpretar la condición \"cobran lo mismo por 10 km\" como una igualdad entre esas expresiones evaluadas en 10, y recién entonces plantear y resolver la ecuación para s. Esto obliga a comprender por qué se igualan dos costos lineales construidos desde un cuadro de datos, no solo a operar números.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v10",
+      "scenario_description": "Contexto de plataformas de arriendo de películas. En texto se describe: «CinePlus cobra una suscripción de 900 pesos más 300 pesos por cada película alquilada. PeliMax cobra una suscripción de b pesos más 250 pesos por película». No se introduce notación de funciones, solo descripciones verbales con la forma \"costo en pesos = fijo + variable·número de películas\". Se plantea: «Si un usuario alquila 8 películas y el costo total es el mismo en ambas plataformas, ¿cuál debe ser la suscripción de PeliMax?». De aquí se debe deducir la ecuación 900 + 300·8 = b + 250·8 y resolverla en b.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Es necesario identificar en un relato que ambos costos dependen linealmente del número de películas, con un término fijo y uno proporcional. Luego, el estudiante debe entender que \"mismo costo por 8 películas\" significa igualar los dos costos evaluados en n = 8 y despejar el término fijo desconocido b. Esto demanda comprender la traducción desde la situación verbal a una ecuación lineal de la forma b + constante = otra constante.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v11",
+      "scenario_description": "Contexto de imprentas, con los valores ya evaluados para una cantidad específica de páginas. Se indica: «Por imprimir 500 páginas, la Empresa A cobra 3500 pesos. La Empresa B cobra c + 2500 pesos por las mismas 500 páginas (c es un cargo fijo que aún no se ha determinado). Si se desea que ambas empresas cobren lo mismo por 500 páginas, ¿cuál debe ser el valor de c?». No se dan fórmulas generales, sino los montos específicos para esa cantidad. El estudiante debe plantear 3500 = c + 2500 y resolver para c.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Debe inferir que el \"c + 2500\" representa un costo de la misma forma fijo + variable ya evaluada, y que la condición de que los costos sean iguales para 500 páginas se traduce directamente en una ecuación lineal sencilla 3500 = c + 2500. Aunque la sustitución de la cantidad de páginas ya está hecha, el estudiante debe comprender que el parámetro desconocido c ajusta el cobro fijo para igualar los totales, no limitarse a un cálculo aislado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v12",
+      "scenario_description": "Contexto de dos estacionamientos nuevamente, pero formulado en términos de \"diferencia de cobro igual a 0\". Se define en texto: «En el Estacionamiento A, el costo en pesos por x minutos es 1500 + 20x. En el Estacionamiento B, el costo en pesos por x minutos es r + 10x». Luego el enunciado afirma: «Se desea que, por 90 minutos de uso, la diferencia entre lo que cobran ambos estacionamientos sea exactamente 0 pesos». Se pregunta: «¿Cuál debe ser el valor de r?». El estudiante debe interpretar que “diferencia igual a 0” significa 1500 + 20·90 − (r + 10·90) = 0 y despejar r.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Necesita comprender que \"la diferencia de cobro es 0\" equivale a que los cobros son iguales, y por tanto debe construir una ecuación lineal basada en la igualdad de dos expresiones evaluadas en x = 90. Luego debe aislar r en la ecuación resultante, reconociendo que se trata del término fijo del segundo estacionamiento. La clave conceptual es vincular la idea de diferencia nula con igualdad de funciones lineales, no solo realizar operaciones numéricas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v13",
+      "scenario_description": "Contexto de paquetes de entradas de cine para grupos. Se describe: «El Cine A ofrece un paquete que cuesta 3000 pesos más 1200 pesos por cada persona del grupo. El Cine B ofrece un paquete que cuesta 5000 pesos más m pesos por cada persona». Se plantea: «Para un grupo de 5 personas, se quiere que ambos paquetes cuesten lo mismo. ¿Cuánto debe valer m?». Esto lleva a la ecuación 3000 + 1200·5 = 5000 + m·5.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe identificar que el costo crece linealmente con el número de personas y que la condición de \"mismo costo para 5 personas\" se traduce en igualar las dos expresiones en n = 5. Además, la incógnita aparece como coeficiente de la variable (tarifa por persona), no como término independiente, lo que exige comprender qué parte de la expresión corresponde al costo fijo y qué parte a la tarifa por persona antes de resolver la ecuación lineal para m.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q40_v14",
+      "scenario_description": "Contexto de dos empresas de suministro de agua, invirtiendo qué parámetro es desconocido. Se plantea en palabras: «El costo en pesos por consumir v metros cúbicos con el Servicio Azul es a + 40v. Con el Servicio Verde es 1600 + 30v». Se indica: «Por un consumo de 20 m³, ambos servicios cobran lo mismo». Antes, en un ítem fuente, el término fijo del primer servicio era conocido y el del segundo, desconocido; aquí se invierte: el fijo de Azul es a (desconocido) y el de Verde es dado. El estudiante debe plantear a + 40·20 = 1600 + 30·20 y despejar a.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe reconocer que la igualdad de cobros para v = 20 se expresa igualando las dos funciones lineales evaluadas en ese valor, pero ahora el parámetro desconocido está en el primer servicio. Esto obliga a entender la simetría del planteamiento (no basta repetir el procedimiento original); debe ubicar correctamente a como el cargo fijo que se ajusta para equilibrar los totales y resolver la ecuación lineal resultante.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q40_v15",
+      "scenario_description": "Contexto de plataformas de streaming, con el costo final explícito. Se indica: «En la Plataforma A, ver t minutos cuesta 2000 pesos fijos más 5 pesos por cada minuto (2000 + 5t). En la Plataforma B, ver t minutos cuesta 1500 pesos fijos más r pesos por minuto (1500 + rt). Se sabe que ver 100 minutos cuesta 2500 pesos en ambas plataformas». Se pregunta: «¿Cuál es el valor de r?». La igualdad de cobros y el valor del costo total ya están dados; el estudiante debe usar 1500 + 100r = 2500 para despejar r.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Debe identificar que el costo total conocido (2500) corresponde al valor común de ambas expresiones evaluadas en t = 100. A partir de ahí, debe seleccionar la expresión relevante (la de la Plataforma B), sustituir t = 100 y plantear la ecuación lineal 1500 + 100r = 2500. Resolverla requiere entender que r es la tarifa por minuto y que ajustar ese parámetro es lo que permite igualar el costo total fijado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q40_v16",
+      "scenario_description": "Contexto de planes de internet domiciliario, con la incógnita en la tarifa por GB del primer proveedor. Se describe: «El Proveedor X cobra 300 pesos fijos más s pesos por cada GB usado (300 + sg). El Proveedor Y cobra 900 pesos fijos más 10 pesos por cada GB (900 + 10g)». Se indica: «Para un consumo de 30 GB, ambos proveedores cobran exactamente lo mismo». Se pide: «¿Cuál debe ser el valor de s?». El estudiante debe traducir esto en la ecuación 300 + 30s = 900 + 10·30 y resolverla para s.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe interpretar correctamente el rol del parámetro s como tarifa por GB del Proveedor X y la condición de igualdad de cobros para g = 30 como una igualdad entre 300 + 30s y 900 + 300. Esta reubicación de la incógnita en el coeficiente de la variable obliga a entender la estructura de las funciones lineales en lugar de seguir mecánicamente el esquema anterior de \"despejar el término fijo\".",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q40_v17",
+      "scenario_description": "Contexto de una hoja de cálculo con fórmulas de costo, en lugar de funciones nombradas. El enunciado dice: «En una hoja de cálculo se programa el costo C (en pesos) de dos empresas de encomiendas en función del tiempo T (en horas) que dura el viaje. En la celda B2 se escribe la fórmula =2000+40*T para la Empresa 1. En la celda C2 se quiere escribir la fórmula =?+25*T para la Empresa 2, donde ? es un número aún desconocido. Se quiere que, para T = 30, ambas celdas entreguen el mismo valor». Se pregunta qué número debe reemplazar a \"?\". El estudiante debe entender que esto implica la ecuación 2000 + 40·30 = p + 25·30 y resolverla para p.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Es necesario traducir el lenguaje de la hoja de cálculo (fórmulas con T y un símbolo ?) al lenguaje algebraico de funciones lineales, reconocer que pedir que B2 y C2 den el mismo valor en T = 30 implica igualar las dos expresiones evaluadas en ese valor, y luego despejar el parámetro desconocido que completa la segunda fórmula. Esto requiere comprender el porqué de la igualdad de las expresiones y el rol del término fijo en el modelo, no solo aplicar una rutina con f(x) y g(x).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    }
+  ]
+}

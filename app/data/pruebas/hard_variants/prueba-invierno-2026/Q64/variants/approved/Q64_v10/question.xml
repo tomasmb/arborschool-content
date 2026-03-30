@@ -1,0 +1,166 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v10" title="Probabilidad con tarjetas numeradas" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se muestra la probabilidad de seleccionar al azar cada una de las 6 tarjetas numeradas del 1 al 6.</p>
+    <table>
+      <tr>
+        <th>Tarjeta (número)</th>
+        <th>Probabilidad</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>0,2</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>0,1</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>0,1</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>0,1</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>0,4</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>0,1</td>
+      </tr>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Se define el evento A: "obtener un número mayor que 3" al seleccionar una tarjeta al azar. ¿Cuál de las siguientes opciones representa correctamente la probabilidad P(A)?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">0,2 + 0,1 + 0,1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El evento A es obtener un número mayor que 3, por lo que incluye solo las tarjetas 4, 5 y 6. Sus probabilidades son 0,1; 0,4 y 0,1, entonces P(A) = 0,1 + 0,4 + 0,1 = 0,6. La expresión 0,2 + 0,1 + 0,1 = 0,4 no representa esas tres probabilidades del evento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">0,1 + 0,4 + 0,1<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Un número mayor que 3 puede ser 4, 5 o 6. Según la tabla, sus probabilidades son 0,1; 0,4 y 0,1. Por eso, P(A) = 0,1 + 0,4 + 0,1 = 0,6. Esta opción representa exactamente la probabilidad del evento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">0,1 + 0,1 + 0,1<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El evento A es obtener 4, 5 o 6, así que la probabilidad correcta es 0,1 + 0,4 + 0,1 = 0,6. En cambio, esta expresión suma 0,1 + 0,1 + 0,1 = 0,3, y no incorpora la probabilidad 0,4 de la tarjeta 5, que sí pertenece al evento.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">0,1 + 0,1 + 0,4 + 0,1<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El evento A contiene solo tres resultados: 4, 5 y 6. Por eso se deben sumar exactamente 0,1 + 0,4 + 0,1 = 0,6. Esta opción suma cuatro probabilidades: 0,1 + 0,1 + 0,4 + 0,1 = 0,7, así que agrega una probabilidad que no corresponde al evento A.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el evento</strong></p>
+            <p>El evento A es “obtener un número mayor que 3”. Entre las tarjetas 1, 2, 3, 4, 5 y 6, los números mayores que 3 son 4, 5 y 6.</p>
+          </li>
+          <li>
+            <p><strong>Buscar en la tabla las probabilidades correspondientes</strong></p>
+            <p>La probabilidad de obtener 4 es 0,1.</p>
+            <p>La probabilidad de obtener 5 es 0,4.</p>
+            <p>La probabilidad de obtener 6 es 0,1.</p>
+          </li>
+          <li>
+            <p><strong>Sumar las probabilidades del evento</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>P</mi>
+                  <mo>(</mo>
+                  <mi>A</mi>
+                  <mo>)</mo>
+                  <mo>=</mo>
+                  <mn>0,1</mn>
+                  <mo>+</mo>
+                  <mn>0,4</mn>
+                  <mo>+</mo>
+                  <mn>0,1</mn>
+                  <mo>=</mo>
+                  <mn>0,6</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La opción B muestra exactamente la suma 0,1 + 0,4 + 0,1.</p>
+            <p>La opción A suma 0,4.</p>
+            <p>La opción C suma 0,3.</p>
+            <p>La opción D suma 0,7.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad del evento A es 0,6, por lo tanto la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

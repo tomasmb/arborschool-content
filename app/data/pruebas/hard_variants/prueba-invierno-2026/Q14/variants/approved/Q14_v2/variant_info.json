@@ -1,0 +1,123 @@
+{
+  "variant_id": "Q14_v2",
+  "source_question_id": "Q14",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q14_v2",
+    "scenario_description": "Anuncio textual de un cine: 'PROMOCIÓN GRUPO: Por cada 5 entradas, solo pagas 4. Válido para grupos de 5 personas.' Un grupo de cinco amigos compra las entradas usando esta promoción y reparten el costo total en partes iguales. En lugar de pedir un cálculo directo, se presentan cuatro afirmaciones del tipo: 'Cada persona obtuvo un descuento de X% en su entrada respecto del valor normal', con valores 4%, 5%, 20% y 25%. Se pide elegir la afirmación correcta.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe interpretar que el grupo paga 4 entradas en vez de 5, reconocer que cada entrada termina costando 4/5 del precio normal y transformar esa razón en un porcentaje de descuento (1/5 = 20%). La forma de decisión entre afirmaciones fuerza a justificar mentalmente por qué 20% y no un valor pequeño (confundir 1 de 5 con 5%) ni uno exagerado (confundir 1 de 4 o 25%). No basta con aplicar una fórmula mecánica: hay que comprender a qué corresponde el '1 gratis' en términos relativos.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement_1"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea sigue siendo una aplicación directa de un descuento porcentual contextualizado (una entrada gratis en un grupo fijo), sin introducir pasos adicionales ni álgebra, y que los distractores representan errores coherentes de interpretación del porcentaje (subestimar, usar la fracción equivocada 1/5 y sobreestimar el descuento)."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-11"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas contextualizados con porcentajes"
+    ],
+    "family_id": "percentage_context_application",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "percentage_increase_application",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "generic_visual_support",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "routine_procedural",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "unknown",
+    "percentage_change_pattern": "single_decrease",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_structural_support",
+    "explicit_dataset_policy": "not_required_if_geometry_is_explicit",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=percentage_increase_application",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -1,0 +1,201 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q58_v6" title="Q58_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la siguiente tabla se presentan las ventas totales (en miles de pesos) y las horas efectivas de atención al público durante un mes de cuatro vendedores, agrupados en dos equipos.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th>Equipo</th>
+            <th>Ventas totales (en miles de pesos)</th>
+            <th>Horas efectivas de atención en el mes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Vendedor 1</td>
+            <td>Rojo</td>
+            <td>120</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>Vendedor 2</td>
+            <td>Rojo</td>
+            <td>450</td>
+            <td>90</td>
+          </tr>
+          <tr>
+            <td>Vendedor 3</td>
+            <td>Azul</td>
+            <td>450</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <td>Vendedor 4</td>
+            <td>Azul</td>
+            <td>30</td>
+            <td>10</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>¿Cuál equipo tuvo, en promedio, una mayor venta por hora de atención durante el mes?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">El Equipo Rojo<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para comparar el promedio de ventas por hora de cada equipo se deben sumar sus ventas y sus horas. Equipo Rojo: 120 + 450 = 570 y 10 + 90 = 100, entonces su promedio es 570/100 = 5,7 miles de pesos por hora. Equipo Azul: 450 + 30 = 480 y 50 + 10 = 60, entonces su promedio es 480/60 = 8 miles de pesos por hora. Como 5,7 es menor que 8, el Equipo Rojo no tuvo el promedio mayor.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El Equipo Azul<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Equipo Rojo: 120 + 450 = 570 y 10 + 90 = 100, por lo tanto 570/100 = 5,7 miles de pesos por hora. Equipo Azul: 450 + 30 = 480 y 50 + 10 = 60, por lo tanto 480/60 = 8 miles de pesos por hora. Como 8 es mayor que 5,7, el Equipo Azul tuvo, en promedio, una mayor venta por hora de atención durante el mes.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Ambos equipos tienen el mismo promedio de ventas por hora<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Los promedios por hora no son iguales. Equipo Rojo: 570/100 = 5,7 miles de pesos por hora. Equipo Azul: 480/60 = 8 miles de pesos por hora. Como 5,7 ≠ 8, ambos equipos no tienen el mismo promedio de ventas por hora.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">No se puede determinar con la información entregada<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí se puede determinar con la información entregada, porque se conocen las ventas totales y las horas efectivas de atención de cada vendedor. Con esos datos: Equipo Rojo, 120 + 450 = 570 y 10 + 90 = 100, entonces 570/100 = 5,7. Equipo Azul, 450 + 30 = 480 y 50 + 10 = 60, entonces 480/60 = 8. Como 8 es mayor que 5,7, sí es posible concluir que el Equipo Azul tuvo el promedio mayor.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Sumar las ventas totales de cada equipo</strong></p>
+            <p>Equipo Rojo:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>120</mn><mo>+</mo><mn>450</mn><mo>=</mo><mn>570</mn>
+              </mrow>
+            </math>
+            <p>Equipo Azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>450</mn><mo>+</mo><mn>30</mn><mo>=</mo><mn>480</mn>
+              </mrow>
+            </math>
+            <p>Las ventas están en miles de pesos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar las horas efectivas de atención de cada equipo</strong></p>
+            <p>Equipo Rojo:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>10</mn><mo>+</mo><mn>90</mn><mo>=</mo><mn>100</mn>
+              </mrow>
+            </math>
+            <p>Equipo Azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>50</mn><mo>+</mo><mn>10</mn><mo>=</mo><mn>60</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el promedio de ventas por hora de cada equipo</strong></p>
+            <p>Promedio del Equipo Rojo:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>570</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>5,7</mn>
+              </mrow>
+            </math>
+            <p>Entonces el Equipo Rojo vendió, en promedio, 5,7 miles de pesos por hora.</p>
+            <p>Promedio del Equipo Azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>480</mn>
+                  <mn>60</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>8</mn>
+              </mrow>
+            </math>
+            <p>Entonces el Equipo Azul vendió, en promedio, 8 miles de pesos por hora.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar los promedios</strong></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>8</mn><mo>&gt;</mo><mn>5,7</mn>
+              </mrow>
+            </math>
+            <p>Como 8 es mayor que 5,7, el promedio de ventas por hora del Equipo Azul es mayor.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>El Equipo Azul</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

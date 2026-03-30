@@ -1,0 +1,153 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q65_v5" title="Q65_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un entrenamiento de fútbol, un jugador ejecuta tres penales consecutivos. En cada penal, de manera independiente, puede anotar un gol o fallar, y ambas posibilidades tienen la misma probabilidad.</p>
+    <p>El sistema de puntaje es el siguiente: por cada gol convertido se suman 2 puntos y por cada penal fallado se resta 1 punto. ¿Cuál es la probabilidad de que el jugador obtenga un puntaje mayor o igual a 0 en la serie de 3 penales?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mn>1</m:mn>
+            <m:mn>8</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si el jugador anota 0 goles, falla 3 penales y obtiene 0 × 2 − 3 × 1 = −3 puntos, que no cumple puntaje mayor o igual a 0. Ese único caso tiene probabilidad 1/8. Pero el problema pide los casos favorables, que son anotar 1, 2 o 3 goles, cuya probabilidad total es 7/8.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>8</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Con exactamente 1 gol y 2 fallos, el puntaje es 1 × 2 − 2 × 1 = 0, así que esos casos sí sirven. Hay 3 formas de lograr exactamente 1 gol en 3 penales, por eso esa probabilidad es 3/8. Sin embargo, también sirven los casos con 2 goles y 1 fallo, y con 3 goles, que agregan 3/8 y 1/8. En total: 3/8 + 3/8 + 1/8 = 7/8.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mn>1</m:mn>
+            <m:mn>2</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El puntaje depende de cuántos goles anota. Si anota 1 gol, obtiene 0 puntos; si anota 2 goles, obtiene 3 puntos; si anota 3 goles, obtiene 6 puntos. Todos esos casos cumplen puntaje mayor o igual a 0. Sus probabilidades son 3/8, 3/8 y 1/8, respectivamente. Entonces la probabilidad correcta es 3/8 + 3/8 + 1/8 = 7/8, no 1/2.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mn>7</m:mn>
+            <m:mn>8</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Si anota 1 gol y falla 2, obtiene 1 × 2 − 2 × 1 = 0 puntos. Si anota 2 goles y falla 1, obtiene 2 × 2 − 1 × 1 = 3 puntos. Si anota 3 goles, obtiene 3 × 2 = 6 puntos. Por lo tanto, basta con anotar al menos 1 gol. La única forma de no cumplir es fallar los 3 penales, cuya probabilidad es 1/8. Entonces la probabilidad pedida es 1 − 1/8 = 7/8.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Expresar el puntaje según la cantidad de goles</strong></p>
+            <p>Si el jugador anota <m:math><m:mi>g</m:mi></m:math> goles en 3 penales, entonces falla <m:math><m:mrow><m:mn>3</m:mn><m:mo>−</m:mo><m:mi>g</m:mi></m:mrow></m:math> penales.</p>
+            <p>El puntaje total es:</p>
+            <p><m:math><m:mrow><m:mn>2</m:mn><m:mi>g</m:mi><m:mo>−</m:mo><m:mn>1</m:mn><m:mrow><m:mo>(</m:mo><m:mn>3</m:mn><m:mo>−</m:mo><m:mi>g</m:mi><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mn>2</m:mn><m:mi>g</m:mi><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>3</m:mn><m:mi>g</m:mi><m:mo>−</m:mo><m:mn>3</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Imponer la condición del problema</strong></p>
+            <p>Se pide que el puntaje sea mayor o igual a 0:</p>
+            <p><m:math><m:mrow><m:mn>3</m:mn><m:mi>g</m:mi><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>≥</m:mo><m:mn>0</m:mn></m:mrow></m:math></p>
+            <p>Sumando 3 a ambos lados:</p>
+            <p><m:math><m:mrow><m:mn>3</m:mn><m:mi>g</m:mi><m:mo>≥</m:mo><m:mn>3</m:mn></m:mrow></m:math></p>
+            <p>Dividiendo por 3, como 3 es positivo, la desigualdad no cambia de sentido:</p>
+            <p><m:math><m:mrow><m:mi>g</m:mi><m:mo>≥</m:mo><m:mn>1</m:mn></m:mrow></m:math></p>
+            <p>Entonces el jugador debe anotar al menos 1 gol.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular la probabilidad</strong></p>
+            <p>Cada penal tiene probabilidad <m:math><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac></m:math> de gol y <m:math><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac></m:math> de fallo, de manera independiente.</p>
+            <p>Es más rápido calcular el complemento: que no anote ningún gol, es decir, que falle los 3 penales.</p>
+            <p><m:math><m:mrow><m:mrow><m:mo>(</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mo>)</m:mo></m:mrow><m:mo>×</m:mo><m:mrow><m:mo>(</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mo>)</m:mo></m:mrow><m:mo>×</m:mo><m:mrow><m:mo>(</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>2</m:mn></m:mfrac><m:mo>)</m:mo></m:mrow><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>8</m:mn></m:mfrac></m:mrow></m:math></p>
+            <p>Por lo tanto, la probabilidad de anotar al menos 1 gol es:</p>
+            <p><m:math><m:mrow><m:mn>1</m:mn><m:mo>−</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>8</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>7</m:mn><m:mn>8</m:mn></m:mfrac></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Conclusión</strong></p>
+            <p>La probabilidad de que el jugador obtenga un puntaje mayor o igual a 0 es <m:math><m:mfrac><m:mn>7</m:mn><m:mn>8</m:mn></m:mfrac></m:math>.</p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,118 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v4" title="Q62 Variante 4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la siguiente imagen se muestra el plano cuadriculado de un barrio. Cada cuadrícula representa una cuadra. Hay una torre ubicada cerca del centro-izquierda y un parque ubicado hacia la parte superior-derecha. Entre ambos se dibuja un camino en zigzag que pasa por varias cuadras, pero se desea conocer solo el desplazamiento recto equivalente desde la torre hasta el parque.<br />
+    <img src="requiere_nueva_imagen.png" alt="Plano cuadriculado de 10 columnas por 8 filas. Cada casilla representa una cuadra. En la columna 2 y fila 2 (contando desde la esquina inferior izquierda) hay un ícono de una torre. En la columna 7 y fila 6 hay un ícono de un parque. Entre la torre y el parque se dibuja un camino en zigzag que primero sube algunas cuadras, luego avanza hacia la derecha y vuelve a subir, sin ser una línea recta. La cuadrícula está claramente marcada como calles de un barrio." /></p>
+    <p>Si cada cuadrícula representa una cuadra, ¿cuál es el desplazamiento neto, en cuadras, que lleva de la torre al parque?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">4 cuadras hacia la derecha y 5 cuadras hacia arriba.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Desde la torre en la columna 2 y fila 2 hasta el parque en la columna 7 y fila 6, el cambio horizontal es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> cuadras a la derecha y el cambio vertical es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>4</mn></math> cuadras hacia arriba. Por eso, 4 a la derecha y 5 hacia arriba no corresponde al desplazamiento neto.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">5 cuadras hacia la derecha y 4 cuadras hacia arriba.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La torre está en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>)</mo></mrow></math> y el parque en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>7</mn><mo>,</mo><mn>6</mn><mo>)</mo></mrow></math>. Entonces, el desplazamiento neto es horizontalmente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> cuadras a la derecha y verticalmente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>4</mn></math> cuadras hacia arriba.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">3 cuadras hacia la derecha y 4 cuadras hacia arriba.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El cambio vertical sí es de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>4</mn></math> cuadras hacia arriba, pero el cambio horizontal no es 3. Entre la columna 2 y la columna 7 hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> cuadras a la derecha. Por eso, esta alternativa no representa el desplazamiento neto completo.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">5 cuadras hacia la derecha y 5 cuadras hacia arriba.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento horizontal correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math> cuadras a la derecha, pero el vertical es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>4</mn></math> cuadras hacia arriba, no 5. Por eso, esta opción agrega una cuadra vertical que no existe en la posición final del parque.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del desplazamiento neto</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las posiciones</strong></p>
+            <p>Según la descripción del plano, la torre está en la columna 2 y fila 2, mientras que el parque está en la columna 7 y fila 6.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el cambio horizontal</strong></p>
+            <p>Para saber cuántas cuadras se avanza hacia la derecha, se comparan las columnas:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>5</mn></math></p>
+            <p>Entonces, el desplazamiento horizontal es de 5 cuadras hacia la derecha.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el cambio vertical</strong></p>
+            <p>Para saber cuántas cuadras se avanza hacia arriba, se comparan las filas:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>4</mn></math></p>
+            <p>Entonces, el desplazamiento vertical es de 4 cuadras hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar el desplazamiento neto</strong></p>
+            <p>El camino en zigzag no cambia el desplazamiento neto. Solo importa la posición inicial y la posición final.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El desplazamiento neto desde la torre hasta el parque es de 5 cuadras hacia la derecha y 4 cuadras hacia arriba.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,151 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q29_v1" title="Q29_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un peluquero canino quiere preparar una dilución de shampoo concentrado para bañar perros.</p>
+    <div>
+      <p>En la ficha del producto se indica:</p>
+      <ul>
+        <li>Producto: shampoo canino concentrado.</li>
+        <li>Dosis recomendada: 15 mL de shampoo por cada 3 L de agua.</li>
+      </ul>
+      <p>El peluquero llena una tina con 12 L de agua y utiliza una tacita medidora que, cuando se llena hasta la marca, contiene 5 mL de shampoo.</p>
+    </div>
+    <p>¿Cuántas veces debe llenar por completo la tacita para respetar la proporción indicada en la ficha?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">4<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Con 12 L de agua se necesitan 60 mL de shampoo, porque 12 L es 4 veces 3 L y 4 × 15 mL = 60 mL. Si llena la tacita 4 veces, agrega 4 × 5 mL = 20 mL, y 20 mL no respeta la proporción indicada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">8<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Con 12 L de agua se necesitan 60 mL de shampoo. Si llena la tacita 8 veces, agrega 8 × 5 mL = 40 mL, y 40 mL no coincide con los 60 mL requeridos para respetar la proporción.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">12<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Como 12 L es 4 veces 3 L, se necesitan 4 × 15 mL = 60 mL de shampoo. Cada tacita contiene 5 mL, entonces 60 mL ÷ 5 mL = 12. Por lo tanto, debe llenar la tacita 12 veces.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">36<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si llena la tacita 36 veces, agrega 36 × 5 mL = 180 mL de shampoo. Pero para 12 L de agua se requieren solo 60 mL, porque 12 L es 4 veces 3 L y 4 × 15 mL = 60 mL. Entonces 180 mL no respeta la proporción indicada.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Comparar la cantidad de agua con la dosis recomendada</strong></p>
+            <p>La ficha indica 15 mL de shampoo por cada 3 L de agua.</p>
+            <p>La tina tiene 12 L de agua.</p>
+            <p>Calculamos cuántas veces 3 L caben en 12 L:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>12</mn>
+                <mo>÷</mo>
+                <mn>3</mn>
+                <mo>=</mo>
+                <mn>4</mn>
+              </mrow>
+            </math>
+            <p>Entonces, 12 L corresponden a 4 grupos de 3 L.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular cuántos mililitros de shampoo se necesitan</strong></p>
+            <p>Si por cada 3 L se usan 15 mL, por 12 L se necesitan:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>4</mn>
+                <mo>×</mo>
+                <mn>15</mn>
+                <mo>=</mo>
+                <mn>60</mn>
+              </mrow>
+            </math>
+            <p>Se requieren 60 mL de shampoo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Relacionar los mililitros con la tacita medidora</strong></p>
+            <p>Cada vez que se llena la tacita, contiene 5 mL de shampoo.</p>
+            <p>Entonces el número de veces que debe llenarla es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>60</mn>
+                <mo>÷</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>12</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Debe llenar por completo la tacita 12 veces.</p>
+            <p>La alternativa correcta es la <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

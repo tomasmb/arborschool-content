@@ -1,0 +1,124 @@
+{
+  "variant_id": "Q56_v15",
+  "source_question_id": "Q56",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q56_v15",
+    "scenario_description": "Se presenta una tabla simple de un informe de transporte público: 'Viajes totales realizados un día laboral: 385 000', 'Porcentaje de viajes pagados con tarjeta de estudiante: 9%', 'Porcentaje de viajes en horario punta: 55%'. Luego se pregunta: '¿Cuál de las siguientes afirmaciones sobre los viajes pagados con tarjeta de estudiante es compatible con los datos del informe?'. Las opciones ofrecen diferentes cantidades de viajes de estudiante; solo una refleja correctamente 9% de 385 000. Un distractor toma 9 como número de viajes (increment_only), otro suma 9 al total (base_plus_increment) y otro supone una cifra desproporcionadamente grande (gross_overestimate).",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "El estudiante debe comprender que para obtener la cantidad de viajes de estudiante se calcula 9/100 del total de 385 000, y usar esa idea para juzgar qué afirmación concuerda con la tabla. Debe analizar la escala de los resultados esperados (cientos de miles) y por qué los distractores no respetan la proporción indicada, lo que requiere más que aplicar una receta: también evaluar la razonabilidad del orden de magnitud.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué mantener un cálculo directo de porcentaje de una cantidad con una sola base dada y que la tarea siguiera siendo seleccionar la afirmación compatible, sin convertirla en un problema de varios pasos ni cambiar el tipo de variación porcentual."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-06"
+    ],
+    "primary_atom_titles": [
+      "Cálculo directo del porcentaje de una cantidad"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.65,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": true,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "medium",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "visual_support_with_self_containment",
+    "explicit_dataset_policy": "required_or_described",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_preserve_direct_computation",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

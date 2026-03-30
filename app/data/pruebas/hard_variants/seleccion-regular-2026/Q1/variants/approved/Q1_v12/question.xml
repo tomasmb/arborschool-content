@@ -1,0 +1,151 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q1_v12" title="Q1_v12" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego hay dos tipos de cartas, unas tienen una estrella y las otras tienen un corazón, todas con un número.</p>
+    <p>El puntaje de cada jugador se calcula de la siguiente forma:</p>
+    <ul>
+      <li>Primero se extrae una carta al azar (carta inicial) y su valor se considera como puntaje inicial.</li>
+      <li>Cada vez que se extrae una carta con una estrella, se debe restar el valor de la carta al puntaje.</li>
+      <li>Cada vez que se extrae una carta con un corazón, se debe sumar el valor de la carta al puntaje.</li>
+    </ul>
+    <p>El puntaje final se obtiene al repetir el procedimiento anterior, hasta tener diez cartas.</p>
+    <p>Un jugador extrae diez cartas. En el registro de la partida, algunas cartas aparecen agrupadas porque ya se indicó el efecto combinado de ese grupo sobre el puntaje.</p>
+    <p>El registro de la partida es el siguiente (en el orden en que se extrajeron las cartas):<br />
+    1) Carta inicial: obtiene una carta con corazón y número 7 (su puntaje inicial es 7).<br />
+    2) Con la segunda y la tercera carta, el jugador pierde en total 5 puntos.<br />
+    3) Luego obtiene una carta con estrella y número 6.<br />
+    4) Después obtiene una carta con corazón y número 9.<br />
+    5) Con la sexta y la séptima carta gana en total 3 puntos.<br />
+    6) A continuación, obtiene una carta con estrella y número 4.<br />
+    7) Finalmente, con la novena y la décima carta pierde en total 11 puntos.<br />
+    ¿Cuál es el puntaje final del jugador?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">−14<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo el registro: puntaje inicial <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn></math>; luego pierde <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> y queda <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>2</mn></math>; después resta <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn></math> y queda <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>−4</mn></math>; luego suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn></math> y queda <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>5</mn></math>; después gana <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> y queda <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>8</mn></math>; luego resta <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> y queda <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></math>; finalmente pierde <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>11</mn></math> y obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>−</mo><mn>11</mn><mo>=</mo><mn>−7</mn></math>. Por lo tanto, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−14</mn></math> no es el puntaje final.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">4<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> aparece antes del último grupo de cartas. En efecto: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>2</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>−4</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>5</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>8</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></math>. Pero todavía falta aplicar que con la novena y la décima carta pierde en total <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>11</mn></math>: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>−</mo><mn>11</mn><mo>=</mo><mn>−7</mn></math>. Entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> no es el puntaje final.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">−7<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! El puntaje se calcula en orden: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>2</mn></math>, luego <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>−4</mn></math>, después <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>5</mn></math>, luego <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>8</mn></math>, después <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></math> y finalmente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>−</mo><mn>11</mn><mo>=</mo><mn>−7</mn></math>. Por eso, el puntaje final es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−7</mn></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">3<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se sigue todo el registro, el puntaje final no es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math>. El cálculo completo es: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>2</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>−4</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>5</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>8</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>−</mo><mn>11</mn><mo>=</mo><mn>−7</mn></math>. Por lo tanto, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del puntaje final</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Anotar el puntaje inicial</strong></p>
+            <p>La carta inicial es un corazón con número 7, por lo tanto el puntaje inicial es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar el efecto de la segunda y tercera carta</strong></p>
+            <p>El enunciado dice que con esas dos cartas pierde en total 5 puntos.</p>
+            <p>Entonces:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>2</mn></math></p>
+            <p>Hasta aquí, el puntaje es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la cuarta carta del registro</strong></p>
+            <p>Luego obtiene una carta con estrella y número 6. Una estrella hace restar.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>−4</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Aplicar la quinta carta del registro</strong></p>
+            <p>Después obtiene una carta con corazón y número 9. Un corazón hace sumar.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>5</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Aplicar la sexta y séptima carta</strong></p>
+            <p>El enunciado indica que con esas dos cartas gana en total 3 puntos.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>8</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Aplicar la octava carta</strong></p>
+            <p>Obtiene una carta con estrella y número 4, así que se resta 4.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>4</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 7: Aplicar la novena y décima carta</strong></p>
+            <p>Finalmente, con esas dos cartas pierde en total 11 puntos.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>−</mo><mn>11</mn><mo>=</mo><mn>−7</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El puntaje final del jugador es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>−7</mn></math>.</p>
+            <p>La alternativa correcta es la <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q55_v8",
+  "source_question_id": "Q55",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q55_v8",
+    "scenario_description": "Escenario de un censo educativo. Una infografía muestra que, en una primera etapa, la población escolar se clasifica según tipo de establecimiento (Municipal, Particular subvencionado, Particular pagado) y se presentan los porcentajes respecto del total de estudiantes en un gráfico circular. Luego, en una segunda etapa representada por un diagrama de cajas conectado solo al grupo 'Municipal', se muestra la distribución porcentual de esos estudiantes municipales según jornada (Mañana, Tarde, Completa) con porcentajes que suman 100 % dentro del grupo municipal. El texto enfatiza el procedimiento secuencial: \"Primero se identifica el tipo de establecimiento y, solo si es municipal, se registra la jornada\". Se pide la probabilidad de que un estudiante escogido al azar sea de establecimiento municipal y tenga jornada completa.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "El estudiante debe comprender que el paso a la clasificación de jornada ocurre solo dentro del subconjunto municipal, por lo que los porcentajes de jornada son condicionales a estar en establecimiento municipal. Para hallar la probabilidad conjunta 'municipal y jornada completa', debe aplicar la regla multiplicativa P(municipal)·P(jornada completa | municipal), reconociendo el cambio de espacio muestral y evitando usar esos porcentajes como si fueran sobre toda la población escolar.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Gráfico circular que muestra la proporción de estudiantes por tipo de establecimiento, desde cuya sección 'Municipal' parte un diagrama que muestra tres recuadros (Mañana, Tarde, Completa) con porcentajes que suman 100 % dentro de los municipales.",
+    "selected_shape_id": "reduced_sample_space_record"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que la segunda distribución se presenta explícitamente como condicionada al grupo municipal y que la pregunta exige interpretar la infografía secuencial (primero tipo de establecimiento, luego jornada) para aplicar la probabilidad condicionada, sin reducir el problema a una probabilidad simple ni introducir combinatoria."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-12"
+    ],
+    "primary_atom_titles": [
+      "Aplicación de la regla multiplicativa para eventos dependientes"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "representation_interpretation",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

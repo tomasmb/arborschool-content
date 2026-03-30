@@ -1,0 +1,134 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v1" title="Q64_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el plano esquemático de una bodega se representa una cuadrícula de 8×8 casillas. Las columnas están rotuladas con las letras de la A a la H (de izquierda a derecha) y las filas con los números del 1 al 8 (de abajo hacia arriba). Un robot se ubica inicialmente en la casilla D3 y debe llegar a la casilla B8.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Plano esquemático de una bodega representado como una cuadrícula de 8 por 8 casillas. En el eje horizontal, las columnas están rotuladas de A a H de izquierda a derecha. En el eje vertical, las filas están numeradas del 1 al 8 de abajo hacia arriba. La casilla D3 contiene el dibujo de un pequeño robot, y la casilla B8 está resaltada o enmarcada para indicar la posición objetivo del robot." />
+    </p>
+    <p>Cada botón del control remoto del robot corresponde a una flecha (↑, ↓, →, ←, ↗, ↖, ↘, ↙) que desplaza al robot exactamente una casilla en esa dirección. Por ejemplo, la flecha ↗ mueve al robot desde D3 hasta E4 (una casilla hacia arriba y una hacia la derecha).</p>
+    <p>¿Cuál de los siguientes programas de flechas hace que el robot llegue exactamente a la casilla B8, partiendo desde D3?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Selecciona el programa correcto.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">↑ ↑ ↑ ↑ ← ↑ →<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo el recorrido desde D3: <strong>D3 → D4 → D5 → D6 → D7 → C7 → C8 → D8</strong>. La posición final es <strong>D8</strong>, no <strong>B8</strong>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">↖ ↑ → ← ↑ ↖ ↑ →<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo el recorrido desde D3: <strong>D3 → C4 → C5 → D5 → C5 → C6 → B7 → B8 → C8</strong>. Después de llegar a <strong>B8</strong>, la última flecha <strong>→</strong> mueve al robot a <strong>C8</strong>, por lo que no termina exactamente en <strong>B8</strong>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">↖ ↑ → ← ↑ ↖ ↑<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Siguiendo el recorrido desde D3: <strong>D3 → C4 → C5 → D5 → C5 → C6 → B7 → B8</strong>. La posición final es exactamente <strong>B8</strong>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">↖ ↑ → ← ↑ ↗ ↑<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo el recorrido desde D3: <strong>D3 → C4 → C5 → D5 → C5 → C6 → D7 → D8</strong>. La posición final es <strong>D8</strong>, no <strong>B8</strong>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el cambio entre la posición inicial y la final</strong></p>
+            <p>El robot parte en <strong>D3</strong> y debe llegar a <strong>B8</strong>.</p>
+            <p>Pasar de <strong>D</strong> a <strong>B</strong> significa avanzar <strong>2 columnas hacia la izquierda</strong>.</p>
+            <p>Pasar de <strong>3</strong> a <strong>8</strong> significa avanzar <strong>5 filas hacia arriba</strong>.</p>
+            <p>Por lo tanto, el programa correcto debe dejar al robot con un desplazamiento total de <strong>2 casillas a la izquierda</strong> y <strong>5 casillas hacia arriba</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Probar la opción A</strong></p>
+            <p>Recorrido:</p>
+            <p><strong>D3 → D4 → D5 → D6 → D7 → C7 → C8 → D8</strong></p>
+            <p>Termina en <strong>D8</strong>. No sirve.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Probar la opción B</strong></p>
+            <p>Recorrido:</p>
+            <p><strong>D3 → C4 → C5 → D5 → C5 → C6 → B7 → B8 → C8</strong></p>
+            <p>Aunque en un momento pasa por <strong>B8</strong>, el programa termina en <strong>C8</strong>. No sirve, porque debe llegar exactamente a <strong>B8</strong> al final.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Probar la opción C</strong></p>
+            <p>Recorrido:</p>
+            <p><strong>D3 → C4 → C5 → D5 → C5 → C6 → B7 → B8</strong></p>
+            <p>Termina exactamente en <strong>B8</strong>. Esta opción sí sirve.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Probar la opción D</strong></p>
+            <p>Recorrido:</p>
+            <p><strong>D3 → C4 → C5 → D5 → C5 → C6 → D7 → D8</strong></p>
+            <p>Termina en <strong>D8</strong>. No sirve.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El único programa que lleva al robot desde <strong>D3</strong> hasta <strong>B8</strong> es la <strong>alternativa C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

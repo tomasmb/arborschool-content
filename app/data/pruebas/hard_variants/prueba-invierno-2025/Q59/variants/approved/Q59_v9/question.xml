@@ -1,0 +1,126 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q59_v9" title="Q59_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una guía de estadística se analiza, en forma teórica, una votación en la que los estudiantes deben elegir entre varios colores para pintar su sala. En cierto momento del recuento ya se sabe cuál color es la moda (el más votado), pero todavía faltan por responder exactamente 5 estudiantes.</p>
+    <div>
+      En la guía se proponen las siguientes afirmaciones como posibles condiciones que, supuestamente, aseguran que la moda actual no cambiará al incorporar las 5 preferencias que faltan.
+    </div>
+    <p>¿Cuál de estas afirmaciones es incorrecta (es decir, no garantiza que la moda se mantenga al agregar las 5 respuestas pendientes)?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La moda se mantendrá si, para cada otra opción, el número de votos de la moda excede en más de 5 votos al de esa opción.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si la moda tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>20</mn></math> votos y otra opción tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>14</mn></math>, entonces la ventaja es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>20</mn><mo>−</mo><mn>14</mn><mo>=</mo><mn>6</mn></mrow></math>, que es más de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math>. Si los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos pendientes van a esa otra opción, queda con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>14</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>19</mn></mrow></math> votos, y sigue siendo menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>20</mn></math>. Por lo tanto, esta condición sí garantiza que la moda se mantenga.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La moda se mantendrá si, para cualquier otra opción distinta de la moda, incluso suponiendo que las 5 preferencias que faltan se concentran todas en esa opción, esta sigue quedando con menos votos que la moda.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Esta afirmación sí garantiza que la moda se mantenga. En efecto, si para cualquier otra opción con <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi></math> votos se cumple <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>O</mi><mo>+</mo><mn>5</mn><mo>&lt;</mo><mi>M</mi></mrow></math>, donde <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi></math> es la cantidad de votos de la moda actual, entonces ni siquiera en el caso más desfavorable esa opción alcanza a la moda. Por ejemplo, si <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi><mo>=</mo><mn>18</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi><mo>=</mo><mn>12</mn></math>, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>17</mn><mo>&lt;</mo><mn>18</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La moda se mantendrá si, para cada otra opción, basta con que la ventaja de la moda sea de al menos 5 votos sobre esa opción.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Esta es la afirmación incorrecta, porque una ventaja de exactamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos no garantiza que la moda se mantenga. Contraejemplo: si la moda actual tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18</mn></math> votos y otra opción tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>13</mn></math>, entonces la ventaja es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>18</mn><mo>−</mo><mn>13</mn><mo>=</mo><mn>5</mn></mrow></math>. Si los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> estudiantes pendientes votan por esa otra opción, queda con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>13</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>18</mn></mrow></math> votos, igualando a la moda actual. Entonces la moda ya no queda asegurada como única, así que la condición no garantiza lo pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La moda se mantendrá si, para cada otra opción, aun sumándole hipotéticamente los votos de los 5 estudiantes que faltan, no alcanza a igualar la cantidad de votos de la opción modal.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta afirmación sí garantiza que la moda se mantenga. Si para cada otra opción con <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi></math> votos se cumple <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>O</mi><mo>+</mo><mn>5</mn><mo>&lt;</mo><mi>M</mi></mrow></math>, entonces esa opción ni siquiera puede igualar a la moda con <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi></math> votos. Por ejemplo, si la moda tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>21</mn></math> votos y otra opción tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>15</mn></math>, al sumar los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> pendientes se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>15</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>20</mn><mo>&lt;</mo><mn>21</mn></mrow></math>. Por lo tanto, la moda sigue siendo la más votada.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Representar la situación</strong></p>
+            <p>Sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi></math> la cantidad de votos de la moda actual y sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi></math> la cantidad de votos de cualquier otra opción.</p>
+            <p>Faltan exactamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> estudiantes por responder.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar el caso más desfavorable para la moda</strong></p>
+            <p>Para que la moda actual deje de mantenerse, lo peor que puede ocurrir es que los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos pendientes se concentren todos en una sola opción rival.</p>
+            <p>En ese caso, una opción rival pasaría de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi></math> votos a <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>O</mi><mo>+</mo><mn>5</mn></mrow></math> votos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la condición que sí garantiza que la moda no cambie</strong></p>
+            <p>Para asegurar que la moda se mantenga, debe cumplirse que incluso en ese peor caso la otra opción siga teniendo menos votos que la moda:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>O</mi><mo>+</mo><mn>5</mn><mo>&lt;</mo><mi>M</mi></mrow></math></p>
+            <p>Esto equivale a pedir que la ventaja de la moda sobre cualquier otra opción sea mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math>, es decir:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>M</mi><mo>−</mo><mi>O</mi><mo>&gt;</mo><mn>5</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar cada afirmación</strong></p>
+            <p><strong>Opción A:</strong> “excede en más de 5 votos” significa <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>M</mi><mo>−</mo><mi>O</mi><mo>&gt;</mo><mn>5</mn></mrow></math>. Sí garantiza que la moda se mantenga.</p>
+            <p><strong>Opción B:</strong> dice exactamente que, aunque los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos pendientes vayan a una sola rival, esa rival sigue con menos votos que la moda. Sí garantiza que la moda se mantenga.</p>
+            <p><strong>Opción C:</strong> “al menos 5 votos” significa <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>M</mi><mo>−</mo><mi>O</mi><mo>≥</mo><mn>5</mn></mrow></math>. Esto incluye el caso de ventaja exactamente igual a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math>, y allí no hay garantía.</p>
+            <p>Ejemplo concreto: si <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi><mo>=</mo><mn>18</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>O</mi><mo>=</mo><mn>13</mn></math>, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>M</mi><mo>−</mo><mi>O</mi><mo>=</mo><mn>18</mn><mo>−</mo><mn>13</mn><mo>=</mo><mn>5</mn></mrow></math>. Si los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos pendientes van a esa rival, queda con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>13</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>18</mn></mrow></math> votos, igualando a la moda. Por eso no asegura que la moda se mantenga.</p>
+            <p><strong>Opción D:</strong> afirma que, aun sumando <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos a cualquier rival, esta no alcanza a igualar la moda. Eso implica <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>O</mi><mo>+</mo><mn>5</mn><mo>&lt;</mo><mi>M</mi></mrow></math>. Sí garantiza que la moda se mantenga.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación incorrecta es la <strong>opción C</strong>, porque una ventaja de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos puede desaparecer exactamente cuando los <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> votos pendientes se concentran en una misma opción rival.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

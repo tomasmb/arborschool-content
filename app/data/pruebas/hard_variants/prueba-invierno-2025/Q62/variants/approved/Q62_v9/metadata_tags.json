@@ -1,0 +1,149 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-PROB-04-10",
+      "relevance": "primary",
+      "reasoning": "El problema describe una situación de extracción sin reposición donde ocurren eventos previos que modifican la composición del estuche. El estudiante debe calcular la probabilidad basándose en la cantidad de lápices restantes (espacio muestral reducido) y la cantidad de lápices que no escriben restantes (casos favorables actualizados).",
+      "atom_title": "Cálculo de probabilidad condicional por reducción del espacio muestral",
+      "atom_eje": "probabilidad_y_estadistica",
+      "atom_standard": "M1-PROB-04"
+    }
+  ],
+  "general_analysis": "La pregunta evalúa la capacidad de manejar eventos dependientes en un contexto de probabilidad. El desafío cognitivo principal no es la división final, sino el seguimiento lógico de cómo cambia el espacio muestral (de 12 a 11 y luego a 10) y los casos favorables (de 2 a 1) a medida que se retiran elementos sin devolverlos.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.55,
+    "analysis": "El problema presenta una demanda cognitiva media porque requiere que el estudiante maneje eventos dependientes (probabilidad sin reposición). No basta con aplicar una fórmula directa sobre los datos iniciales; el estudiante debe realizar un seguimiento secuencial de cómo cambia el espacio muestral (denominador) y la cantidad de casos favorables (numerador) tras las acciones de Luis y Pablo. Implica razonamiento lógico-matemático para actualizar el estado del sistema antes de calcular la probabilidad final."
+  },
+  "validation": {},
+  "habilidad_principal": {
+    "habilidad_principal": "RES",
+    "justificacion": "El estudiante debe aplicar procedimientos de cálculo de probabilidad (regla de Laplace) actualizando sucesivamente la cantidad de casos totales y favorables tras cada extracción sin reposición para obtener un resultado numérico."
+  },
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-10"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de probabilidad condicional por reducción del espacio muestral"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "dependent_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "source_info": {
+    "source_question_id": "Q62",
+    "source_test_id": "prueba-invierno-2025",
+    "change_description": "Reemplacé el contexto de lápices defectuosos por una bolsa con 25 caramelos (5 con relleno y 20 simples) donde primero se retira un caramelo con relleno y luego uno simple, y se pide la probabilidad de que un tercer caramelo extraído tenga relleno. Esto conserva la estructura de extracciones sucesivas sin reemplazo con tipos distintos y actualización del espacio muestral, pero exige seguir con cuidado el orden de los retiros. La respuesta correcta pasa a ser 4/23, distinta a la original."
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que el problema sigue requiriendo actualizar paso a paso el número de caramelos de cada tipo tras extracciones sin reemplazo y no se redujo a una probabilidad simple independiente."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "planning_blueprint": {
+    "variant_id": "Q62_v9",
+    "scenario_description": "Se describe una bolsa con 25 caramelos: 5 tienen relleno y 20 son simples. En un relato breve se indica: primero, Laura escoge un caramelo con relleno porque es su favorito y se lo come; luego, Miguel toma un caramelo simple y también se lo come. Después, Natalia toma un caramelo al azar de los que quedan en la bolsa. Se pide la probabilidad de que el caramelo de Natalia tenga relleno. El estudiante debe seguir una secuencia D–G sobre el tipo de caramelo retirado (primero sale un relleno, luego uno simple), actualizar la cantidad de caramelos con relleno y el total en cada paso, y calcular la probabilidad condicionada. Los distractores estarán diseñados para captar errores como usar las proporciones iniciales (5/25), olvidar que salió un caramelo de relleno (5/24) o suponer que ambos caramelos retirados fueron del mismo tipo.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "Fuerza a traducir el relato en una actualización paso a paso del número de caramelos con relleno y del total tras extracciones sin reemplazo de tipos distintos, y a basar el cálculo final en ese estado modificado y no en los datos iniciales; de lo contrario, las fracciones intuitivas pero erróneas resultan atractivas.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "reduced_sample_space_record"
+  },
+  "postprocess_summary": {
+    "pre_parse_cleaned": false,
+    "presentation_normalized": false,
+    "family_repaired": false,
+    "correct_declaration_synced": true,
+    "qti_canonicalized": true,
+    "choice_identifiers_stripped": false,
+    "comments_stripped": false
+  },
+  "enrichment": "pass",
+  "final_validation": "pass"
+}

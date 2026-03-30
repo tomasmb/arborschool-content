@@ -1,0 +1,166 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v14" title="Q6_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos grupos de teatro ensayan una obra. Cada grupo alterna entre actuar y conversar para corregir errores, repitiendo siempre el mismo ciclo.</p>
+    <ul>
+      <li>El grupo 1 actúa durante 10 minutos y luego conversa 5 minutos. Este ciclo se repite 9 veces.</li>
+      <li>El grupo 2 actúa durante 8 minutos y luego conversa 3 minutos. Este ciclo se repite 12 veces.</li>
+    </ul>
+    <p>Si se quiere argumentar con seguridad qué grupo ocupa más tiempo total en el ensayo, ¿qué tipo de cálculo habría que hacer con los datos de cada grupo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Comparar solo la cantidad de veces que se repite el ciclo en cada grupo.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Comparar solo las repeticiones no basta, porque los ciclos no duran lo mismo. En el grupo 1, un ciclo dura 10 + 5 = 15 minutos; en 9 repeticiones ocupa 15 × 9 = 135 minutos. En el grupo 2, un ciclo dura 8 + 3 = 11 minutos; en 12 repeticiones ocupa 11 × 12 = 132 minutos. Para decidir con seguridad hay que calcular el tiempo total de cada grupo, no solo comparar 9 y 12.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Calcular, para cada grupo, la suma entre el tiempo de actuación y el de conversación de un ciclo, multiplicarla por la cantidad de repeticiones, y luego comparar esos resultados.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Ese cálculo entrega el tiempo total de ensayo de cada grupo. Grupo 1: 10 + 5 = 15 minutos por ciclo y 15 × 9 = 135 minutos en total. Grupo 2: 8 + 3 = 11 minutos por ciclo y 11 × 12 = 132 minutos en total. Así se comparan 135 y 132, que son los tiempos totales.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Comparar únicamente el tiempo total de conversación de cada grupo.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Comparar solo la conversación no permite decidir qué grupo ocupa más tiempo total en el ensayo. El grupo 1 conversa 5 × 9 = 45 minutos y el grupo 2 conversa 3 × 12 = 36 minutos, pero además hay tiempo de actuación. Los tiempos totales son 135 minutos para el grupo 1 y 132 minutos para el grupo 2. Por lo tanto, mirar solo 45 y 36 no prueba cuál ensayo dura más en total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Sumar, para cada grupo, todos los minutos de actuación, todos los de conversación y la cantidad de repeticiones, y comparar esas sumas.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La cantidad de repeticiones no se suma como si fueran minutos, porque no es una duración. En el grupo 1, actuación total 10 × 9 = 90 minutos y conversación total 5 × 9 = 45 minutos; el tiempo total correcto es 90 + 45 = 135 minutos, no 90 + 45 + 9 = 144. En el grupo 2, el total correcto es 8 × 12 + 3 × 12 = 96 + 36 = 132 minutos, no 96 + 36 + 12 = 144.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método para comparar el tiempo total de ensayo</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué representa un ciclo en cada grupo</strong></p>
+            <p>En cada grupo, un ciclo está formado por tiempo de actuación más tiempo de conversación.</p>
+            <p>Grupo 1:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>10</mn>
+                <mo>+</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>15</mn>
+              </mrow>
+            </math>
+            <p>Entonces, un ciclo del grupo 1 dura 15 minutos.</p>
+            <p>Grupo 2:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>8</mn>
+                <mo>+</mo>
+                <mn>3</mn>
+                <mo>=</mo>
+                <mn>11</mn>
+              </mrow>
+            </math>
+            <p>Entonces, un ciclo del grupo 2 dura 11 minutos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el tiempo total de cada grupo</strong></p>
+            <p>Como cada ciclo se repite varias veces, se multiplica la duración de un ciclo por la cantidad de repeticiones.</p>
+            <p>Grupo 1:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>15</mn>
+                <mo>×</mo>
+                <mn>9</mn>
+                <mo>=</mo>
+                <mn>135</mn>
+              </mrow>
+            </math>
+            <p>El grupo 1 ocupa 135 minutos en total.</p>
+            <p>Grupo 2:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>11</mn>
+                <mo>×</mo>
+                <mn>12</mn>
+                <mo>=</mo>
+                <mn>132</mn>
+              </mrow>
+            </math>
+            <p>El grupo 2 ocupa 132 minutos en total.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los tiempos totales</strong></p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>135</mn>
+                <mo>&gt;</mo>
+                <mn>132</mn>
+              </mrow>
+            </math>
+            <p>Por lo tanto, el grupo 1 ocupa más tiempo total en el ensayo.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Para argumentar con seguridad, hay que calcular para cada grupo la suma entre el tiempo de actuación y el de conversación de un ciclo, multiplicarla por la cantidad de repeticiones y luego comparar esos resultados.</p>
+            <p>Esa descripción corresponde a la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

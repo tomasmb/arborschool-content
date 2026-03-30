@@ -1,0 +1,204 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q2_v6" title="Q2_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un emprendimiento necesita imprimir 200 volantes, 50 afiches y 100 tarjetas de presentación para una campaña publicitaria.</p>
+    <p>En la imprenta le explican que los precios se calculan por paquetes de material: cobran $4 000 por cada 50 volantes, $6 000 por cada 10 afiches y $2 500 por cada 20 tarjetas de presentación.</p>
+    <div>Distintas personas calculan el costo y proponen los siguientes resúmenes (costo por tipo de material y total). ¿Cuál de ellos es consistente con los precios indicados?</div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Volantes: $8 000; afiches: $30 000; tarjetas: $10 000; total: $48 000.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para 200 volantes se necesitan 200 ÷ 50 = 4 paquetes, por lo que el costo es 4 × 4 000 = 16 000, no 8 000. Para 50 afiches, 50 ÷ 10 = 5 paquetes y 5 × 6 000 = 30 000. Para 100 tarjetas, 100 ÷ 20 = 5 paquetes y 5 × 2 500 = 12 500, no 10 000. El total correcto es 16 000 + 30 000 + 12 500 = 58 500, no 48 000.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Volantes: $16 000; afiches: $30 000; tarjetas: $12 500; total: $58 500.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! 200 ÷ 50 = 4 paquetes de volantes y 4 × 4 000 = 16 000. 50 ÷ 10 = 5 paquetes de afiches y 5 × 6 000 = 30 000. 100 ÷ 20 = 5 paquetes de tarjetas y 5 × 2 500 = 12 500. Entonces, el total es 16 000 + 30 000 + 12 500 = 58 500.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Volantes: $10 000; afiches: $30 000; tarjetas: $20 000; total: $60 000.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Para 200 volantes se necesitan 4 paquetes de 50, así que el costo es 4 × 4 000 = 16 000, no 10 000. Para 100 tarjetas se necesitan 5 paquetes de 20, así que el costo es 5 × 2 500 = 12 500, no 20 000. El costo de afiches sí es 5 × 6 000 = 30 000. Por eso, el total correcto es 16 000 + 30 000 + 12 500 = 58 500, no 60 000.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Volantes: $16 000; afiches: $30 000; tarjetas: $12 500; total: $54 500.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Los costos por tipo de material sí son consistentes: 200 ÷ 50 = 4 y 4 × 4 000 = 16 000; 50 ÷ 10 = 5 y 5 × 6 000 = 30 000; 100 ÷ 20 = 5 y 5 × 2 500 = 12 500. Pero el total está mal sumado, porque 16 000 + 30 000 + 12 500 = 58 500, no 54 500.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Calcular el costo de los volantes</strong></p>
+            <p>Se necesitan 200 volantes y cada paquete contiene 50 volantes.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>200</mn>
+                  <mo>÷</mo>
+                  <mn>50</mn>
+                  <mo>=</mo>
+                  <mn>4</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces se necesitan 4 paquetes.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn>
+                  <mo>×</mo>
+                  <mn>4&#160;000</mn>
+                  <mo>=</mo>
+                  <mn>16&#160;000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El costo de los volantes es $16 000.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el costo de los afiches</strong></p>
+            <p>Se necesitan 50 afiches y cada paquete contiene 10 afiches.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>50</mn>
+                  <mo>÷</mo>
+                  <mn>10</mn>
+                  <mo>=</mo>
+                  <mn>5</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces se necesitan 5 paquetes.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn>
+                  <mo>×</mo>
+                  <mn>6&#160;000</mn>
+                  <mo>=</mo>
+                  <mn>30&#160;000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El costo de los afiches es $30 000.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el costo de las tarjetas de presentación</strong></p>
+            <p>Se necesitan 100 tarjetas y cada paquete contiene 20 tarjetas.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>100</mn>
+                  <mo>÷</mo>
+                  <mn>20</mn>
+                  <mo>=</mo>
+                  <mn>5</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces se necesitan 5 paquetes.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn>
+                  <mo>×</mo>
+                  <mn>2&#160;500</mn>
+                  <mo>=</mo>
+                  <mn>12&#160;500</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El costo de las tarjetas es $12 500.</p>
+          </li>
+          <li>
+            <p><strong>Sumar los tres costos</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>16&#160;000</mn>
+                  <mo>+</mo>
+                  <mn>30&#160;000</mn>
+                  <mo>+</mo>
+                  <mn>12&#160;500</mn>
+                  <mo>=</mo>
+                  <mn>58&#160;500</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El total correcto es $58 500.</p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La única alternativa que presenta volantes $16 000, afiches $30 000, tarjetas $12 500 y total $58 500 es la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La opción consistente con los precios indicados es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

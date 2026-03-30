@@ -1,0 +1,122 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v7" title="Q11_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el plano de un estacionamiento se indica que cada módulo de estacionamiento tiene 10 plazas y que todas las plazas se numeran de corrido desde la primera del primer módulo. En un registro se consigna lo siguiente: Plazas por módulo: 10. Número total de plazas contadas: <m:math><m:mi>n</m:mi></m:math>.</p>
+    <p>Si se comienza a contar desde la plaza 1 del primer módulo y se cuentan en total <m:math><m:mi>n</m:mi></m:math> plazas, ¿cuál de las siguientes condiciones sobre <m:math><m:mi>n</m:mi></m:math> garantiza que se termina justo en la última plaza de un módulo completo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>5</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ser divisible por 5 no garantiza terminar al final de un módulo de 10 plazas. Por ejemplo, si n = 15, entonces 15 es divisible por 5, pero al contar 15 plazas se llega a la plaza 15, que corresponde a la quinta plaza del segundo módulo, no a la última plaza de un módulo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>10</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Cada módulo tiene 10 plazas, así que se termina justo al final de un módulo cuando el total contado es 10, 20, 30, 40, etcétera. Esos son exactamente los números divisibles por 10.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>20</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si n es divisible por 20, entonces sí termina al final de un módulo, pero esa condición no es la que garantiza todos los casos. Por ejemplo, n = 10 termina exactamente en la última plaza del primer módulo y 10 no es divisible por 20. Por lo tanto, pedir divisibilidad por 20 es más restrictivo de lo necesario.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Que <m:math><m:mn>10</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>20</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta condición no coincide con terminar al final de un módulo. Por ejemplo, si n = 10, se termina exactamente en la última plaza del primer módulo, pero 10 + 10 = 20 sí es divisible por 20; en cambio, si n = 30, también se termina al final de un módulo y 10 + 30 = 40 es divisible por 20. Sin embargo, si n = 20, se termina al final de un módulo y 10 + 20 = 30 no es divisible por 20. Entonces la condición falla en un caso válido.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué significa terminar en la última plaza de un módulo</strong></p>
+            <p>Cada módulo tiene 10 plazas. Entonces:</p>
+            <p>El primer módulo termina en la plaza <m:math><m:mn>10</m:mn></m:math>.</p>
+            <p>El segundo módulo termina en la plaza <m:math><m:mn>20</m:mn></m:math>.</p>
+            <p>El tercero termina en la plaza <m:math><m:mn>30</m:mn></m:math>.</p>
+            <p>Y así sucesivamente.</p>
+          </li>
+          <li>
+            <p><strong>Describir el patrón de los números donde sí se termina un módulo completo</strong></p>
+            <p>Los números que representan la última plaza de un módulo son:</p>
+            <p><m:math><m:mrow><m:mn>10</m:mn><m:mo>,</m:mo><m:mn>20</m:mn><m:mo>,</m:mo><m:mn>30</m:mn><m:mo>,</m:mo><m:mn>40</m:mn><m:mo>,</m:mo><m:mo>…</m:mo></m:mrow></m:math></p>
+            <p>Todos esos números son múltiplos de <m:math><m:mn>10</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Traducir eso a una condición sobre <m:math><m:mi>n</m:mi></m:math></strong></p>
+            <p>Para terminar justo en la última plaza de un módulo, el número total de plazas contadas debe ser un múltiplo de <m:math><m:mn>10</m:mn></m:math>.</p>
+            <p>Eso equivale a decir que <m:math><m:mi>n</m:mi></m:math> es divisible por <m:math><m:mn>10</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Revisar por qué las otras alternativas no sirven como condición correcta</strong></p>
+            <p><em>Opción A:</em> ser divisible por <m:math><m:mn>5</m:mn></m:math> no basta. Ejemplo: <m:math><m:mn>15</m:mn></m:math> es divisible por <m:math><m:mn>5</m:mn></m:math>, pero no termina un módulo completo.</p>
+            <p><em>Opción C:</em> ser divisible por <m:math><m:mn>20</m:mn></m:math> es una condición demasiado fuerte. Ejemplo: <m:math><m:mn>10</m:mn></m:math> sí termina un módulo completo y no es divisible por <m:math><m:mn>20</m:mn></m:math>.</p>
+            <p><em>Opción D:</em> no describe correctamente los casos válidos. Ejemplo: <m:math><m:mn>20</m:mn></m:math> termina un módulo completo, pero <m:math><m:mrow><m:mn>10</m:mn><m:mo>+</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>30</m:mn></m:mrow></m:math> no es divisible por <m:math><m:mn>20</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La condición que garantiza que se termina justo en la última plaza de un módulo completo es que <m:math><m:mi>n</m:mi></m:math> sea divisible por <m:math><m:mn>10</m:mn></m:math>.</p>
+            <p>Por lo tanto, la respuesta correcta es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

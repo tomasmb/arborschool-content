@@ -1,0 +1,148 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q32_v6" title="Q32_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La figura adjunta muestra dos niveles de casillas hexagonales. En cada figura, el número en la casilla inferior corresponde a la suma de los números de las dos casillas inmediatamente superiores.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="[Dibujar tres casillas hexagonales formando un pequeño triángulo: dos casillas arriba y una abajo centrada. En la casilla superior izquierda escribir la letra 'a'. En la casilla superior derecha escribir el número '7'. En la casilla inferior escribir el número '24'. Unir visualmente las casillas superiores con la inferior para indicar que ambas aportan a la suma de la casilla de abajo.]" />
+    </p>
+    <p>Ejemplo:</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="[Dibujar tres casillas hexagonales pequeñas formando un triángulo: dos casillas arriba y una abajo. En las casillas superiores escribir los números '4' y '5'. En la casilla inferior escribir el número '9'. A un costado, agregar el texto '4 + 5 = 9' o una flecha que indique que el número inferior es la suma de los dos superiores.]" />
+      Por ejemplo, si en las casillas superiores hay un 4 y un 5, en la casilla inferior va un 9, porque 
+      <m:math>
+        <m:mrow>
+          <m:mn>4</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>5</m:mn>
+          <m:mo>=</m:mo>
+          <m:mn>9</m:mn>
+        </m:mrow>
+      </m:math>.
+    </p>
+    <p>En la figura principal, la casilla superior derecha ya está completa con el número 7 y la casilla inferior con el número 24. Si la figura debe cumplir la misma regla mostrada en el ejemplo, ¿qué número debe ir en la casilla marcada con la letra a?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <p>31</p>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>31</m:mn></m:mrow></m:math>, entonces la casilla inferior sería <m:math><m:mrow><m:mn>31</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>38</m:mn></m:mrow></m:math>, pero en la figura aparece <m:math><m:mrow><m:mn>24</m:mn></m:mrow></m:math>. Por eso, 31 no cumple la regla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <p>17</p>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La regla indica que <m:math><m:mrow><m:mi>a</m:mi><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math>. Entonces, <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>24</m:mn><m:mo>−</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>17</m:mn></m:mrow></m:math>. Además, se verifica que <m:math><m:mrow><m:mn>17</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <p>7</p>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>7</m:mn></m:mrow></m:math>, entonces la casilla inferior sería <m:math><m:mrow><m:mn>7</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>14</m:mn></m:mrow></m:math>, no <m:math><m:mrow><m:mn>24</m:mn></m:mrow></m:math>. Por eso, 7 no satisface la condición del problema.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <p>24</p>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math>, entonces la casilla inferior sería <m:math><m:mrow><m:mn>24</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>31</m:mn></m:mrow></m:math>, pero la figura muestra <m:math><m:mrow><m:mn>24</m:mn></m:mrow></m:math> en la casilla inferior. Por eso, 24 no es el número que debe ir en <m:math><m:mrow><m:mi>a</m:mi></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la regla</strong></p>
+            <p>El número de la casilla inferior es la suma de los dos números que están justo arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir la igualdad que representa la figura</strong></p>
+            <p>En la figura principal, arriba están <m:math><m:mrow><m:mi>a</m:mi></m:mrow></m:math> y <m:math><m:mrow><m:mn>7</m:mn></m:mrow></m:math>, y abajo está <m:math><m:mrow><m:mn>24</m:mn></m:mrow></m:math>. Entonces:</p>
+            <p><m:math><m:mrow><m:mi>a</m:mi><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Despejar el valor de <m:math><m:mrow><m:mi>a</m:mi></m:mrow></m:math></strong></p>
+            <p>Restamos <m:math><m:mrow><m:mn>7</m:mn></m:mrow></m:math> a ambos lados:</p>
+            <p><m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>24</m:mn><m:mo>−</m:mo><m:mn>7</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>17</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar</strong></p>
+            <p>Comprobamos el resultado:</p>
+            <p><m:math><m:mrow><m:mn>17</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math></p>
+            <p>La igualdad se cumple exactamente.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El número que debe ir en la casilla marcada con la letra <m:math><m:mrow><m:mi>a</m:mi></m:mrow></m:math> es <m:math><m:mrow><m:mn>17</m:mn></m:mrow></m:math>, es decir, la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

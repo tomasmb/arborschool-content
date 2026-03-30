@@ -1,0 +1,185 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q52_v9" title="Q52_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Se tiene una urna con bolas de cuatro colores. Cada bola tiene la misma probabilidad de ser extraída.</p>
+    <div>
+      <p>Colores y cantidades en la urna:</p>
+      <p>Rojas: 18</p>
+      <p>Azules: 12</p>
+      <p>Verdes: 6</p>
+      <p>Amarillas: 24</p>
+      <p>Para este experimento, se consideran colores primarios el rojo, el azul y el amarillo.</p>
+    </div>
+    <p>Si se extrae al azar una bola de la urna, ¿cuál de las siguientes expresiones permite determinar la probabilidad de que la bola extraída sea de un color primario?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+            </m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión usa 18 + 12 + 24 en el numerador y también 18 + 12 + 24 en el denominador, por lo que representa 54/54 = 1. Pero en la urna hay 18 + 12 + 6 + 24 = 60 bolas en total. La probabilidad de obtener un color primario debe ser 54/60, no 54/54.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+            </m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los colores primarios indicados son rojo, azul y amarillo, así que los casos favorables son 18 + 12 + 24 = 54. El total de bolas en la urna es 18 + 12 + 6 + 24 = 60. Por eso la probabilidad se determina con 54/60, exactamente la expresión de esta alternativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn>
+            </m:mrow>
+            <m:mrow>
+              <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+            </m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El numerador de esta expresión es 18 + 12 = 30, que cuenta solo bolas rojas y azules. Sin embargo, el enunciado también considera primario el color amarillo, y hay 24 bolas amarillas. Los casos favorables deben ser 18 + 12 + 24 = 54, no 30.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>-</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+              </m:mrow>
+              <m:mrow>
+                <m:mn>18</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>24</m:mn>
+              </m:mrow>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La fracción 54/60 ya representa la probabilidad de obtener un color primario. Al calcular 1 − 54/60 se obtiene 6/60, que corresponde a la probabilidad complementaria, es decir, extraer una bola que no sea de color primario. En esta urna ese color no primario es el verde.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los colores primarios del enunciado</strong></p>
+            <p>El problema indica que, para este experimento, los colores primarios son rojo, azul y amarillo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Contar los casos favorables</strong></p>
+            <p>Las bolas de color primario son:</p>
+            <p>Rojas: 18</p>
+            <p>Azules: 12</p>
+            <p>Amarillas: 24</p>
+            <p>Entonces, los casos favorables son 18 + 12 + 24 = 54.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar el total de bolas de la urna</strong></p>
+            <p>El total es 18 + 12 + 6 + 24 = 60.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Formar la probabilidad</strong></p>
+            <p>La probabilidad de extraer una bola de color primario es:</p>
+            <p>casos favorables / casos totales = 54 / 60.</p>
+            <p>Es decir, la expresión correcta es la que tiene numerador 18 + 12 + 24 y denominador 18 + 12 + 6 + 24.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La alternativa B muestra exactamente esa expresión.</p>
+            <p>La alternativa A da 54/54 = 1, que no usa el total de bolas.</p>
+            <p>La alternativa C omite las 24 bolas amarillas en el numerador.</p>
+            <p>La alternativa D calcula 1 − 54/60 = 6/60, que corresponde al complemento, no a la probabilidad pedida.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

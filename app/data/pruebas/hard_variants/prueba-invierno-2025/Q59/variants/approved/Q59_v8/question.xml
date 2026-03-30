@@ -1,0 +1,129 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q59_v8" title="Q59_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Para elegir el juego favorito del recreo en un curso, se hará una encuesta a los 20 estudiantes. Hasta ahora han respondido 16 de ellos y faltan por responder 4.</p>
+    <div>Entre las opciones se encuentran los juegos: "escondida", "pillarse", "quemadas", "saltar la cuerda" y "fútbol".</div>
+    <p>Se sabe que, independientemente de cómo respondan los 4 estudiantes que faltan, el juego "escondida" seguirá siendo la opción con mayor número de preferencias (la moda). A continuación se presentan cuatro posibles resúmenes numéricos de las preferencias ya registradas. ¿Cuál de ellos podría corresponder a la situación actual para que esa afirmación sea necesariamente verdadera?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Selecciona una opción.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Hasta ahora, "escondida" tiene 8 votos, y cada uno de los otros juegos tiene a lo más 4 votos.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si actualmente "escondida" tiene 8 votos y otro juego tiene 4 votos, entonces los 4 estudiantes que faltan podrían votar por ese mismo juego. Ese otro juego pasaría de 4 a 8 votos, mientras "escondida" seguiría con 8. Habría empate en 8, así que "escondida" no seguiría siendo necesariamente la opción con mayor número de preferencias.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Hasta ahora, "escondida" tiene 9 votos y, en total, los otros juegos suman 7 votos entre todos.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Como los otros juegos suman 7 votos entre todos, es posible que uno de ellos tenga los 7 votos y los demás 0. Si los 4 estudiantes que faltan votan por ese mismo juego, ese juego llegaría a 11 votos, porque 7 + 4 = 11, mientras "escondida" quedaría con 9. Entonces "escondida" no seguiría siendo necesariamente la opción con mayor número de preferencias.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Hasta ahora, "escondida" tiene 9 votos, y cada uno de los otros juegos tiene a lo más 3 votos.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Si "escondida" ya tiene 9 votos y cualquier otro juego tiene a lo más 3, entonces, aunque los 4 estudiantes que faltan voten todos por un mismo juego, ese juego llegaría como máximo a 7 votos, porque 3 + 4 = 7. Como 7 es menor que 9, ningún otro juego puede alcanzar ni superar a "escondida". Por lo tanto, "escondida" seguirá siendo necesariamente la opción con mayor número de preferencias.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Hasta ahora, "escondida" tiene 10 votos y, en conjunto, los otros juegos suman 6 votos.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Que los otros juegos sumen 6 votos no impide que uno de ellos tenga los 6 votos y los demás 0. Si los 4 estudiantes que faltan votan por ese mismo juego, ese juego llegaría a 10 votos, porque 6 + 4 = 10, mientras "escondida" seguiría con 10. Habría empate en 10, así que "escondida" no seguiría siendo necesariamente la opción con mayor número de preferencias.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué debe cumplirse</strong></p>
+            <p>Faltan 4 estudiantes por responder. La condición dice que, sin importar cómo respondan esos 4 estudiantes, "escondida" debe seguir siendo la opción con mayor número de preferencias.</p>
+            <p>Entonces debemos revisar, en cada alternativa, cuál es el mayor número de votos que podría alcanzar algún otro juego si los 4 votos faltantes se concentran en ese mismo juego.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la opción A</strong></p>
+            <p>"Escondida" tiene 8 votos y cada otro juego tiene a lo más 4.</p>
+            <p>Si un juego tiene 4 votos y recibe los 4 votos faltantes, llegaría a 8, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>8</mn></mrow></math>.</p>
+            <p>Empataría con "escondida", que tiene 8. Por eso esta opción no garantiza que "escondida" siga siendo la única con mayor número de preferencias.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar la opción B</strong></p>
+            <p>"Escondida" tiene 9 votos y los otros juegos suman 7 votos entre todos.</p>
+            <p>Eso permite, por ejemplo, que un solo juego tenga los 7 votos. Si recibe los 4 votos faltantes, llegaría a 11, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>11</mn></mrow></math>.</p>
+            <p>Como 11 es mayor que 9, esta opción tampoco garantiza la condición.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar la opción C</strong></p>
+            <p>"Escondida" tiene 9 votos y cada otro juego tiene a lo más 3.</p>
+            <p>Aun en el caso más desfavorable para "escondida", un juego con 3 votos recibe los 4 votos faltantes y llega a 7, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>7</mn></mrow></math>.</p>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>&lt;</mo><mn>9</mn></mrow></math>, ningún otro juego puede alcanzar ni superar a "escondida". Esta sí garantiza la condición pedida.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar la opción D</strong></p>
+            <p>"Escondida" tiene 10 votos y los otros juegos suman 6 votos entre todos.</p>
+            <p>Eso permite que un solo juego tenga 6 votos. Si recibe los 4 votos faltantes, llegaría a 10, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>10</mn></mrow></math>.</p>
+            <p>Empataría con "escondida", así que esta opción tampoco asegura la condición.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única alternativa que hace necesariamente verdadera la afirmación es la <strong>opción C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

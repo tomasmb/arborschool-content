@@ -368,15 +368,25 @@ def run_batch_quality_phases(
     config: PipelineConfig,
     submit_and_wait: Any,
 ) -> tuple[list[VariantQuestion], list[VariantQuestion]]:
-    """Run phases 5-7 for the batch pipeline."""
+    """Run phases 5-7 for the batch pipeline.
+
+    When ``config.lenient`` is True, phases 5 (solvability) and 7
+    (final validation) are skipped — only enrichment (phase 6) runs.
+    """
     rejected: list[VariantQuestion] = []
 
-    solvable, solve_rej = batch_phase_solvability(
-        state, submitter, approved, model, job_dir, submit_and_wait,
-    )
-    rejected.extend(solve_rej)
-    if not solvable:
-        return solvable, rejected
+    if not config.lenient:
+        solvable, solve_rej = batch_phase_solvability(
+            state, submitter, approved, model,
+            job_dir, submit_and_wait,
+        )
+        rejected.extend(solve_rej)
+        if not solvable:
+            return solvable, rejected
+    else:
+        logger.info("Lenient mode: skipping Phase 5 (solvability)")
+        print("⏭️  Phase 5 skipped (lenient mode)")
+        solvable = approved
 
     enriched, enrich_rej = batch_phase_enrichment(
         solvable, sources_map, job_dir, state, config,
@@ -385,10 +395,15 @@ def run_batch_quality_phases(
     if not enriched:
         return enriched, rejected
 
-    final, final_rej = batch_phase_final_validate(
-        state, submitter, enriched, sources_map,
-        model, job_dir, submit_and_wait,
-    )
-    rejected.extend(final_rej)
+    if not config.lenient:
+        final, final_rej = batch_phase_final_validate(
+            state, submitter, enriched, sources_map,
+            model, job_dir, submit_and_wait,
+        )
+        rejected.extend(final_rej)
+    else:
+        logger.info("Lenient mode: skipping Phase 7 (final validation)")
+        print("⏭️  Phase 7 skipped (lenient mode)")
+        final = enriched
 
     return final, rejected

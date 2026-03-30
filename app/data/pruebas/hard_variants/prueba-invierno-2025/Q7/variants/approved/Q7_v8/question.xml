@@ -1,0 +1,125 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q7_v8" title="Q7_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En una recta numérica, un punto se mueve desde la posición 3 hasta la posición −4.</p>
+    <p>Para registrar este cambio, se escribe la operación −4 − 3. ¿Cuál de los siguientes resultados es coherente con esa operación?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">−1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La operación compara la posición final con la inicial: desde 3 hasta −4 se avanza 7 unidades hacia la izquierda en la recta numérica, por lo que el cambio es negativo. Entonces el resultado coherente es −7, no −1.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">1<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Desde 3 hasta −4 no hay un desplazamiento de 1 unidad, sino de 7 unidades hacia la izquierda. Un desplazamiento hacia la izquierda se representa con signo negativo, así que la operación −4 − 3 da −7, no 1.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">−7<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La operación toma posición final menos posición inicial. Desde 3 hasta −4 hay 7 unidades hacia la izquierda, y ese cambio se representa con signo negativo. Por eso, −4 − 3 = −7.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">7<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aunque entre 3 y −4 hay una distancia de 7 unidades, la operación pide el cambio con signo. Como el movimiento es hacia la izquierda en la recta numérica, el resultado debe ser negativo. Por eso, −4 − 3 = −7, no 7.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué representa la operación</strong></p>
+            <p>La operación escrita es posición final menos posición inicial.</p>
+            <p>En este caso, la posición final es −4 y la posición inicial es 3.</p>
+          </li>
+          <li>
+            <p><strong>Escribir la resta correspondiente</strong></p>
+            <p>Se debe calcular:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mo>−</mo><mn>4</mn><mo>−</mo><mn>3</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Interpretar el desplazamiento en la recta numérica</strong></p>
+            <p>Desde 3 hasta 0 hay 3 unidades hacia la izquierda.</p>
+            <p>Desde 0 hasta −4 hay 4 unidades más hacia la izquierda.</p>
+            <p>En total, el desplazamiento es de 7 unidades hacia la izquierda.</p>
+          </li>
+          <li>
+            <p><strong>Asignar el signo correcto</strong></p>
+            <p>Como el movimiento es hacia la izquierda, el cambio es negativo.</p>
+            <p>Entonces:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mo>−</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>=</mo><mo>−</mo><mn>7</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El resultado coherente con la operación es −7, que corresponde a la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

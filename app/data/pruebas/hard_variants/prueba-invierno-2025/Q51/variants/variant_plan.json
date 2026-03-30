@@ -1,0 +1,132 @@
+{
+  "source_question_id": "Q51",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q51_v8",
+      "scenario_description": "En un centro comercial, desde la entrada principal se llega originalmente al cine siguiendo el aviso: \"Suba 4 pisos y avance 9 locales hacia la derecha\". Luego, el cine se reubica dos veces: primero se cambia 3 pisos hacia abajo y 1 local hacia la derecha; después, 7 pisos hacia arriba y 4 locales hacia la izquierda. En el nuevo aviso quieren indicar, de forma directa, cómo ir desde la misma entrada al cine. La información de los movimientos se entrega en un pequeño registro tipo bitácora: una tabla con tres filas que indica, para cada etapa, el cambio en pisos (positivo si sube, negativo si baja) y el cambio en locales (positivo si va a la derecha, negativo si va a la izquierda). Se pide elegir, entre varias instrucciones verbales (\"Suba ... pisos y avance ... locales hacia la derecha/izquierda\"), cuál corresponde al desplazamiento total equivalente a la suma de los tres registros.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe interpretar un registro tabular de desplazamientos como sumas de enteros con signo en dos direcciones (pisos y locales), identificando qué significa un número negativo en cada columna, para luego combinar correctamente esos cambios y traducir el resultado total a una instrucción verbal coherente. No basta con repetir un esquema de suma sin entender qué representa cada signo y cada columna.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q51_v9",
+      "scenario_description": "En un edificio escolar hay un plano sencillo del piso con una flecha que indica cómo llegar desde la portería a la biblioteca: \"Avance 6 salas hacia el frente del pasillo y 4 salas hacia la derecha\". Más tarde, la biblioteca se cambia de lugar dos veces: primero, 2 salas hacia atrás y 5 hacia la derecha; luego, 9 salas hacia adelante y 1 hacia la izquierda. En un nuevo plano, se muestran estos movimientos escritos secuencialmente con símbolos abreviados (por ejemplo, F=frente, A=atrás, D=derecha, I=izquierda) en una lista tipo registro: \"+6F, +4D\"; \"−2F, +5D\"; \"+9F, −1D\". Se pregunta cuál de varias instrucciones finales, expresadas de nuevo en lenguaje natural (\"avance tantas salas hacia el frente y tantas hacia la derecha/izquierda\"), describe el desplazamiento total desde la portería hasta la nueva ubicación de la biblioteca.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe entender que cada par abreviado describe un vector de desplazamiento en dos ejes y que los signos indican direcciones opuestas (frente/atrás, derecha/izquierda). Debe sumar componentes por separado, reconociendo que restar un desplazamiento equivale a sumar su opuesto, para obtener la indicación final correcta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano simple de un pasillo recto con salas numeradas a los lados y una leyenda que explica las abreviaturas F, A, D, I, junto con una pequeña lista que muestra los movimientos con estos símbolos.",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q51_v10",
+      "scenario_description": "En una plaza, un plano indica cómo llegar desde la entrada principal a una fuente usando una cuadrícula de baldosas: \"Desde la entrada camine 8 baldosas hacia el norte y 3 hacia el oeste\". Por remodelaciones, la fuente se mueve dos veces: primero, 5 baldosas hacia el sur y 6 hacia el oeste; después, 11 baldosas hacia el norte y 2 hacia el este. En un cuadro al costado del plano se resumen los tres desplazamientos (el original y los dos cambios de posición de la fuente) como una secuencia de movimientos en filas: (Norte +8, Oeste +3), (Sur +5, Oeste +6), (Norte +11, Este +2). Se pide seleccionar, entre varias alternativas de instrucciones verbales, cuál indica correctamente cuántas baldosas y en qué dirección (norte/sur y este/oeste) debe caminar ahora una persona desde la entrada para llegar a la fuente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que el primer movimiento va de la entrada a la posición inicial de la fuente, y que los siguientes dos movimientos corresponden a cambios posteriores de la fuente, todos expresados en la misma referencia de cuadrícula. Para obtener el desplazamiento total desde la entrada, debe sumar coherentemente las componentes norte-sur y este-oeste de los tres registros, entendiendo la oposición de direcciones y no solo agregando números en orden.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano esquemático de una plaza representada como cuadrícula, con la entrada marcada, la posición original de la fuente y una tabla al costado que registra los tres movimientos con pares (dirección, número de baldosas).",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q51_v11",
+      "scenario_description": "En una ciudad representada sobre un plano cuadriculado, el terminal de buses está en el punto (0,0). Un letrero indica que, para llegar a un museo, se debe caminar inicialmente 4 cuadras hacia el norte y 10 hacia el este. Más adelante, el museo se traslada: primero, 7 cuadras hacia el sur y 1 hacia el este; luego, 13 cuadras hacia el norte y 4 hacia el oeste. En el enunciado se entregan estos datos directamente como coordenadas de desplazamiento relativas al terminal: (+4N, +10E), (−7N, +1E), (+13N, −4E). Se pide elegir cuál de varias descripciones verbales del recorrido final (\"avance ... cuadras hacia el norte/sur y ... hacia el este/oeste\") corresponde a la suma total de estos desplazamientos desde el terminal hasta la nueva ubicación del museo.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que las tres parejas de desplazamientos se combinan componente a componente, con signos que representan direcciones opuestas en cada eje. Debe sumar correctamente los cambios en norte-sur y en este-oeste, interpretando los negativos como movimiento en la dirección contraria, para luego traducir el par resultante a una instrucción verbal coherente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q51_v12",
+      "scenario_description": "En un parque de diversiones, desde la entrada principal se llega a una montaña rusa siguiendo el cartel: \"Avance 3 sectores hacia el norte y 11 sectores hacia el este\". La montaña rusa se reubica dos veces: primero, se mueve 4 sectores al sur y 2 al oeste; después, 12 sectores al norte y 1 al este. Toda la información se presenta como una secuencia numerada de instrucciones (1, 2 y 3), cada una escrita en lenguaje natural, una debajo de la otra. Se pregunta cuál de varias nuevas instrucciones resumidas (del tipo \"avance k sectores hacia el norte/sur y m sectores hacia el este/oeste\") podría reemplazar a toda la secuencia para indicar el recorrido directo desde la entrada hasta la nueva posición de la atracción.",
+      "non_mechanizable_axes": [
+        "orden_pasos"
+      ],
+      "required_reasoning": "Se exige que el estudiante interprete que las tres instrucciones forman una ruta acumulada y que la pregunta busca su combinación en una sola. Debe agrupar mentalmente los desplazamientos en norte-sur y este-oeste, entendiendo que moverse hacia direcciones opuestas implica restar distancias (suma de enteros con signo) y no concatenar textos de instrucciones mecánicamente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Croquis simple del parque con la entrada y la montaña rusa esquematizadas, y al costado un recuadro con la secuencia de tres instrucciones numeradas.",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q51_v13",
+      "scenario_description": "Un dron parte desde una plataforma de despegue. El piloto automático tiene registrada la siguiente ruta: primero avanza 5 unidades hacia el norte y 9 hacia el este para alcanzar un punto de referencia. Luego, el operador corrige la posición del dron dos veces: la primera corrección lo mueve 6 unidades hacia el sur y 3 hacia el este; la segunda, 14 unidades hacia el norte y 5 hacia el oeste. Se entrega al estudiante un pequeño esquema (o tabla) que resume estos tres desplazamientos. A continuación, se muestran cuatro posibles descripciones del resultado total (por ejemplo: \"El dron terminó 13 unidades al norte y 7 al este de la plataforma\", etc.). Se pregunta cuál de esas descripciones es consistente con la suma de los desplazamientos dados.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para decidir qué afirmación es consistente, el estudiante debe calcular mentalmente o por escrito el desplazamiento total sumando los componentes norte-sur y este-oeste, teniendo cuidado con los signos opuestos. Debe luego comparar su resultado con cada afirmación, identificando y descartando aquellas que reflejan errores típicos de signo o que suman las distancias sin considerar oposición de direcciones.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q51_v14",
+      "scenario_description": "En un mapa cuadriculado, desde la plaza central hasta un teatro se seguía originalmente la indicación: \"Camine 7 cuadras hacia el norte y 6 hacia el oeste\". El teatro cambió primero 4 cuadras hacia el norte y 8 hacia el este, y luego 10 cuadras hacia el sur y 1 hacia el oeste. En el nuevo folleto, el municipio quiere publicar solamente el desplazamiento total desde la plaza hasta la ubicación actual del teatro. El ítem entrega un resumen de los tres movimientos en un recuadro y luego presenta cuatro propuestas de texto para el folleto (cada una con un par de direcciones y números de cuadras). El estudiante debe identificar cuál texto coincide con el resultado total de combinar los tres desplazamientos.",
+      "non_mechanizable_axes": [
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe procesar la secuencia de tres movimientos como sumas de enteros en dos ejes, calculando la posición final relativa a la plaza. Solo entendiendo la composición de desplazamientos y el rol de direcciones opuestas puede determinar cuál de las propuestas corresponde al resultado correcto, diferenciándola de distracciones que cometen errores de suma o intercambio de norte/sur y este/oeste.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Mapa esquemático de una ciudad cuadriculada con la plaza marcada y un recuadro aparte con la lista de los tres desplazamientos del teatro.",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q51_v15",
+      "scenario_description": "En un zoológico, un cartel antiguo indicaba cómo ir desde la entrada principal al sector de felinos: \"Avance 9 recintos hacia el sur y 2 hacia el este\". Debido a una reestructuración, el sector de felinos se trasladó primero 3 recintos hacia el norte y 7 hacia el este, y después 8 recintos hacia el sur y 5 hacia el oeste. El problema presenta estos desplazamientos en un listado claro (etapas 1, 2 y 3) y luego muestra cuatro posibles descripciones de la nueva ubicación del sector respecto de la entrada, formuladas como afirmaciones del tipo \"Ahora el sector se encuentra x recintos al norte/sur y y recintos al este/oeste de la entrada\". Se pide elegir la única afirmación que sea coherente con los movimientos informados.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que la posición final se obtiene sumando los tres desplazamientos por componentes opuestos (norte-sur, este-oeste). Solo tras realizar este cálculo puede contrastar su resultado con cada afirmación y detectar errores de interpretación de signo o de suma que aparecen en las alternativas incorrectas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q51_v16",
+      "scenario_description": "En una estación de trenes, desde la boletería hasta una cafetería interna se seguía la indicación: \"Recorra 6 módulos hacia el este y 5 hacia el norte\". Luego, la cafetería se trasladó primero 2 módulos hacia el oeste y 9 hacia el norte, y después 11 módulos hacia el este y 4 hacia el sur. En un diagrama sencillo se muestran la boletería, la posición inicial de la cafetería y flechas que representan los tres movimientos (el original y los dos traslados). El ejercicio propone cuatro indicaciones posibles para el nuevo letrero (todas del tipo \"avance ... módulos hacia el norte/sur y ... hacia el este/oeste\") y pide determinar cuál resume correctamente el desplazamiento total desde la boletería hasta la cafetería actual.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe interpretar las flechas del diagrama como vectores de desplazamiento y entender que el desplazamiento total es la suma de esos vectores. Esto requiere descomponer cada flecha en componentes norte-sur y este-oeste, reconocer direcciones contrarias y efectuar la suma de enteros para luego asociar el resultado a la indicación verbal correcta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Planta esquemática de la estación con la boletería marcada, la cafetería inicial y varias flechas consecutivas que muestran los movimientos, cada una etiquetada con su cantidad de módulos y dirección.",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q51_v17",
+      "scenario_description": "En un camping, un mapa indica la ruta desde la caseta de información hasta un mirador: \"Suba 10 tramos hacia el norte y avance 4 hacia el oeste\". Por trabajos en los senderos, el mirador se desplaza primero 6 tramos hacia el sur y 2 hacia el oeste, y luego 15 tramos hacia el norte y 7 hacia el este. El ítem entrega un cuadro que resume estos tres movimientos. Luego se presentan cuatro textos que intentan describir la nueva ruta directa desde la caseta al mirador (cada uno con una combinación diferente de tramos norte/sur y este/oeste). El estudiante debe seleccionar cuál de ellos es compatible con la combinación de desplazamientos indicada en el cuadro.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para verificar la compatibilidad de cada texto, el estudiante debe calcular el desplazamiento total sumando correctamente las tres etapas por componentes, interpretando los movimientos hacia el sur como valores negativos en la dirección norte y análogamente para este/oeste. Solo así puede distinguir la opción correcta de las que reflejan errores típicos de suma de magnitudes sin considerar sentido.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    }
+  ]
+}

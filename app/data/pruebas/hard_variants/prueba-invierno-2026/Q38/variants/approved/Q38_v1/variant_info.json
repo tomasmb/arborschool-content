@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q38_v1",
+  "source_question_id": "Q38",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q38_v1",
+    "scenario_description": "Se describe el avance de la pintura de un gran mural exterior. Se indica que todas las máquinas pintan a la misma tasa constante. Durante las primeras 2 horas trabaja solo una máquina y durante las siguientes 2 horas trabajan dos máquinas idénticas en forma simultánea. Se pide elegir, entre cuatro gráficos de línea (cantidad de mural pintado vs tiempo), cuál representa mejor esta situación: todos parten del origen; uno tiene pendiente constante; otro aumenta su pendiente justo en t = 2; otro la disminuye; otro tiene un quiebre pero con pendiente errónea (más suave después de sumar la máquina).",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe comprender que la cantidad pintada crece de manera lineal por tramos y que el cambio de número de máquinas implica un cambio en la TASA (pendiente), no en la altura repentina del gráfico. No basta identificar un momento de cambio: debe inferir que, al sumar una máquina con igual rendimiento, la pendiente se duplica y el gráfico sigue siendo continuo. Esto evita que se responda mecánicamente y obliga a razonar sobre el significado de la pendiente como ritmo de trabajo.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Cuatro gráficos tiempo (0 a 4 h) vs porcentaje de mural pintado. Todos parten del origen: (A) recta con pendiente constante hasta 4 h. (B) recta con pendiente moderada hasta t = 2 y luego una recta más inclinada desde t = 2 hasta t = 4, unida sin saltos. (C) recta con pendiente más inclinada hasta t = 2 y luego menos inclinada de 2 a 4. (D) recta que muestra un salto vertical en t = 2 y luego la misma pendiente que antes.",
+    "selected_shape_id": "single_series_visual_claim"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué mantener un único gráfico de una serie como evidencia primaria, sin tablas numéricas que permitan responder sin interpretar la pendiente por tramos; también comprobé que el cambio de número de máquinas sigue representándose únicamente como cambio de pendiente continuo, sin alterar la forma de tarea."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-ALG-05-11",
+      "A-M1-ALG-05-10"
+    ],
+    "primary_atom_titles": [
+      "Formulación de Modelos Lineales y Afines",
+      "Graficación mediante Pendiente e Intercepto"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "representation_primary",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

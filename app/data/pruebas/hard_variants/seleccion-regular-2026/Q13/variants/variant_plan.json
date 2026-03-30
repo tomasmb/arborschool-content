@@ -1,0 +1,136 @@
+{
+  "source_question_id": "Q13",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q13_v8",
+      "scenario_description": "Se muestra el registro de uso de una calculadora en cuatro líneas. Cada línea indica, en el orden real en que se presionaron las teclas, una secuencia como: Registro A: [1] [000] [000] [00] [00]; Registro B: [1] [000] [000] [000] [00]; etc. Todas las secuencias comienzan con [1] y luego solo usan los botones [00] y [000]. Se pregunta cuál de estos registros corresponde a haber ingresado exactamente 10^(10), partiendo de la pantalla en cero y sin borrar en ningún momento.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar 10^(10) como 1 seguido de 10 ceros y relacionar esa cantidad total de ceros con la suma de los ceros que aporta cada botón en cada registro (3 por [000], 2 por [00]). No basta reconocer una fórmula: debe contar y comparar el total de ceros de cada secuencia y descartar las que generan 9 u 11 ceros o agregan ceros de más en los lugares equivocados.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "keypad_record"
+    },
+    {
+      "variant_id": "Q13_v9",
+      "scenario_description": "En la pantalla de la calculadora aparece ya mostrado el número 10 000 000 000 (es decir, 10^(10)). La calculadora tiene, además de las teclas [1], [00] y [000], un botón adicional [00000] que agrega cinco ceros de una vez. Se ofrecen varias acciones posibles, por ejemplo: Opción A: presionar [1] y luego [00000] dos veces; Opción B: presionar [1], [000] tres veces y [00] una vez; etc. Se pregunta cuál de estas acciones permite marcar un número exactamente equivalente al que aparece en la pantalla (10^(10)), usando estos atajos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que 10^(10) corresponde a 10 ceros y verificar la equivalencia entre el número en pantalla y cada combinación de atajos, sumando los ceros que aporta cada botón ([00]: 2, [000]: 3, [00000]: 5). Debe identificar la secuencia cuya suma de ceros es 10 y descartar las que dan 9, 11 o más. No puede aplicar una receta literal de la pregunta fuente, porque hay un nuevo botón y debe razonar el conteo de ceros en un sistema de bloques distinto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "display_equivalence_check"
+    },
+    {
+      "variant_id": "Q13_v10",
+      "scenario_description": "Se indica que un estudiante ya presionó [1] y luego dos veces [000]. La pantalla muestra entonces un 1 seguido de 6 ceros (es decir, 10^(6)). Ahora quiere llegar a 10^(10) sin borrar nada, usando solo los botones [00] y [000]. Se presentan varias propuestas de continuación, por ejemplo: (a) presionar dos veces [00]; (b) presionar una vez [000] y una vez [00]; (c) presionar dos veces [000]; etc. Se pregunta cuál propuesta de continuación permite que el número final en pantalla sea 10^(10).",
+      "non_mechanizable_axes": [
+        "orden_pasos",
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que ya hay 6 ceros en pantalla y que 10^(10) requiere 10 ceros en total, por lo que faltan 4 ceros. A partir de ello, debe decidir qué combinación adicional de botones [00] (2 ceros) y [000] (3 ceros) suma exactamente esos 4 ceros. Esto obliga a usar la idea de potencia de 10 como 'contar ceros' en dos etapas (estado actual + ceros que faltan), no solo aplicar de memoria una combinación fija.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "keypad_record"
+    },
+    {
+      "variant_id": "Q13_v11",
+      "scenario_description": "Se describe una secuencia de referencia: un estudiante presiona [1], luego dos veces [000] y dos veces [00], y afirma que así marca 10^(10). Sabemos que esa secuencia de referencia es correcta. La calculadora tiene ahora tres tipos de botones de ceros: [0], [00] y [000]. Se presentan varias otras secuencias alternativas que usan estos tres botones, por ejemplo: (A) [1], [000], [000], [0], [0], [0], [0]; (B) [1], [000], [00], [00], [0], [0]; (C) [1], [00], [00], [00], [00], [0]; etc. Se pregunta cuál de las secuencias alternativas produce un número equivalente al de la secuencia de referencia (mismo total de ceros) usando estos nuevos botones.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe identificar que la secuencia de referencia tiene 10 ceros (3+3+2+2) y, sin volver a la receta original, determinar qué combinación de bloques de 1, 2 y 3 ceros en cada opción suma también 10. Debe razonar la composición 10 = 3+3+1+1+1+1, etc., y comparar totales, descartando opciones con 9, 11 o más ceros. Esto obliga a entender la estructura 'potencia de 10 ↔ cantidad de ceros' y adaptarla a una nueva paleta de botones.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "display_equivalence_check"
+    },
+    {
+      "variant_id": "Q13_v12",
+      "scenario_description": "En lugar de mostrar secuencias, se entrega una tabla donde cada fila resume cuántas veces se presionó cada botón especial, suponiendo que siempre se presiona una vez [1] al inicio. Por ejemplo: Fila A: botón [00] 2 veces y botón [000] 2 veces; Fila B: botón [00] 4 veces y botón [000] 1 vez; Fila C: botón [00] 1 vez y botón [000] 3 veces; etc. Se pregunta en qué fila la combinación de presiones (junto con una única presión inicial de [1]) permite marcar exactamente el número 10^(10).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe traducir de una representación resumida (conteo de veces que se presiona cada botón) al total de ceros agregados: por ejemplo, en la fila A, 2·2 + 2·3 = 10 ceros. Debe comparar esos totales con el requerimiento de 10 ceros para 10^(10), sin apoyo de una secuencia explícita ya armada, lo que le obliga a aplicar de manera consciente la relación entre bloques de ceros y potencia de 10.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "keypad_record"
+    },
+    {
+      "variant_id": "Q13_v13",
+      "scenario_description": "En vez de texto sobre teclas, se muestran, para cada alternativa, tiras de bloques que representan los ceros añadidos: cada bloque con etiqueta '00' tiene largo 2 y cada bloque con etiqueta '000' tiene largo 3. En cada opción los bloques se alinean formando una 'barra' continua (por ejemplo, en una opción se ven dos bloques '000' y dos bloques '00', en otra tres bloques '000' y un bloque '00', etc.). Se indica que 10^(10) corresponde a un 1 seguido de 10 ceros. Se pregunta qué tira de bloques representa una cantidad de ceros equivalente a la de 10^(10).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe interpretar visualmente que la longitud total de la barra (suma de largos 2 y 3) representa el número de ceros añadidos y compararla con los 10 ceros que requiere 10^(10). Tiene que sumar mentalmente 2+2+3+3, etc., y reconocer qué configuración tiene longitud total 10. Esto refuerza la comprensión de la potencia de 10 como 'número de ceros' a través de una representación gráfica no habitual.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Varias tiras horizontales; cada tira compuesta por rectángulos adosados con rótulo '00' o '000'. Una tira tiene dos bloques '000' y dos '00' (suma de longitudes 10), las otras tiras suman 9, 11 o 12 de longitud.",
+      "selected_shape_id": "display_equivalence_check"
+    },
+    {
+      "variant_id": "Q13_v14",
+      "scenario_description": "Se muestran cuatro registros de teclas presionadas como cadenas de símbolos, por ejemplo: Registro A: [1] [000] [000] [00] [00]; Registro B: [1] [000] [00] [2] [00]; Registro C: [1] [000] [000] [000] [00]; Registro D: [1] [00] [00] [00] [00]. Se indica que el número buscado debe ser exactamente 10^(10). Se pregunta cuál de estos registros corresponde a haber escrito 10^(10) desde cero, sin borrar, considerando que cualquier dígito distinto de 0 después del [1] hace que el número ya no sea una potencia de 10.",
+      "non_mechanizable_axes": [
+        "distractor_dominante",
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe combinar dos ideas: (1) 10^(10) es un 1 seguido solo de ceros, sin otros dígitos; (2) los botones [00] y [000] agregan 2 y 3 ceros respectivamente. Debe descartar secuencias que incluyen un [2] u otro dígito distinto de 0 y, entre las restantes, contar correctamente los ceros para verificar que haya 10. Esto exige entender por qué cualquier dígito extra rompe la forma de una potencia de 10 y no solo hacer un conteo mecánico de ceros.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "keypad_record"
+    },
+    {
+      "variant_id": "Q13_v15",
+      "scenario_description": "Se presentan cuatro afirmaciones sobre cómo marcar un número equivalente a 10^(10) usando los botones [1], [0], [00] y [000]. Cada opción es una frase completa, por ejemplo: (A) 'Presionar una vez [1] y luego cinco veces [00]'; (B) 'Presionar una vez [1] y luego tres veces [000] y una vez [00]'; (C) 'Presionar una vez [1], cuatro veces [00] y dos veces [0]'; (D) 'Presionar una vez [1] y luego dos veces [000] y dos veces [00]'. Se pregunta cuál afirmación describe realmente una forma correcta de obtener un número equivalente a 10^(10).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que todas las afirmaciones pretenden ser descripciones equivalentes a 1 seguido de 10 ceros, y verificar en cada caso si la suma de ceros de la combinación propuesta es 10. Además, debe considerar que el botón [0] agrega solo un cero. Esto obliga a procesar el texto de cada afirmación como una combinación de bloques (1, 2 o 3 ceros) y compararla con el patrón de 10 ceros de 10^(10), no solo a reconocer la opción original de la fuente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "display_equivalence_check"
+    },
+    {
+      "variant_id": "Q13_v16",
+      "scenario_description": "Se muestra una secuencia parcialmente completada en la pantalla de instrucciones: para escribir 10^(10) se decidió usar exactamente 5 pulsaciones de teclas, indicadas como [1], [???], [???], [???], [???], donde cada [???] debe ser reemplazado por [00] o [000]. Se ofrecen cuatro propuestas de cómo rellenar esos cuatro espacios (por ejemplo, Propuesta A: [000], [000], [00], [00]; Propuesta B: [000], [00], [000], [00]; Propuesta C: [000], [000], [000], [00]; Propuesta D: [00], [00], [00], [00]). Se pregunta cuál propuesta de relleno permite que el número resultante sea exactamente 10^(10).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe entender que la primera tecla es [1] y que los cuatro espacios restantes deben sumar, en total, 10 ceros usando bloques de 2 y 3. Debe identificar que cualquier permutación que contenga dos [000] y dos [00] suma 10 ceros (3+3+2+2), mientras que otras combinaciones suman 8, 9 u 11 ceros. Aunque el orden de los [00]/[000] no cambia el número porque todos son ceros, el estudiante debe darse cuenta de que lo relevante es la composición en bloques, no solo leer una secuencia ya hecha.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "keypad_record"
+    },
+    {
+      "variant_id": "Q13_v17",
+      "scenario_description": "Se explica que escribir 10^(8) en la calculadora se puede hacer presionando [1] y luego ocho veces [0]. En cambio, se quiere usar solo los botones [1], [00] y [000] para obtener ese mismo número 10^(8) de forma abreviada. Se ofrecen varias descripciones de acciones posibles, por ejemplo: (A) presionar [1] y luego cuatro veces [00]; (B) presionar [1], una vez [000] y una vez [00]; (C) presionar [1], dos veces [000] y una vez [00]; (D) presionar [1] y tres veces [000]. Se pregunta cuál de estas acciones es equivalente a escribir 10^(8), es decir, genera un 1 seguido de exactamente 8 ceros.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe trasladar la idea general de potencia de 10 a un exponente distinto (8), entender que eso significa 8 ceros, y buscar una combinación de bloques de 2 y 3 ceros que sume exactamente 8. Por ejemplo, comprobar que 4·2 = 8 ceros en la opción con cuatro veces [00], mientras que combinaciones con [000] producen 7, 9 u otros totales. Esto exige comprender el vínculo exponente–cantidad de ceros y aplicarlo a nuevas combinaciones de botones, no repetir mecánicamente la configuración usada para 10^(10).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "display_equivalence_check"
+    }
+  ]
+}

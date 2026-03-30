@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q23_v6",
+  "source_question_id": "Q23",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q23_v6",
+    "scenario_description": "Se entrega una breve nota sobre recaudación tributaria:\n\n«En 2021, la recaudación del impuesto municipal fue de 18 600 millones de pesos, cifra que equivale a un 9 % más que en 2020.»\n\nLa pregunta es: «¿Cuál de las siguientes afirmaciones sobre la recaudación de 2020 es correcta?» Las alternativas son enunciados del tipo:\n- Correcta: “La recaudación de 2020 se obtiene dividiendo 18 600 por 1,09 (o, equivalentemente, calculando 18 600·100/109)”.\n- Distractor 1 (increment_only): “Se obtiene restando el 9 % de 18 600 a 18 600”.\n- Distractor 2 (base_plus_increment): “Se obtiene sumando el 9 % de 18 600 a 18 600”.\n- Distractor 3 (gross_overestimate): “Se obtiene dividiendo 18 600 por 9 y multiplicando por 100”.",
+    "non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "required_reasoning": "El estudiante debe identificar que el 9 % se refiere al aumento de 2020 a 2021, comprender que 18 600 es el 109 % de la recaudación de 2020 y, en consecuencia, justificar que el cálculo correcto invierte ese aumento. Las alternativas erróneas están escritas como procedimientos plausibles, por lo que solo quienes entienden por qué dividir por 1,09 (o multiplicar por 100/109) recupera la base podrán seleccionar la afirmación correcta.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué no convertir la tarea en un cálculo numérico de varios pasos: solo se requiere identificar que 23 940 representa el 108 % del valor de 2020 y escoger el procedimiento que deshace ese aumento, manteniendo la misma lógica de errores porcentuales en los distractores."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-08"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de la cantidad total dado un porcentaje"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "medium",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_support_with_self_containment",
+    "explicit_dataset_policy": "required_or_described",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

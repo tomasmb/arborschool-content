@@ -1,0 +1,120 @@
+{
+  "variant_id": "Q4_v7",
+  "source_question_id": "Q4",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q4_v7",
+    "scenario_description": "Se muestran varios ejemplos numéricos ya resueltos (solo en términos de comparación, no de cálculo exacto), por ejemplo: \"3 · 2/3 es menor que 3\", \"5 · 2/3 es menor que 5\", \"10 · 2/3 es menor que 10\". Luego se incluye el caso \"11/6 · 2/3\" dentro de la misma lista como producto desconocido pero con la misma estructura. A partir de estos ejemplos, se proponen distintas afirmaciones generales que intentan explicar lo que ocurre cuando se multiplica un número positivo por 2/3. La afirmación correcta es del tipo: \"Multiplicar por 2/3 significa quedarse con dos tercios de la cantidad original, por eso en todos los casos (incluido 11/6) el resultado es menor que el número inicial\". Los distractores se centran en regularidades equivocadas, como \"el resultado es menor porque 2 es menor que el número original\" o \"porque el denominador es mayor, entonces siempre se resta\".",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "El estudiante debe extraer de los ejemplos un patrón conceptual: que multiplicar por la misma fracción propia 2/3 reduce cualquier número positivo. Luego debe elegir la explicación que alude correctamente a esa idea de \"quedarse con una parte de\" y descartar patrones superficiales basados en numeradores o en comparaciones accidentales. Se exige entender el porqué del efecto del factor 2/3, no solo leer una desigualdad puntual.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "claim_archetype_switch"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué no convertir la tarea en un cálculo directo ni cambiar el constructo: el estudiante sigue evaluando afirmaciones a partir de un patrón de datos explícitos sobre multiplicar por 2/3, ahora con una explicación conceptual en lugar de una desigualdad aislada."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-01-19"
+    ],
+    "primary_atom_titles": [
+      "Multiplicación de fracciones"
+    ],
+    "family_id": "argumentation_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "claim_archetype_switch",
+        "description": "Mantener la evaluación de afirmaciones, pero cambiar el arquetipo semántico de la afirmación correcta respecto de la fuente.",
+        "required_changes": [
+          "Nuevo arquetipo de afirmación correcta",
+          "Distractores coherentes con el nuevo arquetipo"
+        ],
+        "forbidden_changes": [
+          "Repetir la misma afirmación correcta con números nuevos",
+          "Convertirlo en cálculo directo"
+        ]
+      },
+      {
+        "shape_id": "false_claim_hunt",
+        "description": "Invertir la polaridad local de las opciones para pedir identificar la afirmación incorrecta dentro del mismo conjunto de datos o evidencia.",
+        "required_changes": [
+          "Polaridad local de la pregunta",
+          "Reescritura completa de opciones"
+        ],
+        "forbidden_changes": [
+          "Cambiar el dataset o la evidencia por cálculo puro",
+          "Eliminar la lectura argumentativa"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "ARG",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "claim_evaluation",
+    "operation_signature": "argumentation_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": true,
+    "cognitive_action": "evaluate_claims",
+    "solution_structure": "data_to_claim_check",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "minimum_target",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "explicit_dataset_and_claims",
+    "explicit_dataset_policy": "required",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=claim_evaluation",
+      "operation_signature=argumentation_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_claim_evaluation",
+      "must_include_explicit_dataset",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

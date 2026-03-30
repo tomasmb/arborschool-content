@@ -1,0 +1,121 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q53_v5" title="Probabilidad clásica con bolitas de colores" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se tienen tres cajas que contienen únicamente bolitas verdes y blancas. En cada caja se extraerá al azar una bolita.</p>
+    <p>La composición de cada caja es la siguiente:<br />Caja A: 2 bolitas verdes y 3 bolitas blancas (5 en total).<br />Caja B: 3 bolitas verdes y 3 bolitas blancas (6 en total).<br />Caja C: 4 bolitas verdes y 3 bolitas blancas (7 en total).</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones describe correctamente la probabilidad de sacar una bolita verde?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">En la Caja A, la probabilidad de sacar una bolita verde es 2/3, porque hay 2 bolitas verdes y 3 blancas, y es menor que 0,5.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la Caja A hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>5</mn></mfrac></math> de probabilidad de sacar verde, porque hay 2 bolitas verdes de un total de 5. Además, <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>=</mo><mn>0,4</mn></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>3</mn></mfrac></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En la Caja C, la probabilidad de sacar una bolita verde es 4/7, porque hay 4 bolitas verdes de un total de 7, por lo que es mayor que 0,5 y menor que 1.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En la Caja C hay 4 bolitas verdes de un total de 7, por eso la probabilidad es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac></math>. Además, como <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac><mo>=</mo><mn>0,571428...</mn></math>, se cumple que es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">En la Caja B, la probabilidad de sacar una bolita verde es 3/3, porque hay 3 bolitas verdes y 3 blancas, y es igual a 0,5.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la Caja B hay 3 bolitas verdes de un total de 6, así que la probabilidad correcta es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>6</mn></mfrac><mo>=</mo><mn>0,5</mn></math>. La fracción <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>3</mn></mfrac><mo>=</mo><mn>1</mn></math> no representa esta situación, porque no considera las 6 bolitas totales.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">En ninguna de las cajas la probabilidad de sacar una bolita verde es mayor que 0,5 y menor que 1.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Basta un contraejemplo concreto para refutar la afirmación. En la Caja C, la probabilidad de sacar una bolita verde es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac></math>, y como <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac><mo>=</mo><mn>0,571428...</mn></math>, se cumple que es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar cómo se calcula una probabilidad</strong></p>
+            <p>En una extracción al azar, la probabilidad clásica se calcula como:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mtext>casos favorables</mtext><mtext>casos posibles</mtext></mfrac></math></p>
+            <p>Aquí, los casos favorables son las bolitas verdes y los casos posibles son todas las bolitas de la caja.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la probabilidad en cada caja</strong></p>
+            <p><em>Caja A:</em> hay 2 verdes y 3 blancas, en total 5.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>5</mn></mfrac><mo>=</mo><mn>0,4</mn></math></p>
+            <p><em>Caja B:</em> hay 3 verdes y 3 blancas, en total 6.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>6</mn></mfrac><mo>=</mo><mn>0,5</mn></math></p>
+            <p><em>Caja C:</em> hay 4 verdes y 3 blancas, en total 7.</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac><mo>=</mo><mn>0,571428...</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar con las afirmaciones</strong></p>
+            <p>La opción A es falsa porque en la Caja A la probabilidad correcta es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>5</mn></mfrac></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>3</mn></mfrac></math>.</p>
+            <p>La opción C es falsa porque en la Caja B la probabilidad correcta es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>6</mn></mfrac></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>3</mn></mfrac></math>.</p>
+            <p>La opción D es falsa porque la Caja C entrega un contraejemplo: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac><mo>=</mo><mn>0,571428...</mn></math>, que es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir</strong></p>
+            <p>La afirmación correcta es la de la Caja C: la probabilidad de sacar una bolita verde es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>4</mn><mn>7</mn></mfrac></math>, y este valor está entre <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

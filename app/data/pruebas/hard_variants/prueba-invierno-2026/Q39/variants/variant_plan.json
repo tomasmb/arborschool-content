@@ -1,0 +1,145 @@
+{
+  "source_question_id": "Q39",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q39_v1",
+      "scenario_description": "Se presenta directamente el modelo de la imprenta: “El precio total, en pesos, por empastar una tesis de x páginas está dado por P(x) = 27 000 + 115x”. Luego se ofrecen varias afirmaciones sobre qué significa, en la práctica, el número 27 000 (por ejemplo, que es el cobro fijo independiente de las páginas, o que es el costo por página, etc.), y se pide seleccionar la que describe correctamente la política de cobro de la imprenta. El foco está en interpretar el término independiente como tarifa fija del servicio, no en calcular precios concretos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "La persona debe reconocer que en una función lineal de costos el valor que acompaña a x representa el costo unitario por página y el término sin x es el costo fijo cuando x = 0, descartando interpretaciones que invierten estos roles o confunden el parámetro con un ejemplo numérico particular.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_selection_prompt"
+    },
+    {
+      "variant_id": "Q39_v2",
+      "scenario_description": "Se entrega el modelo tarifario de una aplicación de transporte: “La tarifa total, en pesos, para un viaje de x kilómetros se calcula como T(x) = 1 200x + 800”. Luego se presentan varias descripciones tipo aviso comercial (por ejemplo: “Se cobra $800 por cada kilómetro recorrido, más $1 200 de bajada de bandera”, u otras variantes) y se pide elegir la que podría figurar correctamente en su página web. La afirmación correcta expresa operativamente el rol del 1 200 y del 800 sin repetir la fórmula literal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe entender que el coeficiente de x indica el cobro por cada kilómetro y que el otro parámetro es un cargo fijo inicial, identificando cuál parte de la descripción corresponde a cada número y evitando errores como intercambiarlos o interpretarlos como montos totales en un caso específico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operational_statement"
+    },
+    {
+      "variant_id": "Q39_v3",
+      "scenario_description": "Se entrega una tabla de un servicio de limpieza a domicilio, que muestra el costo total según la cantidad de habitaciones a limpiar:\nHabitaciones (x): 0, 1, 2, 3\nCosto total (pesos): 18 000, 20 500, 23 000, 25 500.\nA partir de estos datos se preguntan cuál de varias funciones lineales C(x) modela el precio total en función del número de habitaciones. Las opciones difieren en qué parámetro se toma como tarifa fija y cuál como costo por habitación.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Primero se debe inferir a partir de la tabla cuál es el incremento constante por cada habitación (pendiente) y cuál es el costo base cuando x = 0 (intercepto), y recién después asociarlos correctamente con los parámetros de la función, evitando errores de sumar los parámetros, multiplicarlos por x incorrectamente o confundir el valor inicial con uno de los datos intermedios.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operational_statement"
+    },
+    {
+      "variant_id": "Q39_v4",
+      "scenario_description": "Se da la función de cobro de un plan de telefonía: “La cuenta mensual, en pesos, según los minutos extra usados m, se calcula con B(m) = 3 000 + 40m”. Luego se ofrecen afirmaciones sobre el significado del número 3 000 (por ejemplo, que es el cobro mínimo aunque no se usen minutos extra, que es el costo por cada minuto, etc.) y se pide elegir la que interpreta correctamente este parámetro en el contexto del plan.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe comprender que el 3 000 corresponde al cargo fijo mensual que se paga incluso si m = 0, distinguiéndolo del término 40m que representa lo que se adiciona por cada minuto extra. No basta reconocer la fórmula; se requiere conectar cada número con su rol práctico en la factura.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_selection_prompt"
+    },
+    {
+      "variant_id": "Q39_v5",
+      "scenario_description": "Se muestra, en formato de lista o pequeña tabla textual, la información de un gimnasio: “Clases tomadas en el mes (x): 0, 1, 2. Pago total (pesos): 20 000, 21 500, 23 000”. Se pregunta cuál de las funciones propuestas G(x) modela el monto mensual que debe pagar una persona que toma x clases, incluyendo una tarifa fija de inscripción más un costo por clase. Las alternativas incluyen estructuras del tipo ax + b con intercambio o ausencia incorrecta de la tarifa fija.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe deducir que el valor para x = 0 da la tarifa fija y que la diferencia entre pagos consecutivos corresponde al costo por clase, identificando luego la función que usa esos valores en las posiciones correctas de pendiente e intercepto. Esto obliga a interpretar la estructura del modelo lineal, no sólo a copiar números desde el enunciado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operational_statement"
+    },
+    {
+      "variant_id": "Q39_v6",
+      "scenario_description": "Una empresa de envíos registra que siempre cobra $800 por cada kilogramo enviado y, además, una tarifa fija por envío. En un caso anotado en su sistema, un paquete de 10 kg costó $23 000 en total. Se plantean varias expresiones lineales posibles para el costo E(x) en función del peso x, por ejemplo E(x) = 800x + 15 000, E(x) = 800x + 8 000, etc., y se pide seleccionar la que corresponde a la política de cobro descrita y al caso registrado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe interpretar que el 800 es la tasa por kilogramo (parámetro de pendiente) y que el otro parámetro debe representar la parte fija, que se determina restando al cobro total la parte variable (23 000 − 800·10). Sin comprender la descomposición en componente fijo y variable del modelo, no es posible identificar correctamente el término independiente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operational_statement"
+    },
+    {
+      "variant_id": "Q39_v7",
+      "scenario_description": "Se presenta la función de arriendo de una sala de eventos: “El precio total, en pesos, por arrendar la sala durante x horas está dado por R(x) = 45 000 + 12 000x”. Luego se listan varias afirmaciones sobre cómo cobra la sala (por ejemplo, que siempre se pagan $45 000 aunque no se use ninguna hora, que se pagan $12 000 sin importar las horas, etc.) y se pide escoger la que describe correctamente el papel de cada parámetro en la política de cobro.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Debe identificarse que 12 000 es el costo por cada hora adicional y que 45 000 es el monto que se paga por el solo hecho de reservar, incluso si x = 0. Se requiere enlazar el significado práctico de un arriendo por horas con la forma ax + b y con el valor de la función en x = 0.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_selection_prompt"
+    },
+    {
+      "variant_id": "Q39_v8",
+      "scenario_description": "Se describen dos servicios de impresión de afiches, A y B, con sus modelos: A(x) = 900x + 20 000 y B(x) = 1 200x + 15 000, donde x es el número de afiches. Luego se pregunta, específicamente para el servicio A, cuál afirmación sobre su estructura de costos es correcta (por ejemplo, sobre cuál es su tarifa fija y cuál es el costo por afiche), ignorando la comparación numérica con B. Las opciones reflejan diferentes interpretaciones de los parámetros de A.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "La persona debe centrarse en la función A(x) e interpretar que el 900 es el precio por afiche y que 20 000 es un cobro independiente de x, rechazando opciones que mezclan información de B o que invierten el rol de los parámetros. No hay cálculo extenso, pero sí lectura cuidadosa del modelo lineal y del contexto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_selection_prompt"
+    },
+    {
+      "variant_id": "Q39_v9",
+      "scenario_description": "Se muestra un desglose textual de una boleta de estacionamiento: “Cobro por tiempo: $2 500 por cada hora de uso. Cargo único de ingreso: $1 800. Total a pagar: depende de las horas utilizadas”. A partir de este desglose se propone seleccionar, entre varias opciones, la función lineal T(h) que modela el total, en pesos, a pagar por h horas de estacionamiento. Las alternativas incluyen combinaciones incorrectas que tratan el cargo fijo como dependiente de h, o que suman indebidamente los parámetros dentro de un solo coeficiente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se debe reconocer que el detalle de la boleta ya separa claramente el componente fijo (1 800) del componente proporcional al tiempo (2 500h), y trasladar esa estructura a la expresión T(h) = 2 500h + 1 800. Esto exige entender por qué uno de los montos se multiplica por la variable y el otro no, en lugar de seguir una receta mecánica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operational_statement"
+    },
+    {
+      "variant_id": "Q39_v10",
+      "scenario_description": "Se presenta el modelo de costo de una gira de estudios: “El costo total, en pesos, en función del número de estudiantes a, se calcula como G(a) = 250 000 + 10 000a”. Luego se listan afirmaciones sobre el significado del 250 000 y del 10 000 (por ejemplo, que 250 000 es el monto que se paga al transporte aunque no vaya ningún estudiante, y que 10 000 es el costo por cada estudiante). Se pide elegir la afirmación que describe correctamente la estructura de costos de la gira.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe identificar que 250 000 representa un costo fijo (arriendo del bus, guía, etc.) independiente de a y que 10 000 es un costo que se suma por cada estudiante. Esto requiere comprender la interpretación de los parámetros de una función lineal en un contexto real y no sólo reconocer la forma algebraica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_selection_prompt"
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q26_v5" title="Q26_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una bolsa de abono concentrado se incluye la siguiente nota de uso:<br />
+    Abono concentrado: 0,04 g/kg de sustrato.<br />
+    Maceta grande: contiene 120 kg de sustrato.</p>
+    <p>Según esta indicación, ¿qué cantidad de abono, en gramos, debe mezclarse con el sustrato de la maceta grande?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">480 g<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La indicación es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn><mo>=</mo><mn>4,8</mn></math> gramos de abono. Por lo tanto, la cantidad correcta no es 480 g, sino 4,8 g.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">4,8 g<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La cantidad de abono se calcula multiplicando la dosis por la cantidad de sustrato: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn><mo>=</mo><mn>4,8</mn></math>. Por lo tanto, deben mezclarse 4,8 g de abono.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3000 g<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La indicación es 0,04 g por cada kilogramo de sustrato, así que para 120 kg corresponde calcular <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn><mo>=</mo><mn>4,8</mn></math> gramos. Entonces, 3000 g no satisface la indicación del envase.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">4800 g<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aplicando la dosis indicada, se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn><mo>=</mo><mn>4,8</mn></math> gramos. Por lo tanto, 4800 g es una cantidad mucho mayor que la que indica el problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los datos del problema</strong></p>
+            <p>La dosis indicada es 0,04 g de abono por cada 1 kg de sustrato.</p>
+            <p>La maceta grande contiene 120 kg de sustrato.</p>
+          </li>
+          <li>
+            <p><strong>Plantear el cálculo</strong></p>
+            <p>Para saber cuántos gramos de abono se necesitan, se multiplica la dosis por la cantidad de sustrato:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Realizar la multiplicación</strong></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,04</mn><mo>&#xD7;</mo><mn>120</mn><mo>=</mo><mn>4,8</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Concluir</strong></p>
+            <p>La cantidad de abono que debe mezclarse con el sustrato de la maceta grande es <strong>4,8 g</strong>.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

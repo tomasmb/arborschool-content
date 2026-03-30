@@ -29,10 +29,12 @@ from app.question_variants.models import (
     VariantQuestion,
 )
 from app.question_variants.pipeline_helpers import (
+    apply_variant_id_offsets,
     apply_verdicts,
     blueprint_to_dict,
     build_source_contract,
     dedup_variant,
+    lenient_apply_verdicts,
     load_json,
     load_state,
     load_variants_json,
@@ -152,7 +154,9 @@ class SyncVariantPipeline:
                     rejected.append(variant)
                     continue
 
-            dup_ok, dup_reason = dedup_variant(variant, approved)
+            dup_ok, dup_reason = dedup_variant(
+                variant, approved, self.config.dedup_threshold,
+            )
             if not dup_ok:
                 report.total_rejected += 1
                 report.rejection_reasons.append(dup_reason)
@@ -304,6 +308,7 @@ class BatchVariantPipeline:
 
         sm = {source_key(s): s for s in sources}
         bps = process_plan_responses(resps, sm)
+        apply_variant_id_offsets(bps, self.config.variant_id_offset)
         for s in sources:
             k = source_key(s)
             save_source_snapshot(self.config.output_dir, s)
@@ -340,13 +345,17 @@ class BatchVariantPipeline:
             print("✅ Phase 2 (Generate) -- resuming from checkpoint")
             return load_variants_json(job_dir / "raw_variants.json")
 
+        gen_reasoning = self.config.generation_reasoning_effort
         reqs = []
         for key, blueprints in bps.items():
             src = sources_map.get(key)
             if not src:
                 continue
             for bp in blueprints:
-                reqs.append(build_generation_request(src, bp, model))
+                reqs.append(build_generation_request(
+                    src, bp, model,
+                    reasoning_effort=gen_reasoning,
+                ))
 
         print(f"\n🔷 Phase 2: Generating {len(reqs)} variants...")
         resps = self._submit_and_wait(
@@ -428,21 +437,29 @@ class BatchVariantPipeline:
         state["phase_4_validate"] = "completed"
         save_state(job_dir, state)
 
-        approved, rejected = apply_verdicts(variants, verdicts)
+        if self.config.lenient:
+            approved, rejected = lenient_apply_verdicts(
+                variants, verdicts,
+            )
+        else:
+            approved, rejected = apply_verdicts(variants, verdicts)
 
         final: list[VariantQuestion] = []
         by_src: dict[str, list[VariantQuestion]] = {}
         for v in approved:
             by_src.setdefault(v.source_question_id, []).append(v)
-        for group in by_src.values():
-            deduped: list[VariantQuestion] = []
+        for q_id, group in by_src.items():
+            prior = self.config.prior_approved.get(q_id, [])
+            deduped: list[VariantQuestion] = list(prior)
             for v in group:
-                ok, _ = dedup_variant(v, deduped)
+                ok, _ = dedup_variant(
+                    v, deduped, self.config.dedup_threshold,
+                )
                 if ok:
                     deduped.append(v)
                 else:
                     rejected.append(v)
-            final.extend(deduped)
+            final.extend(deduped[len(prior):])
 
         print(
             f"✅ Phase 4: {len(final)} approved, "

@@ -1,0 +1,118 @@
+{
+  "variant_id": "Q54_v3",
+  "source_question_id": "Q54",
+  "source_test_id": "seleccion-regular-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q54_v3",
+    "scenario_description": "En lugar de edades, se describe en forma de lista la cantidad de horas semanales de actividad física de los trabajadores: 'Entre 0 y 2 horas: 6 trabajadores; entre 3 y 5 horas: 9; entre 6 y 8 horas: 7; 9 horas o más: 4'. La empresa dará un incentivo a quienes realizan a lo más 5 horas semanales de actividad física. Se pregunta por la mayor cantidad de trabajadores que podría recibir el incentivo. Los estudiantes deben identificar correctamente qué rangos satisfacen 'a lo más 5 horas' y luego combinar sus cantidades.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "Requiere traducir 'a lo más 5 horas' al símbolo ≤5 y mapearlo sobre los rangos verbales de la lista, sin apoyo de una tabla con cabeceras. Debe reconocerse que los tramos 0–2 y 3–5 cumplen la condición completa y que los restantes no, para luego sumar esos dos conteos. La comprensión de la relación entre la desigualdad verbal y los límites de los intervalos es clave; un tratamiento mecánico (como sumar los dos primeros por ser los más pequeños) sin justificar la condición llevaría a errores en otros contextos.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "standard_variant_1"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea siga siendo una lectura de una única distribución (ahora en lista textual) para identificar qué intervalos cumplen una condición de límite superior (≤5 horas) y sumar sus frecuencias, sin introducir más series, porcentajes ni pasos de cálculo adicionales."
+  },
+  "generator_declared_correct_identifier": "D",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "maximum_target",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence"
+    ]
+  },
+  "postprocess_summary": {}
+}

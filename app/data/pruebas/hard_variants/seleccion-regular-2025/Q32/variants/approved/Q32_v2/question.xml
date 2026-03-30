@@ -1,0 +1,172 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q32_v2" title="Q32_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>La figura adjunta corresponde a una <strong>pirámide numérica</strong>. En esta representación, el número en cada casilla blanca corresponde a la suma de las dos casillas inmediatamente superiores.</p>
+    <p>En la pirámide, en el nivel superior hay dos casillas con los números 6 y <m:math><m:mi>x</m:mi></m:math>. Justo debajo de ellas hay una casilla con el número 20, y debajo de esta, una casilla con el número <m:math><m:mi>p</m:mi></m:math>. Es decir, la casilla con 20 se obtiene como <m:math><m:mn>6</m:mn><m:mo>+</m:mo><m:mi>x</m:mi></m:math> y la casilla con <m:math><m:mi>p</m:mi></m:math> se obtiene como <m:math><m:mn>20</m:mn><m:mo>+</m:mo><m:mi>x</m:mi></m:math>.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujar una pirámide de tres niveles formada por casillas hexagonales blancas. En el nivel superior, dos hexágonos alineados horizontalmente: el de la izquierda con el número 6 y el de la derecha con la letra x. Debajo de ellos, centrado, un hexágono con el número 20, alineado de modo que se vea que está inmediatamente debajo de los hexágonos de 6 y x, indicando que 6 + x = 20. En el nivel inferior, alineado bajo el hexágono con 20, otro hexágono con la letra p, y conectado visualmente de manera que se entienda que p es la suma de las dos casillas superiores inmediatas, que son las que contienen 20 y x, es decir, 20 + x = p. A un lado de esta pirámide, incluir un pequeño recuadro de ejemplo: dos hexágonos en la parte superior con los números 1 y 3, y un hexágono debajo con el número 4, con una flecha o anotación que indique 1 + 3 = 4, para ilustrar la regla de que cada casilla es la suma de las dos inmediatamente superiores." />
+    </p>
+    <p><strong>Ejemplo</strong>: En el recuadro de ejemplo, se muestra que si las casillas superiores tienen 1 y 3, la casilla inferior tiene 4, porque <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:math>.</p>
+    <p>¿Cuál de las siguientes expresiones representa a <m:math><m:mi>x</m:mi></m:math> en términos de <m:math><m:mi>p</m:mi></m:math>?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Selecciona la alternativa correcta.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. De la pirámide se obtiene primero 6 + x = 20, por lo tanto x = 14. Además, p = 20 + x. Si despejamos x en esta última igualdad, resulta x = p − 20, no p − 14.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>p</m:mi><m:mo>-</m:mo><m:mn>20</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Como p = 20 + x, al restar 20 en ambos lados se obtiene x = p − 20. Esa expresión representa exactamente a x en términos de p.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>p</m:mi><m:mo>+</m:mo><m:mn>20</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. De p = 20 + x, para dejar sola a x hay que restar 20 en ambos lados, no sumar 20. Así se obtiene x = p − 20. Por eso p + 20 no representa a x.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mn>20</m:mn><m:mo>-</m:mo><m:mi>p</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Desde p = 20 + x, al restar 20 en ambos lados queda p − 20 = x. El orden de la resta importa: 20 − p es el opuesto de p − 20, por lo que no corresponde a x.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Usar la regla de la pirámide</strong></p>
+            <p>Cada casilla blanca es la suma de las dos casillas inmediatamente superiores.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir la relación que forma el 20</strong></p>
+            <p>Según el enunciado, la casilla con 20 se obtiene sumando 6 y <m:math><m:mi>x</m:mi></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mn>6</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>20</m:mn>
+              </m:math>
+            </p>
+            <p>Si despejamos, resulta:</p>
+            <p>
+              <m:math>
+                <m:mi>x</m:mi><m:mo>=</m:mo><m:mn>20</m:mn><m:mo>-</m:mo><m:mn>6</m:mn><m:mo>=</m:mo><m:mn>14</m:mn>
+              </m:math>
+            </p>
+            <p>Esto confirma el valor numérico de <m:math><m:mi>x</m:mi></m:math>, pero la pregunta pide escribir <m:math><m:mi>x</m:mi></m:math> en función de <m:math><m:mi>p</m:mi></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la relación que forma a <m:math><m:mi>p</m:mi></m:math></strong></p>
+            <p>La casilla con <m:math><m:mi>p</m:mi></m:math> se obtiene sumando 20 y <m:math><m:mi>x</m:mi></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mi>p</m:mi><m:mo>=</m:mo><m:mn>20</m:mn><m:mo>+</m:mo><m:mi>x</m:mi>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Despejar <m:math><m:mi>x</m:mi></m:math> en términos de <m:math><m:mi>p</m:mi></m:math></strong></p>
+            <p>Restamos 20 en ambos lados:</p>
+            <p>
+              <m:math>
+                <m:mi>p</m:mi><m:mo>-</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mi>x</m:mi>
+              </m:math>
+            </p>
+            <p>Equivalentemente,</p>
+            <p>
+              <m:math>
+                <m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>20</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión que representa a <m:math><m:mi>x</m:mi></m:math> en términos de <m:math><m:mi>p</m:mi></m:math> es:</p>
+            <p>
+              <m:math>
+                <m:mi>p</m:mi><m:mo>-</m:mo><m:mn>20</m:mn>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

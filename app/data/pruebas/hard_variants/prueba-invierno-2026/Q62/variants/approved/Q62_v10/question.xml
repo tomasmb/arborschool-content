@@ -1,0 +1,275 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v10" title="Q62_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un taller de verano, los estudiantes se inscriben en distintas actividades y en uno de dos turnos. La siguiente tabla muestra la cantidad de estudiantes según la actividad elegida y el turno.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Actividad</th>
+            <th>Mañana</th>
+            <th>Tarde</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Natación</td>
+            <td>10</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Ajedrez</td>
+            <td>5</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>Robótica</td>
+            <td>8</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Dibujo</td>
+            <td>3</td>
+            <td>9</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Si se selecciona al azar a un estudiante del taller, 
+        
+        ¿cuál es la probabilidad de que esté inscrito en Robótica en el turno de mañana?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mfrac>
+              <m:mn>8</m:mn>
+              <m:mn>26</m:mn>
+            </m:mfrac>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En Robótica durante la mañana hay <strong>8</strong> estudiantes, pero el total del taller es <strong>52</strong>, porque <strong>10 + 7 + 5 + 6 + 8 + 4 + 3 + 9 = 52</strong>. Por lo tanto, la probabilidad pedida es <strong>8/52</strong>, no <strong>8/26</strong>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mfrac>
+              <m:mn>8</m:mn>
+              <m:mn>52</m:mn>
+            </m:mfrac>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En Robótica en el turno de mañana hay <strong>8</strong> estudiantes. El total de estudiantes del taller es <strong>10 + 7 + 5 + 6 + 8 + 4 + 3 + 9 = 52</strong>. Entonces, la probabilidad es <strong>8/52</strong>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mfrac>
+              <m:mn>8</m:mn>
+              <m:mn>12</m:mn>
+            </m:mfrac>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El número <strong>12</strong> corresponde al total de estudiantes de Robótica, porque <strong>8 + 4 = 12</strong>, pero el problema pide la probabilidad al elegir un estudiante de <strong>todo el taller</strong>. El total correcto es <strong>52</strong>, así que la probabilidad es <strong>8/52</strong>, no <strong>8/12</strong>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mfrac>
+              <m:mn>12</m:mn>
+              <m:mn>52</m:mn>
+            </m:mfrac>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El denominador <strong>52</strong> sí es el total del taller, pero el numerador debe contar solo a quienes están en <strong>Robótica en la mañana</strong>, y ese número es <strong>8</strong>. El <strong>12</strong> corresponde al total de Robótica en ambos turnos, porque <strong>8 + 4 = 12</strong>. Por eso la probabilidad correcta es <strong>8/52</strong>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el caso favorable</strong></p>
+            <p>El problema pide la probabilidad de elegir a un estudiante que esté inscrito en <strong>Robótica en el turno de mañana</strong>.</p>
+            <p>Según la tabla, en Robótica durante la mañana hay <strong>8</strong> estudiantes.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el total de estudiantes del taller</strong></p>
+            <p>Se deben sumar todos los estudiantes de la tabla:</p>
+            <p>Natación:
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>7</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>17</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Ajedrez:
+              <m:math>
+                <m:mrow>
+                  <m:mn>5</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>6</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>11</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Robótica:
+              <m:math>
+                <m:mrow>
+                  <m:mn>8</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Dibujo:
+              <m:math>
+                <m:mrow>
+                  <m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>9</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces, el total es:
+              <m:math>
+                <m:mrow>
+                  <m:mn>17</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>11</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>52</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la fórmula de probabilidad</strong></p>
+            <p>La probabilidad es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>(</m:mo>
+                  <m:mtext>Robótica en la mañana</m:mtext>
+                  <m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>8</m:mn>
+                    <m:mn>52</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de seleccionar al azar a un estudiante inscrito en Robótica en el turno de mañana es
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:mn>8</m:mn>
+                    <m:mn>52</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>.
+              Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

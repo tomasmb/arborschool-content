@@ -1,0 +1,117 @@
+{
+  "variant_id": "Q62_v2",
+  "source_question_id": "Q62",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q62_v2",
+    "scenario_description": "Se describe un depósito con 18 pilas, de las cuales 4 están descargadas y 14 cargadas. Se muestra una pequeña tabla de tres filas: 'Estado inicial', 'Después de la primera extracción', 'Después de la segunda extracción'. El enunciado indica que un técnico primero selecciona y desecha una pila descargada y luego, en una segunda revisión, vuelve a seleccionar y desechar otra pila que también está descargada (DD). Solo la primera fila de la tabla está completa; las otras dos quedan en blanco para que el estudiante razone mentalmente la composición. A continuación se formula una pregunta del tipo: \"Entre las siguientes fracciones, ¿cuál representa correctamente la probabilidad de que la próxima pila que se tome al azar esté descargada?\". Las opciones incluyen fracciones que usan el total inicial (4/18), el total actualizado pero con numerador sin actualizar (4/16), y la fracción correcta con espacio muestral reducido dos veces. El foco está en distinguir correctamente entre el total inicial y el total condicionado tras las extracciones sin reposición.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "Fuerza a reconstruir mentalmente la cantidad de pilas descargadas y el total tras dos extracciones específicas (las dos descargadas salen del sistema) y luego identificar cuál de las fracciones propuestas refleja ese estado final; no basta con aplicar un algoritmo, hay que comprender qué significan numerador y denominador en cada afirmación.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "conditional_claim_check"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué no convertir la situación en una probabilidad simple independiente ni introducir combinatoria adicional; la dependencia se mantiene al exigir razonar sobre el espacio muestral reducido tras dos extracciones sin reposición."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-10"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de probabilidad condicional por reducción del espacio muestral"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "dependent_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

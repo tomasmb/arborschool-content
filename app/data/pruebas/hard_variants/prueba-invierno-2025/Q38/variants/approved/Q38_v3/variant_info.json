@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q38_v3",
+  "source_question_id": "Q38",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q38_v3",
+    "scenario_description": "Se entrega un gráfico de barras que muestra la cantidad de agua que QUEDA en un estanque al inicio del día y luego de cada uno de tres riegos (Riego 1 por la mañana, Riego 2 al mediodía y Riego 3 por la tarde). Las barras descienden en altura de manera no uniforme. La pregunta ofrece cuatro afirmaciones sobre la CANTIDAD DE AGUA UTILIZADA en cada riego (por ejemplo, 'en el Riego 1 se usó más agua que en el Riego 2', 'en el Riego 2 y 3 se usó la misma cantidad', etc.) y se pide escoger la que es consistente con las alturas del gráfico.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe comprender que el gráfico entrega la cantidad restante, no la consumida, y que el agua usada en cada riego corresponde a la diferencia visual entre barras consecutivas. Debe comparar esas diferencias sin recurrir a cálculos numéricos exactos, interpretando longitudes y evitando el error de comparar solo las alturas absolutas de las barras finales.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Gráfico de barras verticales con cuatro barras: 'Inicio', 'Después del riego 1', 'Después del riego 2', 'Después del riego 3'. Las alturas se eligen de modo que el descenso entre 'Inicio' y 'Riego 1' sea grande, entre 'Riego 1' y 'Riego 2' pequeño, y entre 'Riego 2' y 'Riego 3' intermedio. No se rotulan valores numéricos, solo una escala indicativa en el eje vertical.",
+    "selected_shape_id": "single_series_visual_claim"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la respuesta solo puede obtenerse interpretando visualmente el gráfico de barras (comparando descensos entre barras consecutivas) y no a partir de una lista explícita de datos ni de cálculos numéricos directos."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-08"
+    ],
+    "primary_atom_titles": [
+      "Interpretación de información en gráficos de línea"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.6,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "representation_primary",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "mixed_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

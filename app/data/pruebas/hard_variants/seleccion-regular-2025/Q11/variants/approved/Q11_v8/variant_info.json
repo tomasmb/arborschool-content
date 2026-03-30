@@ -1,0 +1,120 @@
+{
+  "variant_id": "Q11_v8",
+  "source_question_id": "Q11",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q11_v8",
+    "scenario_description": "Se plantea: \"En un teléfono, las fotos ocupan 6 GB, lo que corresponde al 15 % de la capacidad total de memoria del dispositivo\". En vez de preguntar directamente la capacidad, se dan afirmaciones como:\n\nA. \"La memoria total del teléfono es de 0,9 GB\".\nB. \"La memoria total del teléfono es de 6,9 GB\".\nC. \"La memoria total del teléfono es de 40 GB\".\nD. \"La memoria total del teléfono es de 90 GB\".\n\nSe pide: \"¿Cuál afirmación es coherente con lo indicado sobre la memoria del teléfono?\".\n\nLos distractores mantienen la lógica: usar el 15 % de 6 (increment_only), sumar 6 con ese falso incremento o con 15 (base_plus_increment), y multiplicar 6 por 15 (gross_overestimate). Solo una afirmación coincide con la capacidad cuyo 15 % son 6 GB.",
+    "non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "required_reasoning": "Para responder, se debe comprender que 6 GB representan el 15 % del total y que el total es la cantidad cuyo 15 % es 6; esto obliga a razonar sobre cómo se invierte el porcentaje antes de verificar qué afirmación refleja correctamente ese total.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué no transformar el problema en uno de varios pasos ni cambiar el tipo de cálculo porcentual: sigue siendo encontrar la cantidad total conociendo una parte y el porcentaje que representa."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-08"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de la cantidad total dado un porcentaje"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "small",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

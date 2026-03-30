@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q31",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q31_v1",
+      "scenario_description": "Se cambia el contexto a transporte urbano: un taxi cobra $2 000 por cada tramo de 4 km recorridos. Para un trayecto de x km, el costo variable se modela con C = (2000x/4). Además, siempre se cobra un recargo fijo de $1 000 por tomar el taxi. Un pasajero paga en total $4 500. Se pregunta cuántos kilómetros recorrió. La estructura algebraica es la misma que en la fuente: (tasa por 4 unidades)*x/4 + término fijo = total, y se resuelve una ecuación lineal en x. Las alternativas incluirán errores típicos: usar 4500/500 (ignorando el recargo fijo), sumar el recargo en vez de restarlo, o un error de división.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que el costo total se descompone en parte fija y parte proporcional al recorrido, plantear (2000x/4) + 1000 = 4500 y aislar x, diferenciando explícitamente el rol del recargo en la ecuación, no solo reemplazar datos mecánicamente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q31_v2",
+      "scenario_description": "Contexto de telefonía móvil: en un plan, por cada bloque de 4 GB adicionales se cobra $1 800. El cobro por x GB adicionales se modela con C = (1800x/4). Además del cobro por datos extra, hay un cargo fijo mensual de $900. Una boleta muestra un total de $4 050. Se pregunta cuántos GB adicionales usó el cliente. El enunciado presenta la información en viñetas (cargo fijo, costo por bloque de 4 GB, total cobrado) y luego da la fórmula, obligando a integrar ambas partes. La ecuación resultante tiene exactamente la misma forma lineal que en la fuente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe identificar que el total incluye el plan base y el consumo adicional, traducir eso en (1800x/4) + 900 = 4050 y resolver la ecuación, entendiendo la diferencia entre lo fijo y lo proporcional; no basta con 'aplicar la fórmula' sin interpretar qué representa cada término.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q31_v3",
+      "scenario_description": "Se conserva el contexto de colación, pero se invierte la incógnita: la etiqueta indica que 4 galletas aportan 180 kcal y se usa K = (180x/4). Una persona come 6 galletas de este tipo junto a un vaso de jugo de J kilocalorías, ingiriendo en total 405 kilocalorías. Se pregunta cuántas kilocalorías aporta el jugo. Ahora x es un dato y la incógnita es el término fijo J en la ecuación (180·6/4) + J = 405. Misma estructura lineal, pero el despeje recae sobre el parámetro fijo, no sobre la cantidad de galletas.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender qué parte del total corresponde a las galletas, calcular esas calorías usando la expresión (180·6/4) y luego aislar J en la ecuación (180·6/4) + J = 405, en lugar de buscar directamente x; esto exige entender la función de cada término en el modelo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q31_v4",
+      "scenario_description": "Nuevo contexto de pintura: con cierta pintura, 4 litros cubren 180 m², y el área cubierta con x litros se modela como A = (180x/4). Una pared ya tenía una parte pintada antes de usar esta pintura. Luego de aplicar 7 litros de esta pintura, el área total pintada es de 405 m². Se pregunta cuántos metros cuadrados había pintados al comienzo. La ecuación es (180·7/4) + A0 = 405, donde la incógnita A0 es el término fijo. El tipo de ecuación lineal y el cociente por 4 unidades se mantienen.",
+      "non_mechanizable_axes": [
+        "contexto",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que el área total es la suma de un área inicial fija y un área proporcional a los litros usados, y por tanto debe plantear y resolver (180·7/4) + A0 = 405, interpretando A0 como área inicial y no como otro tipo de cantidad derivada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q31_v5",
+      "scenario_description": "Contexto de galletas pero con fórmula paramétrica: se sabe que 4 galletas de una nueva marca aportan C kilocalorías en total, y que las calorías al comer x galletas se calculan con K = (Cx/4). Una persona come 7 galletas junto a un vaso de jugo que contiene 90 kilocalorías, sumando un total de 405 kilocalorías. Se pregunta cuántas kilocalorías C aportan 4 galletas de esta marca. La ecuación a resolver es (C·7/4) + 90 = 405, que sigue siendo una ecuación lineal de cociente, pero ahora la incógnita es el parámetro C en lugar de la cantidad de galletas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe entender que C representa las calorías del paquete de 4 galletas y que aparece como coeficiente en la ecuación, por lo que debe aislar C en (C·7/4) + 90 = 405, no tratarlo como un valor a sustituir arbitrariamente; esto exige manejar el despeje de un coeficiente en una relación lineal.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q31_v6",
+      "scenario_description": "Mismo contexto de galletas y jugo, con fórmula K = (180x/4). Se muestra la resolución de un estudiante:\n1) Plantea: (180x/4) + 90 = 405\n2) Escribe: 180x/4 = 495\n3) Multiplica: 180x = 1 980\n4) Divide: x = 11\nSe pregunta en cuál de los pasos (1, 2, 3 o 4) comete el error. El error conceptual es sumar 90 en lugar de restarlo al pasar de la ecuación del paso 1 al paso 2. Las alternativas nombran explícitamente los pasos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe comprender el procedimiento correcto de resolución de la ecuación lineal y detectar que al despejar 180x/4 desde (180x/4) + 90 = 405 se debe restar 90, no sumar; es decir, debe razonar sobre el sentido de las operaciones en cada paso, no solo llegar al valor de x.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q31_v7",
+      "scenario_description": "Contexto de tarifa de internet: 4 horas extra de conexión cuestan $1 800 y el costo por x horas extra se modela con C = (1800x/4). Además, hay un cargo fijo de $900. Un estudiante quiere saber cuántas horas extra usó si la cuenta total fue $4 050 y resuelve así:\n1) (1800x/4) + 900 = 4050\n2) 1800x/4 = 4050 - 900\n3) 1800x/4 = 3150\n4) 1800x = 3150\n5) x = 1,75\nSe pide identificar cuál es el error principal en estos pasos, mediante alternativas del tipo: \"En el paso 4, al eliminar el denominador 4, no multiplica correctamente ambos lados\", etc. El error propuesto está en la transición 3→4 (no multiplica por 4 el lado derecho).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe revisar la cadena de equivalencias y analizar cómo se elimina el denominador, reconociendo que al pasar de 1800x/4 = 3150 a 1800x = 12600; de lo contrario, identificará erróneamente otro paso como incorrecto. Esto exige entender la regla de multiplicar ambos miembros por 4, no solo aplicar fórmulas de memoria.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q31_v8",
+      "scenario_description": "Contexto de juego en línea: por cada paquete de 4 misiones completadas se obtienen 180 puntos, y los puntos por x misiones se modelan con P = (180x/4). Además, el jugador recibe un bono fijo de 90 puntos por iniciar sesión. Un estudiante intenta averiguar cuántas misiones completó un jugador que terminó con 405 puntos y plantea y resuelve así:\n1) 180x/4 = 405\n2) 180x = 1620\n3) x = 9\nSe pregunta cuál es la mejor descripción del error cometido, con alternativas como: \"Olvida considerar el bono fijo de 90 puntos\", \"Divide mal 405 entre 4\", etc. El error es dejar fuera el término fijo en la ecuación inicial.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe entender que el total de puntos proviene de una parte fija y una parte proporcional a x, y reconocer que la ecuación correcta es (180x/4) + 90 = 405; debe identificar la omisión del bono fijo como error conceptual, no un fallo de cálculo, lo que requiere comprender el modelo lineal subyacente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q31_v9",
+      "scenario_description": "Contexto de ejercicio físico: una rutina indica que realizar 4 series de un ejercicio quema 180 kilocalorías en total. Las kilocalorías quemadas al hacer x series se modelan con Q = (180x/4). Antes de la rutina, la persona ya había quemado 90 kilocalorías caminando. Al finalizar el día, ha quemado en total 405 kilocalorías. Se pregunta cuántas series del ejercicio realizó. El dato adicional (90 kcal previas) ahora corresponde a un esfuerzo anterior, no a un acompañamiento simultáneo, pero en la ecuación sigue siendo un término fijo sumado al aporte proporcional de las series.",
+      "non_mechanizable_axes": [
+        "contexto",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que las 405 kilocalorías incluyen lo quemado antes y lo de la rutina, por lo que debe modelar la situación mediante (180x/4) + 90 = 405 y resolverla, distinguiendo semánticamente entre 'antes' y 'durante' sin cambiar la estructura lineal.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q31_v10",
+      "scenario_description": "Contexto de snacks distintos: una barra de cereal viene en porciones de 4 cuadritos que en conjunto aportan 180 kilocalorías, y las kilocalorías al comer x cuadritos se calculan con B = (180x/4). Una persona además toma un café que aporta 90 kilocalorías y se sabe que en total ingiere 405 kilocalorías. Se proponen cuatro posibles cantidades de cuadritos consumidos (por ejemplo, 2, 7, 9 y 11) y se pregunta cuál de ellas hace verdadera la igualdad (180x/4) + 90 = 405. El estudiante debe usar la fórmula y probar mentalmente las alternativas hasta encontrar la que satisface la ecuación.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "En lugar de resolver algorítmicamente la ecuación, el estudiante debe comprender el modelo B = (180x/4) y el rol del café como término fijo, para luego evaluar las opciones sustituyendo x y verificando qué valor hace que (180x/4) + 90 sea 405, lo que requiere entender la estructura de la relación lineal más allá de un procedimiento mecánico único.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    }
+  ]
+}

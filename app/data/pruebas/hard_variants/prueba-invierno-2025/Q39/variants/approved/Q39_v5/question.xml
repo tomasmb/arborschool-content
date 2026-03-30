@@ -1,0 +1,169 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q39_v5" title="Q39_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una ficha de servicio de la empresa de aseo a domicilio LimpiaCasa se registra el siguiente desglose de tarifas para sus clientes: visita inicial por un valor de $<m:math><m:mn>12&#160;000</m:mn></m:math> y un cobro de $<m:math><m:mn>20&#160;000</m:mn></m:math> por cada hora de limpieza realizada.</p>
+    <p>En la misma ficha se anota que la empresa BrillaMás ofrece la visita con un 30 % de descuento respecto de LimpiaCasa y cobra un 20 % más por cada hora de limpieza que ella.</p>
+    <p>Con esta información, se quiere expresar el cobro total que realiza BrillaMás mediante una función afín del tiempo de trabajo.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Si <m:math><m:mi>t</m:mi></m:math> representa la cantidad de horas de limpieza realizadas en un domicilio, ¿cuál de las siguientes funciones modela el cobro total (en pesos) que realiza BrillaMás en función de la cantidad de horas trabajadas?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>k</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>12&#160;000</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>24&#160;000</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El cobro por hora sí debe ser 24 000, porque 20 % más que 20 000 es 24 000, pero la visita inicial no puede ser 12 000. Como BrillaMás ofrece 30 % de descuento respecto de 12 000, la visita debe costar 8 400. Por eso esta función no modela el cobro total de BrillaMás.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>8400</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>24&#160;000</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La visita inicial de BrillaMás es 30 % menos que 12 000, es decir, 12 000 − 3 600 = 8 400. Además, cobra 20 % más por hora que 20 000, es decir, 20 000 + 4 000 = 24 000. Entonces el cobro total en función del tiempo es 8 400 + 24 000t.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>h</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>11&#160;970</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>20&#160;020</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La visita inicial con 30 % de descuento sobre 12 000 no da 11 970, sino 8 400. Además, cobrar 20 % más por hora que 20 000 no da 20 020, sino 24 000. Por lo tanto, ni el término fijo ni el coeficiente de t coinciden con la información del problema.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>j</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>15&#160;600</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>26&#160;000</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si la visita inicial tiene 30 % de descuento respecto de 12 000, entonces debe ser 8 400 y no 15 600. Además, 20 % más que 20 000 es 24 000 y no 26 000. Esta opción no respeta ninguno de los dos datos porcentuales del enunciado.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la función de referencia de LimpiaCasa</strong></p>
+            <p>LimpiaCasa cobra una visita inicial de $<m:math><m:mn>12&#160;000</m:mn></m:math> y $<m:math><m:mn>20&#160;000</m:mn></m:math> por cada hora de limpieza.</p>
+            <p>Si <m:math><m:mi>t</m:mi></m:math> es la cantidad de horas, su cobro total se puede expresar como:</p>
+            <p><m:math><m:mi>L</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>12&#160;000</m:mn><m:mo>+</m:mo><m:mn>20&#160;000</m:mn><m:mi>t</m:mi></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la nueva visita inicial de BrillaMás</strong></p>
+            <p>BrillaMás ofrece la visita con un 30 % de descuento respecto de LimpiaCasa.</p>
+            <p>El 30 % de 12 000 es:</p>
+            <p><m:math><m:mn>0,3</m:mn><m:mo>×</m:mo><m:mn>12&#160;000</m:mn><m:mo>=</m:mo><m:mn>3600</m:mn></m:math></p>
+            <p>Entonces, la visita inicial de BrillaMás es:</p>
+            <p><m:math><m:mn>12&#160;000</m:mn><m:mo>−</m:mo><m:mn>3600</m:mn><m:mo>=</m:mo><m:mn>8400</m:mn></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el nuevo cobro por hora de BrillaMás</strong></p>
+            <p>BrillaMás cobra un 20 % más por cada hora de limpieza que LimpiaCasa.</p>
+            <p>El 20 % de 20 000 es:</p>
+            <p><m:math><m:mn>0,2</m:mn><m:mo>×</m:mo><m:mn>20&#160;000</m:mn><m:mo>=</m:mo><m:mn>4000</m:mn></m:math></p>
+            <p>Entonces, el cobro por hora de BrillaMás es:</p>
+            <p><m:math><m:mn>20&#160;000</m:mn><m:mo>+</m:mo><m:mn>4000</m:mn><m:mo>=</m:mo><m:mn>24&#160;000</m:mn></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Escribir la función afín</strong></p>
+            <p>Una función afín tiene la forma:</p>
+            <p><m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi>t</m:mi><m:mo>+</m:mo><m:mi>b</m:mi></m:math></p>
+            <p>En este caso, el término fijo es <m:math><m:mn>8400</m:mn></m:math> y el coeficiente de <m:math><m:mi>t</m:mi></m:math> es <m:math><m:mn>24&#160;000</m:mn></m:math>.</p>
+            <p>Por lo tanto, la función es:</p>
+            <p><m:math><m:mi>g</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>8400</m:mn><m:mo>+</m:mo><m:mn>24&#160;000</m:mn><m:mi>t</m:mi></m:math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La función que modela el cobro total de BrillaMás es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

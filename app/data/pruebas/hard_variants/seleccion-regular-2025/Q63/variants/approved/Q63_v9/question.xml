@@ -1,0 +1,123 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v9" title="Q63_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Observa el siguiente dibujo de una casa antes y después de una transformación en el plano. La casa de la derecha tiene exactamente el mismo tamaño y la misma orientación que la de la izquierda; solo cambió de posición.</p>
+    <p><img src="casa_transformacion.png" alt="Dibujo de una casa a la izquierda y la misma casa, con igual tamaño y orientación, desplazada hacia la derecha" /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <img src="icono_reflexion_vertical.png" alt="Ícono de reflexión: una figura y su imagen invertida respecto de una línea vertical" />
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En una reflexión vertical la figura queda invertida respecto de una recta vertical: lo que estaba a la izquierda pasa a la derecha. El enunciado dice que la casa de la derecha mantiene la misma orientación que la de la izquierda, así que no hay inversión, solo desplazamiento.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <img src="icono_traslacion.png" alt="Ícono de traslación: una figura repetida, del mismo tamaño y orientación, desplazada mediante una flecha recta" />
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Una traslación mueve una figura de un lugar a otro sin cambiar su tamaño ni su orientación. Eso coincide exactamente con el enunciado: la casa de la derecha tiene el mismo tamaño y la misma orientación que la de la izquierda; solo cambió de posición.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <img src="icono_rotacion.png" alt="Ícono de rotación: una figura que gira alrededor de un punto indicado con flechas curvas" />
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En una rotación la figura gira alrededor de un punto, por lo que cambia su orientación. El enunciado afirma que la casa conserva la misma orientación antes y después, por lo tanto no puede ser una rotación.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <img src="icono_cambio_escala.png" alt="Ícono de ampliación: una figura pequeña y la misma figura más grande en la misma posición" />
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En un cambio de escala la figura aumenta o disminuye de tamaño. Aquí se indica explícitamente que la casa de la derecha tiene exactamente el mismo tamaño que la de la izquierda, así que no hubo ampliación ni reducción.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer con precisión la información clave</strong></p>
+            <p>El enunciado dice dos cosas importantes: la casa de la derecha tiene exactamente el mismo tamaño y la misma orientación que la de la izquierda, y además solo cambió de posición.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar esas características con cada transformación</strong></p>
+            <p>Una reflexión cambia la orientación porque produce una imagen invertida.</p>
+            <p>Una rotación también cambia la orientación porque la figura gira.</p>
+            <p>Un cambio de escala modifica el tamaño de la figura.</p>
+            <p>Una traslación mueve la figura de un lugar a otro, pero conserva el tamaño y la orientación.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Elegir la única transformación que cumple todo</strong></p>
+            <p>Como la figura mantiene el mismo tamaño y la misma orientación, y solo se desplaza, la transformación debe ser una traslación.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>, que corresponde a una <strong>traslación</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

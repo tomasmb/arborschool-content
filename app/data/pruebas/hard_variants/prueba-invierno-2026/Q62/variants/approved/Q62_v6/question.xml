@@ -1,0 +1,191 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v6" title="Q62_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una encuesta se consultó a un grupo de personas sobre el medio de transporte que utilizan habitualmente, distinguiendo entre la mañana y la tarde.</p>
+    <div>
+      <p>De los resultados se sabe que:</p>
+      <ul>
+        <li>En total se encuestó a 60 personas.</li>
+        <li>En la mañana: 14 usan bus, 9 usan metro y 7 usan bicicleta.</li>
+        <li>En la tarde: 10 usan bus, 11 usan metro y 9 usan bicicleta.</li>
+      </ul>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Si se elige al azar a una de las personas encuestadas, ¿cuál es la probabilidad de que use metro en la tarde?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>20</m:mn></m:mrow>
+            <m:mrow><m:mn>60</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la tarde usan metro 11 personas, no 20. El número 20 se obtiene al sumar quienes usan metro en la mañana y en la tarde: 9 + 11 = 20. Como se pide la probabilidad de usar metro en la tarde y el total encuestado es 60, la fracción correcta es 11/60.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>11</m:mn></m:mrow>
+            <m:mrow><m:mn>60</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La cantidad de personas que usan metro en la tarde es 11 y el total de personas encuestadas es 60. Por lo tanto, la probabilidad pedida es 11 de 60, es decir, 11/60.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>11</m:mn></m:mrow>
+            <m:mrow><m:mn>30</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El 30 corresponde al total de personas consideradas en la tarde, porque 10 + 11 + 9 = 30. Sin embargo, el problema dice que se elige al azar a una de las 60 personas encuestadas. Por eso, el denominador debe ser 60 y la probabilidad correcta es 11/60.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>11</m:mn></m:mrow>
+            <m:mrow><m:mn>20</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El 20 no es el total de personas encuestadas. Ese 20 se obtiene al sumar quienes usan metro en la mañana y en la tarde: 9 + 11 = 20. Como la persona se elige entre las 60 encuestadas y 11 usan metro en la tarde, la probabilidad correcta es 11/60.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el total de casos posibles</strong></p>
+            <p>El enunciado dice que se elige al azar a una de las personas encuestadas, y en total se encuestó a 60 personas. Entonces, el total de casos posibles es:</p>
+            <p>
+              <m:math>
+                <m:mn>60</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los casos favorables</strong></p>
+            <p>Se pide que la persona use metro en la tarde. Según los datos, en la tarde 11 personas usan metro. Entonces, los casos favorables son:</p>
+            <p>
+              <m:math>
+                <m:mn>11</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Formar la probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow><m:mtext>casos favorables</m:mtext></m:mrow>
+                  <m:mrow><m:mtext>casos posibles</m:mtext></m:mrow>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow><m:mn>11</m:mn></m:mrow>
+                  <m:mrow><m:mn>60</m:mn></m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar por qué las otras fracciones no corresponden</strong></p>
+            <p>La fracción <m:math><m:mfrac><m:mrow><m:mn>20</m:mn></m:mrow><m:mrow><m:mn>60</m:mn></m:mrow></m:mfrac></m:math> usa 20, pero <m:math><m:mn>20</m:mn></m:math> se obtiene de <m:math><m:mn>9</m:mn><m:mo>+</m:mo><m:mn>11</m:mn><m:mo>=</m:mo><m:mn>20</m:mn></m:math>, que corresponde a quienes usan metro en la mañana y en la tarde.</p>
+            <p>La fracción <m:math><m:mfrac><m:mrow><m:mn>11</m:mn></m:mrow><m:mrow><m:mn>30</m:mn></m:mrow></m:mfrac></m:math> usa 30, pero <m:math><m:mn>30</m:mn></m:math> se obtiene de <m:math><m:mn>10</m:mn><m:mo>+</m:mo><m:mn>11</m:mn><m:mo>+</m:mo><m:mn>9</m:mn><m:mo>=</m:mo><m:mn>30</m:mn></m:math>, que corresponde solo al total de la tarde.</p>
+            <p>La fracción <m:math><m:mfrac><m:mrow><m:mn>11</m:mn></m:mrow><m:mrow><m:mn>20</m:mn></m:mrow></m:mfrac></m:math> vuelve a usar 20 como denominador, pero el total de personas posibles sigue siendo 60.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de que una persona elegida al azar use metro en la tarde es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow><m:mn>11</m:mn></m:mrow>
+                  <m:mrow><m:mn>60</m:mn></m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

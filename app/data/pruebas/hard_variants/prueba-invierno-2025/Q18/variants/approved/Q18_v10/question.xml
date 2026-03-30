@@ -1,0 +1,242 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v10" title="Q18_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un banco, un capital se incrementa un 5 % cada mes. Después de 3 meses, se indica que el saldo es igual al capital inicial multiplicado por la potencia 
+      <m:math>
+        <m:msup>
+          <m:mn>1,05</m:mn>
+          <m:mn>3</m:mn>
+        </m:msup>
+      </m:math>.
+      
+      ¿Cuál de las siguientes explicaciones justifica correctamente el uso de la potencia 
+      <m:math>
+        <m:msup>
+          <m:mn>1,05</m:mn>
+          <m:mn>3</m:mn>
+        </m:msup>
+      </m:math>
+      para describir tres aumentos sucesivos de 5 %?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Porque al sumar 5 % + 5 % + 5 % se obtiene 15 %, y esa suma se representa con la potencia 1,05^3.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Tres aumentos sucesivos de 5 % no se representan sumando 5 % + 5 % + 5 %; se representan multiplicando por 1,05 en cada mes. De hecho, 1,05 × 1,05 × 1,05 = 1,157625, que no es igual a 1,15.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Porque cada mes el saldo se multiplica por 
+        <m:math>
+          <m:mn>1,05</m:mn>
+        </m:math>, y tres aumentos sucesivos de 5 % equivalen a multiplicar tres veces por ese mismo factor, es decir, por 
+        <m:math>
+          <m:msup>
+            <m:mn>1,05</m:mn>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Un aumento de 5 % equivale a multiplicar por 1,05. Entonces, en 3 meses seguidos se multiplica por 1,05 × 1,05 × 1,05, que es exactamente 1,05^3.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Porque 1,05^3 es igual a 1,15, que corresponde a un solo aumento del 15 % sobre el capital inicial.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. 1,05^3 no es igual a 1,15. Al calcular, 1,05 × 1,05 × 1,05 = 1,157625. Por lo tanto, esta afirmación es falsa.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Porque el exponente 3 indica que se debe multiplicar el 5 % por 3 para obtener 15 %, y luego agregarlo una sola vez al capital inicial.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El exponente 3 indica tres multiplicaciones por 1,05, no una sola suma de 15 % al capital inicial. De hecho, 1,05^3 = 1,157625, mientras que agregar 15 % una sola vez corresponde a multiplicar por 1,15, y esos valores no son iguales.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar un aumento de 5 %</strong></p>
+            <p>Si un capital inicial es <m:math><m:mi>C</m:mi></m:math>, entonces aumentar 5 % significa sumar <m:math><m:mrow><m:mn>0,05</m:mn><m:mi>C</m:mi></m:mrow></m:math>. Por lo tanto, el nuevo saldo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>C</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>0,05</m:mn>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mn>1</m:mn>
+                    <m:mo>+</m:mo>
+                    <m:mn>0,05</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mi>C</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>1,05</m:mn>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Así, cada mes el capital se multiplica por <m:math><m:mn>1,05</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar tres aumentos sucesivos</strong></p>
+            <p>Después del primer mes, el saldo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1,05</m:mn>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Después del segundo mes, se vuelve a multiplicar por <m:math><m:mn>1,05</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1,05</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mn>1,05</m:mn>
+                    <m:mi>C</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>=</m:mo>
+                  <m:msup>
+                    <m:mn>1,05</m:mn>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Después del tercer mes, nuevamente se multiplica por <m:math><m:mn>1,05</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1,05</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:msup>
+                      <m:mn>1,05</m:mn>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mi>C</m:mi>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                  <m:mo>=</m:mo>
+                  <m:msup>
+                    <m:mn>1,05</m:mn>
+                    <m:mn>3</m:mn>
+                  </m:msup>
+                  <m:mi>C</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar por qué no basta sumar 5 % + 5 % + 5 %</strong></p>
+            <p>Si se sumaran directamente los porcentajes, se obtendría 15 %, lo que corresponde al factor <m:math><m:mn>1,15</m:mn></m:math>.</p>
+            <p>Pero el factor real de tres aumentos sucesivos es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1,05</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>1,05</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>1,05</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>1,157625</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Como <m:math><m:mn>1,157625</m:mn></m:math> es distinto de <m:math><m:mn>1,15</m:mn></m:math>, no corresponde describir la situación como un solo aumento de 15 %.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La explicación correcta es que cada mes el saldo se multiplica por <m:math><m:mn>1,05</m:mn></m:math>, y tres aumentos sucesivos equivalen a multiplicar tres veces por ese mismo factor, es decir, por <m:math><m:msup><m:mn>1,05</m:mn><m:mn>3</m:mn></m:msup></m:math>.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

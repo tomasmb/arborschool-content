@@ -1,0 +1,140 @@
+{
+  "source_question_id": "Q37",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q37_v1",
+      "scenario_description": "Se presenta una función lineal f definida por f(x) = 4x + 3 y, además, una pequeña tabla incompleta:\n\nx | f(x)\n2 | 11\n? | 35\n\nSe indica que la relación entre x y f(x) siempre cumple f(x) = 4x + 3 y se pregunta cuál es el valor de x que debe ir en la casilla vacía para que f(x) = 35. El estudiante debe plantear la ecuación 4x + 3 = 35 y resolverla para encontrar x.\n\nSe mantiene la misma estructura ax + b = c (con a=4, b=3, c=35), pero el acceso a la ecuación es a través de una combinación de representación simbólica (la fórmula) y tabular (la tabla con un dato faltante), en lugar de solo un enunciado directo con g(x)=8x-5.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Obliga a comprender que la casilla vacía en la tabla corresponde a un valor de x cuyo resultado f(x) es 35, y que eso se traduce en una ecuación 4x + 3 = 35. No basta con aplicar de memoria 'despejar x'; se debe interpretar cómo la fórmula y la tabla se relacionan, identificar cuál es la variable desconocida y luego aplicar el procedimiento estándar de resolución de ecuaciones lineales.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q37_v2",
+      "scenario_description": "Se plantea un enunciado puramente verbal: \"Cuando se multiplica un número por 6 y luego se le restan 7 unidades, se obtiene como resultado 29. ¿Cuál es ese número?\".\n\nEl estudiante debe traducir el texto a la ecuación 6x - 7 = 29 y luego resolverla para x. La estructura ax + b = c se mantiene (a=6, b=-7, c=29), pero ahora la relación está codificada solo en lenguaje natural, sin notación de función ni ecuación escrita explícitamente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Exige comprender el orden de las operaciones descritas en palabras (primero multiplicar, luego restar) y representarlas correctamente como 6x - 7, evitando errores como invertir el orden o el signo. Luego, el estudiante debe aplicar conscientemente el proceso inverso (sumar 7 y dividir por 6) para aislar x, entendiendo por qué esas son las operaciones correctas para deshacer la transformación original.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q37_v3",
+      "scenario_description": "Se usa un contexto de juego: \"En un juego, la puntuación p que obtiene un equipo se calcula mediante la expresión p = 5t - 2, donde t es el número de tiros acertados. Si un equipo obtuvo 38 puntos, ¿cuántos tiros acertó?\".\n\nEl modelo ya está dado (p = 5t - 2). Con el dato p = 38, el estudiante debe formar y resolver la ecuación 5t - 2 = 38 para encontrar t, que juega el rol de la x original. La estructura es ax + b = c con a=5, b=-2, c=38.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe entender que el valor 38 corresponde a p (la imagen) y no al número de tiros t, e identificar que la incógnita está en el lugar de la variable independiente. Luego debe aplicar la idea de 'deshacer' el cálculo de la puntuación: primero sumar 2 al 38 y después dividir el resultado por 5. Errores típicos (por ejemplo, dividir 38 directamente por 5 o restar 2 en vez de sumar) solo pueden detectarse si se comprende por qué las operaciones inversas se aplican en orden contrario al de la fórmula original.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q37_v4",
+      "scenario_description": "Se presenta una función lineal con un coeficiente desconocido: \"Sea h la función definida por h(x) = a x - 5. Se sabe que h(5) = 35. ¿Cuál es el valor de a?\".\n\nAquí se entrega directamente el valor de la solución original (x=5 en el ítem fuente), pero ahora es un dato fijo. La incógnita principal pasa a ser el parámetro a. El estudiante debe formular la ecuación 5a - 5 = 35 y resolverla para a, usando el mismo tipo de manipulación lineal ax + b = c, solo que la letra desconocida ahora es a en vez de x.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se requiere entender la estructura de la función y que sustituir x=5 y h(5)=35 produce una ecuación en a. No es una aplicación mecánica de 'despejar x'; el estudiante debe reconocer que el procedimiento de resolución de ecuaciones lineales sirve igual cuando la incógnita es un parámetro de la fórmula. Entender el porqué de sumar 5 y luego dividir por 5 es esencial para aislar correctamente a.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q37_v5",
+      "scenario_description": "Se da otra función con término independiente desconocido: \"La función k está definida por k(x) = 8x + b. Para x = 5 se obtiene k(5) = 35. ¿Cuál es el valor de b?\".\n\nEl estudiante debe sustituir x=5 y k(5)=35 para obtener la ecuación 8·5 + b = 35, es decir, 40 + b = 35, y luego resolverla para b. La estructura sigue siendo lineal de la forma b + c = d (equivalente a ax + b = c con a=1), con la incógnita en el término independiente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se debe reconocer que la incógnita está en el término constante de la función y que, para encontrar b, es necesario 'deshacer' primero la operación con el 8 y el 5, entendiendo que 40 representa la parte dependiente de x. Luego se aplica correctamente la operación inversa (restar 40 a ambos lados) en lugar de cometer errores como dividir por 8 sin sentido. Esto exige comprender la estructura de la expresión y no solo ejecutar un despeje rutinario en x.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q37_v6",
+      "scenario_description": "Se muestra la resolución de un estudiante para la ecuación 7x - 4 = 24:\n\nPaso 1: 7x - 4 = 24\nPaso 2: 7x = 24 - 4\nPaso 3: 7x = 20\nPaso 4: x = 20 + 7\n\nLuego se pregunta: \"¿En cuál de los pasos el estudiante comete el primer error?\" con alternativas que hacen referencia explícita a cada paso.\n\nEl error está en el Paso 4, donde en lugar de dividir por 7, el estudiante suma 7.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "Para detectar el error, el estudiante debe conocer y comprender el procedimiento correcto para resolver 7x - 4 = 24: sumar 4 a ambos lados para obtener 7x = 28 y luego dividir por 7. Reconocer que en el último paso se aplicó una operación inversa incorrecta (sumar en vez de dividir) requiere entender por qué la operación adecuada es dividir por el coeficiente de x. No basta saber el resultado; es necesario analizar la lógica de cada transformación y su validez.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q37_v7",
+      "scenario_description": "Se presenta otra resolución errónea, ahora para la ecuación 3x + 5 = 26:\n\nPaso 1: 3x + 5 = 26\nPaso 2: 3x = 26 + 5\nPaso 3: 3x = 31\nPaso 4: x = 31/3\n\nSe pregunta nuevamente: \"¿En qué paso se comete el primer error?\".\n\nEn este caso, el error está en el Paso 2, donde el estudiante traslada el 5 al otro lado con signo incorrecto (debería ser 3x = 26 - 5).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comparar cada paso con el procedimiento correcto para resolver 3x + 5 = 26, identificando que la operación inversa de '+5' es '-5', no '+5'. Esto implica comprender la propiedad de la igualdad y el manejo de signos al trasladar términos, más allá de recordar una 'receta'. La tarea evalúa si se entiende por qué se cambian los signos y en qué momento se debe dividir por el coeficiente de x.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q37_v8",
+      "scenario_description": "Se presenta directamente una ecuación lineal sin contexto de función: \"Resuelve la siguiente ecuación para el número real x: 9x + 4 = 49\".\n\nSe pide explícitamente: \"¿Cuál es el valor de x que hace verdadera la igualdad 9x + 4 = 49?\". El estudiante debe aplicar el procedimiento estándar: restar 4 en ambos lados para obtener 9x = 45 y luego dividir por 9 para concluir x = 5. La estructura ax + b = c es análoga a la de la fuente, pero la representación abandona la notación funcional y el enunciado enfatiza la idea de 'número que hace verdadera la igualdad'.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Aunque la ecuación es elemental, el enunciado remarca que se busca un número que verifique la igualdad, lo que obliga a conectar la noción de 'solución de una ecuación' con la verificación de la igualdad. Entender por qué se resta 4 y luego se divide por 9 —y no al revés— es clave para evitar errores típicos como dividir primero 49 por 9. Los distractores pueden apuntar a esos errores, por lo que se evalúa la comprensión de la secuencia correcta de operaciones inversas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q37_v9",
+      "scenario_description": "Se utiliza la fórmula de conversión entre grados Celsius (C) y Fahrenheit (F): F = 1,8C + 32. El enunciado dice: \"La temperatura de una ciudad es de 68°F. Usando la relación F = 1,8C + 32, ¿cuál es la temperatura correspondiente en grados Celsius?\".\n\nEl estudiante debe plantear la ecuación 68 = 1,8C + 32 y resolverla para C, manteniendo la estructura lineal ax + b = c, ahora con coeficiente decimal (a = 1,8, b = 32, c = 68).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se necesita identificar correctamente qué rol juega cada símbolo: 68 es F, C es la incógnita, y la constante 32 no debe confundirse con la temperatura buscada. Luego se debe aplicar el mismo razonamiento que en una ecuación lineal simple (restar 32 y dividir por 1,8), entendiendo que la presencia de decimales no cambia la lógica de las operaciones inversas. El contexto físico obliga a ligar el procedimiento algebraico con una situación real, impidiendo un uso puramente mecánico de números sin interpretar su significado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q37_v10",
+      "scenario_description": "Se introduce una sucesión aritmética: \"La sucesión (a_n) está definida por el término general a_n = 8n - 5. Para cierto valor de n, el término de la sucesión es 35. ¿Qué valor de n corresponde a ese término?\".\n\nEl estudiante debe reconocer que 'el término que vale 35' significa a_n = 35, por lo que debe plantear y resolver la ecuación 8n - 5 = 35 para n. Es la misma estructura lineal ax + b = c, con n como incógnita en lugar de x, en el contexto de índices de una sucesión.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se requiere interpretar que n es el índice del término y que el valor 35 corresponde a a_n, no a n. Esa comprensión conceptual es necesaria para formular 8n - 5 = 35. Después, se aplica el mismo razonamiento de ecuaciones lineales: sumar 5 y dividir por 8. El estudiante demuestra que entiende el procedimiento de despeje independientemente del 'nombre' de la incógnita y del contexto (sucesión en vez de función explícita en x).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    }
+  ]
+}

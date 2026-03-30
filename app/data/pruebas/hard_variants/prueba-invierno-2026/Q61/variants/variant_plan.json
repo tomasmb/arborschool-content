@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q61",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q61_v1",
+      "scenario_description": "Se entrega un conjunto de 11 datos (por ejemplo, edades de estudiantes) y un único diagrama de caja horizontal construido sobre un eje numérico. En las alternativas se dan 4 afirmaciones breves sobre ese diagrama, del tipo: \"La mediana del diagrama coincide con la mediana del conjunto de datos\", \"El primer cuartil del diagrama es mayor que el primer cuartil calculado para los datos\", etc. El estudiante debe identificar cuál afirmación describe correctamente la relación entre los cuartiles/min-máx de los datos y los elementos del diagrama.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Obliga a calcular (o al menos ubicar conceptualmente) mediana y cuartiles del conjunto de datos y a reconocer qué parte del diagrama corresponde a cada uno, para contrastar con afirmaciones textuales; no basta con reconocer un patrón visual, hay que entender por qué cada valor se representa donde se representa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un único diagrama de caja horizontal sobre un eje numérico con marcas en los posibles valores de min, Q1, mediana, Q3 y max, claramente rotulados en el eje, pero sin texto explicativo adicional.",
+      "selected_shape_id": "single_series_visual_claim"
+    },
+    {
+      "variant_id": "Q61_v2",
+      "scenario_description": "Se presenta un conjunto de 11 datos ordenables (por ejemplo, tiempos en segundos de una carrera) y cuatro diagramas de caja horizontales muy similares entre sí. Todos muestran el mismo rango aproximado, pero difieren en la posición exacta de Q1 y Q3 (las cajas comienzan y terminan en distintos valores vecinos dentro del conjunto). Se pregunta: \"¿Cuál de los siguientes diagramas representa correctamente el menor valor del 50% central de los datos (es decir, Q1)?\". Solo un diagrama tiene Q1 en el valor correcto, mientras que los otros lo desplazan a un dato adyacente o confunden Q1 con la mediana.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe calcular Q1 a partir de los datos (no solo la mediana) y entender que el extremo izquierdo de la caja corresponde al límite inferior del 50% central. Los distractores explotan errores típicos (tomar un dato vecino, usar la mediana como Q1), por lo que hay que aplicar el procedimiento de cuartiles, no comparar solo formas globales.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuatro diagramas de caja horizontales sobre el mismo eje numérico, todos con bigotes muy parecidos pero con el inicio de la caja (Q1) en valores distintos pero cercanos (por ejemplo, 20, 21, 22), y la mediana/Q3 fijos, para que el foco recaiga en el extremo izquierdo de la caja.",
+      "selected_shape_id": "extremum_focus"
+    },
+    {
+      "variant_id": "Q61_v3",
+      "scenario_description": "Se dan 11 datos de una variable (por ejemplo, horas de estudio), con varias repeticiones alrededor de la mediana. Se muestra un único diagrama de caja vertical (cambiando la orientación respecto del original) que corresponde a esos datos. Las alternativas son enunciados del tipo: \"La mitad de los datos está entre 4 y 7 horas\", \"El 25% de los datos es menor que 3 horas\", etc. El estudiante debe verificar qué enunciado es consistente a la vez con los cuartiles calculados en los datos y con la estructura del diagrama (bordes de la caja y posición de la mediana).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se requiere entender que el 50% central está entre Q1 y Q3, y que los cuartiles se obtienen de la distribución de datos. Para decidir, el estudiante debe determinar Q1, mediana y Q3 en los datos y luego interpretar qué fracción de datos se ubica por debajo de cada límite en el diagrama; no se puede contestar por simple inspección de un número aislado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un diagrama de caja vertical con eje numérico en el eje y, donde se indica claramente el mínimo, máximo, Q1, mediana y Q3 con marcas en el eje; la caja está en posición intermedia, con una mediana que coincide con uno de los valores repetidos del conjunto de datos.",
+      "selected_shape_id": "single_series_visual_claim"
+    },
+    {
+      "variant_id": "Q61_v4",
+      "scenario_description": "Se entrega un conjunto de 11 datos (por ejemplo, notas en una prueba) y tres diagramas de caja horizontales casi idénticos. Todos tienen la misma mediana, pero difieren en uno de los extremos de la caja: en uno Q3 está bien ubicado, en otro se usa un dato ligeramente menor y en otro uno ligeramente mayor. La pregunta se formula como: \"¿Cuál diagrama representa correctamente el mayor valor que todavía pertenece al 50% central de las observaciones (Q3)?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe calcular correctamente la posición de Q3 en el conjunto de datos y relacionarla con el borde derecho de la caja. Los distractores apuntan a errores típicos de conteo de posiciones o de inclusión/exclusión de la mediana en las mitades, por lo que la comprensión de la definición de cuartiles es esencial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Tres diagramas de caja horizontales sobre el mismo eje numérico; todos comparten el mismo mínimo, Q1 y mediana, pero difieren solo en la posición del borde derecho de la caja (Q3), que se ubica en tres valores discretos vecinos.",
+      "selected_shape_id": "extremum_focus"
+    },
+    {
+      "variant_id": "Q61_v5",
+      "scenario_description": "En lugar de una lista, los mismos 11 datos se presentan en un diagrama de tallo y hojas (u otra representación ordenada muy compacta). Se ofrecen cuatro diagramas de caja horizontales como opciones. La pregunta pide: \"¿Cuál de los siguientes diagramas de caja representa correctamente este conjunto de datos?\". Las diferencias entre los diagramas recaen en la posición de Q1, mediana y Q3, no solo en los extremos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe primero extraer e interpretar correctamente los valores individuales a partir del diagrama de tallo y hojas, luego calcular mediana y cuartiles, y finalmente vincular cada uno con la parte correspondiente del boxplot. Esto exige comprender el método de cálculo de cuartiles y la relación min–Q1–mediana–Q3–max, no solo operar mecánicamente con una lista ya ordenada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un diagrama de tallo y hojas que resume 11 datos y, aparte, cuatro diagramas de caja horizontales sobre el mismo eje numérico, cada uno con combinaciones distintas de Q1, mediana y Q3 coherentes con los posibles valores del conjunto.",
+      "selected_shape_id": "single_series_visual_claim"
+    },
+    {
+      "variant_id": "Q61_v6",
+      "scenario_description": "Se proporciona un conjunto de 11 datos (por ejemplo, alturas) y un único diagrama de caja horizontal que corresponde a esos datos. Las alternativas son afirmaciones del tipo: \"El valor mínimo del 25% superior de los datos es 170 cm\", \"El valor máximo del 25% inferior es 160 cm\", etc. Cada afirmación menciona explícitamente extremos de los cuartiles (Q1 o Q3) usando lenguaje de \"25% inferior/superior\". Una sola afirmación coincide con los cuartiles que se obtienen de los datos y con la posición de la caja en el diagrama.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe identificar qué significan expresiones como \"máximo del 25% inferior\" (Q1) y \"mínimo del 25% superior\" (Q3) y, con base en el conjunto de datos, calcular esos valores. Luego hay que vincularlos con los extremos de la caja en el diagrama. Los distractores se apoyan en confundir estos extremos con el mínimo/máximo global o con la mediana.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un diagrama de caja horizontal con valores enteros marcados en el eje numérico, donde los extremos de la caja y la mediana recaen exactamente en algunos de los datos entregados.",
+      "selected_shape_id": "extremum_focus"
+    },
+    {
+      "variant_id": "Q61_v7",
+      "scenario_description": "Se dan 11 datos de una variable con ligera asimetría (por ejemplo, cantidad de mensajes enviados al día). Se muestran cuatro diagramas de caja verticales como opciones, todos con el mismo mínimo y máximo, pero con diferentes ubicaciones de mediana y cuartiles dentro del rango (algunos sugieren simetría, otros fuerte asimetría). La pregunta: \"¿Cuál de estos diagramas de caja representa correctamente la posición de la mediana y los cuartiles de este conjunto de datos?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Además de calcular la mediana, Q1 y Q3, el estudiante debe reconocer cómo se refleja la asimetría en la distancia entre Q1, mediana y Q3 en el diagrama y usar esa información para descartar diagramas aparentemente \"simétricos\" que no concuerdan con los datos. Esto requiere comprensión de qué representa cada tramo de la caja, no solo igualar valores sueltos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuatro diagramas de caja verticales sobre el mismo eje numérico en el eje y; todos tienen el mismo rango total, pero difieren en la posición relativa de la caja y de la línea de la mediana dentro de ella, representando distintos grados de asimetría.",
+      "selected_shape_id": "single_series_visual_claim"
+    },
+    {
+      "variant_id": "Q61_v8",
+      "scenario_description": "Se entrega un conjunto de 11 datos (por ejemplo, temperaturas diarias) y cuatro diagramas de caja horizontales como opciones. Dos de ellos tienen min y max correctos pero cuartiles erróneos; el correcto tiene los cinco valores bien ubicados; otro tiene min o max desplazados. La consigna enfatiza: \"El diagrama correcto debe mostrar exactamente el mismo valor mínimo y el mismo valor máximo que el conjunto de datos, y además representar adecuadamente la mediana y los cuartiles. ¿Cuál es?\". El foco visual y textual recae en identificar bien los extremos y luego verificar coherentemente el interior.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para discriminar, el estudiante no puede fijarse solo en min y max (porque hay más de una opción con extremos correctos), ni solo en la mediana; debe calcular el resumen de cinco números y entender la función de cada parte del boxplot. Los distractores explotan la estrategia incompleta de mirar solo un extremo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuatro diagramas de caja horizontales sobre un mismo eje numérico; algunos comparten extremos correctos pero con cajas desplazadas, y al menos una opción muestra min o max equivocados mientras su caja es verosímil.",
+      "selected_shape_id": "extremum_focus"
+    },
+    {
+      "variant_id": "Q61_v9",
+      "scenario_description": "Se dan 11 datos (por ejemplo, tamaños de archivo en MB) y un diagrama de caja horizontal que NO corresponde exactamente a esos datos: uno de los cinco valores (min, Q1, mediana, Q3 o max) está mal colocado. Las opciones de respuesta son descripciones de correcciones posibles: \"mover solo la mediana a 12 MB\", \"desplazar el Q3 a 18 MB\", \"ajustar simultáneamente el mínimo y el máximo\", etc. Solo una corrección convierte al diagrama en la representación adecuada del conjunto de datos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe calcular todos los elementos del resumen de cinco números a partir de los datos y compararlos con lo que muestra el diagrama original, identificando exactamente qué componente está incorrecto. Luego debe decidir qué modificación propuesta arregla la inconsistencia, lo que exige comprensión relacional entre datos y cada parte del diagrama.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un único diagrama de caja horizontal sobre un eje numérico, etiquetado con valores discretos; uno de estos valores (por ejemplo, Q3) se ha desplazado a un número vecino, mientras que los demás coinciden con los datos. No se indica explícitamente cuál está mal.",
+      "selected_shape_id": "single_series_visual_claim"
+    },
+    {
+      "variant_id": "Q61_v10",
+      "scenario_description": "Se presenta un conjunto de 11 datos (por ejemplo, tiempos en minutos) y un diagrama de caja vertical correspondiente. Las alternativas son afirmaciones que relacionan el máximo y la mediana, o el mínimo y la mediana, con desigualdades cuantitativas: \"El valor máximo está a lo sumo 5 minutos por encima de la mediana\", \"La mediana está exactamente en la mitad del intervalo entre mínimo y máximo\", etc. Solo una es correcta según el resumen de cinco números de los datos y la representación en el diagrama.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe calcular o identificar min, mediana y max tanto en los datos como en la escala del diagrama, y luego razonar sobre sus diferencias (restas sencillas) para decidir qué relación extrema–centro es verdadera. Los distractores se basan en interpretar mal las distancias visuales (confundir proporciones visuales con diferencias numéricas), de modo que debe entender qué valores numéricos representan cada marca.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Un diagrama de caja vertical con un eje numérico claramente graduado, donde la mediana se ubica visiblemente más cerca de uno de los extremos, lo que permite leer diferencias en unidades entre min, mediana y max.",
+      "selected_shape_id": "extremum_focus"
+    }
+  ]
+}

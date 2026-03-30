@@ -11,6 +11,36 @@ from app.question_variants.models import GenerationReport, SourceQuestion, Varia
 from app.question_variants.contracts.structural_profile import build_construct_contract
 
 
+def load_existing_approved(
+    output_dir: str, test_id: str, question_id: str,
+) -> list[VariantQuestion]:
+    """Load previously approved variants for a question from disk.
+
+    Scans ``{output_dir}/{test_id}/{question_id}/variants/approved/*/
+    question.xml`` and returns lightweight ``VariantQuestion`` objects
+    suitable for cross-run deduplication.
+    """
+    approved_dir = (
+        Path(output_dir) / test_id / question_id
+        / "variants" / "approved"
+    )
+    if not approved_dir.is_dir():
+        return []
+
+    results: list[VariantQuestion] = []
+    for variant_dir in sorted(approved_dir.iterdir()):
+        xml_path = variant_dir / "question.xml"
+        if not xml_path.is_file():
+            continue
+        results.append(VariantQuestion(
+            variant_id=variant_dir.name,
+            source_question_id=question_id,
+            source_test_id=test_id,
+            qti_xml=xml_path.read_text(encoding="utf-8"),
+        ))
+    return results
+
+
 def save_variant_plan(output_dir: str, source: SourceQuestion, blueprints: list[VariantBlueprint]) -> None:
     """Persist planner output per source question."""
     plan_path = Path(output_dir) / source.test_id / source.question_id / "variants" / "variant_plan.json"

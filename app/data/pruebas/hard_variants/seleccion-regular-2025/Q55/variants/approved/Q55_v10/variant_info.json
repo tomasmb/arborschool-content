@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q55_v10",
+  "source_question_id": "Q55",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q55_v10",
+    "scenario_description": "Escenario de afiliación previsional idéntico al dominio original pero con otra forma de pregunta. Se mantienen dos gráficos de torta: uno con la distribución de la población nacional por tipo de previsión (Fonasa, Isapres, Otros) y otro que muestra la distribución interna de los afiliados a Fonasa por tramos A, B, C y D. En vez de pedir directamente la probabilidad numérica, se proponen cuatro afirmaciones sobre la probabilidad de que una persona escogida al azar pertenezca al tramo C de Fonasa. Cada afirmación da un cálculo distinto (por ejemplo, '0,XX', '0,YY', 'P(Fonasa)·P(C|Fonasa)', 'P(C)/P(Fonasa)'), expresado en palabras o fórmulas. Se pide seleccionar la afirmación que describe correctamente cómo calcular esa probabilidad.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "Aunque la representación visual es muy similar a la original, la forma de respuesta obliga a explicitar el modelo probabilístico que une ambos gráficos. La persona debe reconocer que el segundo gráfico es condicional a Fonasa y, por tanto, que la probabilidad de 'estar en Fonasa y en el tramo C' se obtiene mediante P(Fonasa)·P(C | Fonasa). Debe identificar y rechazar distractores que usan el porcentaje de C como si fuera global o que construyen razones con un denominador equivocado, demostrando comprensión del porqué del método más que una aplicación mecánica.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Dos gráficos de torta: uno con la distribución de la población por tipo de previsión de salud (Fonasa, Isapres, Otros) y otro con la distribución de los afiliados a Fonasa por tramos A, B, C y D, etiquetados con sus porcentajes.",
+    "selected_shape_id": "conditional_claim_check"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea sigue siendo de interpretación de representación con probabilidad condicionada (no se convirtió en un cálculo directo ni en probabilidad simple) y que la imagen de los dos gráficos de torta sigue siendo la evidencia primaria."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-12"
+    ],
+    "primary_atom_titles": [
+      "Aplicación de la regla multiplicativa para eventos dependientes"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "representation_interpretation",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

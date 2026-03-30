@@ -1,0 +1,131 @@
+{
+  "variant_id": "Q38_v1",
+  "source_question_id": "Q38",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q38_v1",
+    "scenario_description": "Dos compañías de telefonía móvil ofrecen planes para datos extra. La Compañía A cobra $3000 de cargo mensual y $900 por cada GB adicional. La Compañía B cobra $3500 de cargo mensual y $700 por cada GB adicional. Se indica además el precio normal de un GB sin plan (dato irrelevante, análogo al precio sin suscripción de los bidones). Se pregunta: si la persona decide suscribirse a uno de estos planes para todos sus GB extra, ¿cuál es la cantidad mínima de GB adicionales que debe usar en el mes para que convenga económicamente la Compañía B? (opciones 1, 2, 3, 4). La estructura abstracta es la misma: comparar dos costos lineales del tipo costo_A = fijo_A + variable_A·n y costo_B = fijo_B + variable_B·n, con fijo_B > fijo_A y variable_B < variable_A, y hallar el menor entero n para el cual costo_B < costo_A.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "La persona debe entender que no basta con comparar solo el precio por GB, sino que debe construir mentalmente o numéricamente los dos modelos lineales de costo total y resolver la inecuación costo_B < costo_A para obtener un umbral en n. Luego debe interpretar que se pide el mínimo entero que satisface la desigualdad, no el punto de igualdad ni un valor cualquiera mayor.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "contextual_mutation"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué que el estudiante sigue comparando dos costos totales lineales del tipo costo_A = fijo_A + variable_A·n y costo_B = fijo_B + variable_B·n, con fijo_B > fijo_A y variable_B < variable_A, y que la tarea sigue siendo hallar el menor entero n para el cual costo_B < costo_A."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-ALG-03-15"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas contextualizados con inecuaciones"
+    ],
+    "family_id": "linear_equation_resolution",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "contextual_mutation",
+        "description": "Mantener la misma estructura abstracta de la ecuación o inecuación pero inventar un contexto narrativo 100% distinto, operando con valores numéricos y unidades nuevas.",
+        "required_changes": [
+          "Contexto narrativo",
+          "Nombres de variables y sujetos",
+          "Valores numéricos base en misma proporción"
+        ],
+        "forbidden_changes": [
+          "Agregar pasos de resolución al final",
+          "Cambiar la operatoria base de ecuación a otro ente algebraico"
+        ],
+        "difficulty_offset": "Mantener Dificultad (solo exige transferencia a un nuevo escenario)."
+      },
+      {
+        "shape_id": "error_analysis",
+        "description": "En lugar de pedir el resultado directo, presentar la resolución paso a paso que hizo un estudiante ficticio y pedir identificar en qué paso ocurrió un error (ej. error de signo, agrupación).",
+        "required_changes": [
+          "La pregunta ahora detecta el error",
+          "Pasos de resolución ficticios a lo largo del ítem",
+          "Distractores referencian a los Pasos textualmente"
+        ],
+        "forbidden_changes": [
+          "Entregar la resolución perfecta en el bloque de texto"
+        ],
+        "difficulty_offset": "Aumentar dificultad (evalúa metacognición matemática)."
+      },
+      {
+        "shape_id": "inverse_parameter_shift",
+        "description": "Dar el valor de la solución final explícitamente en el enunciado, y preguntar por el valor inicial de uno de los parámetros que originalmente era un dato fijo.",
+        "required_changes": [
+          "Intercambiar Incógnita principal por dato"
+        ],
+        "forbidden_changes": [
+          "Alterar el dominio (sigue siendo de carácter lineal)"
+        ],
+        "difficulty_offset": "Aumentar dificultad levemente obligando a un despeje inverso o sustitución trasera."
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "solve_for_unknown",
+    "operation_signature": "linear_equation_resolution",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "solve_for_unknown",
+    "solution_structure": "equation_resolution",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "quotient_relation",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=solve_for_unknown",
+      "operation_signature=linear_equation_resolution",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

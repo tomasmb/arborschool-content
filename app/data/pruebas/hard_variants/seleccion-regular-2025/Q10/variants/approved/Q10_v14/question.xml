@@ -1,0 +1,238 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q10_v14" title="Q10_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La regla de Naegele es un método que permite determinar la fecha probable de parto de una mujer, aplicando las siguientes operaciones a la fecha de la última menstruación: +7 días, −3 meses y, en algunos casos, +1 año.</p>
+    <p>En la ficha de una paciente se registró el siguiente resultado de aplicar esta regla:<br />Aplicando: +7 días, −3 meses, +1 año, se obtuvo:<br />Día probable: 20; Mes probable: 9; Año probable: 2024.<br />
+      <img src="requiere_nueva_imagen.png" alt="Esquema del cálculo de la fecha probable de parto. Presenta tres recuadros: en el primero dice 'Día de la última menstruación más siete días'; en el segundo, 'Mes de la última menstruación menos tres meses'; y en el tercero, 'Dependiendo de la fecha de la última menstruación se podría sumar un año'." />
+    </p>
+    <p>¿Cuál fue la fecha de la última menstruación de esta mujer?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">27/06/2025<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si la fecha fuera 27/06/2025, al aplicar la regla se obtiene 04/04/2026:
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mrow>
+            <mn>27</mn>
+            <mo>+</mo>
+            <mn>7</mn>
+            <mo>=</mo>
+            <mn>34</mn>
+          </mrow>
+        </math>
+        es decir, 04/07/2025; luego
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mrow>
+            <mn>7</mn>
+            <mo>−</mo>
+            <mn>3</mn>
+            <mo>=</mo>
+            <mn>4</mn>
+          </mrow>
+        </math>
+        , por lo que queda 04/04/2025; y al sumar 1 año resulta 04/04/2026. No coincide con 20/09/2024.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">13/12/2023<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde 13/12/2023, al sumar 7 días se obtiene 20/12/2023; al restar 3 meses se obtiene 20/09/2023; y al sumar 1 año se obtiene 20/09/2024. Coincide exactamente con el registro dado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">20/12/2023<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si la fecha fuera 20/12/2023, al aplicar la regla se obtiene 27/09/2024:
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mrow>
+            <mn>20</mn>
+            <mo>+</mo>
+            <mn>7</mn>
+            <mo>=</mo>
+            <mn>27</mn>
+          </mrow>
+        </math>
+        entonces queda 27/12/2023; luego
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mrow>
+            <mn>12</mn>
+            <mo>−</mo>
+            <mn>3</mn>
+            <mo>=</mo>
+            <mn>9</mn>
+          </mrow>
+        </math>
+        , por lo que queda 27/09/2023; y al sumar 1 año resulta 27/09/2024. No coincide con 20/09/2024.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">13/09/2023<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si la fecha fuera 13/09/2023, al aplicar la regla se obtiene 20/06/2024:
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+          <mrow>
+            <mn>13</mn>
+            <mo>+</mo>
+            <mn>7</mn>
+            <mo>=</mo>
+            <mn>20</mn>
+          </mrow>
+        </math>
+        entonces queda 20/09/2023; luego
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mrow>
+            <mn>9</mn>
+            <mo>−</mo>
+            <mn>3</mn>
+            <mo>=</mo>
+            <mn>6</mn>
+          </mrow>
+        </math>
+        , por lo que queda 20/06/2023; y al sumar 1 año resulta 20/06/2024. No coincide con 20/09/2024.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_DEFAULT" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una alternativa válida. Revisa el resultado 20/09/2024 y deshaz las operaciones en orden inverso: primero resta 1 año, luego suma 3 meses y finalmente resta 7 días.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>La fecha obtenida al aplicar la regla es 20/09/2024.</p>
+          </li>
+          <li>
+            <p>Como en el registro se aplicó <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>+</mo><mn>1</mn></mrow></math> año, para recuperar la fecha de la última menstruación primero deshacemos esa operación:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>20/09/2024</mtext>
+                  <mo>−</mo>
+                  <mtext>1 año</mtext>
+                  <mo>=</mo>
+                  <mtext>20/09/2023</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Luego deshacemos la operación <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>−</mo><mn>3</mn></mrow></math> meses. Para volver a la fecha original, sumamos 3 meses:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>20/09/2023</mtext>
+                  <mo>+</mo>
+                  <mtext>3 meses</mtext>
+                  <mo>=</mo>
+                  <mtext>20/12/2023</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Finalmente deshacemos la operación <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>+</mo><mn>7</mn></mrow></math> días. Para volver a la fecha original, restamos 7 días:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>20/12/2023</mtext>
+                  <mo>−</mo>
+                  <mtext>7 días</mtext>
+                  <mo>=</mo>
+                  <mtext>13/12/2023</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Verificación:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>13/12/2023</mtext>
+                  <mo>+</mo>
+                  <mtext>7 días</mtext>
+                  <mo>=</mo>
+                  <mtext>20/12/2023</mtext>
+                </mrow>
+              </math>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>20/12/2023</mtext>
+                  <mo>−</mo>
+                  <mtext>3 meses</mtext>
+                  <mo>=</mo>
+                  <mtext>20/09/2023</mtext>
+                </mrow>
+              </math>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>20/09/2023</mtext>
+                  <mo>+</mo>
+                  <mtext>1 año</mtext>
+                  <mo>=</mo>
+                  <mtext>20/09/2024</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Conclusión: la fecha de la última menstruación fue 13/12/2023, que corresponde a la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_DEFAULT</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

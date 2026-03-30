@@ -1,0 +1,196 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q61_v5" title="Q61_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el Curso A, la nota promedio de los estudiantes es 5,5. En el Curso B, la nota promedio de los estudiantes es 4,5. Además, el Curso B tiene el doble de estudiantes que el Curso A.</p>
+    <p>¿Cuál de las siguientes afirmaciones es siempre verdadera acerca de la <strong>nota promedio de TODOS los estudiantes de ambos cursos considerados en conjunto</strong>?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La nota promedio de todos los estudiantes de ambos cursos equivale al promedio entre 5,5 y 4,5.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Como el Curso B tiene el doble de estudiantes que el Curso A, no corresponde promediar 5,5 y 4,5 en partes iguales. Si el Curso A tiene 1 grupo y el Curso B tiene 2 grupos del mismo tamaño, el promedio total queda más cerca de 4,5. De hecho, el promedio conjunto es 4,83 y no 5,0.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La nota promedio de todos los estudiantes de ambos cursos está entre 4,5 y 5,5, y es menor que 5,5.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si el Curso A tiene n estudiantes, el Curso B tiene 2n. Entonces la suma total de notas es 5,5n más 4,5 por 2n, es decir 5,5n más 9n, que da 14,5n. Al dividir por 3n estudiantes en total, el promedio conjunto es 14,5 dividido por 3, o sea 4,83. Ese valor está entre 4,5 y 5,5, y además es menor que 5,5.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La suma de las notas de todos los estudiantes del Curso A es mayor que la suma de las notas de todos los estudiantes del Curso B.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el Curso A tiene n estudiantes, la suma de sus notas es 5,5n. Como el Curso B tiene 2n estudiantes, la suma de sus notas es 4,5 por 2n, es decir 9n. Como 9n es mayor que 5,5n para todo n positivo, la suma del Curso A no es mayor que la del Curso B.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Hay al menos un estudiante del Curso A cuya nota es mayor que la de cualquier estudiante del Curso B.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta afirmación no es siempre verdadera. Contraejemplo concreto: en el Curso A puede haber 2 estudiantes con notas 5 y 6, cuyo promedio es 5,5. En el Curso B puede haber 4 estudiantes con notas 4, 4, 4 y 6, cuyo promedio es 4,5. El Curso B tiene el doble de estudiantes que el Curso A, pero en ese caso ningún estudiante del Curso A tiene nota mayor que la de cualquier estudiante del Curso B, porque en el Curso B también hay un 6.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Representar la cantidad de estudiantes</strong></p>
+            <p>Sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> la cantidad de estudiantes del Curso A.</p>
+            <p>Entonces el Curso B tiene el doble, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mi>n</mi></math> estudiantes.</p>
+            <p>Como se trata de estudiantes, se cumple que <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>&gt;</mo><mn>0</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la suma de notas en cada curso</strong></p>
+            <p>Promedio del Curso A:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5,5</mn>
+              </mrow>
+            </math>
+            <p>Entonces la suma de notas del Curso A es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5,5</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Promedio del Curso B:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>4,5</mn>
+              </mrow>
+            </math>
+            <p>Como el Curso B tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mi>n</mi></math> estudiantes, su suma de notas es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>4,5</mn><mo>×</mo><mn>2</mn><mi>n</mi><mo>=</mo><mn>9</mn><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el promedio total de ambos cursos</strong></p>
+            <p>Suma total de notas:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5,5</mn><mi>n</mi><mo>+</mo><mn>9</mn><mi>n</mi><mo>=</mo><mn>14,5</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Cantidad total de estudiantes:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>n</mi><mo>+</mo><mn>2</mn><mi>n</mi><mo>=</mo><mn>3</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Promedio conjunto:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mrow>
+                    <mn>14,5</mn><mi>n</mi>
+                  </mrow>
+                  <mrow>
+                    <mn>3</mn><mi>n</mi>
+                  </mrow>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>14,5</mn>
+                  <mn>3</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>4,83</mn>
+              </mrow>
+            </math>
+            <p>Se puede simplificar por <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>&gt;</mo><mn>0</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar ese promedio con 4,5 y 5,5</strong></p>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4,5</mn><mo>&lt;</mo><mn>4,83</mn><mo>&lt;</mo><mn>5,5</mn></math>, el promedio total está entre ambos promedios.</p>
+            <p>Además, claramente es menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,5</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar por qué las otras opciones no son siempre verdaderas</strong></p>
+            <p><strong>Opción A:</strong> el promedio simple entre 5,5 y 4,5 es</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mrow>
+                    <mn>5,5</mn><mo>+</mo><mn>4,5</mn>
+                  </mrow>
+                  <mn>2</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>10</mn>
+                  <mn>2</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>5,0</mn>
+              </mrow>
+            </math>
+            <p>Pero el promedio real conjunto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4,83</mn></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,0</mn></math>.</p>
+            <p><strong>Opción C:</strong> la suma en A es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,5</mn><mi>n</mi></math> y en B es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mi>n</mi></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mi>n</mi><mo>&gt;</mo><mn>5,5</mn><mi>n</mi></math>, la afirmación es falsa.</p>
+            <p><strong>Opción D:</strong> no es una afirmación siempre verdadera. Por ejemplo, A puede tener notas 5 y 6, y B puede tener notas 4, 4, 4 y 6. Se cumplen los promedios 5,5 y 4,5, y B tiene el doble de estudiantes, pero ningún estudiante de A tiene nota mayor que todas las de B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación siempre verdadera es la <strong>opción B</strong>: la nota promedio de todos los estudiantes de ambos cursos está entre 4,5 y 5,5, y es menor que 5,5.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

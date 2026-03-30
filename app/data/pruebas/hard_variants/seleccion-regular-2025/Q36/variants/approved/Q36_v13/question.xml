@@ -1,0 +1,180 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q36_v13" title="Q36_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una biblioteca escolar planea comprar 25 libros de consulta y 40 libros de literatura para su colección.</p>
+    <p>Cada libro de consulta cuesta $5 200. Después de comparar precios, la bibliotecaria concluye que el precio máximo que puede pagar por cada libro de literatura es de $4 250 para que el costo total de la compra no supere cierto presupuesto total B (en pesos).</p>
+    <p>¿Cuál de las siguientes inecuaciones permite calcular el presupuesto B que debe destinar la biblioteca a esta compra, de manera que el costo total de los libros no exceda dicho presupuesto?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        
+        <m:math>
+          <m:mn>25</m:mn><m:mo>+</m:mo><m:mn>5200</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+          <m:mo>≤</m:mo>
+          <m:mi>B</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión suma 25 + 5 200 + 40 × 4 250 = 25 + 5 200 + 170 000 = 175 225. Pero el costo de 25 libros de consulta no es 25 + 5 200, sino 25 × 5 200 = 130 000. Por eso esta inecuación no representa el costo total de la compra.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+          <m:mo>≤</m:mo>
+          <m:mi>B</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El costo de los 25 libros de consulta es 25 × 5 200 = 130 000 y el costo máximo de los 40 libros de literatura es 40 × 4 250 = 170 000. Entonces el costo total máximo es 130 000 + 170 000 = 300 000, y para que no exceda el presupuesto debe cumplirse 25 × 5 200 + 40 × 4 250 ≤ B.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        
+        <m:math>
+          <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+          <m:mo>≥</m:mo>
+          <m:mi>B</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El costo total máximo es 25 × 5 200 + 40 × 4 250 = 130 000 + 170 000 = 300 000. Si se toma B = 290 000, esta opción queda 300 000 ≥ 290 000, lo que es verdadero; sin embargo, 300 000 supera 290 000, así que ese presupuesto no alcanza. Por eso esta inecuación no expresa que el costo total no exceda el presupuesto.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        
+        <m:math>
+          <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn><m:mo>·</m:mo><m:mi>B</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+          <m:mo>≤</m:mo>
+          <m:mi>B</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El presupuesto B no debe multiplicar el costo de los libros de consulta. Si B = 300 000, esta opción queda 25 × 5 200 × 300 000 + 40 × 4 250 ≤ 300 000, es decir, 39 000 000 000 + 170 000 ≤ 300 000, lo cual es falso. Sin embargo, 300 000 sí es exactamente el costo total máximo de la compra, así que esta expresión no modela el problema.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el costo de cada grupo de libros</strong></p>
+            <p>Los libros de consulta son 25 y cada uno cuesta $5 200. Entonces su costo total es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn>
+                <m:mo>=</m:mo><m:mn>130&#160;000</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Los libros de literatura son 40 y el precio máximo por cada uno es $4 250. Entonces su costo máximo total es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+                <m:mo>=</m:mo><m:mn>170&#160;000</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar ambos costos</strong></p>
+            <p>El costo total máximo de la compra es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>130&#160;000</m:mn><m:mo>+</m:mo><m:mn>170&#160;000</m:mn>
+                <m:mo>=</m:mo><m:mn>300&#160;000</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Traducir la condición “no exceda el presupuesto”</strong></p>
+            <p>Que el costo total no exceda el presupuesto significa que el costo total debe ser menor o igual que <m:math><m:mrow><m:mi>B</m:mi></m:mrow></m:math>.</p>
+            <p>Por lo tanto, la inecuación correcta es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>40</m:mn><m:mo>·</m:mo><m:mn>4250</m:mn>
+                <m:mo>≤</m:mo>
+                <m:mi>B</m:mi>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar las otras opciones</strong></p>
+            <p>La opción A usa <m:math><m:mrow><m:mn>25</m:mn><m:mo>+</m:mo><m:mn>5200</m:mn></m:mrow></m:math> en vez de <m:math><m:mrow><m:mn>25</m:mn><m:mo>·</m:mo><m:mn>5200</m:mn></m:mrow></m:math>, así que no calcula correctamente el costo de los 25 libros de consulta.</p>
+            <p>La opción C usa <m:math><m:mrow><m:mo>≥</m:mo></m:mrow></m:math>, pero eso permitiría presupuestos menores que el costo total. Por ejemplo, con <m:math><m:mrow><m:mi>B</m:mi><m:mo>=</m:mo><m:mn>290&#160;000</m:mn></m:mrow></m:math>, se cumple <m:math><m:mrow><m:mn>300&#160;000</m:mn><m:mo>≥</m:mo><m:mn>290&#160;000</m:mn></m:mrow></m:math>, aunque el presupuesto no alcanza.</p>
+            <p>La opción D multiplica por <m:math><m:mrow><m:mi>B</m:mi></m:mrow></m:math> el costo de los libros de consulta, y eso no corresponde al modelo del problema.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

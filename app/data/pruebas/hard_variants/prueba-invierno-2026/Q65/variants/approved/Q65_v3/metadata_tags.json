@@ -1,0 +1,153 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-PROB-04-02",
+      "relevance": "primary",
+      "reasoning": "Además de comprender el concepto, el estudiante debe calcular numéricamente la probabilidad de un evento simple (puntaje negativo), contando resultados posibles y favorables y expresando la probabilidad como fracción simplificada.",
+      "atom_title": "Cálculo de probabilidad de un evento simple",
+      "atom_eje": "probabilidad_y_estadistica",
+      "atom_standard": "M1-PROB-04"
+    },
+    {
+      "atom_id": "A-M1-ALG-01-01",
+      "relevance": "secondary",
+      "reasoning": "Se requiere traducir la regla verbal del juego ('el puntaje está dado por c−2s, donde c y s son caras y sellos') a una expresión algebraica operativa y usarla para determinar en qué casos el puntaje es negativo.",
+      "atom_title": "Traducción bidireccional entre lenguaje natural y algebraico",
+      "atom_eje": "algebra_y_funciones",
+      "atom_standard": "M1-ALG-01"
+    }
+  ],
+  "general_analysis": "La pregunta exige modelar un experimento aleatorio sencillo (tres monedas), identificar todas las combinaciones posibles de resultados y, usando la expresión algebraica c−2s, determinar para cuáles de ellas el puntaje es negativo. Luego se debe calcular la probabilidad como razón entre casos favorables y totales y elegir la fracción correcta entre las opciones dadas. Involucra conteo sistemático de resultados equiprobables y aplicación directa de la definición clásica de probabilidad.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.55,
+    "analysis": "El problema exige modelar una situación aleatoria con tres monedas, identificar todas las combinaciones posibles de resultados y relacionarlas con una expresión algebraica (c−2s). No basta con aplicar una fórmula directa: el estudiante debe traducir el contexto a casos (número de caras y sellos), calcular el puntaje en cada caso y luego determinar en cuáles el puntaje es negativo. Esto implica razonamiento combinatorio básico, interpretación de una expresión algebraica y análisis de casos, por lo que supera un simple procedimiento rutinario, pero sigue siendo un problema estándar de probabilidad discreta de un solo experimento."
+  },
+  "validation": {},
+  "habilidad_principal": {
+    "habilidad_principal": "RES",
+    "justificacion": "El estudiante debe calcular la probabilidad aplicando procedimientos conocidos: enumerar resultados posibles, evaluar la expresión c−2s en cada caso y determinar la razón casos favorables/casos totales. Predomina la ejecución de técnicas de conteo y probabilidad, más que la formulación del modelo."
+  },
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-02"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de probabilidad de un evento simple"
+    ],
+    "family_id": "simple_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "favorable_case_check",
+        "description": "Mantener el mismo espacio muestral simple y pedir reconocer qué opción representa correctamente los casos favorables o la probabilidad resultante.",
+        "required_changes": [
+          "Nueva presentación del espacio muestral",
+          "Distractores de conteo simple plausibles"
+        ],
+        "forbidden_changes": [
+          "Introducir dependencia/condicionalidad",
+          "Subirlo a combinatoria más compleja"
+        ]
+      },
+      {
+        "shape_id": "probability_statement_selection",
+        "description": "Plantear varias afirmaciones simples sobre la probabilidad del evento y pedir seleccionar la correcta dentro del mismo espacio muestral clásico.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación",
+          "Distractores que confunden casos favorables y posibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar a probabilidad condicional",
+          "Agregar más de un nivel de selección"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "simple_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=simple_probability",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "source_info": {
+    "source_question_id": "Q65",
+    "source_test_id": "prueba-invierno-2026",
+    "change_description": "Reemplacé el escenario de lanzamiento de tres monedas y la expresión simbólica c−2s por un juego con una urna que contiene fichas rojas y azules en igual cantidad. Se extraen 3 fichas con reemplazo y el puntaje se define verbalmente: cada roja vale +1 punto y cada azul −2 puntos. Se pregunta la probabilidad de obtener un puntaje estrictamente mayor que 0. El estudiante debe relacionar el número de fichas de cada color con el puntaje, determinar para qué distribuciones de rojas/azules el puntaje es positivo (en este caso solo cuando las tres son rojas) y luego contar las combinaciones favorables dentro de las 8 secuencias equiprobables, manteniendo el mismo tipo de probabilidad simple por conteo pero con una representación menos mecanizable. La respuesta correcta cambia a 1/8."
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion"
+    ],
+    "main_risk_checked": "Verifiqué que el espacio muestral sigue siendo de 8 secuencias equiprobables, que no introduje probabilidad condicional ni combinatoria adicional y que la tarea sigue siendo identificar casos favorables frente a posibles en un modelo clásico."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "planning_blueprint": {
+    "variant_id": "Q65_v3",
+    "scenario_description": "Se describe una urna con fichas rojas y azules en igual cantidad. Se extraen 3 fichas con reemplazo, de modo que cada extracción tiene probabilidad 1/2 de ser roja y 1/2 de ser azul, e independientes. La regla de puntaje se da en forma verbal: cada ficha roja suma 2 puntos y cada ficha azul resta 1 punto. Se pregunta directamente: «¿Cuál es la probabilidad de terminar con un puntaje estrictamente mayor que 0 al extraer las 3 fichas?» con alternativas numéricas de probabilidad.\nEl estudiante debe entender la correspondencia entre número de fichas de cada color y el puntaje total, relacionarlo con las 8 combinaciones equiprobables de rojas/azules y determinar qué combinaciones producen un puntaje positivo.",
+    "non_mechanizable_axes": [
+      "representacion"
+    ],
+    "required_reasoning": "Aunque el espacio muestral sigue siendo 2^3, ya no se trabaja con monedas ni con una fórmula simbólica dada. El estudiante tiene que construir mentalmente la relación entre el conteo de rojas/azules y el puntaje (2R − B), determinar para qué distribuciones de colores el total es positivo y solo entonces contar los casos favorables. Esto desalienta la repetición de un patrón c−2s y exige comprender por qué y cómo se cuentan los casos.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "favorable_case_check"
+  },
+  "postprocess_summary": {
+    "presentation_normalized": false,
+    "family_repaired": false,
+    "entities_normalized": false,
+    "correct_declaration_synced": true,
+    "qti_canonicalized": true,
+    "choice_identifiers_stripped": false,
+    "comments_stripped": false
+  }
+}

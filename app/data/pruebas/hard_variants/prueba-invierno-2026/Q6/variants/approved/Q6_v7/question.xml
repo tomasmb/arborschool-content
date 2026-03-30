@@ -1,0 +1,210 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v7" title="Q6_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un juego de cartas, cada carta roja suma 2 puntos y cada carta negra resta 2 puntos.</p>
+    <p>Un jugador participa en tres manos distintas.</p>
+    <p>En la mano 1 obtiene 4 cartas rojas y 3 cartas negras; en la mano 2 obtiene 5 cartas rojas y 1 carta negra; y en la mano 3 obtiene 2 cartas rojas y 4 cartas negras.</p>
+    <p>La siguiente imagen resume las cartas obtenidas en cada mano.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Tabla con tres columnas tituladas Mano 1, Mano 2 y Mano 3, y dos filas: Cartas rojas y Cartas negras. Mano 1: 4 cartas rojas y 3 negras; Mano 2: 5 rojas y 1 negra; Mano 3: 2 rojas y 4 negras." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa el puntaje total del jugador en las tres manos?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>4</m:mn><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>+</m:mo><m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>·</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>−</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>3</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>4</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión calcula <m:math><m:mrow><m:mo>(</m:mo><m:mn>11</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>−</m:mo><m:mn>8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>22</m:mn><m:mo>−</m:mo><m:mn>8</m:mn><m:mo>=</m:mo><m:mn>14</m:mn></m:mrow></m:math>. Pero cada carta negra resta 2 puntos, así que las 8 cartas negras deben aportar <m:math><m:mrow><m:mn>8</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>-16</m:mn></m:mrow></m:math>. El puntaje total correcto es <m:math><m:mrow><m:mn>22</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-16</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>6</m:mn></m:mrow></m:math>, no 14.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Esta expresión representa cada mano por separado usando que cada roja vale <m:math><m:mrow><m:mn>2</m:mn></m:mrow></m:math> y cada negra vale <m:math><m:mrow><m:mn>-2</m:mn></m:mrow></m:math>. Mano 1: <m:math><m:mrow><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-6</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math>; mano 2: <m:math><m:mrow><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>10</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math>; mano 3: <m:math><m:mrow><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>-4</m:mn></m:mrow></m:math>. Total: <m:math><m:mrow><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>6</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>−</m:mo>
+            <m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>−</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>−</m:mo>
+            <m:mn>4</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En esta expresión a cada carta negra se le resta solo 1 punto. Por ejemplo, en la mano 1 aparece <m:math><m:mrow><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>8</m:mn><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math>, pero como cada negra resta 2 puntos, la mano 1 debe valer <m:math><m:mrow><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-6</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math>. Además, toda la opción da <m:math><m:mrow><m:mo>(</m:mo><m:mn>8</m:mn><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>10</m:mn><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>5</m:mn><m:mo>+</m:mo><m:mn>9</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>14</m:mn></m:mrow></m:math>, no 6.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>1</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión suma 2 puntos tanto por las cartas rojas como por las negras. Por ejemplo, en la mano 3 calcula <m:math><m:mrow><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>=</m:mo><m:mn>12</m:mn></m:mrow></m:math>, pero como cada negra resta 2 puntos, la mano 3 debe valer <m:math><m:mrow><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>-4</m:mn></m:mrow></m:math>. Además, toda la opción suma <m:math><m:mrow><m:mo>(</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>10</m:mn><m:mo>+</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>14</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>=</m:mo><m:mn>38</m:mn></m:mrow></m:math>, no 6.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el valor de cada tipo de carta</strong></p>
+            <p>Cada carta roja suma <m:math><m:mrow><m:mn>2</m:mn></m:mrow></m:math> puntos y cada carta negra resta <m:math><m:mrow><m:mn>2</m:mn></m:mrow></m:math> puntos, es decir, cada carta negra aporta <m:math><m:mrow><m:mn>-2</m:mn></m:mrow></m:math> puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir el puntaje de cada mano</strong></p>
+            <p>Mano 1: 4 cartas rojas y 3 cartas negras.</p>
+            <p><m:math><m:mrow><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-6</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math></p>
+            <p>Mano 2: 5 cartas rojas y 1 carta negra.</p>
+            <p><m:math><m:mrow><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>10</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math></p>
+            <p>Mano 3: 2 cartas rojas y 4 cartas negras.</p>
+            <p><m:math><m:mrow><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-8</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>-4</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar los puntajes de las tres manos</strong></p>
+            <p><m:math><m:mrow><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>-4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>6</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La expresión que representa exactamente ese cálculo es:</p>
+            <p><m:math><m:mrow><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>)</m:mo><m:mo>+</m:mo><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mo>·</m:mo><m:mn>-2</m:mn><m:mo>)</m:mo></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

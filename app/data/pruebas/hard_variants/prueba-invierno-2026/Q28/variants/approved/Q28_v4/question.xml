@@ -1,0 +1,182 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q28_v4" title="Q28_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente ficha se registra la mezcla recomendada para preparar hormigón:</p>
+    <p>
+      Mezcla recomendada (por preparación):<br />
+      Arena: 3 sacos<br />
+      Cemento: 2 sacos<br />
+      Esto corresponde a la razón
+      <m:math>
+        <m:mrow>
+          <m:mn>3</m:mn><m:mo>:</m:mo><m:mn>2</m:mn>
+        </m:mrow>
+      </m:math>
+      (arena : cemento).
+    </p>
+    <p>
+      Se desea preparar una mezcla usando
+      <m:math>
+        <m:mrow>
+          <m:mn>8</m:mn>
+        </m:mrow>
+      </m:math>
+      sacos de cemento, manteniendo la misma proporción de arena y cemento indicada en la ficha.
+      
+      ¿Cuál de las siguientes combinaciones de <em>(cemento, arena)</em> mantiene la proporción recomendada?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        (8 sacos de cemento, 16 sacos de arena)
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La razón recomendada es arena : cemento = 3 : 2. Si hay 8 sacos de cemento, la cantidad de arena debe ser 8 × 3 ÷ 2 = 12 sacos. Esta opción propone 16 sacos de arena. Además, 16 : 8 = 2 : 1, y 2 : 1 no es igual a 3 : 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        (8 sacos de cemento, 12 sacos de arena)
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La razón recomendada es arena : cemento = 3 : 2. Si el cemento pasa de 2 a 8 sacos, se multiplica por 4. Entonces la arena también debe multiplicarse por 4: 3 × 4 = 12 sacos. Además, 12 : 8 se simplifica dividiendo por 4 y queda 3 : 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        (8 sacos de cemento, 6 sacos de arena)
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La razón recomendada es arena : cemento = 3 : 2. Si hay 8 sacos de cemento, la arena debe ser 8 × 3 ÷ 2 = 12 sacos. Esta opción propone solo 6 sacos de arena. Además, 6 : 8 se simplifica a 3 : 4, y 3 : 4 no es igual a 3 : 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        (8 sacos de cemento, 9 sacos de arena)
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La razón recomendada es arena : cemento = 3 : 2. Si hay 8 sacos de cemento, la arena debe ser 8 × 3 ÷ 2 = 12 sacos. Esta opción propone 9 sacos de arena. Además, 9 : 8 no es igual a 3 : 2, porque 9 × 2 = 18 y 8 × 3 = 24, y 18 ≠ 24.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: uso de una razón equivalente</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la proporción dada</strong></p>
+            <p>La ficha indica:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>3</m:mn><m:mo>:</m:mo><m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+              = arena : cemento
+            </p>
+            <p>Eso significa que por cada 2 sacos de cemento se usan 3 sacos de arena.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar la cantidad de cemento</strong></p>
+            <p>La mezcla base usa 2 sacos de cemento y el problema pide 8 sacos de cemento.</p>
+            <p>Calculamos por cuánto se multiplicó el cemento:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>8</m:mn><m:mo>÷</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces toda la razón debe multiplicarse por 4.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular la cantidad de arena</strong></p>
+            <p>Si la arena original es 3 sacos, entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>3</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Se necesitan 12 sacos de arena.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar las opciones</strong></p>
+            <p><em>Opción A:</em> 16 sacos de arena. No coincide con 12.</p>
+            <p><em>Opción B:</em> 12 sacos de arena. Sí coincide.</p>
+            <p><em>Opción C:</em> 6 sacos de arena. No coincide con 12.</p>
+            <p><em>Opción D:</em> 9 sacos de arena. No coincide con 12.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La combinación que mantiene la proporción recomendada es:</p>
+            <p><strong>(8 sacos de cemento, 12 sacos de arena)</strong></p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

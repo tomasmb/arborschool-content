@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q54_v14",
+  "source_question_id": "Q54",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q54_v14",
+    "scenario_description": "El gráfico es de barras HORIZONTALES agrupadas por noche de turno (noche 1 a noche 5) para cuatro enfermeras (Alicia, Beatriz, Carmen y Daniela). En el eje vertical aparecen las noches y en el eje horizontal la 'Cantidad de pacientes atendidos por noche', de 0 a 15. No se dibuja línea de meta; el texto indica que 'La meta del hospital es que cada enfermera atienda al menos 8 pacientes por noche'. Además se define: 'Se considera que una enfermera tuvo una semana completa si alcanzó la meta en por lo menos 3 de las 5 noches'. La pregunta es: 'Según el gráfico, ¿qué enfermera tuvo una semana completa?'. Los datos aseguran que solo una cumple la condición de tener 3 o más noches con barras de 8 o más pacientes.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "Para responder es necesario primero identificar, en cada enfermera, cuáles noches cumplen la condición de 8 o más pacientes, basándose solo en la escala del eje y sin una línea de referencia dibujada. Luego, el estudiante debe traducir 'por lo menos 3 de las 5 noches' en un conteo mínimo de noches y comparar ese número con el de cada enfermera. Esto fuerza a comprender la formulación verbal de la condición (definición de 'semana completa') y no simplemente a escoger quien parece tener barras más largas en general.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Gráfico de barras horizontales agrupadas por noche de turno (1 a 5) para cuatro enfermeras (Alicia, Beatriz, Carmen y Daniela). Eje horizontal con escala de 0 a 15 pacientes atendidos. No hay línea de meta; la referencia de 8 pacientes está solo en el texto.",
+    "selected_shape_id": "single_series_visual_claim"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué no introducir cálculos adicionales ni comparaciones porcentuales: la respuesta sigue dependiendo solo de leer el gráfico horizontal, aplicar un umbral fijo y contar noches, manteniendo la representación como evidencia primaria."
+  },
+  "generator_declared_correct_identifier": "ChoiceD",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

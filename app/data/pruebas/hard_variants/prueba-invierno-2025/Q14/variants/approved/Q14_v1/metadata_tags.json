@@ -1,0 +1,175 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-PROB-01-18",
+      "relevance": "primary",
+      "reasoning": "La pregunta requiere que el estudiante analice una infografía (representación gráfica de datos) para evaluar la veracidad de varias afirmaciones derivadas de la información visual y numérica presentada.",
+      "atom_title": "Evaluación de afirmaciones basadas en datos",
+      "atom_eje": "probabilidad_y_estadistica",
+      "atom_standard": "M1-PROB-01"
+    },
+    {
+      "atom_id": "A-M1-NUM-02-12",
+      "relevance": "secondary",
+      "reasoning": "Las opciones de respuesta involucran la interpretación lógica de porcentajes, requiriendo distinguir entre el porcentaje del total y el porcentaje de un subgrupo (base del porcentaje), habilidad específica descrita en este átomo.",
+      "atom_title": "Evaluación de la validez de afirmaciones con porcentajes",
+      "atom_eje": "numeros",
+      "atom_standard": "M1-NUM-02"
+    }
+  ],
+  "general_analysis": "La pregunta demanda habilidades de alfabetización estadística y numérica. El estudiante debe decodificar la estructura jerárquica de la infografía (entender que los porcentajes de glaciares, acuíferos y ríos suman el 100% del 'Agua Dulce', la cual es a su vez solo el 2,5% del total). La resolución implica comparar magnitudes porcentuales y validar afirmaciones textuales contra la evidencia gráfica, evitando errores comunes de interpretación de la base de los porcentajes.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.6,
+    "analysis": "La pregunta presenta una demanda cognitiva media porque requiere interpretar un gráfico con información jerarquizada (porcentajes anidados). El estudiante no solo debe leer datos explícitos, sino comprender que los porcentajes de la derecha (69,7%, 30%, 0,3%) son subconjuntos del 2,5% de 'Agua Dulce' y no del total global. Esto implica habilidades de interpretación de gráficos, comparación de magnitudes y comprensión de la relación parte-todo en contextos estadísticos."
+  },
+  "validation": {},
+  "habilidad_principal": {
+    "habilidad_principal": "ARG",
+    "justificacion": "El estudiante debe evaluar la veracidad de distintas afirmaciones analizando la información de la infografía, comparando magnitudes y detectando errores de interpretación sobre la base de los porcentajes (agua total vs. agua dulce)."
+  },
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "argumentation_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "claim_archetype_switch",
+        "description": "Mantener la evaluación de afirmaciones, pero cambiar el arquetipo semántico de la afirmación correcta respecto de la fuente.",
+        "required_changes": [
+          "Nuevo arquetipo de afirmación correcta",
+          "Distractores coherentes con el nuevo arquetipo"
+        ],
+        "forbidden_changes": [
+          "Repetir la misma afirmación correcta con números nuevos",
+          "Convertirlo en cálculo directo"
+        ]
+      },
+      {
+        "shape_id": "false_claim_hunt",
+        "description": "Invertir la polaridad local de las opciones para pedir identificar la afirmación incorrecta dentro del mismo conjunto de datos o evidencia.",
+        "required_changes": [
+          "Polaridad local de la pregunta",
+          "Reescritura completa de opciones"
+        ],
+        "forbidden_changes": [
+          "Cambiar el dataset o la evidencia por cálculo puro",
+          "Eliminar la lectura argumentativa"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.6,
+    "task_form": "claim_evaluation",
+    "operation_signature": "argumentation_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": false,
+    "claim_evaluation": true,
+    "cognitive_action": "evaluate_claims",
+    "solution_structure": "data_to_claim_check",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "explicit_dataset_and_claims",
+    "explicit_dataset_policy": "required",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "combined_subgroups_vs_main_group",
+      "wrong_percentage_base_operation",
+      "subgroup_vs_total_confusion"
+    ],
+    "correct_claim_archetype": "largest_subgroup_identification",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=claim_evaluation",
+      "operation_signature=argumentation_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_claim_evaluation",
+      "must_include_explicit_dataset",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "source_info": {
+    "source_question_id": "Q14",
+    "source_test_id": "prueba-invierno-2025",
+    "change_description": "Reemplacé la infografía por un texto continuo que presenta los mismos porcentajes y cambié la afirmación correcta al arquetipo de comparación entre dos subgrupos dentro del agua dulce (30 % en acuíferos vs 0,3 % en ríos y arroyos). Los distractores mantienen los arquetipos: (A) suma de subgrupos de agua dulce comparada indebidamente con el total de agua salada, (C) operación errónea de multiplicar porcentajes, y (D) confusión entre porcentaje de un subgrupo de agua dulce y porcentaje del total del planeta."
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué no convertir la tarea en un cálculo directo: el estudiante sigue evaluando afirmaciones a partir de un conjunto de datos porcentuales explícitos, ahora en texto, comparando correctamente subgrupos y detectando bases de referencia distintas en los distractores."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "planning_blueprint": {
+    "variant_id": "Q14_v1",
+    "scenario_description": "Se presenta la misma información de distribución del agua en la Tierra, pero en formato de texto continuo en lugar de infografía. Por ejemplo: \"Del total de agua del planeta, el 97,5% es agua salada y el 2,5% es agua dulce. Del agua dulce, el 69,7% se encuentra en glaciares, el 30% en acuíferos subterráneos y el 0,3% en ríos y arroyos. Solo el 0,007% del agua total del planeta está disponible directamente para el consumo humano\". A partir de este texto, se pide identificar la afirmación verdadera. La afirmación correcta YA NO es del tipo 'el grupo más grande es...', sino una comparación puntual entre dos subgrupos (por ejemplo, \"Dentro del agua dulce, hay más agua almacenada en acuíferos que circulando en ríos y arroyos\"), que exige leer los porcentajes 30% y 0,3% y compararlos correctamente. Los distractores se construyen manteniendo los arquetipos de error: (i) uno que compara erróneamente la suma de glaciares y acuíferos con el total de agua salada (combined_subgroups_vs_main_group), (ii) uno que propone multiplicar 0,3 por 0,007 para hallar agua disponible en ríos (wrong_percentage_base_operation), y (iii) uno que interpreta el 0,3% de ríos como porcentaje del total del agua del planeta (subgroup_vs_total_confusion). De este modo se cambia el arquetipo semántico de la afirmación correcta, pero se conservan los mismos tipos de errores conceptuales en los distractores.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe comprender qué significan los porcentajes y sobre qué totalidad se calculan (total de agua vs solo agua dulce). Para validar la afirmación correcta tiene que identificar qué porcentajes pertenecen a subgrupos de 'agua dulce' y compararlos (30% vs 0,3%), no basta con reconocer visualmente el sector más grande de un gráfico. Para descartar los distractores debe detectar errores de base (comparar porcentajes calculados sobre totales distintos o combinarlos indebidamente), lo que obliga a entender por qué no se pueden sumar ni comparar ciertos porcentajes sin considerar el conjunto de referencia.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "claim_archetype_switch"
+  },
+  "postprocess_summary": {
+    "presentation_normalized": false,
+    "family_repaired": false,
+    "entities_normalized": false,
+    "correct_declaration_synced": true,
+    "qti_canonicalized": true,
+    "choice_identifiers_stripped": false,
+    "comments_stripped": false
+  },
+  "semantic_validation": {
+    "verdict": "APROBADA",
+    "concept_aligned": true,
+    "difficulty_equal": true,
+    "difficulty_acceptable": true,
+    "answer_correct": true,
+    "non_mechanizable": true,
+    "calculation_steps": "Datos del enunciado:\n- Agua salada: 97,5 % del total.\n- Agua dulce: 2,5 % del total.\n  Dentro del agua dulce:\n  - Glaciares: 69,7 % del agua dulce.\n  - Acuíferos: 30 % del agua dulce.\n  - Ríos y arroyos: 0,3 % del agua dulce.\n- Agua disponible directamente para consumo humano: 0,007 % del total.\n\nRevisión de cada opción:\n\nOpción A: \"Si se suman los porcentajes de agua dulce almacenada en glaciares y acuíferos, se obtiene un porcentaje mayor que el de agua salada del planeta.\"\n- Dentro del agua dulce: 69,7 % + 30 % = 99,7 % del agua dulce.\n- Pero el enunciado compara con \"el de agua salada del planeta\" (97,5 % del total), por lo que hay que comparar sobre el total del agua:\n  - Glaciares respecto del total: 2,5 % · 69,7 % = 0,025 · 0,697 = 0,017425 = 1,7425 % del total.\n  - Acuíferos respecto del total: 2,5 % · 30 % = 0,025 · 0,30 = 0,0075 = 0,75 % del total.\n  - Suma glaciares + acuíferos: 1,7425 % + 0,75 % = 2,4925 % del total.\n- 2,4925 % < 97,5 % ⇒ la afirmación es falsa.\n\nOpción B: \"Dentro del agua dulce, hay más agua almacenada en acuíferos que circulando en ríos y arroyos.\"\n- Acuíferos: 30 % del agua dulce.\n- Ríos y arroyos: 0,3 % del agua dulce.\n- Como 30 > 0,3, entonces dentro del agua dulce hay más agua en acuíferos que en ríos y arroyos.\n- La afirmación es verdadera.\n\nOpción C: \"Para calcular qué porcentaje del agua del planeta corresponde al agua de ríos y arroyos disponible para consumo humano, se debe realizar la operación 0,3 · 0,007.\"\n- 0,3 (escrito así) representa 30 %, pero el dato del problema es 0,3 %, es decir 0,003 como fracción.\n- Además, 0,007 % es la fracción de TODO el agua que está disponible para consumo humano, no específicamente la parte proveniente de ríos y arroyos.\n- La operación correcta para \"ríos y arroyos respecto del total\" ni siquiera se plantea así; debería considerar 2,5 % (agua dulce), luego 0,3 % (ríos dentro del agua dulce), etc.\n- La afirmación es falsa.\n\nOpción D: \"Los ríos y arroyos representan el 0,3 % de toda el agua del planeta.\"\n- 0,3 % es la parte de los ríos y arroyos respecto del agua dulce, no respecto del total.\n- Porcentaje de ríos y arroyos respecto del total:\n  - Agua dulce: 2,5 % = 0,025 del total.\n  - Ríos y arroyos dentro del agua dulce: 0,3 % = 0,003.\n  - Producto: 0,025 · 0,003 = 0,000075 = 0,0075 % del total.\n- 0,0075 % ≠ 0,3 %, luego la afirmación es falsa.\n\nResultado: La única afirmación verdadera es: \"Dentro del agua dulce, hay más agua almacenada en acuíferos que circulando en ríos y arroyos.\", que coincide con la respuesta marcada.",
+    "rejection_reason": ""
+  }
+}

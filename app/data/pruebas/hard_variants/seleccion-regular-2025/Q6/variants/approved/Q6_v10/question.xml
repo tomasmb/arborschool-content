@@ -1,0 +1,209 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v10" title="Q6_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos sistemas de riego automáticos se encienden al mismo tiempo. Cada uno alterna tiempos de riego y de descanso, según se describe a continuación:</p>
+    <ul>
+      <li>El sistema 1 riega durante 4 minutos y luego se detiene 1 minuto antes de volver a regar; repite este ciclo 15 veces.</li>
+      <li>El sistema 2 riega durante 3 minutos y descansa 30 segundos; repite este ciclo 20 veces.</li>
+    </ul>
+    <p>Para comparar durante cuánto tiempo total está funcionando cada sistema, es necesario representar correctamente el tiempo total de funcionamiento de un sistema. ¿Cuál de las siguientes descripciones de cálculo corresponde a ese tiempo total?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Multiplicar solo el tiempo que riega cada vez por la cantidad de ciclos que realiza.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ese cálculo no representa el tiempo total de funcionamiento del sistema, porque omite el tiempo de descanso de cada ciclo. Por ejemplo, en el sistema 1 se obtiene 4 × 15 = 60 minutos, pero un ciclo completo dura 4 + 1 = 5 minutos, así que el tiempo total es 5 × 15 = 75 minutos. Como 60 ≠ 75, esta descripción no corresponde al tiempo total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Multiplicar solo el tiempo de descanso de cada ciclo por la cantidad total de ciclos.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Ese cálculo solo entrega el tiempo acumulado de descanso, no el tiempo total de funcionamiento del sistema. Por ejemplo, en el sistema 1 se obtiene 1 × 15 = 15 minutos, pero el ciclo completo dura 4 + 1 = 5 minutos y el tiempo total es 5 × 15 = 75 minutos. Como 15 ≠ 75, esta descripción no corresponde al tiempo total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Sumar el tiempo que riega, el tiempo de descanso de un ciclo y la cantidad de ciclos, sin hacer más operaciones.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Sumar tiempo de riego, tiempo de descanso y número de ciclos no representa el tiempo total, porque la cantidad de ciclos debe multiplicar la duración de cada ciclo. Por ejemplo, en el sistema 1 se obtiene 4 + 1 + 15 = 20, pero el tiempo total correcto es (4 + 1) × 15 = 75 minutos. Como 20 ≠ 75, esta descripción no corresponde al tiempo total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Sumar el tiempo que dura un ciclo completo de riego (tiempo de riego más tiempo de descanso) y multiplicar esa suma por la cantidad de ciclos que realiza el sistema.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Si un ciclo completo dura tiempo de riego + tiempo de descanso, entonces al repetir ese mismo ciclo varias veces el tiempo total se calcula como (tiempo de riego + tiempo de descanso) × cantidad de ciclos. Por ejemplo, en el sistema 1: (4 + 1) × 15 = 5 × 15 = 75 minutos. En el sistema 2: (3 + 0,5) × 20 = 3,5 × 20 = 70 minutos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué forma un ciclo completo</strong></p>
+            <p>Cada sistema alterna un tiempo de riego y un tiempo de descanso. Por lo tanto, un ciclo completo está formado por:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>tiempo de un ciclo</mtext>
+                  <mo>=</mo>
+                  <mtext>tiempo de riego</mtext>
+                  <mo>+</mo>
+                  <mtext>tiempo de descanso</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Expresar el tiempo total de funcionamiento</strong></p>
+            <p>Si ese ciclo completo se repite varias veces, el tiempo total se obtiene multiplicando la duración de un ciclo por la cantidad de ciclos:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>tiempo total</mtext>
+                  <mo>=</mo>
+                  <mo>(</mo>
+                  <mtext>tiempo de riego</mtext>
+                  <mo>+</mo>
+                  <mtext>tiempo de descanso</mtext>
+                  <mo>)</mo>
+                  <mo>×</mo>
+                  <mtext>cantidad de ciclos</mtext>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con el sistema 1</strong></p>
+            <p>Un ciclo del sistema 1 dura:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                  <mo>=</mo>
+                  <mn>5</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Como repite 15 ciclos, el tiempo total es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>(</mo>
+                  <mn>4</mn>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                  <mo>)</mo>
+                  <mo>×</mo>
+                  <mn>15</mn>
+                  <mo>=</mo>
+                  <mn>5</mn>
+                  <mo>×</mo>
+                  <mn>15</mn>
+                  <mo>=</mo>
+                  <mn>75</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Esto muestra que no basta considerar solo el riego ni solo el descanso.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con el sistema 2</strong></p>
+            <p>Primero, 30 segundos equivalen a 0,5 minutos.</p>
+            <p>Entonces un ciclo del sistema 2 dura:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>3</mn>
+                  <mo>+</mo>
+                  <mn>0,5</mn>
+                  <mo>=</mo>
+                  <mn>3,5</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Como repite 20 ciclos, el tiempo total es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>(</mo>
+                  <mn>3</mn>
+                  <mo>+</mo>
+                  <mn>0,5</mn>
+                  <mo>)</mo>
+                  <mo>×</mo>
+                  <mn>20</mn>
+                  <mo>=</mo>
+                  <mn>3,5</mn>
+                  <mo>×</mo>
+                  <mn>20</mn>
+                  <mo>=</mo>
+                  <mn>70</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La descripción correcta es sumar el tiempo de riego y el tiempo de descanso de un ciclo, y luego multiplicar esa suma por la cantidad de ciclos.</p>
+            <p>Por eso, la alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

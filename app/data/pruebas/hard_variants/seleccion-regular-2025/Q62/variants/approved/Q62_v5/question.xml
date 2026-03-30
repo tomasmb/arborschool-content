@@ -1,0 +1,119 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v5" title="Q62_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente imagen se muestra un tablero cuadriculado tipo batalla naval. En la parte superior se indican las columnas con las letras A, B, C, D, E y F, y en el costado izquierdo se indican las filas con los números del 1 al 6, de arriba hacia abajo.<br />
+      <img src="requiere_nueva_imagen.png" alt="Dibujar una cuadrícula de 6 columnas por 6 filas. Encima de las columnas escribir las letras A, B, C, D, E y F de izquierda a derecha. A la izquierda de las filas escribir los números 1, 2, 3, 4, 5 y 6 de arriba hacia abajo (la fila 1 en la parte superior, la 6 en la inferior). En la casilla donde se cruzan la columna C y la fila 5 dibujar una ficha con forma de barco y rotularla con la palabra 'Inicio'. En la casilla donde se cruzan la columna F y la fila 2 dibujar la misma ficha de barco y rotularla con la palabra 'Llegada'. No incluir otras fichas ni marcas adicionales." />
+    </p>
+    <p>¿Cuál de los siguientes desplazamientos describe el movimiento de la ficha desde la casilla de inicio hasta la casilla de llegada?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Trasladar la ficha 3 columnas hacia la derecha y 2 filas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Desde C hasta F hay 3 columnas hacia la derecha, pero desde la fila 5 hasta la fila 2 el cambio es 3 filas hacia arriba, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>3</mn></mrow></math>. Por eso “2 filas hacia arriba” no lleva a la casilla F2.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Trasladar la ficha 3 columnas hacia la derecha y 3 filas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La ficha parte en C5 y llega a F2. En columnas, de C a F se avanza C → D → E → F, es decir, 3 columnas hacia la derecha. En filas, de 5 a 2 se sube 3 filas, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>3</mn></mrow></math>. Por lo tanto, el desplazamiento correcto es 3 columnas hacia la derecha y 3 filas hacia arriba.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Trasladar la ficha 3 columnas hacia la derecha y 3 filas hacia abajo.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Desde C hasta F sí hay 3 columnas hacia la derecha, pero para pasar de la fila 5 a la fila 2 no se baja, sino que se sube 3 filas, porque la numeración va de arriba hacia abajo y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>3</mn></mrow></math>. Si se bajaran 3 filas desde la fila 5, se llegaría a la fila 8, que no corresponde a la llegada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Trasladar la ficha 2 columnas hacia la derecha y 3 filas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Desde la columna C hasta la columna F se avanza C → D → E → F, lo que corresponde a 3 columnas hacia la derecha, no 2. En cambio, 2 columnas hacia la derecha desde C llevan a E. Aunque 3 filas hacia arriba es correcto, esa opción terminaría en E2 y no en F2.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las posiciones</strong></p>
+            <p>La ficha de inicio está en C5 y la ficha de llegada está en F2.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Contar el desplazamiento horizontal</strong></p>
+            <p>Desde la columna C hasta la columna F se avanza así: C → D → E → F.</p>
+            <p>Eso corresponde a 3 columnas hacia la derecha.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar el desplazamiento vertical</strong></p>
+            <p>La fila inicial es 5 y la fila final es 2. Como las filas están numeradas de arriba hacia abajo, para pasar de 5 a 2 hay que subir.</p>
+            <p>La cantidad de filas es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>3</mn></mrow></math>.</p>
+            <p>Entonces, el movimiento vertical es 3 filas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Unir ambos desplazamientos</strong></p>
+            <p>El movimiento completo es: 3 columnas hacia la derecha y 3 filas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

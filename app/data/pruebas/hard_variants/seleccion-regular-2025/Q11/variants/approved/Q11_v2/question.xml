@@ -1,0 +1,118 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v2" title="Q11_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un curso, 8 estudiantes corresponden al 25 % del total de estudiantes matriculados. Se presentan las siguientes afirmaciones sobre el número total de estudiantes del curso. ¿Cuál de ellas describe correctamente ese total?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">En el curso hay 2 estudiantes en total.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si el total fuera 2, entonces el 25 % del curso sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mn>2</mn><mo>=</mo><mn>0,5</mn></mrow></math> estudiantes, y no 8. Por lo tanto, 2 no describe correctamente el total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En el curso hay 33 estudiantes en total.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si el total fuera 33, entonces el 25 % del curso sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mn>33</mn><mo>=</mo><mn>8,25</mn></mrow></math> estudiantes, y no 8. Por lo tanto, 33 no describe correctamente el total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">En el curso hay 32 estudiantes en total.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Si 8 estudiantes corresponden al 25 % del total, entonces el total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>÷</mo><mn>0,25</mn><mo>=</mo><mn>32</mn></mrow></math>. Además, se verifica que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mn>32</mn><mo>=</mo><mn>8</mn></mrow></math>. Por lo tanto, en el curso hay 32 estudiantes en total.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">En el curso hay 200 estudiantes en total.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el total fuera 200, entonces el 25 % del curso sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mn>200</mn><mo>=</mo><mn>50</mn></mrow></math> estudiantes, y no 8. Por lo tanto, 200 no describe correctamente el total.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar el 25 %</strong></p>
+            <p>El 25 % significa 25 de cada 100, es decir, la cuarta parte del total.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Plantear la relación</strong></p>
+            <p>Si 8 estudiantes corresponden al 25 % del total, entonces:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mtext>total</mtext><mo>=</mo><mn>8</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Despejar el total</strong></p>
+            <p>Dividimos ambos lados por 0,25:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>total</mtext><mo>=</mo><mn>8</mn><mo>÷</mo><mn>0,25</mn></mrow></math></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>total</mtext><mo>=</mo><mn>32</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar el resultado</strong></p>
+            <p>Calculamos el 25 % de 32:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,25</mn><mo>×</mo><mn>32</mn><mo>=</mo><mn>8</mn></mrow></math></p>
+            <p>La condición del problema se cumple exactamente.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es: en el curso hay 32 estudiantes en total.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,164 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v7" title="Q40_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      El vaciado de un reloj de arena se modela mediante la función
+      <m:math>
+        <m:mrow>
+          <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi>
+        </m:mrow>
+      </m:math>,
+      donde
+      <m:math>
+        <m:mrow>
+          <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>
+      representa la cantidad de gramos de arena que quedan en la parte superior y
+      <m:math>
+        <m:mrow>
+          <m:mi>t</m:mi>
+        </m:mrow>
+      </m:math>
+      es el número de minutos transcurridos desde que se da vuelta el reloj.
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>
+        En una ficha técnica se proponen las siguientes descripciones sobre el funcionamiento del reloj. ¿Cuál de ellas es coherente con el modelo indicado?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Cada minuto, la parte superior del reloj tiene 4 gramos más de arena que en el minuto anterior.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El modelo indica que la cantidad de arena disminuye 4 gramos por minuto. Por ejemplo, <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>476</m:mn></m:mrow></m:math>. Entonces, después de 1 minuto hay 476 gramos, no 484 gramos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        En cualquier intervalo de 5 minutos, la cantidad de arena en la parte superior disminuye siempre en 20 gramos.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En un intervalo de 5 minutos, la variación es <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>)</m:mo><m:mo>-</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>(</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>)</m:mo><m:mo>)</m:mo><m:mo>-</m:mo><m:mo>(</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>20</m:mn></m:mrow></m:math>. Eso prueba que siempre disminuye 20 gramos en cualquier intervalo de 5 minutos.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Al principio cae mucha arena, pero a medida que pasan los minutos la cantidad de arena que cae por minuto va disminuyendo.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El modelo es lineal y la tasa de cambio es constante: 4 gramos por minuto. Un contraejemplo concreto es comparar dos intervalos de 1 minuto. Entre <m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math>, la caída es <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>-</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>476</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math>. Entre <m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>50</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>51</m:mn></m:mrow></m:math>, la caída es <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>50</m:mn><m:mo>)</m:mo><m:mo>-</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>51</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>280</m:mn><m:mo>-</m:mo><m:mn>276</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math>. La cantidad que cae por minuto no va disminuyendo.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        El reloj tarda exactamente 4 minutos en vaciar por completo los 480 gramos de arena de la parte superior.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Para vaciarse por completo debe cumplirse <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>. Entonces <m:math><m:mrow><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, de donde <m:math><m:mrow><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>480</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>120</m:mn></m:mrow></m:math>. Además, a los 4 minutos quedan <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>4</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>464</m:mn></m:mrow></m:math> gramos.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la función</strong></p>
+            <p>La función es <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi></m:mrow></m:math>. El número 480 representa la cantidad inicial de arena en la parte superior, y el término <m:math><m:mrow><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi></m:mrow></m:math> indica que la cantidad disminuye a razón constante de 4 gramos por minuto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la alternativa A</strong></p>
+            <p>La alternativa A dice que cada minuto hay 4 gramos más que en el minuto anterior. Pero el modelo muestra lo contrario.</p>
+            <p><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>480</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>476</m:mn></m:mrow></m:math>. Baja 4 gramos, no sube 4 gramos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar la alternativa B</strong></p>
+            <p>Si pasan 5 minutos, la variación es:</p>
+            <p><m:math><m:mrow><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>)</m:mo><m:mo>-</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mo>(</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>)</m:mo><m:mo>)</m:mo><m:mo>-</m:mo><m:mo>(</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>)</m:mo></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mo>=</m:mo><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>-</m:mo><m:mn>20</m:mn><m:mo>-</m:mo><m:mn>480</m:mn><m:mo>+</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mo>-</m:mo><m:mn>20</m:mn></m:mrow></m:math></p>
+            <p>Eso significa que en cualquier intervalo de 5 minutos la cantidad de arena disminuye siempre en 20 gramos. Esta descripción sí es coherente con el modelo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar la alternativa C</strong></p>
+            <p>La alternativa C afirma que al principio cae más arena por minuto y después menos. Pero la tasa es constante.</p>
+            <p>Por ejemplo, del minuto 0 al 1 cae <m:math><m:mrow><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>476</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math> gramos. Del minuto 50 al 51 cae <m:math><m:mrow><m:mn>280</m:mn><m:mo>-</m:mo><m:mn>276</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math> gramos. No cambia la cantidad que cae por minuto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar la alternativa D</strong></p>
+            <p>Para saber cuándo se vacía por completo, se iguala la función a 0:</p>
+            <p><m:math><m:mrow><m:mn>480</m:mn><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mn>4</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>480</m:mn></m:mrow></m:math></p>
+            <p><m:math><m:mrow><m:mi>t</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>480</m:mn><m:mn>4</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>120</m:mn></m:mrow></m:math></p>
+            <p>El reloj tarda 120 minutos en vaciarse, no 4 minutos.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La descripción coherente con el modelo es la alternativa B: en cualquier intervalo de 5 minutos, la cantidad de arena en la parte superior disminuye siempre en 20 gramos.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,121 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v12" title="Q11_v12" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Registro del problema:</p><p>En una cinta transportadora del aeropuerto hay marcas pintadas cada 50 cm. Entre la puerta A y la puerta B hay exactamente 18 espacios iguales entre marcas. Un supervisor quiere contar con un procedimiento que permita decidir, para cualquier número n de espacios que ha avanzado una maleta, si esta ya se encuentra justo frente a alguna puerta del pasillo.</p>
+    <p>¿Cuál de los siguientes procedimientos es coherente con el objetivo planteado por el supervisor?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Procedimiento 1: Revisar que <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>900</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Entre dos puertas consecutivas hay 18 espacios de 50 cm, por lo tanto la distancia entre puertas es 50·18 = 900 cm. Si una maleta ha avanzado n espacios, entonces recorrió 50·n cm. Estará frente a una puerta exactamente cuando 50·n sea múltiplo de 900.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Procedimiento 2: Revisar que <m:math><m:mrow><m:mn>50</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>900</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La distancia recorrida después de avanzar n espacios es 50·n cm, no 50 + n. Un contraejemplo es n = 18: 50·18 = 900, así que la maleta sí queda frente a una puerta, pero 50 + 18 = 68 y 68 no es divisible por 900.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Procedimiento 3: Revisar que <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>50</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Para cualquier número entero n, el valor 50·n siempre es divisible por 50, así que este procedimiento diría que siempre está frente a una puerta. Eso es falso. Por ejemplo, si n = 1, entonces 50·1 = 50 es divisible por 50, pero 50 no es divisible por 900, así que todavía no está frente a otra puerta.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Procedimiento 4: Revisar que <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>1800</m:mn></m:math>.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La distancia entre puertas consecutivas es 900 cm, no 1 800 cm. Un contraejemplo es n = 18: 50·18 = 900, así que la maleta sí queda frente a una puerta, pero 900 no es divisible por 1 800. Este procedimiento deja fuera casos correctos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Determinar la distancia entre dos puertas consecutivas</strong></p>
+            <p>Las marcas están separadas por <m:math><m:mn>50</m:mn></m:math> cm y entre la puerta A y la puerta B hay <m:math><m:mn>18</m:mn></m:math> espacios.</p>
+            <p>Entonces la distancia entre esas puertas es:</p>
+            <p><m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mn>18</m:mn><m:mo>=</m:mo><m:mn>900</m:mn></m:mrow></m:math> cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Expresar la distancia recorrida por la maleta</strong></p>
+            <p>Si la maleta ha avanzado <m:math><m:mi>n</m:mi></m:math> espacios, y cada espacio mide <m:math><m:mn>50</m:mn></m:math> cm, entonces la distancia recorrida es:</p>
+            <p><m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Traducir la condición “estar justo frente a alguna puerta”</strong></p>
+            <p>Tomando una puerta como referencia, otra puerta aparece cada <m:math><m:mn>900</m:mn></m:math> cm.</p>
+            <p>Por lo tanto, la maleta estará frente a alguna puerta exactamente cuando la distancia recorrida sea un múltiplo de <m:math><m:mn>900</m:mn></m:math>, es decir, cuando:</p>
+            <p><m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>900</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar las alternativas</strong></p>
+            <p><strong>Opción A:</strong> pide revisar si <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> es divisible por <m:math><m:mn>900</m:mn></m:math>. Esto coincide exactamente con la condición del problema.</p>
+            <p><strong>Opción B:</strong> usa <m:math><m:mrow><m:mn>50</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:mrow></m:math>, pero eso no representa la distancia recorrida. Por ejemplo, si <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>18</m:mn></m:math>, entonces <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mn>18</m:mn><m:mo>=</m:mo><m:mn>900</m:mn></m:mrow></m:math>, pero <m:math><m:mrow><m:mn>50</m:mn><m:mo>+</m:mo><m:mn>18</m:mn><m:mo>=</m:mo><m:mn>68</m:mn></m:mrow></m:math>.</p>
+            <p><strong>Opción C:</strong> pide divisibilidad por <m:math><m:mn>50</m:mn></m:math>, pero <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> siempre es divisible por <m:math><m:mn>50</m:mn></m:math>. No permite decidir correctamente. Por ejemplo, con <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, se obtiene <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>50</m:mn></m:mrow></m:math>, que es divisible por <m:math><m:mn>50</m:mn></m:math>, pero no por <m:math><m:mn>900</m:mn></m:math>.</p>
+            <p><strong>Opción D:</strong> pide divisibilidad por <m:math><m:mn>1800</m:mn></m:math>, que corresponde a dos tramos de <m:math><m:mn>900</m:mn></m:math> cm. Así excluye casos válidos. Por ejemplo, <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>18</m:mn></m:math> da <m:math><m:mrow><m:mn>900</m:mn></m:mrow></m:math>, y <m:math><m:mrow><m:mn>900</m:mn></m:mrow></m:math> no es divisible por <m:math><m:mn>1800</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El procedimiento coherente es <strong>revisar que <m:math><m:mrow><m:mn>50</m:mn><m:mo>·</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por <m:math><m:mn>900</m:mn></m:math></strong>.</p>
+            <p>Por eso, la respuesta correcta es la <strong>alternativa A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

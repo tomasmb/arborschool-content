@@ -55,6 +55,7 @@ def build_generation_request(
     source: SourceQuestion,
     blueprint: VariantBlueprint,
     model: str = _DEFAULT_MODEL,
+    reasoning_effort: str = "medium",
 ) -> BatchRequest:
     """Build a BatchRequest for a single variant generation.
 
@@ -70,7 +71,7 @@ def build_generation_request(
         custom_id=custom_id,
         model=model,
         messages=build_text_messages(prompt),
-        reasoning_effort="medium",
+        reasoning_effort=reasoning_effort,
         response_format={"type": "json_object"},
         temperature=0.3,
     )

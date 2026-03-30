@@ -1,0 +1,188 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q60_v9" title="Q60_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un grupo de datos, la desviación de un dato se calcula como 
+      <m:math>
+        <m:mi>x</m:mi><m:mo>−</m:mo><m:mi>p</m:mi>
+      </m:math>,
+      tal que x es el dato y p es el promedio de los datos del grupo.
+    </p>
+    <p>
+      Un estudiante resuelve el mismo ejercicio cinco veces. En segundos, los tiempos de resolución están todos cercanos a un promedio 
+      <m:math>
+        <m:mi>p</m:mi>
+      </m:math>
+      de 
+      <m:math>
+        <m:mn>12,4</m:mn>
+      </m:math>.
+      Se sabe que en uno de los intentos el tiempo coincide exactamente con el promedio p y que la mediana de las desviaciones 
+      <m:math>
+        <m:mi>x</m:mi><m:mo>−</m:mo><m:mi>p</m:mi>
+      </m:math>
+      de esos cinco tiempos es 
+      <m:math>
+        <m:mn>0,02</m:mn>
+      </m:math>
+      segundos.
+    </p>
+    <p>
+      ¿Cuál de las siguientes listas de cinco tiempos (en segundos) podría corresponder a esos intentos?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">12,36; 12,38; 12,4; 12,42; 12,44<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta lista sí contiene 12,4, pero al ordenar los tiempos queda 12,36; 12,38; 12,4; 12,42; 12,44. El tercer valor es 12,4, por lo que la mediana de los tiempos es 12,4 y la mediana de las desviaciones es 12,4 − 12,4 = 0, no 0,02.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">12,36; 12,38; 12,38; 12,42; 12,46<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El enunciado dice que en uno de los intentos el tiempo coincide exactamente con el promedio 12,4. En esta lista no aparece 12,4, por lo tanto no puede corresponder a los cinco intentos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">12,32; 12,4; 12,42; 12,43; 12,43<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Esta lista contiene un tiempo igual a 12,4. Además, al ordenar los tiempos queda 12,32; 12,4; 12,42; 12,43; 12,43, y el tercer valor es 12,42. Entonces la mediana de las desviaciones es 12,42 − 12,4 = 0,02, exactamente lo pedido.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">12,34; 12,4; 12,41; 12,42; 12,43<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta lista contiene 12,4, pero al ordenar los tiempos queda 12,34; 12,4; 12,41; 12,42; 12,43. El tercer valor es 12,41, así que la mediana de las desviaciones es 12,41 − 12,4 = 0,01, no 0,02.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la desviación</strong></p>
+            <p>La desviación de cada tiempo se calcula restando el promedio:</p>
+            <p>
+              <m:math>
+                <m:mi>x</m:mi><m:mo>−</m:mo><m:mi>p</m:mi>
+              </m:math>
+            </p>
+            <p>Aquí el promedio es</p>
+            <p>
+              <m:math>
+                <m:mi>p</m:mi><m:mo>=</m:mo><m:mn>12,4</m:mn>
+              </m:math>
+            </p>
+            <p>Entonces cada desviación se obtiene como tiempo menos 12,4.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar que uno de los tiempos es exactamente 12,4</strong></p>
+            <p>La lista correcta debe contener el valor 12,4. Revisando las opciones:</p>
+            <p>A sí contiene 12,4.</p>
+            <p>B no contiene 12,4.</p>
+            <p>C sí contiene 12,4.</p>
+            <p>D sí contiene 12,4.</p>
+            <p>Por lo tanto, la opción B queda descartada de inmediato.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Relacionar la mediana de las desviaciones con la mediana de los tiempos</strong></p>
+            <p>Como a cada tiempo se le resta el mismo número 12,4, el orden no cambia. Entonces la mediana de las desviaciones se obtiene restando 12,4 a la mediana de los tiempos.</p>
+            <p>Si la mediana de las desviaciones es 0,02, entonces la mediana de los tiempos debe ser:</p>
+            <p>
+              <m:math>
+                <m:mn>12,4</m:mn><m:mo>+</m:mo><m:mn>0,02</m:mn><m:mo>=</m:mo><m:mn>12,42</m:mn>
+              </m:math>
+            </p>
+            <p>Como hay cinco datos, la mediana es el tercer valor al ordenar la lista.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar cada opción posible</strong></p>
+            <p><strong>Opción A:</strong> ya está ordenada:</p>
+            <p>12,36; 12,38; 12,4; 12,42; 12,44</p>
+            <p>El tercer valor es 12,4, así que la mediana de las desviaciones es:</p>
+            <p>
+              <m:math>
+                <m:mn>12,4</m:mn><m:mo>−</m:mo><m:mn>12,4</m:mn><m:mo>=</m:mo><m:mn>0</m:mn>
+              </m:math>
+            </p>
+            <p>No sirve.</p>
+            <p><strong>Opción C:</strong> ya está ordenada:</p>
+            <p>12,32; 12,4; 12,42; 12,43; 12,43</p>
+            <p>El tercer valor es 12,42, así que la mediana de las desviaciones es:</p>
+            <p>
+              <m:math>
+                <m:mn>12,42</m:mn><m:mo>−</m:mo><m:mn>12,4</m:mn><m:mo>=</m:mo><m:mn>0,02</m:mn>
+              </m:math>
+            </p>
+            <p>Sí cumple.</p>
+            <p><strong>Opción D:</strong> ya está ordenada:</p>
+            <p>12,34; 12,4; 12,41; 12,42; 12,43</p>
+            <p>El tercer valor es 12,41, así que la mediana de las desviaciones es:</p>
+            <p>
+              <m:math>
+                <m:mn>12,41</m:mn><m:mo>−</m:mo><m:mn>12,4</m:mn><m:mo>=</m:mo><m:mn>0,01</m:mn>
+              </m:math>
+            </p>
+            <p>No sirve.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única lista que contiene un tiempo igual a 12,4 y cuya mediana de las desviaciones es 0,02 es la <strong>opción C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

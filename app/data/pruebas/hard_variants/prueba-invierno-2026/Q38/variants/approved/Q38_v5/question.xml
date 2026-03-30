@@ -1,0 +1,123 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q38_v5" title="Q38_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un estanque lleno de agua se abren al mismo tiempo dos desagües idénticos, que vacían el agua a ritmo constante. Durante la primera hora, ambos desagües permanecen abiertos. Luego se cierra uno de los desagües y el otro continúa vaciando el estanque, a la misma tasa que antes, durante 3 horas más.</p>
+    <p>En todos los gráficos, el eje horizontal representa el tiempo transcurrido (en horas), desde 0 hasta 4, y el eje vertical representa la altura del agua en el estanque. La altura del agua disminuye a medida que pasa el tiempo.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Cuatro gráficos de la altura del agua en un estanque (eje vertical) versus el tiempo en horas (eje horizontal, de 0 a 4). En todos los casos, la altura comienza alta en t = 0 y va disminuyendo con el tiempo. Gráfico A: Una sola línea recta decreciente desde t = 0 hasta t = 4, con pendiente negativa constante (disminución uniforme de la altura, sin cambio en la inclinación). Gráfico B: Línea recta decreciente suave (poca inclinación, pendiente negativa de menor magnitud) desde t = 0 hasta t = 1; en t = 1, sin salto vertical, se une a otra recta decreciente más inclinada (pendiente negativa de mayor magnitud) desde t = 1 hasta t = 4, de modo que el agua comienza bajando lentamente y luego baja más rápido. Gráfico C: Línea recta decreciente bastante inclinada (pendiente negativa de gran magnitud) desde t = 0 hasta t = 1; en t = 1, sin salto vertical, se une a otra recta decreciente menos inclinada (pendiente negativa de menor magnitud) desde t = 1 hasta t = 4, de modo que el agua primero baja más rápido y luego baja más lentamente. Gráfico D: Línea recta decreciente desde t = 0 hasta un punto en t = 1; en t = 1 aparece un salto vertical hacia abajo (la altura cae bruscamente), y luego desde ese nuevo punto en t = 1 continúa una recta decreciente con la misma inclinación que antes de t = 1. Es decir, hay una caída instantánea de altura en t = 1, pero la pendiente antes y después de ese salto es igual." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes gráficos representa mejor la relación entre el tiempo transcurrido desde que se abrieron los desagües y la altura del agua en el estanque?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">[Imagen: Gráfico A: Muestra una línea recta decreciente con pendiente constante desde t = 0 hasta t = 4, sin cambio en la inclinación.]<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Durante la primera hora hay dos desagües funcionando, así que la altura debe bajar más rápido que después, cuando queda solo uno. Eso exige dos tramos rectos con distinta pendiente: en <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mn>1</mn></math> la pendiente debe tener mayor magnitud que en <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>&lt;</mo><mi>t</mi><mo>≤</mo><mn>4</mn></math>. Una sola recta con pendiente constante no representa ese cambio.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">[Imagen: Gráfico B: Muestra una línea decreciente suave desde t = 0 hasta t = 1 y luego, desde t = 1 hasta t = 4, una línea decreciente más inclinada (la disminución se acelera después de t = 1).]<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. En la primera hora están abiertos dos desagües idénticos, por lo que la altura del agua debe disminuir más rápido al inicio que después. Si un desagüe baja la altura a razón <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math>, entonces dos desagües la bajan a razón <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mi>r</mi></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mi>r</mi><mo>&gt;</mo><mi>r</mi></math>, la pendiente inicial debe tener mayor magnitud que la final, no menor.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">[Imagen: Gráfico C: Muestra una línea decreciente bastante inclinada desde t = 0 hasta t = 1 y luego, desde t = 1 hasta t = 4, una línea decreciente menos inclinada, unidas sin saltos (la disminución es más rápida al inicio, con dos desagües, y más lenta después, con un solo desagüe).]<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Con dos desagües idénticos abiertos durante la primera hora, la altura baja a una tasa constante mayor; al cerrar uno en <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math>, la altura sigue disminuyendo, pero a una tasa constante menor. Por eso el gráfico debe ser continuo, sin salto vertical, con un tramo inicial más inclinado y un tramo posterior menos inclinado. Eso coincide exactamente con la alternativa C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">[Imagen: Gráfico D: Muestra una línea decreciente desde t = 0 hasta t = 1, luego un salto vertical hacia abajo en t = 1 y, a continuación, una línea decreciente con la misma inclinación que antes de t = 1.]<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Cerrar un desagüe no produce una caída instantánea en la altura del agua. En el instante <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math> la altura debe seguir siendo la misma justo antes y justo después, así que el gráfico debe ser continuo. Además, después de cerrar un desagüe la rapidez de vaciado disminuye, por lo que la pendiente debe cambiar a una de menor magnitud; no puede mantenerse igual con un salto vertical.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show"
+        outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar qué significa la pendiente del gráfico</strong></p>
+            <p>Como el eje vertical representa la altura del agua, la pendiente indica qué tan rápido baja esa altura con el tiempo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar la primera hora</strong></p>
+            <p>Durante la primera hora hay dos desagües idénticos abiertos al mismo tiempo. Entonces el estanque se vacía más rápido que si hubiera solo uno. Por eso, entre <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>0</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math>, el gráfico debe descender con mayor inclinación.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar desde la hora 1 hasta la hora 4</strong></p>
+            <p>Después de la primera hora se cierra uno de los desagües y queda funcionando solo uno, a la misma tasa constante que antes. Entonces la altura sigue bajando, pero más lentamente. Por eso, desde <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math> hasta <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>4</mn></math>, el gráfico debe seguir descendiendo con menor inclinación que al inicio.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar si hay salto o continuidad</strong></p>
+            <p>La altura del agua no puede cambiar instantáneamente justo cuando se cierra un desagüe. Por lo tanto, en <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math> no debe haber salto vertical; el gráfico debe ser continuo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La alternativa A es incorrecta porque muestra una sola pendiente constante, sin cambio al cerrar un desagüe.</p>
+            <p>La alternativa B es incorrecta porque muestra que al principio baja más lento y después más rápido, exactamente al revés de la situación descrita.</p>
+            <p>La alternativa D es incorrecta porque muestra un salto vertical en <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>1</mn></math>, lo que no corresponde a una variación continua de la altura.</p>
+            <p>La alternativa C es la única que muestra un descenso rápido al inicio, luego un descenso más lento, y sin salto en el cambio.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El gráfico correcto es la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

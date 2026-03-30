@@ -1,0 +1,140 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q30_v16" title="Q30_v16" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una empresa de jardinería usa el modelo
+      <m:math>
+        <m:mi>A</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>0,05</m:mn>
+        <m:mo>·</m:mo>
+        <m:mi>M</m:mi>
+      </m:math>
+      para relacionar la cantidad A de agua en litros que necesita un árbol al día con la masa M del árbol en kilogramos.
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál registro operativo es coherente con el significado del coeficiente del modelo?</qti-prompt><qti-simple-choice identifier="ChoiceA">Registro operativo: si la masa del árbol aumenta en 20 kg, la cantidad de agua diaria que necesita aumenta en 0,05 L.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el modelo A = 0,05 · M, el coeficiente 0,05 significa 0,05 litros por cada 1 kg. Si la masa aumenta en 20 kg, el aumento de agua es 0,05 × 20 = 1 L, no 0,05 L.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Registro operativo: si la masa del árbol aumenta en 20 kg, la cantidad de agua diaria que necesita aumenta en 1 L.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el modelo A = 0,05 · M, por cada 1 kg de masa se requieren 0,05 L de agua al día. Entonces, si la masa aumenta en 20 kg, la cantidad de agua aumenta en 0,05 × 20 = 1 L. Por eso este registro operativo es coherente con el coeficiente.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Registro operativo: la masa del árbol corresponde al 5% de la cantidad de agua diaria que necesita.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El modelo A = 0,05 · M indica que la cantidad de agua es el 5% de la masa, no que la masa sea el 5% del agua. Por ejemplo, si M = 20 kg, entonces A = 0,05 × 20 = 1 L. En ese caso, 1 es el 5% de 20, pero 20 no es el 5% de 1.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Registro operativo: por cada litro de agua diaria que necesita el árbol, su masa aumenta en 0,05 kg.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El coeficiente 0,05 relaciona litros por kilogramo, es decir, 0,05 L por cada 1 kg. Esta opción invierte la relación. De hecho, si A = 1 L, entonces 1 = 0,05 × M y por tanto M = 20 kg, no 0,05 kg.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar el modelo</strong></p>
+            <p>El modelo es:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0,05</m:mn>
+                <m:mo>·</m:mo>
+                <m:mi>M</m:mi>
+              </m:math>
+            </p>
+            <p>A representa la cantidad de agua en litros por día y M representa la masa del árbol en kilogramos.</p>
+            <p>El número 0,05 es la tasa de cambio: por cada 1 kg de masa, el árbol necesita 0,05 L de agua al día.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Traducir el coeficiente a un registro operativo</strong></p>
+            <p>Si la masa aumenta en 1 kg, entonces el agua aumenta en 0,05 L.</p>
+            <p>Si la masa aumenta en 20 kg, el aumento de agua se calcula multiplicando:</p>
+            <p>
+              <m:math>
+                <m:mn>0,05</m:mn>
+                <m:mo>·</m:mo>
+                <m:mn>20</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn>
+              </m:math>
+            </p>
+            <p>Entonces, un aumento de 20 kg en la masa produce un aumento de 1 L de agua diaria.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar con las alternativas</strong></p>
+            <p>La alternativa A dice que el aumento es 0,05 L, pero el cálculo correcto da 1 L.</p>
+            <p>La alternativa B dice que si la masa aumenta en 20 kg, el agua aumenta en 1 L. Esto coincide exactamente con el cálculo.</p>
+            <p>La alternativa C invierte la relación entre masa y agua.</p>
+            <p>La alternativa D también invierte la relación, porque habla de kilogramos por litro en vez de litros por kilogramo.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La opción correcta es la <strong>B</strong>, porque el coeficiente 0,05 significa 0,05 litros por kilogramo, y para 20 kg se obtiene 1 L.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

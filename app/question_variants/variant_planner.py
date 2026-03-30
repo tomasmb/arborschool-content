@@ -26,12 +26,16 @@ from app.question_variants.shared_helpers import build_source_structural_profile
 def build_planning_prompt(source: SourceQuestion, n: int) -> str:
     """Build the planning prompt. Pure, no side effects."""
     diff = source.difficulty
-    diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
+    diff_text = (
+        f"{diff.get('level', 'Medium')} "
+        f"(score: {diff.get('score', 0.5)})"
+    )
     structural_profile = build_source_structural_profile(source)
     construct_contract = build_construct_contract(
-        source.question_text, source.qti_xml, bool(source.image_urls),
-        source.primary_atoms, source.metadata, source.choices,
-        source.correct_answer,
+        source.question_text, source.qti_xml,
+        bool(source.image_urls),
+        source.primary_atoms, source.metadata,
+        source.choices, source.correct_answer,
     )
     visual_context = extract_visual_context(source.qti_xml)
     atoms_desc = [
@@ -130,7 +134,9 @@ def parse_planning_response(
     Pure function -- shared by sync and batch paths.
     """
     data = _parse_json(response)
-    raw_blueprints = data.get("blueprints", []) if isinstance(data, dict) else []
+    raw_blueprints = (
+        data.get("blueprints", []) if isinstance(data, dict) else []
+    )
     result: list[VariantBlueprint] = []
     allowed_shapes = (
         construct_contract.get("allowed_variant_shapes", [])
@@ -140,14 +146,17 @@ def parse_planning_response(
     for idx, item in enumerate(raw_blueprints):
         if not isinstance(item, dict):
             continue
-        variant_id = str(item.get("variant_id") or f"planned_v{idx + 1}")
+        variant_id = str(
+            item.get("variant_id") or f"planned_v{idx + 1}",
+        )
         selected_shape_id = str(
             item.get("selected_shape_id", "standard_variant"),
         ).strip()
         if selected_shape_id == "standard_variant" and allowed_shapes:
             selected_shape_id = str(
-                allowed_shapes[idx % len(allowed_shapes)].get("shape_id")
-                or "standard_variant",
+                allowed_shapes[idx % len(allowed_shapes)].get(
+                    "shape_id",
+                ) or "standard_variant",
             )
         result.append(
             VariantBlueprint(
@@ -171,7 +180,7 @@ def parse_planning_response(
                     item.get("image_description", ""),
                 ).strip(),
                 selected_shape_id=selected_shape_id,
-            )
+            ),
         )
     return result
 

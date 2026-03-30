@@ -1,0 +1,217 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v3" title="Q5_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el gráfico adjunto se representa la percepción ciudadana en relación con distintos atributos de un candidato, medida en dos momentos: sondeo 1 (columna clara) y sondeo 2 (columna oscura). Esta percepción se presenta en un puntaje que va de -20 a 20 puntos. ¿Cuál de los atributos presentó una mayor variación en su puntaje entre el sondeo 1 y el sondeo 2?</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras agrupadas con cinco grupos de dos columnas verticales cada uno, sobre un eje vertical de -20 a 20. En cada grupo hay una columna clara (sondeo 1) y una columna oscura (sondeo 2). Los atributos y puntajes son: Liderazgo: sondeo 1 = 18, sondeo 2 = 10; Cercanía: sondeo 1 = -4, sondeo 2 = 6; Capacidad técnica: sondeo 1 = -12, sondeo 2 = 8; Honestidad: sondeo 1 = 15, sondeo 2 = 12; Trabajo en equipo: sondeo 1 = -15, sondeo 2 = -5. Las columnas se dibujan de modo que algunas quedan por sobre 0, otras por debajo, y en los casos de Cercanía y Capacidad técnica las columnas de sondeo 1 y sondeo 2 cruzan el 0. La escala vertical va de -20 a 20, con marcas cada 5 unidades." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Seleccione una opción.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Liderazgo<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La variación de Liderazgo es de 8 puntos, porque pasa de 18 a 10 y 18 − 10 = 8. Pero Capacidad técnica varía 20 puntos, porque pasa de −12 a 8 y la distancia entre −12 y 8 es 20.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Cercanía<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La variación de Cercanía es de 10 puntos, porque pasa de −4 a 6 y la distancia entre −4 y 6 es 10. Pero Capacidad técnica varía 20 puntos, porque pasa de −12 a 8.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Capacidad técnica<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Capacidad técnica pasa de −12 en el sondeo 1 a 8 en el sondeo 2. Su variación es 20 puntos, porque la distancia entre −12 y 8 es 20. Las demás variaciones son menores: Liderazgo 8, Cercanía 10, Honestidad 3 y Trabajo en equipo 10.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Honestidad<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La variación de Honestidad es de 3 puntos, porque pasa de 15 a 12 y 15 − 12 = 3. Pero Capacidad técnica varía 20 puntos, porque pasa de −12 a 8, que es una diferencia mucho mayor.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: comparar la variación entre ambos sondeos</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los puntajes de cada atributo en los dos sondeos</strong></p>
+            <p>Liderazgo: 18 y 10.</p>
+            <p>Cercanía: −4 y 6.</p>
+            <p>Capacidad técnica: −12 y 8.</p>
+            <p>Honestidad: 15 y 12.</p>
+            <p>Trabajo en equipo: −15 y −5.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la variación de cada atributo</strong></p>
+            <p>Como se pide la mayor variación entre dos puntajes, calculamos la distancia entre ellos, es decir, el valor absoluto de la diferencia.</p>
+            <p><em>Liderazgo:</em>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>|</mo>
+                  <mn>18</mn>
+                  <mo>−</mo>
+                  <mn>10</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mo>|</mo>
+                  <mn>8</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mn>8</mn>
+                </mrow>
+              </math>
+            </p>
+            <p><em>Cercanía:</em>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>4</mn>
+                  <mo>−</mo>
+                  <mn>6</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>10</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mn>10</mn>
+                </mrow>
+              </math>
+            </p>
+            <p><em>Capacidad técnica:</em>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>12</mn>
+                  <mo>−</mo>
+                  <mn>8</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>20</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mn>20</mn>
+                </mrow>
+              </math>
+            </p>
+            <p><em>Honestidad:</em>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>|</mo>
+                  <mn>15</mn>
+                  <mo>−</mo>
+                  <mn>12</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mo>|</mo>
+                  <mn>3</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mn>3</mn>
+                </mrow>
+              </math>
+            </p>
+            <p><em>Trabajo en equipo:</em>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>15</mn>
+                  <mo>−</mo>
+                  <mrow>
+                    <mo>(</mo>
+                    <mo>−</mo>
+                    <mn>5</mn>
+                    <mo>)</mo>
+                  </mrow>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mo>|</mo>
+                  <mo>−</mo>
+                  <mn>10</mn>
+                  <mo>|</mo>
+                  <mo>=</mo>
+                  <mn>10</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar las variaciones obtenidas</strong></p>
+            <p>Las variaciones son 8, 10, 20, 3 y 10 puntos.</p>
+            <p>La mayor de todas es 20 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El atributo que presentó la mayor variación entre el sondeo 1 y el sondeo 2 fue <strong>Capacidad técnica</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

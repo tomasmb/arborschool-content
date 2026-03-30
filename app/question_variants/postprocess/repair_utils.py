@@ -65,23 +65,6 @@ QTI_ATTR_RENAMES = {
     "minChoices": "min-choices",
 }
 
-HTML_NAMED_ENTITY_REPLACEMENTS = {
-    "&aacute;": "á",
-    "&eacute;": "é",
-    "&iacute;": "í",
-    "&oacute;": "ó",
-    "&uacute;": "ú",
-    "&Aacute;": "Á",
-    "&Eacute;": "É",
-    "&Iacute;": "Í",
-    "&Oacute;": "Ó",
-    "&Uacute;": "Ú",
-    "&ntilde;": "ñ",
-    "&Ntilde;": "Ñ",
-    "&iquest;": "¿",
-    "&iexcl;": "¡",
-    "&nbsp;": " ",
-}
 
 
 def normalized_tag_name(tag: str) -> str:
@@ -198,12 +181,17 @@ def strip_choice_identifier_mentions(qti_xml: str) -> str:
     return serialize_xml(root) if changed else qti_xml
 
 
-def normalize_named_entities(qti_xml: str) -> str:
-    """Replace HTML named entities that break XML parsing in generated artifacts."""
-    normalized = qti_xml
-    for entity, replacement in HTML_NAMED_ENTITY_REPLACEMENTS.items():
-        normalized = normalized.replace(entity, replacement)
-    return normalized
+def pre_parse_cleanup(qti_xml: str) -> str:
+    """Replace HTML entities with UTF-8 before any XML parsing.
+
+    Reuses the comprehensive entity map from the atom generation
+    pipeline (DRY). Must run FIRST in the postprocess chain so
+    downstream steps that call ET.fromstring() don't choke on
+    &oacute;, &middot;, &rarr;, etc.
+    """
+    from app.question_generation.xml_utils import normalize_html_entities
+
+    return normalize_html_entities(qti_xml)
 
 
 def ensure_choice_interaction_declarations(qti_xml: str) -> str:

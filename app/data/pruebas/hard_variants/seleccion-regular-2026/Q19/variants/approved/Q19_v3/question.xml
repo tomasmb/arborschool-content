@@ -1,0 +1,136 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q19_v3" title="Q19_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un curso, el 80 % de los estudiantes rinde una prueba. De quienes la rinden, el 60 % la aprueba. Respecto del total de estudiantes del curso, ¿cuál de las siguientes afirmaciones es correcta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Aprueba el 80 % de los estudiantes.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Del total del curso rinde la prueba el 80 %. Pero aprueba solo el 60 % de ese 80 %. Entonces, respecto del total, aprueba 0,8 × 0,6 = 0,48, es decir, 48 %. Por lo tanto, no aprueba el 80 % de los estudiantes.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Aprueba el 140 % de los estudiantes.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El porcentaje que aprueba respecto del total es 0,8 × 0,6 = 0,48, o sea, 48 %. Además, 140 % es mayor que 100 %, y no puede aprobar más del total de estudiantes del curso.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Aprueba el 480 % de los estudiantes.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El cálculo correcto es 80 % de 60 %, es decir, 0,8 × 0,6 = 0,48, que corresponde a 48 %. En cambio, 480 % equivale a 4,8 veces el total del curso, lo que no puede ocurrir.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Aprueba el 48 % de los estudiantes.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Del total del curso rinde la prueba el 80 %, y de ese grupo aprueba el 60 %. Entonces, respecto del total, aprueba 0,8 × 0,6 = 0,48, es decir, 48 % de los estudiantes.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué porcentaje corresponde a quienes rinden la prueba</strong></p>
+            <p>Del total de estudiantes del curso, rinde la prueba el 80 %.</p>
+            <p>Eso se puede escribir como:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>80</mn><mo>%</mo><mo>=</mo><mn>0,8</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar qué porcentaje aprueba dentro del grupo que rindió</strong></p>
+            <p>De quienes rinden la prueba, aprueba el 60 %.</p>
+            <p>Eso se puede escribir como:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>60</mn><mo>%</mo><mo>=</mo><mn>0,6</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el porcentaje que aprueba respecto del total del curso</strong></p>
+            <p>Como aprueba el 60 % de quienes rindieron, se multiplica:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,8</mn><mo>×</mo><mn>0,6</mn><mo>=</mo><mn>0,48</mn>
+              </mrow>
+            </math>
+            <p>Ahora convertimos 0,48 a porcentaje:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,48</mn><mo>=</mo><mn>48</mn><mo>%</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La afirmación correcta es: “Aprueba el 48 % de los estudiantes”.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

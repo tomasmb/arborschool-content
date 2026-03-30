@@ -1,0 +1,173 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q65_v4" title="Q65_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>
+        En un juego de azar se hace girar un disco dividido en tres zonas iguales: una roja (R), una azul (A) y una verde (V). En cada giro, si el puntero cae en R se gana 
+        <m:math><m:mn>1</m:mn></m:math>
+        punto, si cae en A se pierde 
+        <m:math><m:mn>1</m:mn></m:math>
+        punto y si cae en V no se gana ni se pierde puntos. Se realizan 2 giros independientes.
+        <br />
+        ¿Cuál de las siguientes afirmaciones describe correctamente la probabilidad de terminar con un puntaje negativo después de los 2 giros?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        La probabilidad de terminar con un puntaje negativo es 
+        <m:math>
+          <m:mfrac>
+            <m:mn>1</m:mn>
+            <m:mn>9</m:mn>
+          </m:mfrac>
+        </m:math>, porque solo si en ambos giros sale la zona azul se obtiene un puntaje negativo.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si en ambos giros sale azul, el puntaje es <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>2</m:mn></m:mrow></m:math>, que sí es negativo, pero no es el único caso. También en AV el puntaje es <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math> y en VA es <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math>. Hay 3 casos negativos de 9 posibles, así que la probabilidad correcta es <m:math><m:mfrac><m:mn>3</m:mn><m:mn>9</m:mn></m:mfrac></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        La probabilidad de terminar con un puntaje negativo es 
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>9</m:mn>
+          </m:mfrac>
+        </m:math>, porque hay 3 resultados posibles de los 9 (AA, AV y VA) en los que la suma de puntos es negativa.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los 9 resultados equiprobables de dos giros son RR, RA, RV, AR, AA, AV, VR, VA y VV. Los puntajes negativos ocurren en AA, AV y VA. En efecto, <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>2</m:mn></m:mrow></m:math>, <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math>. Por eso, la probabilidad es <m:math><m:mfrac><m:mn>3</m:mn><m:mn>9</m:mn></m:mfrac></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        La probabilidad de terminar con un puntaje negativo es 
+        <m:math>
+          <m:mfrac>
+            <m:mn>2</m:mn>
+            <m:mn>9</m:mn>
+          </m:mfrac>
+        </m:math>, porque solo las combinaciones con exactamente un giro azul y otro verde (AV y VA) producen un puntaje negativo.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. AV y VA sí producen puntaje negativo, porque <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math> y <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math>, pero no son las únicas. También AA produce puntaje negativo, pues <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>2</m:mn></m:mrow></m:math>. Entonces hay 3 casos negativos de 9, no 2 de 9.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        La probabilidad de terminar con un puntaje negativo es 
+        <m:math>
+          <m:mfrac>
+            <m:mn>6</m:mn>
+            <m:mn>9</m:mn>
+          </m:mfrac>
+        </m:math>, porque cualquier resultado en que no se ganen puntos (puntaje menor o igual que 0) se considera puntaje negativo.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El enunciado pide puntaje negativo, es decir, menor que <m:math><m:mn>0</m:mn></m:math>, no menor o igual que <m:math><m:mn>0</m:mn></m:math>. Por ejemplo, VV da puntaje <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, y ese resultado no es negativo. También RA da <m:math><m:mrow><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math>, que tampoco es negativo. Los únicos casos negativos son AA, AV y VA, así que la probabilidad correcta es <m:math><m:mfrac><m:mn>3</m:mn><m:mn>9</m:mn></m:mfrac></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el puntaje de cada color</strong></p>
+            <p>Si sale R, se suma <m:math><m:mn>1</m:mn></m:math> punto. Si sale A, se resta <m:math><m:mn>1</m:mn></m:math> punto. Si sale V, se suma <m:math><m:mn>0</m:mn></m:math> puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Listar todos los resultados posibles en 2 giros</strong></p>
+            <p>Como en cada giro hay 3 posibles resultados y los giros son independientes, hay <m:math><m:mrow><m:mn>3</m:mn><m:mo>×</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>9</m:mn></m:mrow></m:math> resultados equiprobables:</p>
+            <p>RR, RA, RV, AR, AA, AV, VR, VA y VV.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el puntaje total en cada caso</strong></p>
+            <p>RR: <m:math><m:mrow><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>2</m:mn></m:mrow></m:math></p>
+            <p>RA: <m:math><m:mrow><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></p>
+            <p>RV: <m:math><m:mrow><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math></p>
+            <p>AR: <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></p>
+            <p>AA: <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>2</m:mn></m:mrow></m:math></p>
+            <p>AV: <m:math><m:mrow><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math></p>
+            <p>VR: <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>1</m:mn></m:mrow></m:math></p>
+            <p>VA: <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mo>−</m:mo><m:mn>1</m:mn></m:mrow></m:math></p>
+            <p>VV: <m:math><m:mrow><m:mn>0</m:mn><m:mo>+</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>0</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Seleccionar los casos con puntaje negativo</strong></p>
+            <p>Un puntaje negativo es un puntaje menor que <m:math><m:mn>0</m:mn></m:math>. Eso ocurre solo en AA, AV y VA.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Calcular la probabilidad</strong></p>
+            <p>Hay 3 casos favorables de un total de 9 casos posibles, por lo tanto la probabilidad es <m:math><m:mfrac><m:mn>3</m:mn><m:mn>9</m:mn></m:mfrac></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

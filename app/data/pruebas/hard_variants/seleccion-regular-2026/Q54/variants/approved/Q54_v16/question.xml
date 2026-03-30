@@ -1,0 +1,130 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v16" title="Q54_v16" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En una escuela se registró cuántos libros lee cada estudiante en un año. El resumen se presenta así:
+    </p>
+    <div>
+      Entre 0 y 2 libros: 4 estudiantes<br />
+      Entre 3 y 5 libros: 9 estudiantes<br />
+      Entre 6 y 8 libros: 11 estudiantes<br />
+      9 o más libros: 5 estudiantes
+    </div>
+    <p>
+      Un programa de fomento lector se dirigirá a quienes leen a lo más 5 libros al año. ¿Cuál es la mayor cantidad de estudiantes que podría participar en este programa, según la información dada?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">4<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los estudiantes que leen a lo más 5 libros incluyen dos grupos: de 0 a 2 libros y de 3 a 5 libros. Por eso se debe sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>13</mn></mrow></math>. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> cuenta solo a quienes leen entre 0 y 2 libros, pero no incluye a quienes leen entre 3 y 5 libros.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">13<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! “A lo más 5 libros” significa leer 5 o menos libros, así que se consideran los estudiantes de 0 a 2 libros y de 3 a 5 libros. Entonces la cantidad máxima es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>13</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">9<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Los estudiantes que leen a lo más 5 libros no son solo los que están entre 3 y 5 libros. También se incluyen quienes leen entre 0 y 2 libros. Por eso hay que sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>13</mn></mrow></math>. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn></math> deja fuera a 4 estudiantes que sí cumplen la condición.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">24<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>24</mn></math> se obtiene al sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>11</mn><mo>=</mo><mn>24</mn></mrow></math>, pero eso incluye a los 11 estudiantes que leen entre 6 y 8 libros. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>&gt;</mo><mn>5</mn></math>, ese grupo no cumple “a lo más 5 libros”. La suma correcta es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>13</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar “a lo más 5 libros”</strong></p>
+            <p>“A lo más 5 libros” significa leer 5 o menos libros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los grupos que cumplen la condición</strong></p>
+            <p>Cumplen la condición los estudiantes que están en estos intervalos:</p>
+            <p>Entre 0 y 2 libros: 4 estudiantes.</p>
+            <p>Entre 3 y 5 libros: 9 estudiantes.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las cantidades de esos grupos</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>4</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>13</mn></mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar que no se deben agregar otros estudiantes</strong></p>
+            <p>El grupo “entre 6 y 8 libros” no sirve, porque esos estudiantes leen más de 5 libros. Tampoco se incluye el grupo “9 o más libros”.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La mayor cantidad de estudiantes que podría participar en el programa es 13.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

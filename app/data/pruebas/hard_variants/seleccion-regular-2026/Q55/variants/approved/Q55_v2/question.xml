@@ -1,0 +1,124 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q55_v2" title="Q55_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una persona está jugando un nuevo juego en línea en el cual se pueden escoger distintos personajes. Cada personaje tiene cinco habilidades, con un puntaje de 0 a 100 en cada habilidad.</p>
+    <p>En el siguiente gráfico de barras horizontales se representan los puntajes de las habilidades de uno de los personajes.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras horizontales con cinco barras, una por cada habilidad: 'Evasión', 'Fuerza mágica', 'Defensa física', 'Defensa mágica' y 'Fuerza física'. El eje horizontal va de 0 a 100. Los valores aproximados son: Evasión 68, Fuerza mágica 30, Defensa física 60, Defensa mágica 35 y Fuerza física 80. Todas las barras parten desde 0 y se extienden hacia la derecha; la barra de 'Fuerza mágica' es claramente la más corta, seguida de cerca por la de 'Defensa mágica', mientras que la de 'Fuerza física' es la más larga." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Según el gráfico, ¿en cuál habilidad debería entrenar primero este personaje para mejorar su desempeño general?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Evasión<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el gráfico, Evasión tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>68</mn></math> puntos, mientras que Fuerza mágica tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math> puntos. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn><mo>&lt;</mo><mn>68</mn></math>, Evasión no es la habilidad que debería entrenar primero.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Fuerza mágica<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el gráfico, Fuerza mágica tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math> puntos. Al comparar con las demás habilidades mostradas, Evasión <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>68</mn></math>, Defensa física <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>60</mn></math>, Defensa mágica <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>35</mn></math> y Fuerza física <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>80</mn></math>, se cumple que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn><mo>&lt;</mo><mn>35</mn><mo>,</mo><mn>30</mn><mo>&lt;</mo><mn>60</mn><mo>,</mo><mn>30</mn><mo>&lt;</mo><mn>68</mn><mo>,</mo><mn>30</mn><mo>&lt;</mo><mn>80</mn></math>. Por eso es la habilidad más baja y la que debería entrenar primero.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Defensa mágica<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En el gráfico, Defensa mágica tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>35</mn></math> puntos, pero Fuerza mágica tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math> puntos. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn><mo>&lt;</mo><mn>35</mn></math>, hay una habilidad con puntaje menor, así que Defensa mágica no debería entrenarse primero.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Fuerza física<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En el gráfico, Fuerza física tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>80</mn></math> puntos, que es uno de los puntajes más altos. En cambio, Fuerza mágica tiene aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math> puntos. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn><mo>&lt;</mo><mn>80</mn></math>, Fuerza física no es la habilidad que debería entrenar primero.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar lo que se busca</strong></p>
+            <p>La pregunta pide decidir en cuál habilidad conviene entrenar primero al personaje para mejorar su desempeño general. Para eso, se debe observar cuál habilidad tiene el puntaje más bajo en el gráfico.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Leer los puntajes aproximados del gráfico</strong></p>
+            <p>Los valores aproximados son:</p>
+            <ul>
+              <li>Evasión: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>68</mn></math></li>
+              <li>Fuerza mágica: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math></li>
+              <li>Defensa física: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>60</mn></math></li>
+              <li>Defensa mágica: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>35</mn></math></li>
+              <li>Fuerza física: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>80</mn></math></li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los puntajes</strong></p>
+            <p>Comparamos los valores:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn><mo>&lt;</mo><mn>35</mn><mo>&lt;</mo><mn>60</mn><mo>&lt;</mo><mn>68</mn><mo>&lt;</mo><mn>80</mn></math></p>
+            <p>El menor puntaje es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Asociar el menor puntaje con su habilidad</strong></p>
+            <p>El puntaje <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>30</mn></math> corresponde a <strong>Fuerza mágica</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La habilidad que debería entrenar primero este personaje es <strong>Fuerza mágica</strong>, porque es la que tiene el puntaje más bajo en el gráfico. Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

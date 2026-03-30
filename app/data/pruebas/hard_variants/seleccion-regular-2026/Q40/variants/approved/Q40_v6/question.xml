@@ -1,0 +1,217 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v6" title="Q40_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un hospital se administra un medicamento por vía intravenosa desde una bolsa que contiene inicialmente 300 mililitros de solución. La cantidad de medicamento que queda en la bolsa después de <em>t</em> minutos de infusión continua se modela mediante la función
+      <m:math>
+        <m:mi>M</m:mi>
+        <m:mo>(</m:mo>
+        <m:mi>t</m:mi>
+        <m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>300</m:mn>
+        <m:mo>-</m:mo>
+        <m:mn>5</m:mn>
+        <m:mi>t</m:mi>
+      </m:math>,
+      donde <em>M(t)</em> se mide en mililitros.
+      
+      
+      ¿Cuál de las siguientes afirmaciones describe correctamente lo que representa el número <em>-5</em> en este modelo?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Cada 5 minutos la cantidad de medicamento que queda en la bolsa disminuye en 1 mililitro.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el modelo M(t) = 300 − 5t, al aumentar t en 1 minuto, la cantidad en la bolsa cambia en −5 mililitros, no en −1 mililitro cada 5 minutos. Por ejemplo, M(0) = 300 y M(5) = 275, así que en 5 minutos disminuye 25 mililitros.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Si la infusión se mantiene constante, en 10 minutos se habrán administrado 50 mililitros de medicamento al paciente.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El coeficiente −5 indica que cada minuto quedan 5 mililitros menos en la bolsa. En 10 minutos, la disminución es 5 × 10 = 50 mililitros, por lo que se habrán administrado 50 mililitros al paciente.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Al cabo de 5 minutos la bolsa quedará completamente vacía.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si t = 5, entonces M(5) = 300 − 5 × 5 = 300 − 25 = 275 mililitros. Como todavía quedan 275 mililitros en la bolsa, no queda completamente vacía al cabo de 5 minutos.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Cada minuto la cantidad de medicamento que queda en la bolsa aumenta en 5 mililitros.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El número −5 es negativo, por lo que representa una disminución de 5 mililitros por minuto. Por ejemplo, M(0) = 300 y M(1) = 295, así que después de 1 minuto la cantidad que queda baja en 5 mililitros, no aumenta.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Interpretación de la tasa de cambio en una función lineal</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué representa cada parte del modelo</strong></p>
+            <p>La función es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>M</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>300</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>5</m:mn>
+                <m:mi>t</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>El número 300 representa la cantidad inicial de solución en la bolsa, en mililitros.</p>
+            <p>El número −5 acompaña a la variable <em>t</em>, por lo que representa el cambio de la cantidad de medicamento que queda en la bolsa por cada minuto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar el signo del coeficiente</strong></p>
+            <p>Como el coeficiente es negativo, la cantidad de medicamento en la bolsa disminuye con el tiempo.</p>
+            <p>Entonces, por cada minuto transcurrido, en la bolsa quedan 5 mililitros menos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con un cálculo concreto</strong></p>
+            <p>Al inicio, cuando</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>t</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>se tiene:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>M</m:mi>
+                <m:mo>(</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>300</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>5</m:mn>
+                <m:mo>×</m:mo>
+                <m:mn>0</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>300</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Después de 10 minutos:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>M</m:mi>
+                <m:mo>(</m:mo>
+                <m:mn>10</m:mn>
+                <m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>300</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>5</m:mn>
+                <m:mo>×</m:mo>
+                <m:mn>10</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>300</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>50</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>250</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Como al inicio había 300 mililitros y después de 10 minutos quedan 250 mililitros, se han administrado:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>300</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>250</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>50</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>mililitros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La afirmación que coincide exactamente con esta interpretación es: “Si la infusión se mantiene constante, en 10 minutos se habrán administrado 50 mililitros de medicamento al paciente”.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

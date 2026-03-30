@@ -1,0 +1,152 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v12" title="Q18_v12" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      Una investigadora modela la intensidad I de cierta radiación mediante la expresión
+      <m:math>
+        <m:mi>I</m:mi>
+        <m:mo>=</m:mo>
+        <m:mn>800</m:mn>
+        <m:mo>·</m:mo>
+        <m:msup>
+          <m:mn>0,95</m:mn>
+          <m:mi>t</m:mi>
+        </m:msup>
+      </m:math>,
+      donde t representa la cantidad de minutos transcurridos desde el inicio del experimento.
+      Según el estudio, «la intensidad de la radiación se reduce un 5 % cada minuto».
+    </p>
+    <p>
+      ¿Cuál de las siguientes explicaciones justifica correctamente por qué la investigadora usa el factor 0,95 en la potencia del modelo?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Porque 0,95 representa que, en total, después de t minutos la radiación se ha reducido un 95 % con respecto a la intensidad inicial.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, el modelo da <m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>760</m:mn></m:math>, así que la disminución es <m:math><m:mn>800</m:mn><m:mo>−</m:mo><m:mn>760</m:mn><m:mo>=</m:mo><m:mn>40</m:mn></m:math>, que corresponde a <m:math><m:mn>0,05</m:mn><m:mo>·</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>40</m:mn></m:math>, es decir, 5 %, no 95 %.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Porque al disminuir un 5 % cada minuto, en cada minuto queda el 95 % de la intensidad que tenía el minuto anterior, y repetir siempre el mismo factor 0,95 se representa mediante la potencia 0,95^t.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Disminuir 5 % cada minuto significa conservar 95 % del valor anterior, es decir, multiplicar por <m:math><m:mn>0,95</m:mn></m:math> en cada minuto. Por ejemplo, al minuto 1: <m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>760</m:mn></m:math>; al minuto 2: <m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>760</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>722</m:mn></m:math>, que también es <m:math><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,95</m:mn><m:mn>2</m:mn></m:msup></m:math>. Por eso, después de <m:math><m:mi>t</m:mi></m:math> minutos se usa <m:math><m:msup><m:mn>0,95</m:mn><m:mi>t</m:mi></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Porque 0,95 indica que en cada minuto se resta 0,05 veces la intensidad inicial, de modo que la disminución en unidades es siempre la misma.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si la disminución en unidades fuera siempre la misma, cada minuto se restaría <m:math><m:mn>0,05</m:mn><m:mo>·</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>40</m:mn></m:math>, y los valores serían 800, 760, 720, ... Pero el modelo exponencial da al minuto 2: <m:math><m:mn>800</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,95</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,9025</m:mn><m:mo>=</m:mo><m:mn>722</m:mn></m:math>. Como <m:math><m:mn>722</m:mn><m:mo>≠</m:mo><m:mn>720</m:mn></m:math>, la disminución en unidades no es siempre la misma.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Porque 0,95 señala que la intensidad baja un 5 % cada minuto y, al elevarlo a t, 0,95^t significa que en total se ha perdido un 5 % × t de la intensidad inicial.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Tomando <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>, el modelo da <m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,95</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,9025</m:mn><m:mo>=</m:mo><m:mn>722</m:mn></m:math>. La pérdida total es <m:math><m:mn>800</m:mn><m:mo>−</m:mo><m:mn>722</m:mn><m:mo>=</m:mo><m:mn>78</m:mn></m:math>, y eso corresponde a <m:math><m:mfrac><m:mn>78</m:mn><m:mn>800</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>0,0975</m:mn></m:math>, es decir, 9,75 %. En cambio, <m:math><m:mn>5</m:mn><m:mo>%</m:mo><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>10</m:mn><m:mo>%</m:mo></m:math>. Como 9,75 % ≠ 10 %, <m:math><m:msup><m:mn>0,95</m:mn><m:mi>t</m:mi></m:msup></m:math> no significa perder <m:math><m:mn>5</m:mn><m:mo>%</m:mo><m:mo>×</m:mo><m:mi>t</m:mi></m:math> de la intensidad inicial.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show"
+        outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar “se reduce un 5 % cada minuto”</strong></p>
+            <p>Reducirse un 5 % significa que en cada minuto queda el 95 % del valor que había antes.</p>
+            <p>En forma decimal, 95 % es <m:math><m:mn>0,95</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Ver qué ocurre en los primeros minutos</strong></p>
+            <p>Intensidad inicial:</p>
+            <p><m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn></m:math></p>
+            <p>Después de 1 minuto:</p>
+            <p><m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>760</m:mn></m:math></p>
+            <p>Después de 2 minutos:</p>
+            <p><m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>760</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>722</m:mn></m:math></p>
+            <p>Esto también se puede escribir como:</p>
+            <p><m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>·</m:mo><m:mn>0,95</m:mn><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,95</m:mn><m:mn>2</m:mn></m:msup></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Generalizar para t minutos</strong></p>
+            <p>Como cada minuto se multiplica por el mismo factor <m:math><m:mn>0,95</m:mn></m:math>, repetir esa multiplicación <m:math><m:mi>t</m:mi></m:math> veces se representa con la potencia:</p>
+            <p><m:math><m:msup><m:mn>0,95</m:mn><m:mi>t</m:mi></m:msup></m:math></p>
+            <p>Por eso el modelo es:</p>
+            <p><m:math><m:mi>I</m:mi><m:mo>=</m:mo><m:mn>800</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,95</m:mn><m:mi>t</m:mi></m:msup></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La explicación correcta es la que dice que en cada minuto queda el 95 % de la intensidad del minuto anterior y que repetir ese mismo factor se representa con una potencia.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

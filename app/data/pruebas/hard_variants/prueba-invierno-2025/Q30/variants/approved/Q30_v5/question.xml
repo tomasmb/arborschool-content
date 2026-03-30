@@ -1,0 +1,195 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q30_v5" title="Q30_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En ciertos mapas planos se cumple la relación de Euler <m:math><m:mi>R</m:mi><m:mo>+</m:mo><m:mi>V</m:mi><m:mo>=</m:mo><m:mi>F</m:mi><m:mo>+</m:mo><m:mn>2</m:mn></m:math>, donde <em>R</em> es la cantidad de regiones, <em>V</em> es la cantidad de vértices y <em>F</em> es la cantidad de fronteras.</p>
+    <p>En un mapa se observan 12 vértices y 30 fronteras. Un estudiante quiere calcular cuántas regiones hay en el mapa y escribe los siguientes pasos:<br /> (1) «R + 12 = 30 + 2»<br /> (2) «R + 12 = 31»<br /> (3) «R = 19».<br />Otro estudiante dice que en uno de estos pasos hay un error. </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿En cuál de los pasos se comete el error?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Paso 1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al reemplazar en la relación de Euler los datos del enunciado, con 12 vértices y 30 fronteras, se obtiene exactamente R + 12 = 30 + 2. Ese paso sí corresponde a la información dada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Paso 2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el paso 1 aparece 30 + 2, y esa suma es 32, no 31. Por eso el error está en el paso 2.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Paso 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si desde el paso correcto R + 12 = 32 se resta 12 en ambos lados, resulta R = 20. Por lo tanto, el problema ya venía antes: el error está en el paso 2, porque usar 31 lleva a R = 19.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">En ninguno de los pasos hay error<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí hay un error: 30 + 2 = 32. Como en el desarrollo aparece R + 12 = 31, esa igualdad es falsa y corresponde al paso 2.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Escribir la relación dada</strong></p>
+            <p>La relación de Euler del enunciado es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mi>V</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mi>F</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Reemplazar los datos del mapa</strong></p>
+            <p>Como hay 12 vértices y 30 fronteras, se reemplaza <em>V</em> por 12 y <em>F</em> por 30:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>30</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por eso, el paso 1 está correcto.</p>
+          </li>
+          <li>
+            <p><strong>Calcular la suma del lado derecho</strong></p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>30</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>32</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces la igualdad correcta debe ser:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>32</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El estudiante escribió <m:math><m:mrow><m:mi>R</m:mi><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>=</m:mo><m:mn>31</m:mn></m:mrow></m:math>, pero eso es incorrecto. Por lo tanto, el error está en el paso 2.</p>
+          </li>
+          <li>
+            <p><strong>Calcular cuántas regiones hay realmente</strong></p>
+            <p>Desde</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>+</m:mo>
+                  <m:mn>12</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>32</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>se resta 12 en ambos lados:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>32</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>12</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>R</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>20</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad correcta de regiones es 20, y el primer paso incorrecto del procedimiento es el paso 2. La alternativa correcta es <strong>Paso 2</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

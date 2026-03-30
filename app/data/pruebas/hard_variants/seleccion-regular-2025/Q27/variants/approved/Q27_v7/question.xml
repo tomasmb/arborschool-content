@@ -1,0 +1,152 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q27_v7" title="Q27_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En una feria, una persona lleva un monto de dinero de $P para comprar estampas. Cada estampa cuesta $M y decide comprar 15 estampas, aprovechando al máximo su dinero, pero sin gastarlo por completo.<br /><br />
+    ¿Cuál de las siguientes expresiones representa la parte del dinero $P que <strong>no se utiliza</strong> en la compra de las 15 estampas?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>P</m:mi>
+          <m:mo>-</m:mo>
+          <m:mn>15</m:mn>
+          <m:mo>·</m:mo>
+          <m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! El dinero inicial es P y el costo de 15 estampas es 15·M. Por lo tanto, la parte del dinero que no se utiliza es el total menos lo gastado: P − 15·M.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>15</m:mn>
+          <m:mo>·</m:mo>
+          <m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La expresión 15·M representa lo que sí se gasta al comprar 15 estampas, no la parte del dinero P que no se utiliza. Por ejemplo, si P = 20 y M = 1, se gastan 15 y sobran 5, así que 15 no corresponde al dinero no utilizado.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>P</m:mi>
+          <m:mo>-</m:mo>
+          <m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La expresión P − M solo resta el precio de una estampa, pero el problema dice que se compran 15 estampas. El dinero no utilizado debe obtenerse restando 15·M al total P. Por ejemplo, si P = 20 y M = 1, sobran 20 − 15 = 5, mientras que P − M = 19, que no corresponde.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>15</m:mn>
+              <m:mo>·</m:mo>
+              <m:mi>M</m:mi>
+            </m:mrow>
+            <m:mi>P</m:mi>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La expresión (15·M)/P compara lo gastado con el dinero total, pero el problema pide una parte del dinero no utilizada en pesos, no una razón. Por ejemplo, si P = 20 y M = 1, sobran 5 pesos, mientras que (15·1)/20 = 0,75, que no representa dinero sobrante.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el dinero total</strong></p>
+            <p>La persona lleva un total de <m:math><m:mi>P</m:mi></m:math> pesos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular cuánto gasta en 15 estampas</strong></p>
+            <p>Cada estampa cuesta <m:math><m:mi>M</m:mi></m:math> pesos. Entonces, 15 estampas cuestan:</p>
+            <p><m:math><m:mrow><m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el dinero que no se utiliza</strong></p>
+            <p>El dinero no utilizado es el dinero total menos el dinero gastado:</p>
+            <p><m:math><m:mrow><m:mi>P</m:mi><m:mo>-</m:mo><m:mrow><m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi></m:mrow></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La alternativa A muestra exactamente <m:math><m:mrow><m:mi>P</m:mi><m:mo>-</m:mo><m:mrow><m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi></m:mrow></m:mrow></m:math>.</p>
+            <p>La alternativa B representa solo lo gastado.</p>
+            <p>La alternativa C resta solo una estampa.</p>
+            <p>La alternativa D representa una razón entre lo gastado y el total.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión que representa la parte del dinero <strong>no utilizada</strong> es <m:math><m:mrow><m:mi>P</m:mi><m:mo>-</m:mo><m:mrow><m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi></m:mrow></m:mrow></m:math>, es decir, la <strong>alternativa A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

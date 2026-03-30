@@ -1,0 +1,372 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q49_v10" title="Q49_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En un ejercicio se pide calcular el perímetro de un triángulo rectángulo isósceles cuya área es 50 cm².
+      Un estudiante, después de hacer sus cálculos, escribe como resultado final para el perímetro la expresión
+      <m:math>
+        <m:mrow>
+          <m:mn>2</m:mn>
+          <m:msqrt>
+            <m:mn>50</m:mn>
+          </m:msqrt>
+          <m:mo>+</m:mo>
+          <m:mn>50</m:mn>
+        </m:mrow>
+      </m:math>
+      cm.
+      El profesor quiere que el estudiante llegue al perímetro correcto usando la relación entre el área y los catetos,
+      y la relación entre cateto e hipotenusa de este tipo de triángulo.
+      ¿Cuál de las siguientes indicaciones del profesor permitiría corregir adecuadamente el procedimiento del estudiante?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Decirle que la fórmula del área de un triángulo rectángulo isósceles es
+        <m:math>
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>2</m:mn>
+            <m:mo>·</m:mo>
+            <m:msup>
+              <m:mi>lado</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+          </m:mrow>
+        </m:math>,
+        por lo que debe obtener primero el cateto resolviendo
+        <m:math>
+          <m:mrow>
+            <m:mn>2</m:mn>
+            <m:mo>·</m:mo>
+            <m:msup>
+              <m:mi>lado</m:mi>
+              <m:mn>2</m:mn>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mn>50</m:mn>
+          </m:mrow>
+        </m:math>
+        antes de calcular el perímetro.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si se usa esa relación, se obtiene 2·lado² = 50, luego lado² = 25 y, como lado &gt; 0, lado = 5. Entonces el perímetro sería 2·5 + 5√2 = 10 + 5√2 cm. Pero con área 50 cm² el cateto correcto debe cumplir lado²/2 = 50, de donde lado = 10 y el perímetro correcto es 20 + 10√2 cm.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Recordarle que la fórmula correcta que relaciona el área con el cateto es
+        <m:math>
+          <m:mrow>
+            <m:mi>A</m:mi>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:msup>
+                <m:mi>lado</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mn>2</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>,
+        por lo que primero debe resolver
+        <m:math>
+          <m:mrow>
+            <m:mfrac>
+              <m:msup>
+                <m:mi>lado</m:mi>
+                <m:mn>2</m:mn>
+              </m:msup>
+              <m:mn>2</m:mn>
+            </m:mfrac>
+            <m:mo>=</m:mo>
+            <m:mn>50</m:mn>
+          </m:mrow>
+        </m:math>
+        para hallar el cateto, y luego usar que en un triángulo rectángulo isósceles la hipotenusa mide
+        <m:math>
+          <m:mrow>
+            <m:mi>lado</m:mi>
+            <m:msqrt>
+              <m:mn>2</m:mn>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>,
+        de modo que el perímetro se expresa como
+        <m:math>
+          <m:mrow>
+            <m:mn>2</m:mn>
+            <m:mi>lado</m:mi>
+            <m:mo>+</m:mo>
+            <m:mi>lado</m:mi>
+            <m:msqrt>
+              <m:mn>2</m:mn>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+        centímetros.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! De lado²/2 = 50 se obtiene lado² = 100 y, como lado &gt; 0, lado = 10. Luego la hipotenusa mide 10√2. Por tanto, el perímetro es 2·10 + 10√2 = 20 + 10√2 cm, que corrige adecuadamente el procedimiento.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Indicarle que, como se trata de un triángulo isósceles, los tres lados son iguales, por lo que basta con
+        calcular la raíz cuadrada del área y multiplicarla por 3, de modo que el perímetro sería
+        <m:math>
+          <m:mrow>
+            <m:mn>3</m:mn>
+            <m:msqrt>
+              <m:mn>50</m:mn>
+            </m:msqrt>
+          </m:mrow>
+        </m:math>
+        cm.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En un triángulo rectángulo isósceles solo dos lados son iguales: los catetos. Con área 50 cm² se cumple lado²/2 = 50, luego lado = 10 y los lados son 10, 10 y 10√2. No son los tres iguales. Además, 3√50 = 3·5√2 = 15√2 cm, mientras que el perímetro correcto es 20 + 10√2 cm.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Señalarle que su resultado ya es correcto, porque para cualquier triángulo rectángulo isósceles de área
+        <m:math>
+          <m:mi>A</m:mi>
+        </m:math>
+        el perímetro siempre se puede escribir como
+        <m:math>
+          <m:mrow>
+            <m:mn>2</m:mn>
+            <m:msqrt>
+              <m:mi>A</m:mi>
+            </m:msqrt>
+            <m:mo>+</m:mo>
+            <m:mi>A</m:mi>
+          </m:mrow>
+        </m:math>
+        centímetros.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La afirmación universal es falsa. Un contraejemplo es A = 50. Entonces esa expresión entrega 2√50 + 50 = 10√2 + 50 cm. Pero con área 50 cm² el cateto correcto es 10, la hipotenusa es 10√2 y el perímetro real es 20 + 10√2 cm. Como 10√2 + 50 ≠ 20 + 10√2, esa forma no sirve para cualquier área.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Relacionar el área con el cateto</strong></p>
+            <p>Si el triángulo rectángulo isósceles tiene catetos iguales de medida <m:math><m:mi>lado</m:mi></m:math>, entonces su área es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>A</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mi>base</m:mi>
+                      <m:mo>·</m:mo>
+                      <m:mi>altura</m:mi>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mi>lado</m:mi>
+                      <m:mo>·</m:mo>
+                      <m:mi>lado</m:mi>
+                    </m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:msup>
+                      <m:mi>lado</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Como el área vale 50 cm², se cumple:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:msup>
+                      <m:mi>lado</m:mi>
+                      <m:mn>2</m:mn>
+                    </m:msup>
+                    <m:mn>2</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mn>50</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Hallar la medida del cateto</strong></p>
+            <p>Multiplicando ambos lados por 2:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mi>lado</m:mi>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mn>100</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Como una longitud es positiva, <m:math><m:mi>lado</m:mi></m:math> &gt; 0, entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>lado</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:msqrt>
+                    <m:mn>100</m:mn>
+                  </m:msqrt>
+                  <m:mo>=</m:mo>
+                  <m:mn>10</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Cada cateto mide 10 cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Hallar la hipotenusa</strong></p>
+            <p>En un triángulo rectángulo isósceles, la hipotenusa es el cateto multiplicado por <m:math><m:msqrt><m:mn>2</m:mn></m:msqrt></m:math>. Entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>hipotenusa</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:msqrt>
+                    <m:mn>2</m:mn>
+                  </m:msqrt>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el perímetro</strong></p>
+            <p>El perímetro es la suma de los tres lados:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:msqrt>
+                    <m:mn>2</m:mn>
+                  </m:msqrt>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>20</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:msqrt>
+                    <m:mn>2</m:mn>
+                  </m:msqrt>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La indicación correcta es la alternativa B, porque usa la relación correcta entre el área y el cateto, y después la relación entre el cateto y la hipotenusa.</p>
+            <p>El perímetro correcto del triángulo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>20</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>10</m:mn>
+                  <m:msqrt>
+                    <m:mn>2</m:mn>
+                  </m:msqrt>
+                </m:mrow>
+              </m:math>
+              cm.
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

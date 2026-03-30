@@ -1,0 +1,123 @@
+{
+  "variant_id": "Q12_v17",
+  "source_question_id": "Q12",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q12_v17",
+    "scenario_description": "Se proporciona la imagen de un gráfico circular (un círculo) dividido en 9 sectores iguales, de los cuales 8 están coloreados de un mismo color para representar a los estudiantes que aprobaron una prueba y 1 sector en blanco para los que reprobaron. Bajo el gráfico se incluyen afirmaciones como:\n- A) «Aprobó el 11,1% de los estudiantes».\n- B) «Aprobó el 12,5% de los estudiantes».\n- C) «Aprobó el 80% de los estudiantes».\n- D) «Aprobó el 88,8% de los estudiantes».\n\nEl estudiante debe seleccionar la afirmación correcta. La figura es similar a la original, pero el foco está en decidir la afirmación que mejor describe el porcentaje de aprobados, no en dar directamente el número.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "Debe interpretar el gráfico para determinar que 8 de 9 sectores corresponden a aprobados, calcular el porcentaje equivalente y luego reconocer qué afirmación lo expresa correctamente. Esto exige comprender que el porcentaje se refiere a la proporción representada en el gráfico, y discriminar los errores típicos (usar el sector en blanco, redondear mal la base o tomar un denominador incorrecto).",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Círculo dividido en 9 sectores iguales; 8 sectores coloreados (aprobados) y 1 en blanco (reprobados). Debajo, cuatro afirmaciones textuales con distintos porcentajes de aprobados.",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que cambiar de porcentaje de aprobados a reprobados no introduce pasos adicionales ni un constructo nuevo: sigue siendo un cálculo directo de porcentaje parte/total a partir del mismo gráfico, sólo que sobre el complemento (1 de 9)."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-07"
+    ],
+    "primary_atom_titles": [
+      "Determinación del porcentaje entre dos cantidades"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "structural_illustration",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "unknown",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_structural_support",
+    "explicit_dataset_policy": "not_required_if_geometry_is_explicit",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

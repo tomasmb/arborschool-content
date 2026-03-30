@@ -1,0 +1,195 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v8" title="Q63_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la tabla incluida se presenta la distribución de los participantes en las actividades recreativas de un campamento.</p>
+    <div>
+      <table>
+        <tr>
+          <th>Actividades</th>
+          <th>Caminata</th>
+          <th>Cine</th>
+          <th>Taller de manualidades</th>
+          <th>Juegos de mesa</th>
+        </tr>
+        <tr>
+          <th>Cantidad de personas</th>
+          <td>16</td>
+          <td>19</td>
+          <td/>
+          <td>15</td>
+        </tr>
+      </table>
+    </div>
+    <p>Se sabe que, al escoger al azar a una persona entre todos los participantes, la probabilidad de que esta participe en Juegos de mesa es 0,2.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál es la cantidad de personas que participa en el Taller de manualidades?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">30<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si en Juegos de mesa hay 15 personas y eso corresponde a una probabilidad de 0,2, entonces el total de participantes es 75, porque 15 es el 20% de 75. Al sumar 16 + 19 + 30 + 15 se obtiene 80, no 75. Por lo tanto, 30 no puede ser la cantidad de personas en Taller de manualidades.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">25<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si 15 personas corresponden a una probabilidad de 0,2, entonces el total de participantes es 75. Luego, la cantidad en Taller de manualidades es 75 − 16 − 19 − 15 = 25. Por eso, la respuesta correcta es 25.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">40<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si en Juegos de mesa hay 15 personas y eso corresponde a una probabilidad de 0,2, entonces el total de participantes es 75. Pero al sumar 16 + 19 + 40 + 15 se obtiene 90, no 75. Por lo tanto, 40 no satisface la información del problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">45<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si en Juegos de mesa hay 15 personas y eso corresponde a una probabilidad de 0,2, entonces el total de participantes es 75. Pero al sumar 16 + 19 + 45 + 15 se obtiene 95, no 75. Por lo tanto, 45 no puede ser la cantidad de personas en Taller de manualidades.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la probabilidad entregada</strong></p>
+            <p>La probabilidad de escoger al azar a una persona que participe en Juegos de mesa es 0,2. Eso significa que la razón entre la cantidad de personas en Juegos de mesa y el total de participantes es 0,2.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mrow>
+                    <mn>15</mn>
+                  </mrow>
+                  <mrow>
+                    <mtext>Total</mtext>
+                  </mrow>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,2</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el total de participantes</strong></p>
+            <p>Despejamos el total:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mtext>Total</mtext>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>15</mn>
+                  <mn>0,2</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Como dividir por 0,2 equivale a multiplicar por 5:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>15</mn>
+                  <mn>0,2</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>75</mn>
+              </mrow>
+            </math>
+            <p>Entonces, en el campamento hay 75 participantes en total.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las cantidades conocidas</strong></p>
+            <p>Las cantidades conocidas son:</p>
+            <ul>
+              <li>Caminata: 16</li>
+              <li>Cine: 19</li>
+              <li>Juegos de mesa: 15</li>
+            </ul>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>16</mn>
+                <mo>+</mo>
+                <mn>19</mn>
+                <mo>+</mo>
+                <mn>15</mn>
+                <mo>=</mo>
+                <mn>50</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Encontrar la cantidad en Taller de manualidades</strong></p>
+            <p>Restamos al total la suma de las cantidades conocidas:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>75</mn>
+                <mo>−</mo>
+                <mn>50</mn>
+                <mo>=</mo>
+                <mn>25</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad de personas que participa en el Taller de manualidades es 25.</p>
+            <p>La alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

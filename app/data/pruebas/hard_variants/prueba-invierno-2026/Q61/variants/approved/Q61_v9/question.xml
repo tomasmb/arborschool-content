@@ -1,0 +1,209 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q61_v9" title="Q61_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se registraron los tamaños, en megabytes (MB), de 11 archivos:</p>
+    <p>
+      <m:math>
+        <m:mrow>
+          <m:mn>10</m:mn><m:mo>,</m:mo>
+          <m:mn>11</m:mn><m:mo>,</m:mo>
+          <m:mn>12</m:mn><m:mo>,</m:mo>
+          <m:mn>13</m:mn><m:mo>,</m:mo>
+          <m:mn>13</m:mn><m:mo>,</m:mo>
+          <m:mn>15</m:mn><m:mo>,</m:mo>
+          <m:mn>18</m:mn><m:mo>,</m:mo>
+          <m:mn>18</m:mn><m:mo>,</m:mo>
+          <m:mn>19</m:mn><m:mo>,</m:mo>
+          <m:mn>21</m:mn><m:mo>,</m:mo>
+          <m:mn>22</m:mn>
+        </m:mrow>
+      </m:math>
+    </p>
+    <p>En el siguiente diagrama de caja horizontal se intenta representar este conjunto de datos. Sin embargo, uno de los cinco valores del resumen (mínimo, primer cuartil, mediana, tercer cuartil o máximo) está mal ubicado en el gráfico.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Diagrama de caja horizontal que representa supuestamente los tamaños de 11 archivos en megabytes sobre un eje numérico horizontal. El eje está rotulado &quot;Tamaño de archivo (MB)&quot; y tiene marcas principales en 10, 12, 15, 20 y 22 MB. El bigote izquierdo parte de un mínimo en 10 MB y llega al borde izquierdo de la caja en 12 MB. La caja se extiende desde 12 MB hasta 20 MB. En el interior de la caja hay una línea vertical de la mediana en 15 MB, aproximadamente al centro de la caja. El bigote derecho va desde el borde derecho de la caja en 20 MB hasta un máximo en 22 MB. Este diagrama es casi correcto para el conjunto de datos dado, pero el valor del tercer cuartil está dibujado en 20 MB en lugar de su valor real." />
+    </p>
+    <p>Según los datos, ¿cuál de las siguientes modificaciones al diagrama permitiría que representara correctamente este conjunto de tamaños de archivo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        Mover solo el valor del primer cuartil desde 12 MB a 13 MB, dejando los demás valores donde están.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al ordenar los 11 datos, la mediana es 15 MB. El grupo inferior, sin incluir la mediana, es 10, 11, 12, 13, 13, y su valor central es 12 MB, no 13 MB. Además, el grupo superior es 18, 18, 19, 21, 22, cuyo valor central es 19 MB. Por lo tanto, el primer cuartil ya está bien en 12 MB y el valor que debe moverse es el tercer cuartil.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Mover solo el valor del tercer cuartil desde 20 MB a 19 MB, manteniendo fijos el mínimo, el máximo, el primer cuartil y la mediana.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los datos ordenados son 10, 11, 12, 13, 13, 15, 18, 18, 19, 21, 22. Como hay 11 datos, la mediana es el 6.º valor: 15 MB. El primer cuartil es la mediana de 10, 11, 12, 13, 13, o sea 12 MB. El tercer cuartil es la mediana de 18, 18, 19, 21, 22, o sea 19 MB. Entonces el único valor mal ubicado es el tercer cuartil, que debe pasar de 20 MB a 19 MB.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        Desplazar simultáneamente el mínimo de 10 MB a 11 MB y el máximo de 22 MB a 23 MB, manteniendo la caja igual.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la lista ordenada, el mínimo es 10 MB y el máximo es 22 MB. Cambiarlos a 11 MB y 23 MB contradice directamente los datos observados. Además, el valor que realmente está mal en el diagrama no es un extremo: el tercer cuartil del grupo superior 18, 18, 19, 21, 22 es 19 MB, no 20 MB.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        Mover la mediana desde 15 MB a 16 MB y, además, ajustar el tercer cuartil desde 20 MB a 21 MB.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con 11 datos ordenados, la mediana es el 6.º valor, y ese valor es 15 MB, no 16 MB. Además, el tercer cuartil se obtiene del grupo superior 18, 18, 19, 21, 22, cuyo valor central es 19 MB, no 21 MB. Esta modificación deja mal ubicados dos valores del resumen.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del diagrama de caja</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Ordenar y contar los datos</strong></p>
+            <p>Los datos ya están ordenados:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn><m:mo>,</m:mo>
+                  <m:mn>11</m:mn><m:mo>,</m:mo>
+                  <m:mn>12</m:mn><m:mo>,</m:mo>
+                  <m:mn>13</m:mn><m:mo>,</m:mo>
+                  <m:mn>13</m:mn><m:mo>,</m:mo>
+                  <m:mn>15</m:mn><m:mo>,</m:mo>
+                  <m:mn>18</m:mn><m:mo>,</m:mo>
+                  <m:mn>18</m:mn><m:mo>,</m:mo>
+                  <m:mn>19</m:mn><m:mo>,</m:mo>
+                  <m:mn>21</m:mn><m:mo>,</m:mo>
+                  <m:mn>22</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Hay 11 datos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar la mediana</strong></p>
+            <p>Como hay 11 datos, la mediana es el valor que queda al centro, es decir, el 6.º dato.</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>6</m:mn><m:mtext>.º dato</m:mtext><m:mo>=</m:mo><m:mn>15</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces, la mediana es 15 MB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el primer cuartil</strong></p>
+            <p>Se toma la mitad inferior, sin incluir la mediana:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>10</m:mn><m:mo>,</m:mo>
+                  <m:mn>11</m:mn><m:mo>,</m:mo>
+                  <m:mn>12</m:mn><m:mo>,</m:mo>
+                  <m:mn>13</m:mn><m:mo>,</m:mo>
+                  <m:mn>13</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El valor central de esos 5 datos es 12.</p>
+            <p>Por lo tanto, el primer cuartil es 12 MB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el tercer cuartil</strong></p>
+            <p>Se toma la mitad superior, sin incluir la mediana:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>18</m:mn><m:mo>,</m:mo>
+                  <m:mn>18</m:mn><m:mo>,</m:mo>
+                  <m:mn>19</m:mn><m:mo>,</m:mo>
+                  <m:mn>21</m:mn><m:mo>,</m:mo>
+                  <m:mn>22</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El valor central de esos 5 datos es 19.</p>
+            <p>Por lo tanto, el tercer cuartil es 19 MB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Determinar mínimo y máximo</strong></p>
+            <p>El mínimo es 10 MB y el máximo es 22 MB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar con el diagrama dado</strong></p>
+            <p>El diagrama muestra correctamente mínimo 10 MB, primer cuartil 12 MB, mediana 15 MB y máximo 22 MB.</p>
+            <p>Pero muestra el tercer cuartil en 20 MB, y según los datos debe ser 19 MB.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La modificación correcta es mover solo el tercer cuartil desde 20 MB a 19 MB.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

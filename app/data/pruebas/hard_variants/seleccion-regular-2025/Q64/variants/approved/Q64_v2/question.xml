@@ -1,0 +1,137 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v2" title="Q64_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el siguiente tablero tipo videojuego de 8×8 casillas, el personaje se ubica inicialmente en la casilla E2 y debe llegar a la casilla C7.</p>
+    <p>
+      <img src="requiere_nueva_imagen_tablero.png" alt="Cuadrícula tipo tablero 8×8 con columnas rotuladas de A a H y filas de 1 a 8. La casilla E2 está marcada con un ícono de personaje como posición inicial y la casilla C7 está resaltada como posición final, sin mostrar el recorrido intermedio." />
+    </p>
+    <p>El mando del juego tiene solo tres botones: A, B y C. Cada botón mueve siempre al personaje exactamente una casilla en una misma dirección fija (horizontal, vertical o diagonal). Durante una partida, el jugador presionó la secuencia A A A B B C C C para intentar llevar al personaje desde E2 hasta C7.</p>
+    <p>
+      <img src="requiere_nueva_imagen_control.png" alt="Dibujo de un control de videojuego con tres botones circulares etiquetados A, B y C, sin indicar direcciones de movimiento; se usa solo como referencia visual de los botones mencionados en el enunciado." />
+    </p>
+    <p>Las siguientes alternativas proponen distintas asignaciones de movimientos a los botones A, B y C.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes asignaciones de movimientos a los botones A, B y C es compatible con que el personaje pase de E2 a C7 usando la secuencia A A A B B C C C?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">A = ↗ (una casilla en diagonal hacia arriba y la derecha), B = ↑ (una casilla hacia arriba), C = ← (una casilla hacia la izquierda)<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si se parte en E2 y se aplica A A A, se llega a H5. Luego, con B B, se llega a H7. Finalmente, con C C C, se llega a E7. Esta asignación termina en E7 y no en C7.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">A = ↗ (una casilla en diagonal hacia arriba y la derecha), B = ↖ (una casilla en diagonal hacia arriba y la izquierda), C = ← (una casilla hacia la izquierda)<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Partiendo en E2, con A A A se llega a H5. Después, con B B, se pasa de H5 a G6 y luego a F7. Finalmente, con C C C, se pasa de F7 a E7, luego a D7 y luego a C7. Esta asignación sí lleva exactamente desde E2 hasta C7.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">A = ↗ (una casilla en diagonal hacia arriba y la derecha), B = ← (una casilla hacia la izquierda), C = ↖ (una casilla en diagonal hacia arriba y la izquierda)<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si se parte en E2 y se aplica A A A, se llega a H5. Luego, con B B, se llega a F5. Finalmente, con C C C, se pasa por E6, D7 y C8. Esta asignación termina en C8 y no en C7.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">A = ↗ (una casilla en diagonal hacia arriba y la derecha), B = ↖ (una casilla en diagonal hacia arriba y la izquierda), C = ↓ (una casilla hacia abajo)<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se parte en E2 y se aplica A A A, se llega a H5. Luego, con B B, se llega a F7. Finalmente, con C C C, se baja a F6, luego a F5 y luego a F4. Esta asignación termina en F4 y no en C7.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el punto de partida y el punto de llegada</strong></p>
+            <p>El personaje parte en E2 y debe llegar a C7.</p>
+            <p>Eso significa que, en total, debe avanzar 5 filas hacia arriba y 2 columnas hacia la izquierda.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la secuencia de botones</strong></p>
+            <p>La secuencia usada fue A A A B B C C C.</p>
+            <p>Por lo tanto, el movimiento asociado al botón A se aplica 3 veces, el del botón B se aplica 2 veces y el del botón C se aplica 3 veces.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Probar cada alternativa recorriendo el tablero</strong></p>
+            <p><strong>Opción A</strong></p>
+            <p>Desde E2, aplicar A = ↗ tres veces da: F3, G4, H5.</p>
+            <p>Luego B = ↑ dos veces da: H6, H7.</p>
+            <p>Luego C = ← tres veces da: G7, F7, E7.</p>
+            <p>Se llega a E7, no a C7. Entonces la opción A no es compatible.</p>
+            <p><strong>Opción B</strong></p>
+            <p>Desde E2, aplicar A = ↗ tres veces da: F3, G4, H5.</p>
+            <p>Luego B = ↖ dos veces da: G6, F7.</p>
+            <p>Luego C = ← tres veces da: E7, D7, C7.</p>
+            <p>Se llega exactamente a C7. Entonces la opción B sí es compatible.</p>
+            <p><strong>Opción C</strong></p>
+            <p>Desde E2, aplicar A = ↗ tres veces da: F3, G4, H5.</p>
+            <p>Luego B = ← dos veces da: G5, F5.</p>
+            <p>Luego C = ↖ tres veces da: E6, D7, C8.</p>
+            <p>Se llega a C8, no a C7. Entonces la opción C no es compatible.</p>
+            <p><strong>Opción D</strong></p>
+            <p>Desde E2, aplicar A = ↗ tres veces da: F3, G4, H5.</p>
+            <p>Luego B = ↖ dos veces da: G6, F7.</p>
+            <p>Luego C = ↓ tres veces da: F6, F5, F4.</p>
+            <p>Se llega a F4, no a C7. Entonces la opción D no es compatible.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir</strong></p>
+            <p>La única asignación de movimientos que permite pasar de E2 a C7 usando la secuencia A A A B B C C C es la alternativa <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,134 @@
+{
+  "source_question_id": "Q65",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q65_v1",
+      "scenario_description": "Se modela un certamen con 3 preguntas de alternativa, donde un estudiante responde completamente al azar. Cada respuesta puede quedar correcta o incorrecta, con la misma probabilidad. El sistema de puntaje se da en forma verbal: por cada respuesta correcta se ganan 3 puntos y por cada incorrecta se pierden 2 puntos. Se pregunta directamente: «¿Cuál es la probabilidad de que el estudiante termine con un puntaje negativo en estas 3 preguntas?», con alternativas numéricas de probabilidad.\nEl espacio muestral sigue siendo de 8 resultados equiprobables (combinaciones de correcta/incorrecta), pero el estudiante debe interpretar el esquema de puntaje verbal, traducirlo a una expresión en función de la cantidad de aciertos y errores, determinar para qué combinaciones el puntaje es negativo y luego calcular la probabilidad correspondiente.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "Obliga a comprender cómo el número de respuestas correctas e incorrectas se traduce en puntaje (no basta reconocer la forma c−2s). El estudiante debe: (1) interpretar la regla de puntaje desde un enunciado verbal, (2) formular o al menos aplicar la desigualdad «puntaje < 0» en función del número de aciertos, y (3) contar los casos favorables en el espacio muestral de 3 ensayos binarios. Esto evita una aplicación mecánica de un esquema ya memorizado con monedas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q65_v2",
+      "scenario_description": "Se plantea nuevamente lanzar monedas, pero ahora se lanzan 4 monedas simultáneamente. El puntaje se define con la misma estructura funcional que en la fuente (P = c − 2s, donde c es la cantidad de caras y s la de sellos). Sin embargo, en el enunciado se entrega una pequeña tabla que indica explícitamente cuántos resultados posibles tienen 0, 1, 2, 3 y 4 caras (por ejemplo: 1 resultado con 0 caras, 4 con 1 cara, 6 con 2 caras, 4 con 3 caras y 1 con 4 caras). Se pide: «¿Cuál es la probabilidad de obtener un puntaje negativo en un lanzamiento de las 4 monedas?» con alternativas numéricas.\nEl estudiante debe usar la tabla agregada por número de caras, evaluar para cada caso si el puntaje P es negativo y sumar las frecuencias de los casos favorables antes de dividir por el total de resultados posibles (16).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "Fuerza a razonar por clases de resultados (número de caras) en lugar de listar directamente las secuencias. Debe entender cómo el puntaje depende de c y s, decidir para qué valores de c el puntaje es negativo y luego combinar esa información con la tabla de frecuencias. Esto exige comprender la función de puntaje y el modelo de probabilidad clásica, no solo repetir el conteo de 3 monedas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q65_v3",
+      "scenario_description": "Se describe una urna con fichas rojas y azules en igual cantidad. Se extraen 3 fichas con reemplazo, de modo que cada extracción tiene probabilidad 1/2 de ser roja y 1/2 de ser azul, e independientes. La regla de puntaje se da en forma verbal: cada ficha roja suma 2 puntos y cada ficha azul resta 1 punto. Se pregunta directamente: «¿Cuál es la probabilidad de terminar con un puntaje estrictamente mayor que 0 al extraer las 3 fichas?» con alternativas numéricas de probabilidad.\nEl estudiante debe entender la correspondencia entre número de fichas de cada color y el puntaje total, relacionarlo con las 8 combinaciones equiprobables de rojas/azules y determinar qué combinaciones producen un puntaje positivo.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "Aunque el espacio muestral sigue siendo 2^3, ya no se trabaja con monedas ni con una fórmula simbólica dada. El estudiante tiene que construir mentalmente la relación entre el conteo de rojas/azules y el puntaje (2R − B), determinar para qué distribuciones de colores el total es positivo y solo entonces contar los casos favorables. Esto desalienta la repetición de un patrón c−2s y exige comprender por qué y cómo se cuentan los casos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q65_v4",
+      "scenario_description": "Se presenta un disco giratorio dividido en 3 zonas iguales: roja, azul y verde. Se realizan 2 giros independientes. La regla de puntaje es verbal: por cada vez que el puntero cae en rojo se gana 1 punto, por cada azul se pierde 1 punto y por cada verde no se gana ni se pierde. Se pide: «¿Cuál es la probabilidad de terminar con un puntaje negativo después de los 2 giros?» Se entregan alternativas numéricas (fracciones simples sobre 9).\nEl espacio muestral ahora tiene 9 resultados equiprobables (todas las parejas de colores). El estudiante debe identificar, a partir del puntaje definido, en qué combinaciones el puntaje final es negativo y contar esos casos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante no puede apoyarse en el conteo estándar de 3 lanzamientos binarios: debe construir un espacio muestral 3×3 y analizar el puntaje asociado a cada resultado. Necesita entender cómo la suma de +1, −1 y 0 en dos ensayos genera el evento «puntaje negativo» y, a partir de ello, contar casos favorables sobre 9 posibles. Esto mantiene la probabilidad clásica simple, pero con una estructura de resultados menos rutinaria.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q65_v5",
+      "scenario_description": "Se plantea una situación de 3 lanzamientos de penal en un entrenamiento. Cada penal, independiente, puede ser gol o fallo con la misma probabilidad (1/2). El sistema de puntaje se describe verbalmente: cada gol suma 2 puntos y cada penal fallado resta 1 punto. Se pregunta: «¿Cuál es la probabilidad de que el jugador obtenga al menos 2 puntos en la serie de 3 penales?» con alternativas numéricas.\nEl estudiante debe relacionar el número de goles y fallos con el puntaje total, determinar qué combinaciones de goles/fallos producen un puntaje mayor o igual a 2 y luego calcular la probabilidad sobre el espacio de 2^3 resultados equiprobables.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "La tarea obliga a comprender que el evento «puntaje ≥ 2» se expresa en términos del número de goles y fallos, lo que implica analizar casos (0, 1, 2 o 3 goles) y el puntaje asociado a cada uno. No basta con saber que hay 8 resultados: hay que conectar la condición sobre el puntaje con esos resultados para decidir cuáles son favorables y luego contar. Esto exige entender el porqué del conteo de casos posibles y favorables.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q65_v6",
+      "scenario_description": "Se analiza una máquina que produce series de 3 ampolletas. Cada ampolleta, de manera independiente, puede salir buena (B) o defectuosa (D), con igual probabilidad 1/2. Se define un puntaje Q = 2D − B (en palabras: cada ampolleta defectuosa aporta 2 puntos de ‘riesgo’ y cada ampolleta buena resta 1 punto de ‘riesgo’). La pregunta directa es: «¿Cuál es la probabilidad de que el puntaje Q sea positivo en una serie de 3 ampolletas?»\nEl espacio muestral es nuevamente de 8 resultados (combinaciones de B y D), pero el significado del signo del puntaje cambia: un Q positivo corresponde a ‘más riesgo’ que seguridad, y se debe identificar para qué configuraciones de buenas y defectuosas ocurre esto.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "Se requiere interpretar la expresión Q = 2D − B en términos del número de ampolletas defectuosas y buenas y analizar la desigualdad Q > 0 para determinar qué combinaciones satisfacen la condición. Luego, el estudiante debe contar los casos favorables dentro de los 8 posibles. El cambio de contexto y de signo (ahora se busca puntaje positivo en términos de ‘riesgo’) obliga a comprender el rol de la fórmula, no solo a replicar un esquema de respuesta memorizado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q65_v7",
+      "scenario_description": "Se vuelven a usar 3 monedas, pero sin dar una fórmula simbólica. El enunciado dice: «Se lanzan simultáneamente 3 monedas equilibradas. Por cada cara obtenida el jugador gana 1 punto y por cada sello pierde 2 puntos». Luego se formula la pregunta: «¿Cuál es la probabilidad de que el jugador obtenga un puntaje mayor o igual que 1 en ese lanzamiento?» con alternativas de probabilidad.\nEl estudiante debe relacionar el número de caras y sellos con el puntaje total descrito verbalmente y determinar qué combinaciones producen un puntaje al menos 1, antes de proceder al conteo de casos favorables en los 8 resultados posibles.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "Aunque el esquema de juego se parece al original, la condición sobre el puntaje cambia (de ‘negativo’ a ‘≥ 1’) y la regla se da solo en lenguaje natural. El estudiante debe deducir la expresión equivalente (P = c − 2s), analizar para qué valores de c y s se cumple P ≥ 1 y luego contar los resultados que corresponden a esos valores. Esto evita que siga un algoritmo mecánico específico para «puntaje negativo» y fuerza la comprensión de la relación entre conteos y puntaje.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q65_v8",
+      "scenario_description": "Se lanzan 3 monedas equilibradas, pero se entrega al estudiante una tabla resumida (en texto) con tres columnas: ‘Número de caras (c)’, ‘Número de sellos (s)’ y ‘Número de resultados posibles con esa combinación’. La tabla incluye las filas (c, s) = (0,3), (1,2), (2,1), (3,0) con sus frecuencias 1, 3, 3 y 1, respectivamente. Se define un puntaje P = c − 2s (mencionado en el enunciado) y se pide: «¿Cuál es la probabilidad de obtener un puntaje cuya magnitud sea mayor que 1, es decir, |P| > 1?».\nEl estudiante debe, a partir de la tabla agregada, calcular P para cada fila, decidir en cuáles se cumple |P| > 1 y luego usar las frecuencias para determinar los casos favorables sobre el total de 8 resultados.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "La presencia de la tabla obliga a trabajar por clases de resultados en vez de pensar en las secuencias específicas. Debe comprender cómo la expresión P = c − 2s se evalúa en cada combinación (c, s), interpretar la condición |P| > 1 y solo después combinarla con las frecuencias correspondientes. Esto pone el foco en el vínculo entre la función de puntaje y el conteo de casos, evitando un procedimiento de ‘listar todo y tachar’ de manera rutinaria.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q65_v9",
+      "scenario_description": "Se propone un juego casi idéntico al de la fuente, pero el foco de la pregunta cambia. Se lanzan 3 monedas equilibradas; por cada cara se gana 1 punto y por cada sello se pierden 2 puntos (equivalente a P = c − 2s). Se pregunta por la probabilidad de obtener un puntaje negativo. En lugar de pedir un cálculo directo, se entregan cuatro alternativas que describen explícitamente los casos favorables y el cálculo de la probabilidad, por ejemplo:\nA) «Hay 3 resultados de los 8 posibles que dan puntaje negativo, por lo que la probabilidad es 3/8»;\nB) «Hay 4 resultados de los 8 posibles que dan puntaje negativo, por lo que la probabilidad es 1/2»; etc.\nEl estudiante debe escoger cuál alternativa representa correctamente los casos favorables y la probabilidad asociada.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Aunque el espacio muestral es el mismo, la pregunta obliga a verificar si el listado de casos o el conteo que ofrece cada opción es correcto. Los distractores se construyen con errores típicos: confundir las combinaciones que dan puntajes negativos, omitir resultados o contar mal el total de casos posibles. Para responder bien, el estudiante debe entender qué resultados producen puntaje negativo y cuántos son, no solo aplicar una fórmula, y así validar (o refutar) el razonamiento embebido en cada alternativa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q65_v10",
+      "scenario_description": "Se considera un sistema con 3 sensores independientes; cada sensor puede indicar ‘OK’ (O) o ‘Falla’ (F) con la misma probabilidad. Se define un puntaje P = O − 2F (en palabras, cada sensor que marca OK aporta 1 punto y cada sensor en falla resta 2 puntos). El enunciado presenta cuatro afirmaciones sobre la probabilidad de que el puntaje sea negativo, por ejemplo:\n• I: «La probabilidad de que el puntaje sea negativo es 1/2, porque basta con que haya más fallas que sensores OK»;\n• II: «La probabilidad es 3/8, ya que solo dos configuraciones dan puntaje negativo»;\n• III: «La probabilidad es 4/8, porque cualquier resultado con al menos una falla produce puntaje negativo»; etc.\nSe pide elegir la afirmación correcta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Cada afirmación mezcla un valor de probabilidad con una descripción del evento ‘puntaje negativo’. Los distractores confunden la condición sobre O y F (por ejemplo, creer que cualquier falla implica puntaje negativo o contar mal cuántas configuraciones son favorables) o el número total de casos posibles. Para identificar la afirmación correcta, el estudiante debe analizar con precisión qué combinaciones de O y F generan P < 0 y cuántas son de las 8 posibles, conectando la desigualdad en la expresión de puntaje con el conteo de probabilidades clásicas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    }
+  ]
+}

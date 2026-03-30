@@ -1,0 +1,228 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v14" title="Q13_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Algunas calculadoras tienen botones que permiten marcar dos ceros a la vez [00] o tres ceros a la vez [000], tal como la que se representa en la siguiente imagen.<br /><img src="requiere_nueva_imagen.png" alt="Teclado de calculadora que incluye botones numéricos estándar y, además, dos botones especiales etiquetados como 00 y 000." /></p>
+    <p>De esta manera, para marcar el número 1000, basta con presionar los siguientes botones una vez cada uno:<br /><img src="requiere_nueva_imagen.png" alt="Secuencia de botones presionados: primero el botón 1 y luego el botón 000 para obtener el número 1000 en la pantalla." /></p>
+    <p>En otra situación, se registraron las siguientes secuencias de teclas presionadas, siempre comenzando desde cero y sin borrar:<br />Registro A: [1] [000] [000] [00] [00]<br />Registro B: [1] [000] [00] [2] [00]<br />Registro C: [1] [000] [000] [000] [00]<br />Registro D: [1] [00] [00] [00] [00]<br />Se sabe que, después de presionar las teclas de cada registro, la pantalla muestra un número que, si es una potencia de 10, debe tener la forma de un 1 seguido solo de ceros (sin ningún otro dígito distinto de 0).</p>
+    <p>Si el número buscado es 
+      <m:math>
+        <m:msup>
+          <m:mn>10</m:mn>
+          <m:mn>10</m:mn>
+        </m:msup>
+      </m:math>,
+      ¿cuál de estos registros corresponde a haber escrito exactamente ese número?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Registro A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! En el Registro A se escribe 1 y luego se agregan 3 + 3 + 2 + 2 = 10 ceros. El número obtenido es 1 seguido de 10 ceros, es decir, 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Registro B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. En el Registro B aparece la secuencia 1, luego 000, luego 00, luego 2 y luego 00, por lo que el número formado es 100&#160;000&#160;200. Ese número contiene el dígito 2, así que no tiene la forma de un 1 seguido solo de ceros y no puede ser 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Registro C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En el Registro C se escribe 1 y luego se agregan 3 + 3 + 3 + 2 = 11 ceros. El número obtenido es 1 seguido de 11 ceros, o sea 10 elevado a 11, no 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Registro D<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En el Registro D se escribe 1 y luego se agregan 2 + 2 + 2 + 2 = 8 ceros. El número obtenido es 1 seguido de 8 ceros, o sea 10 elevado a 8, no 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar qué significa 
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>
+            </strong></p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>
+              es un número con un 1 seguido de 10 ceros:
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>10&#160;000&#160;000&#160;000</m:mn>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Contar cuántos ceros agrega cada registro</strong></p>
+            <p>El botón [000] agrega 3 ceros y el botón [00] agrega 2 ceros. Como todos los registros comienzan con [1], basta contar cuántos ceros quedan después de ese 1.</p>
+            <p><em>Registro A:</em> [1] [000] [000] [00] [00]</p>
+            <p>
+              Ceros agregados:
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>10</m:mn>
+              </m:math>.
+              Entonces forma
+              <m:math>
+                <m:mn>10&#160;000&#160;000&#160;000</m:mn>
+              </m:math>,
+              que es
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+            <p><em>Registro B:</em> [1] [000] [00] [2] [00]</p>
+            <p>Forma el número 100&#160;000&#160;200. Ese número no es un 1 seguido solo de ceros, porque aparece el dígito 2.</p>
+            <p><em>Registro C:</em> [1] [000] [000] [000] [00]</p>
+            <p>
+              Ceros agregados:
+              <m:math>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>3</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>11</m:mn>
+              </m:math>.
+              Entonces forma
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>11</m:mn>
+                </m:msup>
+              </m:math>,
+              no
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+            <p><em>Registro D:</em> [1] [00] [00] [00] [00]</p>
+            <p>
+              Ceros agregados:
+              <m:math>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>8</m:mn>
+              </m:math>.
+              Entonces forma
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>8</m:mn>
+                </m:msup>
+              </m:math>,
+              no
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar con el número pedido</strong></p>
+            <p>El número buscado debe tener exactamente 10 ceros después del 1. Solo el Registro A cumple esa condición.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>Registro A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

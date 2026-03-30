@@ -1,0 +1,140 @@
+{
+  "variant_id": "Q59_v2",
+  "source_question_id": "Q59",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q59_v2",
+    "scenario_description": "En una escuela se elige el deporte para un campeonato interno. En una tabla de frecuencias se muestran las preferencias: fútbol es la opción con mayor frecuencia y supera en más de 4 votos a cualquier otro deporte. Ese día faltaron 4 estudiantes por encuestar. Se sabe que el deporte elegido será el correspondiente a la moda de las respuestas, incluso después de incorporar a los ausentes. Se presentan cuatro argumentos posibles sobre por qué el deporte elegido no cambiará, y se pide identificar cuál de ellos NO es una razón válida para asegurar que la moda se mantendrá.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe verificar qué condiciones sí garantizan la estabilidad de la moda y detectar el argumento incorrecto. No basta con aplicar una receta; debe falsar cada afirmación revisando si realmente compara correctamente la diferencia de frecuencias con el número de respuestas pendientes.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "polarity_switch_analysis"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que el constructo sigue siendo la estabilidad de la moda frente a la incorporación de 4 nuevas observaciones, sin pasar a otras medidas estadísticas ni a un cálculo numérico extenso; solo se invirtió la polaridad de la pregunta para identificar la justificación incorrecta y se diseñó un distractor dominante que refleja un sesgo clásico (confundir número de categorías con garantías sobre la moda)."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-02-07"
+    ],
+    "primary_atom_titles": [
+      "Determinación de la moda"
+    ],
+    "family_id": "descriptive_statistics",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "distractor_focus",
+        "description": "Mantener la representación original (ej. gráfico, tabla, caja) con nuevos valores, PERO enfocar la pregunta en aislar un sesgo o trampa estadística clásica (ej. confundir dispersión/rango con cantidad, entender frecuencias cruzadas).",
+        "required_changes": [
+          "Re-enfoque de la pregunta puntual para cazar el sesgo",
+          "Distractores que mimetizan exactamente esos errores lógicos"
+        ],
+        "forbidden_changes": [
+          "Cambiar el constructo o tipo de gráfico visualmente exigido"
+        ],
+        "difficulty_offset": "Aumentar la demanda lógica o conceptual."
+      },
+      {
+        "shape_id": "polarity_switch_analysis",
+        "description": "Cambiar radicalmente la polaridad de las afirmaciones deducibles. Si la fuente pide 'cuál afirmación es siempre verdadera' cambiar el contexto empírico e inventar 4 opciones plausibles donde deba elegirse la FALSA.",
+        "required_changes": [
+          "Polaridad conceptual",
+          "Las 4 elecciones deben reescribirse enteras"
+        ],
+        "forbidden_changes": [
+          "Convertir el ejercicio en uno de sumas calculadas netas"
+        ],
+        "difficulty_offset": "Aumentar, requiere capacidad de falsación exhaustiva."
+      },
+      {
+        "shape_id": "dataset_inversion",
+        "description": "Darle al alumno la conclusión estadística o medidas abstractas base en el enunciado, y exigirle que determine cuál de las alternativas (presentadas como configuraciones o propiedades de un dataset) genera ese resultado.",
+        "required_changes": [
+          "Invertir Causa (dataset) y Efecto (medida estadistica)"
+        ],
+        "forbidden_changes": [
+          "Cambiar la métrica objetivo principal"
+        ],
+        "difficulty_offset": "Aumentar, lectura estadística trasera mucho más profunda."
+      },
+      {
+        "shape_id": "subgroup_comparison",
+        "description": "Transformar el dataset en una sub-agrupación muy simétrica (ej. Curso A vs Curso B). Pedir una rápida conclusión comparativa de la misma medida sobre ambos grupos (ej. Cuál tiene mayor dispersión relativa).",
+        "required_changes": [
+          "Estructura del dataset de un nivel a nivel dual",
+          "Forma de la pregunta hacia comparación visual o teórica simple"
+        ],
+        "forbidden_changes": [
+          "No añadir operaciones aritméticas extensas de cientos de datos"
+        ],
+        "difficulty_offset": "Mayor dificultad abstracta."
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "descriptive_statistics",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_statistic",
+    "solution_structure": "statistic_computation",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 8,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "statistic_over_raw_values",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=descriptive_statistics",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -26,7 +26,7 @@ from app.question_variants.postprocess.family_repairs import (
 from app.question_variants.postprocess.repair_utils import (
     apply_declared_correct_choice,
     canonicalize_qti_markup,
-    normalize_named_entities,
+    pre_parse_cleanup,
     strip_choice_identifier_mentions,
     strip_xml_comments,
 )
@@ -56,6 +56,9 @@ def postprocess_variant(
     """Apply the full postprocess chain to a variant (mutates in place)."""
     original_qti = variant.qti_xml
 
+    variant.qti_xml = pre_parse_cleanup(variant.qti_xml)
+    cleaned_qti = variant.qti_xml
+
     variant.qti_xml = normalize_variant_presentation(
         variant.qti_xml,
         str(source_contract.get("operation_signature") or ""),
@@ -68,9 +71,6 @@ def postprocess_variant(
         variant.qti_xml, source_contract, variant.metadata,
     )
     repaired_qti = variant.qti_xml
-
-    variant.qti_xml = normalize_named_entities(variant.qti_xml)
-    entity_qti = variant.qti_xml
 
     variant.qti_xml = apply_declared_correct_choice(
         variant.qti_xml,
@@ -90,10 +90,10 @@ def postprocess_variant(
     stripped_qti = variant.qti_xml
 
     variant.metadata["postprocess_summary"] = {
-        "presentation_normalized": normalized_qti != original_qti,
+        "pre_parse_cleaned": cleaned_qti != original_qti,
+        "presentation_normalized": normalized_qti != cleaned_qti,
         "family_repaired": repaired_qti != normalized_qti,
-        "entities_normalized": entity_qti != repaired_qti,
-        "correct_declaration_synced": decl_qti != entity_qti,
+        "correct_declaration_synced": decl_qti != repaired_qti,
         "qti_canonicalized": canon_qti != decl_qti,
         "choice_identifiers_stripped": id_qti != canon_qti,
         "comments_stripped": stripped_qti != id_qti,
@@ -144,13 +144,14 @@ def run_deterministic_checks(
 def dedup_variant(
     variant: VariantQuestion,
     approved: list[VariantQuestion],
+    threshold: float = 0.85,
 ) -> tuple[bool, str]:
     """Check if a variant is too similar to already-approved ones."""
     variant_text = extract_question_text(variant.qti_xml)
     for existing in approved:
         existing_text = extract_question_text(existing.qti_xml)
         sim = surface_similarity(variant_text, existing_text)
-        if sim > 0.85:
+        if sim > threshold:
             return False, (
                 f"Demasiado similar a {existing.variant_id} "
                 f"(similitud={sim:.2f})"
@@ -174,6 +175,27 @@ def build_source_contract(source: SourceQuestion) -> dict[str, Any]:
 def source_key(source: SourceQuestion) -> str:
     """Build a unique key for a source question."""
     return f"{source.test_id}__{source.question_id}"
+
+
+def apply_variant_id_offsets(
+    blueprints_by_key: dict[str, list[VariantBlueprint]],
+    offsets: dict[str, int],
+) -> None:
+    """Shift blueprint variant_ids so they don't collide with existing.
+
+    Mutates blueprints in-place.  For each key
+    ``{test_id}__{question_id}``, if an offset exists for that
+    ``question_id``, variant numbering starts at ``offset + 1``.
+    """
+    if not offsets:
+        return
+    for key, bps in blueprints_by_key.items():
+        q_id = key.split("__", 1)[-1] if "__" in key else key
+        offset = offsets.get(q_id, 0)
+        if offset == 0:
+            continue
+        for idx, bp in enumerate(bps):
+            bp.variant_id = f"{q_id}_v{offset + idx + 1}"
 
 
 def print_summary(
@@ -444,3 +466,35 @@ def save_batch_results(
         save_report(config.output_dir, r)
 
     return list(reports_by_q.values())
+
+
+# ------------------------------------------------------------------
+# Lenient validation helpers
+# ------------------------------------------------------------------
+
+
+def lenient_apply_verdicts(
+    variants: list[VariantQuestion],
+    verdicts: dict[str, Any],
+) -> tuple[list[VariantQuestion], list[VariantQuestion]]:
+    """Approve variants whose marked answer is correct, regardless of
+    the overall LLM verdict.  Used for stubborn questions where the
+    ``concepto_alineado`` and ``es_diferente`` gates are too strict.
+    """
+    approved: list[VariantQuestion] = []
+    rejected: list[VariantQuestion] = []
+    for v in variants:
+        data = verdicts.get(v.variant_id)
+        if data is None:
+            rejected.append(v)
+            continue
+        answer_ok = (
+            data.answer_correct
+            if hasattr(data, "answer_correct")
+            else data.get("answer_correct", False)
+        )
+        if answer_ok:
+            approved.append(v)
+        else:
+            rejected.append(v)
+    return approved, rejected

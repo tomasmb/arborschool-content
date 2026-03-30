@@ -1,0 +1,140 @@
+{
+  "source_question_id": "Q48",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q48_v1",
+      "scenario_description": "Contexto de desayuno: una caja de cereales indica que una porción de 5 cucharadas contiene 200 kilocalorías. El fabricante propone la fórmula E = (200·x/5) para calcular las kilocalorías E que se ingieren al consumir x cucharadas de ese cereal. Una persona come cierta cantidad de cucharadas de cereal junto con un vaso de leche que aporta 100 kilocalorías, obteniendo en total 460 kilocalorías. En vez de preguntarse directamente '¿cuántas cucharadas comió?', se presentan alternativas con distintas cantidades de cucharadas (por ejemplo 4, 6, 8, 10) y se pregunta cuál de esas cantidades es compatible con el total de 460 kilocalorías.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona estudiante debe comprender que la fórmula E = (200·x/5) representa la contribución del cereal y que a esta se suma una cantidad fija (leche) para igualar el total. No basta con aplicar mecánicamente una regla: debe probar mentalmente o mediante cálculo qué valor de x satisface la ecuación (200x/5) + 100 = 460, entendiendo por qué se suma y no se multiplica ni se resta la parte correspondiente a la leche.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q48_v2",
+      "scenario_description": "Se mantiene el contexto de galletas pero se presenta la resolución de un estudiante ficticio. Se recuerda que 4 galletas tienen 180 kilocalorías y que, usando la fórmula K = (180·x/4), una persona comió galletas junto a un jugo de 90 kilocalorías, con un total de 405 kilocalorías. Luego se muestran pasos numerados, por ejemplo: (1) Plantea 180x/4 + 90 = 405. (2) Simplifica a 180x + 90 = 405. (3) Resta 90: 180x = 495. (4) Divide y concluye x = 2. Se pregunta en cuál paso se cometió el error, con alternativas que mencionan explícitamente cada paso.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Para identificar el paso incorrecto, la persona debe entender la estructura de la ecuación lineal correcta y el significado de cada transformación (simplificar 180x/4, aislar el término con x, dividir por el coeficiente). No basta con saber la respuesta final: debe analizar signos, operaciones y equivalencias entre expresiones, detectando por qué la simplificación a 180x es errónea o por qué el despeje no mantiene la igualdad.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q48_v3",
+      "scenario_description": "Nuevo contexto de snack salado: un paquete de papas fritas indica que una porción de 5 papas contiene P kilocalorías (desconocidas). Para modelar las kilocalorías totales de las papas al comer x papas se propone la fórmula K = (P·x/5). Una persona come 8 papas de este tipo y además bebe una gaseosa que aporta 120 kilocalorías, ingiriendo en total 520 kilocalorías. Se pregunta por el valor de P, es decir, cuántas kilocalorías contiene una porción de 5 papas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe reconocer que el modelo sigue siendo lineal y que la incógnita pasa a ser el parámetro P en la ecuación (P·8/5) + 120 = 520. Debe comprender que P representa calorías por porción de 5 papas, y despejarlo correctamente: primero restar la contribución fija de la gaseosa, luego usar la relación de proporcionalidad expresada en el cociente P·x/5 para obtener P. Esto exige entender la estructura del modelo, no solo 'despejar x' de manera automática.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q48_v4",
+      "scenario_description": "Contexto de costo de fotocopias: en una tienda se cobra un 'paquete' de 6 fotocopias por $300. Para calcular el costo C (en pesos) al imprimir x fotocopias, la tienda indica la fórmula C = (300·x/6). Además, se cobra una tarifa fija de $200 por el uso de la máquina, sin importar cuántas fotocopias se hagan. Un cliente paga en total $1.700. Se pide determinar cuántas fotocopias imprimió ese cliente.",
+      "non_mechanizable_axes": [
+        "contexto_narrativo",
+        "representacion"
+      ],
+      "required_reasoning": "La persona estudiante debe interpretar que 300x/6 representa el costo variable según la cantidad de fotocopias y que luego se suma una cantidad fija por el servicio, para igualar el total pagado. Debe establecer y resolver la ecuación (300x/6) + 200 = 1700. Comprender que el término independiente es fijo y que el otro es proporcional a x es esencial: aplicar operaciones sin entender podría llevar a errores como sumar o restar la tarifa fija en un lugar equivocado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q48_v5",
+      "scenario_description": "Contexto de viaje en taxi: una tarifa indica que cada tramo de 3 kilómetros cuesta $2.400. La relación entre el valor del tramo y la distancia recorrida se entrega mediante la fórmula F = (2400·x/3), donde x es la cantidad de kilómetros recorridos. Además, el taxi cobra una bajada de bandera fija de $1.200. Una persona paga en total $9.600 por un viaje y se pide calcular cuántos kilómetros recorrió.",
+      "non_mechanizable_axes": [
+        "contexto_narrativo",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Quien responde debe reconocer que F = (2400x/3) modela el costo variable según kilómetros y que a este se suma una cantidad fija. Debe plantear la ecuación (2400x/3) + 1200 = 9600 y resolverla. Para ello es necesario comprender el rol de la bajada de bandera como término independiente y no confundirla, por ejemplo, como parte del costo por kilómetro, lo que requiere entender la estructura lineal de la situación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q48_v6",
+      "scenario_description": "Nuevo contexto de entradas a un parque de diversiones: un pase grupal incluye 4 entradas y cuesta $18.000. La administración entrega la fórmula C = (18000·x/4) para calcular el costo C de x entradas adquiridas con pases grupales. Además, se cobra una pulsera obligatoria por persona con un costo fijo de $2.000 por cada uno, pero en el caso presentado solo se compra 1 pulsera (para el acompañante) y el total final pagado es de $47.000. Se muestra la resolución de un estudiante, con pasos como: (1) Plantea 18000x/4 + 2000 = 47000. (2) Simplifica mal 18000x/4 a 4500. (3) Continúa el despeje y obtiene un valor de x. Se pide identificar el error principal a partir de las opciones, que describen distintas equivocaciones posibles (simplificar de forma incorrecta, restar el 2000 al lado equivocado, etc.).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante",
+        "orden_pasos"
+      ],
+      "required_reasoning": "La persona que responde debe entender cómo se forma la ecuación lineal correcta y qué representa cada término (costo según cantidad de entradas versus costo fijo de la pulsera). Luego, tiene que analizar críticamente cada transformación algebraica para decidir cuál rompe la equivalencia de la ecuación. Este análisis de errores obliga a razonar sobre por qué las operaciones son válidas o inválidas, más allá de calcular el resultado numérico.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q48_v7",
+      "scenario_description": "Contexto de alimentación de mascotas: un saco de alimento para perros indica que una porción de 3 tazas contiene N gramos de proteínas (N desconocido). Para modelar los gramos de proteína P que recibe el perro al comer x tazas se propone la fórmula P = (N·x/3). Un dueño alimenta a su perro con 6 tazas de ese alimento y además le da un suplemento que aporta 30 gramos extra de proteína, obteniendo en total 150 gramos de proteína. Se pregunta cuántos gramos de proteína tiene una porción de 3 tazas, es decir, se debe encontrar el valor de N.",
+      "non_mechanizable_axes": [
+        "contexto_narrativo",
+        "representacion"
+      ],
+      "required_reasoning": "La persona debe interpretar que N es un parámetro de la relación lineal y que P = (N·x/3) describe la contribución del alimento según el número de tazas. Entendiendo esto, debe plantear y resolver la ecuación (N·6/3) + 30 = 150 para despejar N. Esto exige comprender la estructura del modelo y el rol de la suma constante (suplemento), en lugar de aplicar de forma rutinaria un despeje de x.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q48_v8",
+      "scenario_description": "Contexto de consumo de agua: una botella deportiva marca en su etiqueta que 4 llenados completos equivalen a 1,6 litros de agua consumida en total. Para calcular el volumen V (en litros) ingerido al realizar x llenados completos, se propone la fórmula V = (1,6·x/4). Una persona realiza varios llenados de la botella durante el día y, además, bebe un vaso de agua adicional de 0,25 litros. En total, consume 1,85 litros de agua. Se pregunta cuántos llenados completos de la botella realizó esa persona.",
+      "non_mechanizable_axes": [
+        "contexto_narrativo",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Quien responde debe reconocer que 1,6x/4 modela el agua proveniente de la botella y que la del vaso se suma como un término fijo para igualar el total: (1,6x/4) + 0,25 = 1,85. Debe entender por qué se suman volúmenes y no se promedian ni se multiplican, y por qué x representa el número de llenados y no otra cantidad, lo que requiere interpretar el significado de la ecuación lineal en el contexto dado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q48_v9",
+      "scenario_description": "Contexto de tiempo de estudio: una academia indica que 4 sesiones de repaso equivalen a 10 horas de estudio. Proporciona la fórmula T = (10·x/4) para calcular el tiempo T (en horas) al asistir a x sesiones. Un estudiante asiste a varias sesiones y además realiza un estudio individual fijo de 3 horas, sumando en total 13,5 horas de estudio. Se muestra una resolución paso a paso en la que el estudiante: (1) escribe 10x/4 + 3 = 13,5; (2) multiplica 10x/4 por 4 en ambos lados sin tener en cuenta el +3; (3) obtiene una nueva ecuación incorrecta; (4) concluye un valor de x. Las alternativas piden identificar cuál es la equivocación conceptual principal (por ejemplo, aplicar una operación de forma desigual a ambos lados o distribuir mal un factor).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para responder, la persona debe comprender cómo se construye y transforma correctamente una ecuación lineal del tipo (10x/4) + 3 = 13,5. Debe evaluar la validez de la manipulación de la ecuación en cada paso, detectando que multiplicar solo parte de un lado o no aplicar la operación a todo el lado derecho rompe la equivalencia. Este análisis requiere entender por qué los procedimientos algebraicos funcionan, no solo memorizarlos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q48_v10",
+      "scenario_description": "Contexto de impresión de fotografías: un servicio ofrece paquetes en los que 8 fotos impresas cuestan D pesos (D desconocido). La relación entre el costo y la cantidad de fotos se expresa como C = (D·x/8), donde x es el número de fotos impresas. Una persona imprime 16 fotos mediante ese servicio y, además, paga un marco especial fijo de $4.000 para una de las fotos. El total pagado es de $14.000. Se pregunta cuál es el costo D del paquete de 8 fotos.",
+      "non_mechanizable_axes": [
+        "contexto_narrativo",
+        "representacion"
+      ],
+      "required_reasoning": "La persona que responde debe comprender que D es el costo de un paquete base y que C = (D·x/8) entrega el costo según la cantidad de fotos. Debe formar y resolver la ecuación (D·16/8) + 4000 = 14000, identificando la contribución fija del marco y la contribución variable del número de fotos. Entender esta estructura lineal y cómo despejar el parámetro D es esencial para no cometer errores como prorratear mal el costo fijo o asociarlo al parámetro equivocado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    }
+  ]
+}

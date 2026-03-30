@@ -1,0 +1,167 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v15" title="Q54_v15" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La encargada de recursos humanos de una empresa registra las edades de las trabajadoras y las resume en la siguiente tabla:</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Edad en años</th>
+            <th>Cantidad de trabajadoras</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>18 – 24</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>25 – 34</td>
+            <td>9</td>
+          </tr>
+          <tr>
+            <td>35 – 44</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>45 – 54</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>55 o más</td>
+            <td>5</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La empresa está evaluando ofrecer la posibilidad de jornada parcial a las trabajadoras que tengan entre 25 y 44 años, ambos inclusive.</p>
+    <p>Según la tabla, ¿cuál es la mayor cantidad de trabajadoras que podría optar a la jornada parcial?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">9<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La opción 9 cuenta solo a las trabajadoras de 25 – 34 años. Pero el intervalo pedido es entre 25 y 44 años, ambos inclusive, así que también se deben incluir las de 35 – 44 años. Entonces la cantidad máxima es 9 + 11 = 20, no 9.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">20<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Entre 25 y 44 años, ambos inclusive, se incluyen dos grupos completos de la tabla: 25 – 34 y 35 – 44. Sus cantidades son 9 y 11, respectivamente. Al sumar, 9 + 11 = 20. Por eso, la mayor cantidad de trabajadoras que podría optar es 20.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">11<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La opción 11 cuenta solo a las trabajadoras de 35 – 44 años. Pero el intervalo pedido es entre 25 y 44 años, ambos inclusive, así que también se deben incluir las de 25 – 34 años. Entonces la cantidad máxima es 9 + 11 = 20, no 11.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">28<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La opción 28 se obtiene al sumar 9 + 11 + 8, es decir, incluye además a las trabajadoras de 45 – 54 años. Sin embargo, 45 años no está entre 25 y 44 años, ambos inclusive. Por lo tanto, solo corresponden los grupos 25 – 34 y 35 – 44: 9 + 11 = 20, no 28.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las edades que sí cumplen la condición</strong></p>
+            <p>El enunciado dice: entre 25 y 44 años, ambos inclusive.</p>
+            <p>Eso significa que se consideran todas las trabajadoras cuyas edades estén desde 25 hasta 44 años, incluyendo 25 y 44.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Buscar en la tabla los intervalos correspondientes</strong></p>
+            <p>Los intervalos que quedan completamente dentro de 25 a 44 años son:</p>
+            <ul>
+              <li>25 – 34, con 9 trabajadoras.</li>
+              <li>35 – 44, con 11 trabajadoras.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las cantidades de esos grupos</strong></p>
+            <p>Se suma la cantidad de trabajadoras de ambos intervalos:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>9</mn>
+                <mo>+</mo>
+                <mn>11</mn>
+                <mo>=</mo>
+                <mn>20</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar por qué las otras cantidades no corresponden</strong></p>
+            <p>La opción 9 considera solo el intervalo 25 – 34.</p>
+            <p>La opción 11 considera solo el intervalo 35 – 44.</p>
+            <p>La opción 28 agrega además el intervalo 45 – 54, pero 45 ya no pertenece al rango entre 25 y 44 años.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La mayor cantidad de trabajadoras que podría optar a la jornada parcial es <strong>20</strong>.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,141 @@
+{
+  "variant_id": "Q48_v3",
+  "source_question_id": "Q48",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q48_v3",
+    "scenario_description": "Se organizan los mismos 5 datos en dos subgrupos, por ejemplo, Curso A con notas 68, 75 y 80, y Curso B con notas 70 y x. Se indica que el promedio de TODOS los estudiantes (ambos cursos juntos) es un valor dado, análogo a 73. La pregunta pide hallar x. El alumno debe entender que el promedio global de los 5 datos fija una suma total, y que esta suma debe descomponerse entre lo que ya se conoce (las cuatro notas explícitas) y el valor faltante x.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "orden_pasos"
+    ],
+    "required_reasoning": "Primero se debe traducir el dato de promedio global en una suma total (promedio × 5). Luego, se calcula la suma de los cuatro valores conocidos distribuidos en los dos subgrupos y finalmente se despeja x como la diferencia entre la suma total exigida y la suma ya observada. Esto obliga a ver el promedio como una condición sobre la suma conjunta de los subgrupos, no como una operación aislada sobre una sola lista plana.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "subgroup_comparison"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que sigue siendo un problema inverso de promedio sobre 5 datos (no se pide comparar promedios de subgrupos ni calcular más de una medida estadística), y que el método de solución sigue siendo convertir el promedio global en suma total y luego restar la suma de los valores conocidos."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-17"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas inversos de promedio"
+    ],
+    "family_id": "descriptive_statistics",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "distractor_focus",
+        "description": "Mantener la representación original (ej. gráfico, tabla, caja) con nuevos valores, PERO enfocar la pregunta en aislar un sesgo o trampa estadística clásica (ej. confundir dispersión/rango con cantidad, entender frecuencias cruzadas).",
+        "required_changes": [
+          "Re-enfoque de la pregunta puntual para cazar el sesgo",
+          "Distractores que mimetizan exactamente esos errores lógicos"
+        ],
+        "forbidden_changes": [
+          "Cambiar el constructo o tipo de gráfico visualmente exigido"
+        ],
+        "difficulty_offset": "Aumentar la demanda lógica o conceptual."
+      },
+      {
+        "shape_id": "polarity_switch_analysis",
+        "description": "Cambiar radicalmente la polaridad de las afirmaciones deducibles. Si la fuente pide 'cuál afirmación es siempre verdadera' cambiar el contexto empírico e inventar 4 opciones plausibles donde deba elegirse la FALSA.",
+        "required_changes": [
+          "Polaridad conceptual",
+          "Las 4 elecciones deben reescribirse enteras"
+        ],
+        "forbidden_changes": [
+          "Convertir el ejercicio en uno de sumas calculadas netas"
+        ],
+        "difficulty_offset": "Aumentar, requiere capacidad de falsación exhaustiva."
+      },
+      {
+        "shape_id": "dataset_inversion",
+        "description": "Darle al alumno la conclusión estadística o medidas abstractas base en el enunciado, y exigirle que determine cuál de las alternativas (presentadas como configuraciones o propiedades de un dataset) genera ese resultado.",
+        "required_changes": [
+          "Invertir Causa (dataset) y Efecto (medida estadistica)"
+        ],
+        "forbidden_changes": [
+          "Cambiar la métrica objetivo principal"
+        ],
+        "difficulty_offset": "Aumentar, lectura estadística trasera mucho más profunda."
+      },
+      {
+        "shape_id": "subgroup_comparison",
+        "description": "Transformar el dataset en una sub-agrupación muy simétrica (ej. Curso A vs Curso B). Pedir una rápida conclusión comparativa de la misma medida sobre ambos grupos (ej. Cuál tiene mayor dispersión relativa).",
+        "required_changes": [
+          "Estructura del dataset de un nivel a nivel dual",
+          "Forma de la pregunta hacia comparación visual o teórica simple"
+        ],
+        "forbidden_changes": [
+          "No añadir operaciones aritméticas extensas de cientos de datos"
+        ],
+        "difficulty_offset": "Mayor dificultad abstracta."
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "solve_for_unknown",
+    "operation_signature": "descriptive_statistics",
+    "requires_direct_computation": false,
+    "allows_unknowns": true,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_statistic",
+    "solution_structure": "statistic_computation",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 0,
+    "data_burden_score": 5,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "quotient_relation",
+    "statistic_target_domain": "statistic_over_raw_values",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=solve_for_unknown",
+      "operation_signature=descriptive_statistics"
+    ]
+  },
+  "postprocess_summary": {}
+}

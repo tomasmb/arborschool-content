@@ -1,0 +1,139 @@
+{
+  "source_question_id": "Q49",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q49_v1",
+      "scenario_description": "Dos estudiantes usan la misma tarjeta de transporte, cada uno con el mismo saldo inicial. En una tabla se resume: Estudiante A realiza 8 viajes y le quedan $m pesos; Estudiante B realiza 5 viajes y le quedan $n pesos. Todos los viajes cuestan lo mismo. A partir de la tabla, se pide determinar el precio de un viaje sabiendo que ambos partieron con el mismo saldo. Los números concretos se eligen para que el modelo siga siendo de la forma a·p + r1 = b·p + r2 y la incógnita sea el precio p.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe interpretar una tabla (no solo un texto lineal), reconocer que el saldo inicial de ambos es el mismo y expresar esa igualdad como \"saldo inicial = costo total de viajes + saldo restante\" para cada caso. Solo entendiendo por qué se igualan las dos expresiones puede extraer la ecuación lineal y deducir el precio de cada viaje.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v2",
+      "scenario_description": "En una librería, Ana y Luis cargan una tarjeta de regalo con el mismo monto. Ana compra varios cuadernos del mismo precio y le sobra cierta cantidad; Luis compra una cantidad distinta de cuadernos del mismo tipo y le sobra otro monto. Luego se presentan 4 precios posibles para cada cuaderno, y se pregunta: \"¿Cuál de estos precios hace posible que Ana y Luis hayan partido con el mismo saldo en la tarjeta?\". Los datos numéricos mantienen la estructura a·p + r1 = b·p + r2.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "En vez de calcular directamente un precio, el estudiante debe comprender el modelo \"mismo saldo inicial\" y verificar qué precio propuesto hace que las dos expresiones de la forma número de cuadernos·precio + resto coincidan. Obliga a entender la igualdad subyacente y a usarla para descartar opciones que igualan mal (por ejemplo, usando solo la diferencia de los restos o solo el cociente de los montos).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v3",
+      "scenario_description": "Dos amigos cargan exactamente la misma cantidad de datos móviles en sus planes prepago. En una lista con viñetas se describe: • Carlos compra cierto número de bolsas de datos, todas del mismo tamaño, y le quedan D1 megabytes sin usar. • Sofía compra otra cantidad de bolsas del mismo tamaño y le quedan D2 megabytes sin usar. Se pide determinar cuántos megabytes incluye cada bolsa de datos, sabiendo que ambos partieron con la misma cantidad total de megabytes. Los valores se fijan para que el modelo sea a·k + r1 = b·k + r2, donde k es el tamaño de cada bolsa.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir la descripción en lenguaje cotidiano a una igualdad entre \"datos totales contratados\" de ambos amigos, identificando que dicho total se compone de \"bolsas compradas\" más \"datos que sobran\". Esto fuerza a comprender el porqué de la ecuación lineal en lugar de aplicar un esquema memorizado sobre dinero.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v4",
+      "scenario_description": "Se plantea primero que dos deportistas reciben exactamente la misma cantidad de botellas de agua para una competencia. Luego, en un párrafo, se cuenta en orden inverso: primero lo que le sobra de agua a la segunda deportista tras repartir botellas iguales entre sus auxiliares, y después lo que le sobra al primer deportista tras hacer un reparto distinto. Todas las botellas tienen el mismo volumen. Se pregunta directamente: \"¿Cuál es el volumen de cada botella?\". Los datos se configuran para modelar a·v + r1 = b·v + r2 con v como volumen de cada botella.",
+      "non_mechanizable_axes": [
+        "orden_o_dependencia_de_pasos",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La información clave no aparece en el orden natural de la historia, por lo que el estudiante debe reorganizar mentalmente los datos y reconocer que ambos parten del mismo volumen total. Eso lo lleva a formar una ecuación lineal a partir de (número de botellas)·(volumen) + (volumen restante), en dos expresiones que deben ser iguales, para luego aislar el volumen de cada botella.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v5",
+      "scenario_description": "En un cine, dos personas reciben tarjetas con el mismo saldo para comprar paquetes de cabritas idénticos. La descripción señala que cada persona paga parte de la compra con un cupón fijo y el resto con la tarjeta, y que al final a cada una le queda un saldo distinto en la tarjeta. Los cupones tienen el mismo valor para ambas y todos los paquetes cuestan lo mismo. Se pregunta por el precio de cada paquete. Los números se ajustan para que el saldo inicial común + cupón = (número de paquetes)·p + saldo final, generando dos expresiones lineales iguales en p.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe diferenciar entre el saldo de la tarjeta y el valor del cupón, y entender que el \"dinero total disponible\" es la suma de ambos. Debe construir para cada persona la expresión total disponible = costo de los paquetes + saldo final y luego igualarlas. No basta con restar saldos: hay que comprender qué incluye cada término para poder plantear correctamente la ecuación lineal en p.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v6",
+      "scenario_description": "En un taller de arte, dos grupos parten con la misma cantidad total de pintura blanca medida en mililitros. Un grupo llena cierto número de frascos idénticos y le sobra una cantidad de pintura en un recipiente. El otro grupo llena otro número de frascos del mismo tipo y también le sobra otra cantidad. Se presenta un esquema descriptivo (texto) de ambas situaciones y se pregunta por la capacidad de cada frasco. La relación de datos se diseña como a·c + r1 = b·c + r2, donde c es la capacidad de cada frasco.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que la cantidad total inicial de pintura es la misma y que esa cantidad se reparte en frascos llenos más un resto. Debe construir y equiparar las dos expresiones lineales que representan esos desgloses y resolver la ecuación para c. Sin esa comprensión de \"total = frascos llenos + resto\", no puede llegar al valor buscado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q49_v7",
+      "scenario_description": "Se mantiene un contexto de compras en un bazar, pero ahora el enunciado indica explícitamente el precio de cada lapicero (el valor que era solución en el ítem original). Dos personas tienen la misma cantidad de dinero al inicio. Persona A compra cierto número de lapiceros y le sobra un monto conocido; Persona B compra un número distinto y le sobra otro monto conocido. Se pregunta: \"¿Cuántos lapiceros compró la Persona A?\". El modelo sigue siendo de la forma a·precio + restoA = b·precio + restoB, donde la incógnita ahora es a.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "Aunque el precio está dado, el estudiante debe entender que la igualdad clave es \"dinero inicial de A = dinero inicial de B\" y que ese dinero inicial se compone de lo gastado en lapiceros más lo que sobra. Esto lo obliga a formular y resolver una ecuación lineal en el número de lapiceros, no simplemente a hacer un cálculo directo con un solo personaje.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q49_v8",
+      "scenario_description": "En una feria, se informa directamente el precio de cada entrada a un juego mecánico. Dos amigos llevan el mismo monto de dinero. El primero compra algunas entradas y le queda un resto R1; el segundo compra otra cantidad de entradas y le queda un resto R2. Se pide determinar cuántas entradas compró el segundo amigo. La ecuación implícita conserva la forma a·precio + R1 = b·precio + R2, pero la incógnita pasa a ser b (número de entradas del segundo).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para encontrar el número de entradas del segundo, el estudiante debe plantear la igualdad entre los montos iniciales de ambos amigos, teniendo claro que cada uno se expresa como \"entradas compradas·precio + resto\". No se puede llegar por una resta directa: es necesario comprender cómo el número de entradas influye linealmente en el gasto total y despejar esa cantidad en la ecuación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q49_v9",
+      "scenario_description": "En una tienda de juguetes, se entrega en el enunciado el precio de cada figura coleccionable. Dos hermanos salen con el mismo monto inicial de dinero. Se dice cuántas figuras compra cada uno y se indica el monto que le sobra solo a uno de ellos. Se pregunta: \"¿Cuánto dinero le sobra al otro hermano?\". El modelo conserva a·precio + resto1 = b·precio + resto2, siendo ahora resto2 la incógnita.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe entender que, como ambos parten con la misma cantidad, el total \"gasto en figuras + dinero que sobra\" debe coincidir para los dos. Tiene que escribir y equiparar las dos expresiones lineales en las que la única cantidad desconocida es el resto del segundo hermano, y luego despejarla. Esto exige comprender la igualdad de totales y no solo manipular el resto conocido.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q49_v10",
+      "scenario_description": "En un contexto similar de compras (por ejemplo, cajas de galletas), el enunciado entrega el precio por caja. Dos personas tienen el mismo dinero inicial. Para una de ellas se conocen la cantidad de cajas que compra y el dinero que le sobra. Para la otra, se conoce la cantidad de cajas que compra pero no el bono adicional que recibió antes de ir a comprar (un monto fijo extra que la primera no recibió). Se sabe cuánto le sobra luego de comprar. Se pregunta por el valor de ese bono adicional. El modelo queda como a·precio + resto1 = (b·precio + resto2) + bono, donde el bono es la incógnita lineal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe distinguir entre el dinero inicial de cada persona y el bono extra que solo una de ellas recibe, entendiendo que este bono se suma al monto con el que parte. Debe expresar los totales iniciales de ambos y usar la igualdad entre ellos para armar una ecuación lineal en el bono. Sin comprender la estructura \"total = gasto en cajas + resto\" y cómo se incorpora el bono, no puede identificar la ecuación correcta ni resolverla.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    }
+  ]
+}

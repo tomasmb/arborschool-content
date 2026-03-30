@@ -1,0 +1,150 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q49_v1" title="Q49_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la distribución de la cantidad de libros que tiene cada estudiante de un curso:</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Cantidad de libros</th>
+          <th>Frecuencia</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+    <p>Se sabe que la moda de la cantidad de libros es 3.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes argumentos justifica correctamente que 3 sea la moda de la cantidad de libros?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">3 es la moda porque es la frecuencia que más se repite en la tabla (el número 3 aparece varias veces en la columna de frecuencias).<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la tabla, la cantidad de libros 3 tiene frecuencia 7, que es la mayor frecuencia. La moda es el valor del dato que aparece más veces, no el número que más se repite dentro de la columna de frecuencias. Aquí el hecho de que la frecuencia 3 aparezca varias veces no convierte a 3 en la moda.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3 es la moda porque es la cantidad de libros que aparece con mayor frecuencia en la tabla.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La tabla muestra que la cantidad de libros 3 tiene frecuencia 7, mientras que 1 tiene frecuencia 3, 2 tiene frecuencia 3, 4 tiene frecuencia 5 y 5 tiene frecuencia 3. Como 7 es la frecuencia mayor, la cantidad de libros que más se repite es 3, por eso 3 es la moda.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">3 es la moda porque, si se suman todas las cantidades de libros y se dividen por el número total de estudiantes, el resultado es 3.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Ese argumento describe el cálculo del promedio, no de la moda. Además, usando la tabla, el total de estudiantes es 3 + 3 + 7 + 5 + 3 = 21 y la suma total de libros es 1×3 + 2×3 + 3×7 + 4×5 + 5×3 = 65. Entonces el promedio es 65/21, que no es 3. Por lo tanto, ese argumento no justifica la moda.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">3 es la moda porque es la cantidad de libros que queda en el centro cuando se ordenan todos los datos de menor a mayor.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Ese argumento describe la mediana, no la moda. La moda se determina buscando el valor con mayor frecuencia. En esta tabla, la frecuencia mayor es 7 y corresponde a la cantidad de libros 3. Por eso 3 es la moda por su mayor frecuencia, no por quedar al centro del conjunto ordenado.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: identificar la moda en una tabla de frecuencias</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar qué significa moda</strong></p>
+            <p>La moda es el valor del dato que aparece con mayor frecuencia.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Leer la tabla</strong></p>
+            <p>Las cantidades de libros y sus frecuencias son: 1 libros → 3 estudiantes, 2 libros → 3 estudiantes, 3 libros → 7 estudiantes, 4 libros → 5 estudiantes, 5 libros → 3 estudiantes.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar las frecuencias</strong></p>
+            <p>Las frecuencias son 3, 3, 7, 5 y 3. La mayor de todas es 7.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Identificar a qué valor corresponde la mayor frecuencia</strong></p>
+            <p>La frecuencia 7 corresponde a la cantidad de libros 3.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La moda es 3, porque es la cantidad de libros que aparece con mayor frecuencia en la tabla. Por eso, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Aclaración sobre las otras opciones</strong></p>
+            <p>La alternativa A es incorrecta porque confunde la moda con el número que se repite en la columna de frecuencias. La alternativa C es incorrecta porque describe el promedio. La alternativa D es incorrecta porque describe la mediana.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

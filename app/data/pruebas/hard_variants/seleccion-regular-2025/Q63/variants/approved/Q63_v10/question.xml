@@ -1,0 +1,135 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v10" title="Q63_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Observa la siguiente pieza de tipo Tetris formada por 4 cuadrados unidos, en forma de «L», suspendida sobre una zona rectangular sombreada. La pieza cae verticalmente hacia abajo, sin girar ni cambiar de forma.</p>
+    <p><img src="tetris_pieza_inicial.png" alt="Pieza de Tetris en forma de L suspendida sobre una zona rectangular sombreada" /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <p>Pieza apoyada en la zona sombreada, pero rotada 90° respecto de la posición inicial.</p>
+        <img src="tetris_opcion_A.png" alt="Pieza en forma de L apoyada sobre la zona sombreada, rotada 90 grados" />
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El enunciado dice que la pieza cae verticalmente hacia abajo, sin girar ni cambiar de forma. Una rotación de 90° cambia la orientación de la pieza, por lo tanto esa imagen no puede representar la caída descrita.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <p>Pieza apoyada directamente debajo de la posición inicial, manteniendo exactamente la misma orientación.</p>
+        <img src="tetris_opcion_B.png" alt="Pieza en forma de L trasladada verticalmente hacia abajo, sin giro, apoyada en la zona sombreada" />
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si la pieza cae verticalmente hacia abajo, cada uno de sus 4 cuadrados conserva su posición relativa y solo disminuye su altura. Eso corresponde a una traslación vertical: misma forma, misma orientación y ubicación directamente debajo de la posición inicial.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <p>Pieza apoyada en la zona sombreada, pero reflejada horizontalmente (como en un espejo lateral).</p>
+        <img src="tetris_opcion_C.png" alt="Pieza en forma de L apoyada sobre la zona sombreada, reflejada horizontalmente" />
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Reflejar horizontalmente una pieza cambia la disposición lateral de sus cuadrados, como si se mirara en un espejo. Pero el enunciado indica que la pieza cae sin girar ni cambiar de forma, así que no puede aparecer reflejada al final.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <p>Pieza con la misma orientación inicial, pero desplazada hacia un costado de la zona sombreada, como si hubiera caído en diagonal.</p>
+        <img src="tetris_opcion_D.png" alt="Pieza en forma de L con misma orientación, ubicada desfasada hacia un lado de la zona sombreada" />
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Una caída vertical solo cambia la posición de arriba hacia abajo. Si la pieza termina desplazada hacia un costado, entonces hubo también movimiento horizontal. Eso contradice que cae verticalmente hacia abajo.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la transformación descrita</strong></p>
+            <p>El enunciado dice que la pieza cae verticalmente hacia abajo, sin girar ni cambiar de forma.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar qué significa caer verticalmente</strong></p>
+            <p>Caer verticalmente significa que la pieza se traslada desde su posición inicial hacia abajo. En una traslación vertical, todos los puntos de la figura bajan la misma distancia y no hay desplazamiento lateral.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar qué cosas no pueden ocurrir</strong></p>
+            <p>Como la pieza no gira, se descartan las opciones donde la figura aparece rotada.</p>
+            <p>Como la pieza no cambia de forma, también se descartan las opciones donde aparece reflejada.</p>
+            <p>Como el movimiento es vertical, se descartan las opciones donde la figura queda corrida hacia un lado.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La única imagen que muestra la pieza directamente debajo de la posición inicial, manteniendo exactamente la misma orientación, es la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>ChoiceB</strong>, porque representa una traslación vertical de la pieza, sin giro, sin reflexión y sin desplazamiento horizontal.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -157,6 +157,21 @@ class PipelineConfig:
         enrichment_model: Model for feedback enrichment & review (Phase 6).
         enrichment_max_workers: Max parallel threads for Phase 6.
         enrichment_max_correction_retries: Correction retries in Phase 6.
+        prior_approved: Existing approved variants per question_id, used
+            for cross-run deduplication in Phase 4.  Default empty.
+        variant_id_offset: Per question_id starting index for new variant
+            IDs so they don't collide with existing approved folders on
+            disk.  E.g. {\"Q17\": 3} means new IDs start at Q17_v4.
+        dedup_threshold: Surface-similarity ceiling for deduplication.
+            Variants above this are rejected as too similar.  Default
+            0.85; lower (e.g. 0.80) for narrow-construct top-up runs.
+        generation_reasoning_effort: Reasoning effort for the generation
+            phase (Phase 2).  "medium" (default) or "high" for stubborn
+            questions where the LLM struggles with answer correctness.
+        lenient: When True, relax validation for stubborn questions:
+            Phase 4 approves any variant whose answer is correct
+            (ignores concept_aligned / es_diferente gates), and
+            phases 5 + 7 are skipped (enrichment still runs).
     """
 
     variants_per_question: int = 10
@@ -174,6 +189,15 @@ class PipelineConfig:
     enrichment_model: str = "gpt-5.4"
     enrichment_max_workers: int = 10
     enrichment_max_correction_retries: int = 2
+    prior_approved: dict[str, list[VariantQuestion]] = field(
+        default_factory=dict,
+    )
+    variant_id_offset: dict[str, int] = field(
+        default_factory=dict,
+    )
+    dedup_threshold: float = 0.85
+    lenient: bool = False
+    generation_reasoning_effort: str = "medium"
 
 
 @dataclass

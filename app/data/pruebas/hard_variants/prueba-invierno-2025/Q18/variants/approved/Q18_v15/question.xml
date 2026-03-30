@@ -1,0 +1,332 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v15" title="Q18_v15" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Durante una sequía, la cantidad de agua A (en miles de metros cúbicos) en un embalse se modela mediante la expresión:</p>
+    <p>
+      <m:math>
+        <m:mi>A</m:mi>
+        <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>1000</m:mn>
+        <m:mo>·</m:mo>
+        <m:msup>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>1</m:mn>
+            <m:mo>−</m:mo>
+            <m:mn>0,15</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+          <m:mi>d</m:mi>
+        </m:msup>
+      </m:math>
+    </p>
+    <p>d representa la cantidad de días transcurridos desde el inicio de la sequía.</p>
+    <p>Se plantea la siguiente afirmación: «La cantidad de agua del embalse disminuye un 15 % cada día».</p>
+    <p>¿Cuál de las siguientes explicaciones NO justifica correctamente esta afirmación?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        Como
+        <m:math>
+          <m:mn>1</m:mn>
+          <m:mo>−</m:mo>
+          <m:mn>0,15</m:mn>
+          <m:mo>=</m:mo>
+          <m:mn>0,85</m:mn>
+        </m:math>,
+        el modelo indica que cada día se multiplica la cantidad de agua por
+        <m:math>
+          <m:mn>0,85</m:mn>
+        </m:math>;
+        es decir, cada día queda el 85 % de la cantidad del día anterior, por lo que se pierde un 15 % diariamente, tal como señala la afirmación.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación sí justifica correctamente la afirmación. Como <m:math><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>=</m:mo><m:mn>0,85</m:mn></m:math>, se tiene <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup></m:math>. Entonces <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,85</m:mn><m:mrow><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>=</m:mo><m:mn>0,85</m:mn><m:mo>·</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo></m:math>. Eso significa que al día siguiente queda el 85 % de la cantidad anterior, por lo tanto la disminución diaria es 15 %. Como la pregunta pide la explicación que NO justifica correctamente, esta opción no es la respuesta.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        El término
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo>
+              <m:mn>1</m:mn>
+              <m:mo>−</m:mo>
+              <m:mn>0,15</m:mn>
+              <m:mo>)</m:mo>
+            </m:mrow>
+            <m:mi>d</m:mi>
+          </m:msup>
+        </m:math>
+        es equivalente a
+        <m:math>
+          <m:mn>1</m:mn>
+          <m:mo>−</m:mo>
+          <m:mn>0,15</m:mn>
+          <m:mo>·</m:mo>
+          <m:mi>d</m:mi>
+        </m:math>,
+        de modo que en d días se resta en total un 15 % de la cantidad de agua, por lo que cada día la disminución es lineal y se reparte ese 15 % entre todos los días.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Esta explicación NO justifica correctamente la afirmación. La igualdad <m:math><m:msup><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>)</m:mo></m:mrow><m:mi>d</m:mi></m:msup><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>·</m:mo><m:mi>d</m:mi></m:math> es falsa. Un contraejemplo concreto es <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>: <m:math><m:msup><m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>)</m:mo></m:mrow><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:msup><m:mn>0,85</m:mn><m:mn>2</m:mn></m:msup><m:mo>=</m:mo><m:mn>0,7225</m:mn></m:math>, mientras que <m:math><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>·</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>0,70</m:mn></m:math>. Como <m:math><m:mn>0,7225</m:mn><m:mo>≠</m:mo><m:mn>0,70</m:mn></m:math>, no se trata de una disminución lineal, sino exponencial. Por eso esta opción es la que NO justifica correctamente la afirmación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        Al aumentar un día, de
+        <m:math>
+          <m:mi>d</m:mi>
+        </m:math>
+        a
+        <m:math>
+          <m:mi>d</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>1</m:mn>
+        </m:math>,
+        la expresión
+        <m:math>
+          <m:mi>A</m:mi>
+          <m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+        </m:math>
+        se multiplica una vez más por
+        <m:math>
+          <m:mn>0,85</m:mn>
+        </m:math>,
+        de manera que siempre se aplica el mismo factor
+        <m:math>
+          <m:mn>0,85</m:mn>
+        </m:math>
+        sobre la cantidad del día anterior; esto corresponde a una disminución constante del 15 % cada día.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación sí justifica correctamente la afirmación. En efecto, <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,85</m:mn><m:mrow><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msup><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup><m:mo>·</m:mo><m:mn>0,85</m:mn><m:mo>=</m:mo><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>·</m:mo><m:mn>0,85</m:mn></m:math>. Por ejemplo, <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1000</m:mn></m:math>, <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>850</m:mn></m:math> y <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>722,5</m:mn></m:math>. De 1000 a 850 se pierde 150, que es 15 % de 1000; de 850 a 722,5 se pierde 127,5, que es 15 % de 850. Como la pregunta pide la explicación que NO justifica correctamente, esta opción no es la respuesta.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        El modelo representa un decrecimiento exponencial con razón
+        <m:math>
+          <m:mn>0,85</m:mn>
+        </m:math>;
+        como
+        <m:math>
+          <m:mn>0,85</m:mn>
+          <m:mo>=</m:mo>
+          <m:mn>1</m:mn>
+          <m:mo>−</m:mo>
+          <m:mn>0,15</m:mn>
+        </m:math>,
+        la variación relativa diaria es de −15 %, es decir, la cantidad de agua disminuye un 15 % cada día, tal como indica la afirmación.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación sí justifica correctamente la afirmación. En un modelo exponencial de la forma <m:math><m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo>·</m:mo><m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup></m:math>, la razón diaria es <m:math><m:mn>0,85</m:mn></m:math>. Como <m:math><m:mn>0,85</m:mn><m:mo>=</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn></m:math>, cada día queda 85 % de la cantidad anterior y la variación relativa es −15 %. Por ejemplo, si un día hay 850, al día siguiente hay <m:math><m:mn>850</m:mn><m:mo>·</m:mo><m:mn>0,85</m:mn><m:mo>=</m:mo><m:mn>722,5</m:mn></m:math>, y la disminución es <m:math><m:mn>850</m:mn><m:mo>−</m:mo><m:mn>722,5</m:mn><m:mo>=</m:mo><m:mn>127,5</m:mn></m:math>; además, <m:math><m:mfrac><m:mn>127,5</m:mn><m:mn>850</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>0,15</m:mn></m:math>. Como la pregunta pide la explicación que NO justifica correctamente, esta opción no es la respuesta.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Recuerda que el modelo</p>
+        <p>
+          <m:math>
+            <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mn>1000</m:mn><m:mo>·</m:mo>
+            <m:msup>
+              <m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>)</m:mo></m:mrow>
+              <m:mi>d</m:mi>
+            </m:msup>
+            <m:mo>=</m:mo>
+            <m:mn>1000</m:mn><m:mo>·</m:mo>
+            <m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup>
+          </m:math>
+        </p>
+        <p>representa un decrecimiento exponencial: cada día queda el 85 % de la cantidad anterior, por lo que disminuye un 15 % diario. La explicación que NO justifica correctamente la afirmación es la opción B, porque confunde un modelo exponencial con uno lineal.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Reescribir el modelo</strong></p>
+            <p>La expresión dada es:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1000</m:mn><m:mo>·</m:mo>
+                <m:msup>
+                  <m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>)</m:mo></m:mrow>
+                  <m:mi>d</m:mi>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Como</p>
+            <p>
+              <m:math>
+                <m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>=</m:mo><m:mn>0,85</m:mn>
+              </m:math>
+            </p>
+            <p>se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1000</m:mn><m:mo>·</m:mo>
+                <m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar el factor 0,85</strong></p>
+            <p>Multiplicar por 0,85 significa conservar el 85 % de la cantidad anterior.</p>
+            <p>Entonces, en cada día se pierde el porcentaje faltante:</p>
+            <p>
+              <m:math>
+                <m:mn>100</m:mn><m:mo>%</m:mo><m:mo>−</m:mo><m:mn>85</m:mn><m:mo>%</m:mo>
+                <m:mo>=</m:mo><m:mn>15</m:mn><m:mo>%</m:mo>
+              </m:math>
+            </p>
+            <p>Esto sí coincide con la afirmación: «La cantidad de agua del embalse disminuye un 15 % cada día».</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con la razón entre días consecutivos</strong></p>
+            <p>Si aumentamos de d a d + 1 días, entonces:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1000</m:mn><m:mo>·</m:mo>
+                <m:msup><m:mn>0,85</m:mn><m:mrow><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn></m:mrow></m:msup>
+              </m:math>
+            </p>
+            <p>y por propiedades de potencias:</p>
+            <p>
+              <m:math>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1000</m:mn><m:mo>·</m:mo>
+                <m:msup><m:mn>0,85</m:mn><m:mi>d</m:mi></m:msup>
+                <m:mo>·</m:mo>
+                <m:mn>0,85</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>d</m:mi><m:mo>)</m:mo>
+                <m:mo>·</m:mo>
+                <m:mn>0,85</m:mn>
+              </m:math>
+            </p>
+            <p>Eso prueba que cada día se multiplica por el mismo factor 0,85, es decir, cada día queda 85 % de lo que había el día anterior.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar cuál explicación NO justifica correctamente</strong></p>
+            <p>Las opciones A, C y D describen correctamente un decrecimiento exponencial con factor diario 0,85.</p>
+            <p>La opción B afirma que</p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mrow><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>)</m:mo></m:mrow>
+                  <m:mi>d</m:mi>
+                </m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>·</m:mo><m:mi>d</m:mi>
+              </m:math>
+            </p>
+            <p>pero esa igualdad es falsa. Basta un contraejemplo con</p>
+            <p>
+              <m:math><m:mi>d</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:msup><m:mn>0,85</m:mn><m:mn>2</m:mn></m:msup>
+                <m:mo>=</m:mo>
+                <m:mn>0,7225</m:mn>
+              </m:math>
+            </p>
+            <p>mientras que</p>
+            <p>
+              <m:math>
+                <m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,15</m:mn><m:mo>·</m:mo><m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>1</m:mn><m:mo>−</m:mo><m:mn>0,30</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>0,70</m:mn>
+              </m:math>
+            </p>
+            <p>Como</p>
+            <p>
+              <m:math>
+                <m:mn>0,7225</m:mn><m:mo>≠</m:mo><m:mn>0,70</m:mn>
+              </m:math>
+            </p>
+            <p>la explicación B no es correcta.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La explicación que <strong>NO</strong> justifica correctamente la afirmación es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
