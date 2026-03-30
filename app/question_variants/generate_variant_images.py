@@ -2,24 +2,31 @@
 
 Dual-strategy approach:
   - Route A (chart/graph): LLM extracts data from alt → Matplotlib renders
-  - Route B (illustration): LLM expands alt into ultra-detailed prompt → Gemini generates → OpenAI validates
+  - Route B (illustration): LLM expands alt into ultra-detailed prompt
+    → Gemini generates → OpenAI validates
 
 Uses Gemini for image generation and GPT-5.1 vision for validation.
+Processes variants in parallel (ThreadPoolExecutor) for throughput.
 """
 
 from __future__ import annotations
 
 import argparse
-import base64
-import io
 import json
 import logging
 import re
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from typing import Any
 
 from app.image_generation.core import ImageGenerationEngine
-from app.llm_clients import load_default_openai_client
+from app.llm_clients import (
+    RateLimitError,
+    ServiceUnavailableError,
+    load_default_openai_client,
+)
 from app.question_variants.llm_service import build_reasoning_kwargs
 
 logging.basicConfig(
@@ -99,195 +106,7 @@ Responde SOLO con el prompt expandido, sin explicación adicional.
 """
 
 
-# ─── Matplotlib rendering functions ─────────────────────────────────
-
-def _render_pie_chart(data: dict) -> bytes:
-    """Render a pie chart with matplotlib."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    labels = data.get("labels", [])
-    values = data.get("values", [])
-    colors = plt.cm.Set3.colors[:len(labels)]
-
-    fig, ax = plt.subplots(1, 1, figsize=(6, 6), dpi=150)
-    wedges, texts, autotexts = ax.pie(
-        values, labels=labels, autopct="%1.0f%%",
-        colors=colors, startangle=90,
-        textprops={"fontsize": 14, "fontweight": "bold"},
-    )
-    for at in autotexts:
-        at.set_fontsize(12)
-        at.set_color("white")
-        at.set_fontweight("bold")
-    ax.set_aspect("equal")
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.read()
-
-
-def _render_bar_chart(data: dict) -> bytes:
-    """Render a bar chart with matplotlib."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    labels = data.get("labels", [])
-    values = data.get("values", [])
-    xlabel = data.get("xlabel", "")
-    ylabel = data.get("ylabel", "")
-    colors = plt.cm.Set2.colors[:len(labels)]
-
-    fig, ax = plt.subplots(1, 1, figsize=(8, 5), dpi=150)
-    bars = ax.bar(labels, values, color=colors, edgecolor="black", linewidth=1.2)
-
-    for bar, val in zip(bars, values):
-        ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.5,
-                str(val), ha="center", va="bottom", fontsize=12, fontweight="bold")
-
-    ax.set_xlabel(xlabel, fontsize=13, fontweight="bold")
-    ax.set_ylabel(ylabel, fontsize=13, fontweight="bold")
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.tick_params(labelsize=11)
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.read()
-
-
-def _render_line_chart(data: dict) -> bytes:
-    """Render a line chart with matplotlib."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-
-    x = data.get("x", [])
-    y = data.get("y", [])
-    xlabel = data.get("xlabel", "")
-    ylabel = data.get("ylabel", "")
-
-    fig, ax = plt.subplots(1, 1, figsize=(8, 5), dpi=150)
-    ax.plot(x, y, color="#2196F3", linewidth=2.5, marker="o", markersize=6)
-    ax.set_xlabel(xlabel, fontsize=13, fontweight="bold")
-    ax.set_ylabel(ylabel, fontsize=13, fontweight="bold")
-    ax.grid(True, alpha=0.3)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.tick_params(labelsize=11)
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.read()
-
-
-def _render_boxplot(data: dict) -> bytes:
-    """Render a boxplot with matplotlib from summary statistics."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches
-
-    mn = data.get("min", 0)
-    q1 = data.get("q1", 0)
-    med = data.get("median", 0)
-    q3 = data.get("q3", 0)
-    mx = data.get("max", 0)
-    xlabel = data.get("xlabel", "")
-
-    fig, ax = plt.subplots(1, 1, figsize=(8, 3), dpi=150)
-
-    # Draw boxplot manually for precision
-    box_height = 0.4
-    y_center = 0.5
-
-    # Whiskers
-    ax.plot([mn, q1], [y_center, y_center], color="black", linewidth=2)
-    ax.plot([q3, mx], [y_center, y_center], color="black", linewidth=2)
-    # Whisker caps
-    ax.plot([mn, mn], [y_center - box_height / 3, y_center + box_height / 3],
-            color="black", linewidth=2)
-    ax.plot([mx, mx], [y_center - box_height / 3, y_center + box_height / 3],
-            color="black", linewidth=2)
-    # Box
-    box = mpatches.FancyBboxPatch(
-        (q1, y_center - box_height / 2), q3 - q1, box_height,
-        boxstyle="square,pad=0", facecolor="#90CAF9", edgecolor="black", linewidth=2,
-    )
-    ax.add_patch(box)
-    # Median
-    ax.plot([med, med], [y_center - box_height / 2, y_center + box_height / 2],
-            color="red", linewidth=2.5)
-
-    ax.set_xlim(mn - 0.5, mx + 0.5)
-    ax.set_ylim(-0.2, 1.2)
-    ax.set_xlabel(xlabel, fontsize=13, fontweight="bold")
-    ax.set_yticks([])
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.spines["left"].set_visible(False)
-    ax.tick_params(labelsize=11)
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.read()
-
-
-def _render_dot_plot(data: dict) -> bytes:
-    """Render a dot plot with matplotlib."""
-    import matplotlib
-    matplotlib.use("Agg")
-    import matplotlib.pyplot as plt
-    from collections import Counter
-
-    values = data.get("values", [])
-    xlabel = data.get("xlabel", "")
-    counts = Counter(values)
-
-    fig, ax = plt.subplots(1, 1, figsize=(8, 4), dpi=150)
-    for val, count in sorted(counts.items()):
-        for i in range(count):
-            ax.plot(val, i + 1, "o", color="#1976D2", markersize=12)
-
-    ax.set_xlabel(xlabel, fontsize=13, fontweight="bold")
-    ax.set_ylabel("Frecuencia", fontsize=13, fontweight="bold")
-    all_vals = sorted(counts.keys())
-    ax.set_xticks(range(int(min(all_vals)), int(max(all_vals)) + 1))
-    ax.set_yticks(range(1, max(counts.values()) + 1))
-    ax.grid(True, axis="y", alpha=0.3)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.tick_params(labelsize=11)
-    plt.tight_layout()
-
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
-    plt.close(fig)
-    buf.seek(0)
-    return buf.read()
-
-
-MATPLOTLIB_RENDERERS = {
-    "pie_chart": _render_pie_chart,
-    "bar_chart": _render_bar_chart,
-    "line_chart": _render_line_chart,
-    "boxplot": _render_boxplot,
-    "dot_plot": _render_dot_plot,
-}
+from app.question_variants._chart_renderers import MATPLOTLIB_RENDERERS
 
 
 # ─── Core logic ─────────────────────────────────────────────────────
@@ -328,30 +147,6 @@ def _expand_prompt(alt_text: str, stem_text: str, llm_service) -> str:
     text = raw.text if hasattr(raw, 'text') else str(raw)
     return text.strip()
 
-
-def main() -> None:
-    from app.question_variants.llm_service import build_text_service
-
-    parser = argparse.ArgumentParser(description="Generate images for hard variants")
-    parser.add_argument("--test", required=True, help="Test ID (e.g. Prueba-invierno-2025)")
-    parser.add_argument("--question", required=True, help="Question ID (e.g. Q65)")
-    parser.add_argument("--dry-run", action="store_true", help="Classify only, don't generate")
-    args = parser.parse_args()
-
-    base_dir = Path("app/data/pruebas/hard_variants") / args.test / args.question / "variants" / "approved"
-    if not base_dir.exists():
-        logger.error(f"Directory not found: {base_dir}")
-        sys.exit(1)
-
-    # Load LLM services
-    openai_client = load_default_openai_client()
-    engine = ImageGenerationEngine(
-        openai_client=openai_client,
-        gemini_image_client=None,
-    )
-    engine.ensure_gemini()
-
-    llm_service = build_text_service("gemini")  # For classification & prompt expansion
 
 def process_variant_images(
     test_id: str,
@@ -448,62 +243,164 @@ def process_variant_images(
     logger.info(f"\n  💾 Saved {xml_path}")
 
 
-def main() -> None:
-    from app.question_variants.llm_service import build_text_service
+_DEFAULT_WORKERS = 3
 
-    parser = argparse.ArgumentParser(description="Generate images for hard variants")
-    parser.add_argument("--test", required=True, help="Test ID (e.g. Prueba-invierno-2025)")
-    parser.add_argument("--question", help="Specific Question ID (e.g. Q65). Required if --all-approved is not set.")
-    parser.add_argument("--all-approved", action="store_true", help="Process all approved variants for the given test.")
-    parser.add_argument("--dry-run", action="store_true", help="Classify only, don't generate")
-    args = parser.parse_args()
 
-    if not args.question and not args.all_approved:
-        parser.error("You must specify either --question or --all-approved")
+def _collect_variant_tasks(
+    base_test_dir: Path,
+    test_id: str,
+    question_id: str | None,
+    all_approved: bool,
+) -> list[dict[str, Any]]:
+    """Scan the filesystem and return a list of variant task dicts."""
+    q_dirs: list[Path] = []
+    if all_approved:
+        q_dirs = [d for d in base_test_dir.iterdir() if d.is_dir()]
+    elif question_id:
+        q_dirs = [base_test_dir / question_id]
 
-    # Load LLM services
-    openai_client = load_default_openai_client()
-    engine = ImageGenerationEngine(
-        openai_client=openai_client,
-        gemini_image_client=None,
-    )
-    engine.ensure_gemini()
-    llm_service = build_text_service("gemini")  # For classification & prompt expansion
-
-    base_test_dir = Path("app/data/pruebas/hard_variants") / args.test
-    if not base_test_dir.exists():
-        logger.error(f"Test directory not found: {base_test_dir}")
-        sys.exit(1)
-
-    questions_to_process = []
-    if args.all_approved:
-        questions_to_process = [d for d in base_test_dir.iterdir() if d.is_dir()]
-    else:
-        questions_to_process = [base_test_dir / args.question]
-
-    for q_dir in sorted(questions_to_process):
-        q_id = q_dir.name
+    tasks: list[dict[str, Any]] = []
+    for q_dir in sorted(q_dirs):
         approved_dir = q_dir / "variants" / "approved"
-        
         if not approved_dir.exists() or not approved_dir.is_dir():
             continue
-            
         for variant_dir in sorted(approved_dir.iterdir()):
             if not variant_dir.is_dir():
                 continue
             xml_path = variant_dir / "question.xml"
             if not xml_path.exists():
                 continue
-            
+            tasks.append({
+                "test_id": test_id,
+                "question_id": q_dir.name,
+                "variant_id": variant_dir.name,
+                "xml_path": xml_path,
+            })
+    return tasks
+
+
+def _run_parallel(
+    tasks: list[dict[str, Any]],
+    engine: ImageGenerationEngine,
+    llm_service: Any,
+    workers: int,
+    dry_run: bool,
+) -> tuple[int, int]:
+    """Process variant images in parallel. Returns (ok, failed)."""
+    total = len(tasks)
+    lock = threading.Lock()
+    counters = {"ok": 0, "skipped": 0, "failed": 0}
+
+    def _worker(task: dict[str, Any]) -> None:
+        try:
             process_variant_images(
-                test_id=args.test,
-                question_id=q_id,
-                variant_id=variant_dir.name,
-                xml_path=xml_path,
+                test_id=task["test_id"],
+                question_id=task["question_id"],
+                variant_id=task["variant_id"],
+                xml_path=task["xml_path"],
                 engine=engine,
                 llm_service=llm_service,
-                dry_run=args.dry_run,
+                dry_run=dry_run,
             )
+            with lock:
+                counters["ok"] += 1
+                done = counters["ok"] + counters["failed"]
+            logger.info(
+                "[%d/%d] %s done", done, total, task["variant_id"],
+            )
+        except Exception as exc:
+            with lock:
+                counters["failed"] += 1
+                done = counters["ok"] + counters["failed"]
+            logger.error(
+                "[%d/%d] %s FAILED: %s",
+                done, total, task["variant_id"], exc,
+            )
+
+    logger.info(
+        "Processing %d variants with %d workers", total, workers,
+    )
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(_worker, t): t for t in tasks}
+        for future in as_completed(futures):
+            try:
+                future.result()
+            except (RateLimitError, ServiceUnavailableError) as exc:
+                kind = (
+                    "Daily quota"
+                    if isinstance(exc, RateLimitError)
+                    else "503 unavailable"
+                )
+                logger.error(
+                    "%s — cancelling remaining images", kind,
+                )
+                for f in futures:
+                    f.cancel()
+                break
+
+    return counters["ok"], counters["failed"]
+
+
+def main() -> None:
+    from app.question_variants.llm_service import build_text_service
+
+    parser = argparse.ArgumentParser(
+        description="Generate images for hard variants",
+    )
+    parser.add_argument(
+        "--test", required=True,
+        help="Test ID (e.g. prueba-invierno-2025)",
+    )
+    parser.add_argument(
+        "--question",
+        help="Specific Question ID (e.g. Q65).",
+    )
+    parser.add_argument(
+        "--all-approved", action="store_true",
+        help="Process all approved variants for the given test.",
+    )
+    parser.add_argument(
+        "--workers", type=int, default=_DEFAULT_WORKERS,
+        help=f"Parallel workers (default {_DEFAULT_WORKERS}).",
+    )
+    parser.add_argument(
+        "--dry-run", action="store_true",
+        help="Classify only, don't generate",
+    )
+    args = parser.parse_args()
+
+    if not args.question and not args.all_approved:
+        parser.error(
+            "You must specify either --question or --all-approved",
+        )
+
+    base_test_dir = Path("app/data/pruebas/hard_variants") / args.test
+    if not base_test_dir.exists():
+        logger.error("Test directory not found: %s", base_test_dir)
+        sys.exit(1)
+
+    tasks = _collect_variant_tasks(
+        base_test_dir, args.test, args.question, args.all_approved,
+    )
+    if not tasks:
+        logger.info("No variant tasks found. Nothing to do.")
+        sys.exit(0)
+
+    openai_client = load_default_openai_client()
+    engine = ImageGenerationEngine(
+        openai_client=openai_client, gemini_image_client=None,
+    )
+    engine.ensure_gemini()
+    llm_service = build_text_service("gemini")
+
+    ok, failed = _run_parallel(
+        tasks, engine, llm_service, args.workers, args.dry_run,
+    )
+    logger.info(
+        "Done. %d succeeded, %d failed out of %d total.",
+        ok, failed, len(tasks),
+    )
+
 
 if __name__ == "__main__":
     main()
