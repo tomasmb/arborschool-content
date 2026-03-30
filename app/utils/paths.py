@@ -68,6 +68,14 @@ MINI_LESSONS_DIR = DATA_DIR / "mini-lessons"
 # Diagnostic test configuration
 DIAGNOSTICO_DIR = DATA_DIR / "diagnostico"
 
+# Prerequisites (foundational atoms for grades below M1)
+PREREQUISITES_DIR = DATA_DIR / "prerequisites"
+PREREQ_STANDARDS_FILE = PREREQUISITES_DIR / "standards.json"
+PREREQ_ATOMS_FILE = PREREQUISITES_DIR / "atoms.json"
+PREREQ_DEMAND_FILE = PREREQUISITES_DIR / "demand_analysis.json"
+PREREQ_CONNECTIONS_FILE = PREREQUISITES_DIR / "connections.json"
+PREREQ_VALIDATION_FILE = PREREQUISITES_DIR / "validation_result.json"
+
 # Backups
 BACKUPS_DIR = DATA_DIR / "backups"
 
