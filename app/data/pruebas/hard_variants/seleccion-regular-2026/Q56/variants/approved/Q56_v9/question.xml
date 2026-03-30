@@ -1,0 +1,150 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q56_v9" title="Q56_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un taller artístico de un colegio, se encuestó a los estudiantes sobre la cantidad de años que llevan participando en dicho taller. La información obtenida se presenta a continuación:</p>
+    <div>
+      <p>- 10 estudiantes llevan 1 año en el taller.</p>
+      <p>- 14 estudiantes llevan 2 años en el taller.</p>
+      <p>- 9 estudiantes llevan 3 años en el taller.</p>
+      <p>- 17 estudiantes llevan 4 años en el taller.</p>
+      <p>- 6 estudiantes llevan 5 años o más en el taller.</p>
+    </div>
+    <p>¿Cuántos estudiantes llevan como máximo 4 años en el taller artístico?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">17<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El valor <strong>17</strong> corresponde solo a los estudiantes que llevan <strong>4 años</strong>. “Como máximo 4 años” incluye a quienes llevan 1, 2, 3 o 4 años. Entonces se debe sumar <strong>10 + 14 + 9 + 17 = 24 + 9 + 17 = 33 + 17 = 50</strong>. Por eso, 17 no satisface lo pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">50<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! “Como máximo 4 años” significa <strong>1, 2, 3 o 4 años</strong>. Entonces se suman esos grupos: <strong>10 + 14 + 9 + 17 = 24 + 9 + 17 = 33 + 17 = 50</strong>. Por lo tanto, <strong>50</strong> estudiantes llevan como máximo 4 años en el taller.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">23<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El valor <strong>23</strong> no corresponde al total de estudiantes con como máximo 4 años. Ese total se obtiene sumando los grupos de 1, 2, 3 y 4 años: <strong>10 + 14 + 9 + 17 = 50</strong>. Como <strong>23 ≠ 50</strong>, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">56<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El valor <strong>56</strong> se obtiene al sumar <strong>10 + 14 + 9 + 17 + 6</strong>, es decir, incluyendo también a quienes llevan <strong>5 años o más</strong>. Pero “como máximo 4 años” excluye ese último grupo. El cálculo correcto es <strong>10 + 14 + 9 + 17 = 50</strong>. Por eso, 56 no satisface lo pedido.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué significa “como máximo 4 años”</strong></p>
+            <p>“Como máximo 4 años” significa que se consideran los estudiantes que llevan 1 año, 2 años, 3 años o 4 años en el taller.</p>
+            <p>No se debe incluir a quienes llevan 5 años o más, porque eso supera 4 años.</p>
+          </li>
+          <li>
+            <p><strong>Escribir los datos que sí se usan</strong></p>
+            <p>1 año: 10 estudiantes.</p>
+            <p>2 años: 14 estudiantes.</p>
+            <p>3 años: 9 estudiantes.</p>
+            <p>4 años: 17 estudiantes.</p>
+          </li>
+          <li>
+            <p><strong>Sumar los estudiantes de esos cuatro grupos</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>10</mn>
+                  <mo>+</mo>
+                  <mn>14</mn>
+                  <mo>+</mo>
+                  <mn>9</mn>
+                  <mo>+</mo>
+                  <mn>17</mn>
+                  <mo>=</mo>
+                  <mn>24</mn>
+                  <mo>+</mo>
+                  <mn>9</mn>
+                  <mo>+</mo>
+                  <mn>17</mn>
+                  <mo>=</mo>
+                  <mn>33</mn>
+                  <mo>+</mo>
+                  <mn>17</mn>
+                  <mo>=</mo>
+                  <mn>50</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar que no se incluya el último grupo</strong></p>
+            <p>Los 6 estudiantes que llevan 5 años o más no se consideran, porque el problema pide como máximo 4 años.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Llevan como máximo 4 años en el taller artístico <strong>50 estudiantes</strong>.</p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

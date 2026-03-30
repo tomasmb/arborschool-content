@@ -1,0 +1,244 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q11_v2" title="Q11_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la ficha de control de una bodega se registra que cada caja de frutas mide 25 cm de alto y que un pallet completo se arma apilando 16 cajas, alcanzando así 400 cm de altura total.</p>
+    <p>Se define 
+      <m:math>
+        <m:mi>n</m:mi>
+      </m:math>
+      como la cantidad de cajas apiladas en un pallet. Si en la ficha se quiere escribir una regla de control usando la expresión 
+      <m:math>
+        <m:mrow>
+          <m:mn>25</m:mn>
+          <m:mo>⋅</m:mo>
+          <m:mi>n</m:mi>
+        </m:mrow>
+      </m:math>, 
+      ¿cuál de las siguientes condiciones garantiza que el pallet queda exactamente completo, sin pasarse ni quedar incompleto?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Seleccione la regla que garantiza que el pallet queda exactamente completo.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Que 
+        <m:math>
+          <m:mrow>
+            <m:mn>25</m:mn>
+            <m:mo>⋅</m:mo>
+            <m:mi>n</m:mi>
+          </m:mrow>
+        </m:math>
+        es divisible por 25.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para cualquier número natural <m:math><m:mi>n</m:mi></m:math>, el producto <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:mrow></m:math> siempre es divisible por 25. Por ejemplo, si <m:math><m:mi>n</m:mi></m:math> = 10, entonces <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>250</m:mn></m:mrow></m:math>, y 250 sí es divisible por 25, pero no corresponde a un pallet completo de 400 cm. Esta condición es demasiado débil y no garantiza la situación exacta pedida.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        Que 
+        <m:math>
+          <m:mrow>
+            <m:mn>25</m:mn>
+            <m:mo>⋅</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>=</m:mo>
+            <m:mn>400</m:mn>
+          </m:mrow>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Correcto. La altura total del pallet se representa mediante <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:mrow></m:math>. Para que el pallet quede exactamente completo, esa altura debe ser 400 cm. Entonces debe cumplirse <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>400</m:mn></m:mrow></m:math>, lo que equivale a <m:math><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:mrow></m:math>. Esta es la única condición que garantiza exactamente un pallet completo.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Que 
+        <m:math>
+          <m:mrow>
+            <m:mn>25</m:mn>
+            <m:mo>⋅</m:mo>
+            <m:mi>n</m:mi>
+          </m:mrow>
+        </m:math>
+        es divisible por 800.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Pedir divisibilidad por 800 es una condición demasiado restrictiva y, además, no describe la situación exacta de un pallet completo. Si el pallet está exactamente completo, entonces <m:math><m:mi>n</m:mi></m:math> = 16 y <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>400</m:mn></m:mrow></m:math>. Pero 400 no es divisible por 800. Por eso esta condición rechaza el caso correcto.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Que 
+        <m:math>
+          <m:mrow>
+            <m:mn>25</m:mn>
+            <m:mo>+</m:mo>
+            <m:mi>n</m:mi>
+          </m:mrow>
+        </m:math>
+        es divisible por 400.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La altura total del pallet se obtiene multiplicando el alto de cada caja por la cantidad de cajas, no sumando. La expresión correcta para la altura es <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:mrow></m:math>, no <m:math><m:mrow><m:mn>25</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:mrow></m:math>. Por ejemplo, si <m:math><m:mi>n</m:mi></m:math> = 16, la altura correcta es <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>400</m:mn></m:mrow></m:math>, mientras que <m:math><m:mrow><m:mn>25</m:mn><m:mo>+</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>41</m:mn></m:mrow></m:math>. Esa suma no representa la situación del problema.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Representar la altura total del pallet</strong></p>
+            <p>Cada caja mide 25 cm de alto. Si se apilan <m:math><m:mi>n</m:mi></m:math> cajas, la altura total es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>25</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mi>n</m:mi>
+                </m:mrow>
+              </m:math>
+              cm
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Determinar la condición exacta para un pallet completo</strong></p>
+            <p>El enunciado dice que un pallet completo tiene 16 cajas y alcanza 400 cm de altura.</p>
+            <p>Entonces la condición exacta es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>25</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>400</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>De ahí se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>400</m:mn>
+                    <m:mn>25</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mn>16</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada alternativa</strong></p>
+            <p><em>Opción A:</em> pedir que <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi></m:mrow></m:math> sea divisible por 25 no sirve, porque siempre ocurre para cualquier número natural <m:math><m:mi>n</m:mi></m:math>.</p>
+            <p><em>Opción B:</em> pedir que <m:math><m:mrow><m:mn>25</m:mn><m:mo>⋅</m:mo><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>400</m:mn></m:mrow></m:math> sí garantiza exactamente la altura de un pallet completo. Esta condición equivale a <m:math><m:mrow><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>16</m:mn></m:mrow></m:math>.</p>
+            <p><em>Opción C:</em> pedir divisibilidad por 800 excluye el caso correcto, ya que 400 no es divisible por 800.</p>
+            <p><em>Opción D:</em> usa la expresión <m:math><m:mrow><m:mn>25</m:mn><m:mo>+</m:mo><m:mi>n</m:mi></m:mrow></m:math>, pero la altura se modela con una multiplicación, no con una suma.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La condición matemática exacta para que el pallet quede completo es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>25</m:mn>
+                  <m:mo>⋅</m:mo>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>400</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>equivalentemente,</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>n</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>16</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>Opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

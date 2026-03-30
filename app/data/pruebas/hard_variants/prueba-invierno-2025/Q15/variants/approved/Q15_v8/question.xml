@@ -1,0 +1,127 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q15_v8" title="Q15_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una tienda de manualidades se utilizan dos cintas para decorar paquetes. La longitud de cada cinta es la siguiente:<br />- Cinta roja: 3,45 m<br />- Cinta azul: 2,8 m</p>
+    <p>Respecto de la diferencia de longitud entre ambas cintas, ¿cuál de las siguientes afirmaciones es coherente con estos datos?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Seleccione la alternativa que describe correctamente cuánto más larga es la cinta roja que la azul.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La cinta roja es 6,5 m más larga que la azul.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La diferencia entre 3,45 m y 2,8 m es 3,45 − 2,8 = 0,65 m. Por lo tanto, no es correcto afirmar que la cinta roja es 6,5 m más larga que la azul.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La cinta roja es 0,65 m más larga que la azul.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La diferencia de longitud se obtiene restando 3,45 m − 2,8 m = 0,65 m. Por eso, la cinta roja es 0,65 m más larga que la azul.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La cinta roja es 0,645 m más larga que la azul.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La diferencia correcta es 3,45 m − 2,8 m = 0,65 m. Como 0,645 m es distinto de 0,65 m, esta afirmación no coincide con los datos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La cinta roja es 0,7 m más larga que la azul.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Al restar las longitudes se obtiene 3,45 m − 2,8 m = 0,65 m. Como 0,7 m es distinto de 0,65 m, esta alternativa no es coherente con los datos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los datos</strong></p>
+            <p>La cinta roja mide 3,45 m y la cinta azul mide 2,8 m.</p>
+          </li>
+          <li>
+            <p><strong>Calcular la diferencia de longitudes</strong></p>
+            <p>Para saber cuánto más larga es la cinta roja que la azul, se resta la longitud de la azul a la de la roja:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>3,45</mn>
+                  <mo>−</mo>
+                  <mn>2,8</mn>
+                  <mo>=</mo>
+                  <mn>0,65</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, la diferencia es 0,65 m.</p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La alternativa A dice 6,5 m, pero la diferencia calculada es 0,65 m.</p>
+            <p>La alternativa B dice 0,65 m, que coincide exactamente con el cálculo.</p>
+            <p>La alternativa C dice 0,645 m, que no es igual a 0,65 m.</p>
+            <p>La alternativa D dice 0,7 m, que tampoco es igual a 0,65 m.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación coherente con los datos es: la cinta roja es 0,65 m más larga que la azul.</p>
+            <p>Por lo tanto, la respuesta correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

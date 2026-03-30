@@ -1,0 +1,144 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q56_v1" title="Q56_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se realizó una encuesta a los estudiantes de un instituto de idiomas sobre la cantidad de años que llevan estudiando en dicho instituto. En la siguiente tabla se presentan los datos de dicha encuesta.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Cantidad de años que llevan en el instituto</th>
+          <th>Cantidad de estudiantes</th>
+        </tr>
+        <tr>
+          <td>0 a 2 años</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>3 años</td>
+          <td>22</td>
+        </tr>
+        <tr>
+          <td>4 años</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>5 años o más</td>
+          <td>25</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuántos estudiantes encuestados llevan más de 2 años en el instituto de idiomas?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">80<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La expresión “más de 2 años” incluye a quienes llevan 3 años, 4 años y 5 años o más. Entonces se suman <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>62</mn></math>. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>80</mn></math> corresponde a sumar todos los estudiantes de la tabla, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18</mn><mo>+</mo><mn>22</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>80</mn></math>, y eso incluye también a quienes llevan de 0 a 2 años.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">62<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! “Más de 2 años” significa considerar los grupos de 3 años, 4 años y 5 años o más. Por eso se calcula <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>37</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>62</mn></math>. Entonces, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>62</mn></math> estudiantes llevan más de 2 años en el instituto.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">37<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El cálculo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>=</mo><mn>37</mn></math> suma solo a quienes llevan 3 años y 4 años. Pero “más de 2 años” también incluye a quienes llevan 5 años o más, que son <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn></math> estudiantes. Entonces el total correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>62</mn></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">40<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El grupo de 0 a 2 años tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18</mn></math> estudiantes, y los que llevan más de 2 años son los de 3 años, 4 años y 5 años o más. Al sumarlos se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>62</mn></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>40</mn></math>. Además, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>40</mn></math> no corresponde a la suma de esos tres grupos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué pide el problema</strong></p>
+            <p>Se pregunta cuántos estudiantes llevan <strong>más de 2 años</strong> en el instituto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Determinar qué grupos cumplen esa condición</strong></p>
+            <p>Los estudiantes que llevan más de 2 años son los que están en estas categorías:</p>
+            <ul>
+              <li>3 años: 22 estudiantes</li>
+              <li>4 años: 15 estudiantes</li>
+              <li>5 años o más: 25 estudiantes</li>
+            </ul>
+            <p>El grupo de 0 a 2 años no se considera, porque no cumple la condición “más de 2 años”.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las cantidades correspondientes</strong></p>
+            <p>Primero se puede sumar:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn><mo>+</mo><mn>15</mn><mo>=</mo><mn>37</mn></math></p>
+            <p>Luego:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>37</mn><mo>+</mo><mn>25</mn><mo>=</mo><mn>62</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir</strong></p>
+            <p>La cantidad de estudiantes que llevan más de 2 años en el instituto es <strong>62</strong>.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

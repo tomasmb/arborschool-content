@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q44",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q44_v1",
+      "scenario_description": "Se describe un huerto rectangular rodeado por un camino hecho con baldosas cuadradas de 0,5 m de lado. A lo largo de cada lado largo del huerto hay 40 baldosas del camino colocadas consecutivamente, y a lo largo de cada lado corto hay 20 baldosas. Se pregunta por el perímetro del huerto (equivalente a la longitud total del camino que lo rodea). Esta variante materializa la shape 'embedded_shape_transfer' porque el rectángulo grande (huerto) se obtiene al interpretar la disposición lineal de baldosas como segmentos continuos, y el estudiante debe transferir la medida desde las piezas (baldosas) al lado total antes de aplicar la fórmula del perímetro.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Obliga a entender que el huerto completo forma un rectángulo y que el perímetro es la longitud del camino exterior, no la suma de todas las baldosas ni un área. Primero se debe convertir el número de baldosas en cada lado en una longitud total (número de baldosas × 0,5 m) y recién después aplicar la fórmula del perímetro del rectángulo. Un enfoque mecánico de solo multiplicar filas por columnas no sirve; hay que identificar qué datos corresponden a cada lado del rectángulo y distinguir claramente el contorno de cualquier conteo de piezas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v2",
+      "scenario_description": "Se describe un panel de corcho rectangular formado por 12 filas y 8 columnas de cuadrados idénticos de 5 cm de lado. Luego se presentan varias afirmaciones del tipo: \"Para rodear el panel con una cinta se necesitan 2,0 m de cinta\", \"Se necesitan 2,4 m\", \"Se necesitan 4,8 m\", \"Se necesitan 0,96 m\". Se pide elegir la afirmación correcta. Esta variante usa la shape 'measurement_claim_selection' porque el estudiante no elige directamente un número aislado, sino la afirmación coherente con el perímetro calculado del rectángulo formado por la malla.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe comprender que 12 y 8 representan la cantidad de cuadrados en cada dimensión, que cada cuadrado mide 5 cm de lado y que el panel completo es un rectángulo. Debe calcular las longitudes totales de alto y de largo (filas × 5 cm, columnas × 5 cm), obtener el perímetro con 2·(alto + largo) y luego traducir ese resultado a metros para contrastarlo con las afirmaciones. Requiere distinguir perímetro de área y verificar unidades, por lo que no se puede responder solo reconociendo un patrón numérico superficial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "measurement_claim_selection"
+    },
+    {
+      "variant_id": "Q44_v3",
+      "scenario_description": "Se describe un cartel publicitario rectangular construido con tablones de madera idénticos. El cartel tiene 5 tablones apilados en vertical y 18 tablones puestos uno al lado del otro en horizontal. Cada tablón tiene 10 cm de alto y 80 cm de largo. Se pide calcular el perímetro del cartel completo. Aquí se cambia la representación de malla cuadrada a un ensamblaje de rectángulos iguales, pero globalmente sigue siendo un solo rectángulo cuyo perímetro se debe calcular a partir de sus dimensiones totales.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Se debe identificar que la cantidad de tablones determina el alto total (5 × 10 cm) y el largo total (18 × 80 cm) del rectángulo y que el perímetro depende solo de esas medidas, no del número total de tablones. El estudiante tiene que organizar los datos, distinguir qué dimensión corresponde a cada lado y aplicar conscientemente 2·(alto + largo); si confunde el conteo de piezas con el tamaño global o intenta multiplicar todo mecánicamente (p.ej., 5·18), obtendrá errores de área o de conteo que funcionan como distractores plausibles.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v4",
+      "scenario_description": "Se describe un piso rectangular donde solo se indica, a lo largo de uno de los lados, que hay 60 baldosas cuadradas alineadas de borde a borde, cada una de 30 cm de lado. La otra dimensión del piso se entrega directamente como 4,8 m. Se pide el perímetro del piso. Este contexto materializa 'embedded_shape_transfer' porque una de las dimensiones del rectángulo se obtiene transfiriendo la longitud desde las piezas (baldosas) a la medida total de un lado, mientras que la otra se usa tal como está dada.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante tiene que comprender que 60 baldosas consecutivas de 30 cm forman un solo lado del rectángulo (60 × 0,30 m). Luego debe combinar esa longitud con la otra dimensión (4,8 m) para calcular el perímetro con 2·(largo + ancho). Debe manejar coherentemente unidades y distinguir que el perímetro se refiere al borde del piso, no al número total de baldosas del interior, evitando así errores como multiplicar 60 por 4,8 o confundir con área.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v5",
+      "scenario_description": "Se plantea una pista de atletismo de forma rectangular cuyo interior mide 90 m de largo y 60 m de ancho. Se presentan varias propuestas de estudiantes sobre la distancia que se recorre al dar exactamente una vuelta por la línea interior: \"Se recorren 150 m\", \"Se recorren 300 m\", \"Se recorren 360 m\", \"Se recorren 540 m\". Se pide escoger la afirmación correcta. Esta variante implementa 'measurement_claim_selection' porque en lugar de pedir directamente el perímetro, se pregunta por la afirmación sobre una distancia recorrida que coincide con ese perímetro.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe reconocer que una vuelta completa por la pista equivale al perímetro del rectángulo y aplicar 2·(90 + 60). Los distractores pueden corresponder a confundir área (90 × 60), a sumar solo una pareja de lados (90 + 60) o a duplicar incorrectamente una de las dimensiones. El estudiante debe entender por qué la suma correcta involucra ambos pares de lados y que el contexto de 'recorrer una vuelta' representa justamente el perímetro, no otra magnitud.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "measurement_claim_selection"
+    },
+    {
+      "variant_id": "Q44_v6",
+      "scenario_description": "Se describe un nuevo rectángulo formado al poner dos patios rectangulares idénticos uno al lado del otro, compartiendo su lado más corto. Cada patio mide 8 m de largo por 5 m de ancho. Se pide calcular el perímetro del rectángulo grande formado por ambos patios juntos. Es un caso de 'embedded_shape_transfer' porque el estudiante debe ver que la figura compuesta también es un rectángulo y transferir las medidas de los patios individuales para obtener las dimensiones del rectángulo total antes de aplicar la fórmula de perímetro.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe razonar que al unir dos rectángulos 8×5 borde con borde en el lado de 5 m, la nueva figura es un rectángulo de 8 m de alto y 10 m de largo, y que el lado compartido no se cuenta dos veces en el perímetro exterior. Solo después de identificar correctamente las nuevas dimensiones puede aplicar 2·(10 + 8). Esta necesidad de reinterpretar la figura como un único rectángulo evita un uso puramente mecánico de datos iniciales sin comprender la forma global.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v7",
+      "scenario_description": "Se describe una tela rectangular con un diseño repetitivo: a lo ancho se repiten 15 motivos iguales, cada uno de 4 cm de ancho; a lo largo se repiten 25 filas del mismo motivo, cada una de 6 cm de alto. Se pide determinar cuánta cinta se necesita para rodear completamente la tela una sola vez, es decir, su perímetro. La situación mantiene el mismo constructo de perímetro de un rectángulo, pero la representación se basa en motivos repetidos en cada dimensión.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe traducir '15 motivos de 4 cm' en una única medida de ancho (15 × 4 cm) y '25 motivos de 6 cm' en una medida de largo (25 × 6 cm), y luego usar 2·(ancho + largo). Los distractores razonables pueden surgir de confundir el número total de motivos (15 × 25) con el perímetro, o de sumar solo una dimensión en lugar de ambas. Esto fuerza a comprender que el perímetro corresponde al borde de la tela y que solo importan las longitudes totales de cada lado, no el conteo de figuras internas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v8",
+      "scenario_description": "Se describen verbalmente tres rectángulos distintos, todos formados por mallas de cuadrados de 1 cm de lado: por ejemplo, Rectángulo A con 10 cuadrados de alto y 30 de largo; Rectángulo B con 15 de alto y 25 de largo; Rectángulo C con 20 de alto y 20 de largo. Luego se da la afirmación \"Uno de estos rectángulos tiene un perímetro de 80 cm\" y se pide elegir cuál de los tres cumple esa condición. Esta variante encaja en 'measurement_claim_selection' porque el estudiante debe validar una condición de perímetro sobre varias opciones y seleccionar la que hace verdadera la afirmación.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Es necesario calcular o al menos comparar perímetros de varios rectángulos usando 2·(alto + largo) en base a los conteos de cuadrados. No basta con ver tamaños 'a ojo'; hay que identificar la única combinación de alto y largo que produce el perímetro dado. Al trabajar con varias descripciones, se refuerza la comprensión de cómo influyen ambas dimensiones en el perímetro y se desalienta el uso de una regla mecánica aplicada a un solo caso aislado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "measurement_claim_selection"
+    },
+    {
+      "variant_id": "Q44_v9",
+      "scenario_description": "Se describe una ventana compuesta por un rectángulo de vidrio central rodeado por un marco de madera de ancho constante. Se entregan las dimensiones totales exteriores de la ventana (por ejemplo, 120 cm de alto y 80 cm de ancho) y el ancho del marco (por ejemplo, 5 cm). Se pide el perímetro del vidrio, es decir, del rectángulo interior. Esta variante aplica 'embedded_shape_transfer' porque requiere relacionar el rectángulo exterior con el interior restando dos veces el ancho del marco en cada dimensión antes de aplicar la fórmula del perímetro.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender que el vidrio forma un rectángulo más pequeño cuyo alto y ancho se obtienen restando dos veces el ancho del marco a las dimensiones exteriores. Luego debe usar 2·(alto_interior + ancho_interior). No puede limitarse a aplicar la fórmula automáticamente sobre las medidas externas; necesita entender qué rectángulo corresponde a la pregunta (el vidrio, no el conjunto) y cómo se relacionan sus dimensiones con las dadas, evitando así errores comunes como usar directamente el perímetro exterior o restar el ancho del marco solo una vez.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "embedded_shape_transfer"
+    },
+    {
+      "variant_id": "Q44_v10",
+      "scenario_description": "Se presenta una mesa rectangular cuya superficie está formada por tablillas estrechas colocadas solo en una dirección. Por ejemplo, se indica que la mesa mide 1,6 m de largo y que, a lo ancho, hay 32 tablillas de 5 cm de ancho cada una cubriendo exactamente de un borde al otro. Se pregunta cuántos metros de cinta metálica se necesitan para recubrir el borde de la superficie de la mesa una sola vez (su perímetro). La representación combina una dimensión dada directamente con otra que se debe obtener a partir de una repetición de piezas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que el ancho de la mesa no se da explícitamente, sino que se deduce como 32 × 0,05 m, y que el borde a recubrir es el perímetro del rectángulo formado por la mesa. Solo después de determinar ambas dimensiones puede aplicar 2·(largo + ancho). Cualquier intento de usar mecánicamente solo los números visibles (1,6 y 32) sin interpretar su papel en las dimensiones conducirá a errores, por lo que la comprensión del vínculo entre repetición de piezas y longitud de un lado es esencial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "measurement_claim_selection"
+    }
+  ]
+}

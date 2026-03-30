@@ -57,6 +57,7 @@ PRUEBAS_FINALIZADAS_DIR = PRUEBAS_DIR / "finalizadas"
 PRUEBAS_PROCESADAS_DIR = PRUEBAS_DIR / "procesadas"
 PRUEBAS_RAW_DIR = PRUEBAS_DIR / "raw"
 PRUEBAS_ALTERNATIVAS_DIR = PRUEBAS_DIR / "alternativas"
+PRUEBAS_HARD_VARIANTS_DIR = PRUEBAS_DIR / "hard_variants"
 
 # Question generation output (per-atom question pools)
 QUESTION_GENERATION_DIR = DATA_DIR / "question-generation"

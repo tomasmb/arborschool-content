@@ -1,11 +1,12 @@
-"""Extract variant questions from alternativas/.
+"""Extract variant questions from alternativas/ and hard_variants/.
 
 This module extracts approved question variants that are generated from
 official test questions. Variants inherit atom associations from their parent
 via parent_question_id - no separate question_atoms are synced for variants.
 
-Variant source:
-    alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/ - test variants
+Variant sources:
+    alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/
+    hard_variants/{test_id}/Q{n}/variants/approved/Q{n}_v{m}/
 """
 
 from __future__ import annotations
@@ -21,7 +22,10 @@ from app.sync.extractors import (
     _find_images_in_qti,
     extract_all_tests,
 )
-from app.utils.paths import PRUEBAS_ALTERNATIVAS_DIR
+from app.utils.paths import (
+    PRUEBAS_ALTERNATIVAS_DIR,
+    PRUEBAS_HARD_VARIANTS_DIR,
+)
 
 # -----------------------------------------------------------------------------
 # Data container
@@ -132,72 +136,92 @@ def _extract_single_variant(
     )
 
 
-def extract_variants(
-    alternativas_dir: Path | None = None,
-) -> list[ExtractedVariant]:
-    """Extract all approved variants from alternativas/.
+def _walk_approved_dirs(
+    base_dir: Path,
+    approved_subpath: str = "approved",
+) -> list[tuple[str, int, int, Path]]:
+    """Walk a variant tree and yield (test_id, q_num, seq, dir).
 
-    Structure expected:
-        alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/
-        ├── question.xml
-        ├── variant_info.json
-        └── metadata_tags.json
-
-    Args:
-        alternativas_dir: Path to alternativas directory. Defaults to
-            PRUEBAS_ALTERNATIVAS_DIR.
-
-    Returns:
-        List of ExtractedVariant instances (only approved variants).
+    Works for both directory layouts:
+      alternativas/{test}/Q{n}/approved/Q{n}_v{m}/
+      hard_variants/{test}/Q{n}/variants/approved/Q{n}_v{m}/
     """
-    if alternativas_dir is None:
-        alternativas_dir = PRUEBAS_ALTERNATIVAS_DIR
+    results: list[tuple[str, int, int, Path]] = []
+    if not base_dir.exists():
+        return results
 
-    variants: list[ExtractedVariant] = []
-
-    if not alternativas_dir.exists():
-        return variants
-
-    # Walk test directories
-    for test_dir in sorted(alternativas_dir.iterdir()):
+    for test_dir in sorted(base_dir.iterdir()):
         if not test_dir.is_dir():
             continue
-
         test_id = test_dir.name.lower()
 
-        # Walk question directories
         for q_dir in sorted(test_dir.iterdir()):
             if not q_dir.is_dir() or not q_dir.name.startswith("Q"):
                 continue
-
             q_num_match = re.search(r"(\d+)", q_dir.name)
             if not q_num_match:
                 continue
             q_num = int(q_num_match.group(1))
 
-            # Look in approved/ subdirectory
-            approved_dir = q_dir / "approved"
+            approved_dir = q_dir / approved_subpath
             if not approved_dir.exists():
                 continue
 
-            # Walk variant directories
             variant_seq = 0
             for v_dir in sorted(approved_dir.iterdir()):
                 if not v_dir.is_dir():
                     continue
-
-                # Extract variant sequence from name (e.g., Q1_v2 -> 2)
                 v_match = re.search(r"_v(\d+)$", v_dir.name)
                 if v_match:
                     variant_seq = int(v_match.group(1))
                 else:
                     variant_seq += 1
+                results.append((test_id, q_num, variant_seq, v_dir))
 
-                variant = _extract_single_variant(v_dir, test_id, q_num, variant_seq)
-                if variant:
-                    variants.append(variant)
+    return results
 
-    return variants
+
+def extract_variants(
+    alternativas_dir: Path | None = None,
+    hard_variants_dir: Path | None = None,
+) -> list[ExtractedVariant]:
+    """Extract all approved variants from both data sources.
+
+    Sources (both optional, deduplicated by canonical ID):
+      alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/
+      hard_variants/{test_id}/Q{n}/variants/approved/Q{n}_v{m}/
+
+    Args:
+        alternativas_dir: Defaults to PRUEBAS_ALTERNATIVAS_DIR.
+        hard_variants_dir: Defaults to PRUEBAS_HARD_VARIANTS_DIR.
+
+    Returns:
+        Deduplicated list of ExtractedVariant (hard_variants wins ties).
+    """
+    if alternativas_dir is None:
+        alternativas_dir = PRUEBAS_ALTERNATIVAS_DIR
+    if hard_variants_dir is None:
+        hard_variants_dir = PRUEBAS_HARD_VARIANTS_DIR
+
+    by_id: dict[str, ExtractedVariant] = {}
+
+    # alternativas: {test}/Q{n}/approved/...
+    for test_id, q_num, seq, v_dir in _walk_approved_dirs(
+        alternativas_dir, "approved",
+    ):
+        v = _extract_single_variant(v_dir, test_id, q_num, seq)
+        if v:
+            by_id[v.id] = v
+
+    # hard_variants: {test}/Q{n}/variants/approved/...
+    for test_id, q_num, seq, v_dir in _walk_approved_dirs(
+        hard_variants_dir, "variants/approved",
+    ):
+        v = _extract_single_variant(v_dir, test_id, q_num, seq)
+        if v:
+            by_id[v.id] = v  # overwrites alternativas duplicate
+
+    return sorted(by_id.values(), key=lambda v: v.id)
 
 
 def extract_all_variants() -> list[ExtractedVariant]:

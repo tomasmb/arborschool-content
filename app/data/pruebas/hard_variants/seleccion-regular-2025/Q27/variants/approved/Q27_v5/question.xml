@@ -1,0 +1,204 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q27_v5" title="Q27_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona recarga $P en su teléfono prepago. Luego decide comprar 15 paquetes de datos, y el precio de cada paquete es $M. Se sabe que el dinero recargado alcanza para pagar los 15 paquetes.</p>
+    <p>¿Cuál de las siguientes expresiones representa el saldo de dinero que le queda en la recarga después de comprar los 15 paquetes?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1" min-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>-</m:mo><m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La expresión P − M representa el saldo después de pagar 1 paquete de precio M. Pero el enunciado dice que se compran 15 paquetes, cuyo costo total es 15·M. Por lo tanto, el saldo debe ser P − 15·M, no P − M.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>-</m:mo><m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El dinero inicial es P. Como se compran 15 paquetes y cada uno cuesta M, el costo total es 15·M. Entonces, el saldo que queda es dinero inicial menos costo total: P − 15·M.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mn>15</m:mn><m:mo>·</m:mo><m:mi>M</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La expresión 15·M representa solo el costo total de los 15 paquetes. El problema pide el saldo que queda después de pagar, por lo que hay que restar ese costo al dinero recargado P. El saldo es P − 15·M.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mi>P</m:mi>
+            <m:mn>15</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La expresión P/15 divide la recarga en 15 partes iguales, pero el problema no pide repartir el dinero, sino restar el costo de 15 paquetes. Como cada paquete cuesta M, el costo total es 15·M y el saldo correcto es P − 15·M.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el dinero inicial</strong></p>
+            <p>La persona recarga un monto de</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi>
+              </m:math>
+            </p>
+            <p>Ese es el dinero disponible antes de comprar los paquetes.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el costo total de los 15 paquetes</strong></p>
+            <p>Cada paquete cuesta</p>
+            <p>
+              <m:math>
+                <m:mi>M</m:mi>
+              </m:math>
+            </p>
+            <p>Como compra 15 paquetes, el costo total es</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>15</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Restar el gasto al dinero inicial</strong></p>
+            <p>El saldo final corresponde a:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Además, el enunciado indica que el dinero alcanza para pagar los 15 paquetes, por lo que</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>≥</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>y así el saldo no es negativo.</p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La única opción que representa</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>es la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión que representa el saldo de dinero que queda después de comprar los 15 paquetes es</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>P</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mi>M</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,141 @@
+{
+  "source_question_id": "Q35",
+  "source_test_id": "seleccion-regular-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q35_v8",
+      "scenario_description": "Se cambia completamente el contexto a un modelo de DOSIS de un medicamento en función del peso del paciente. Se entrega explícitamente la ecuación D = 10 + (p − 40)/7, donde D es la dosis en mg y p el peso en kg. Se indica que para cierto paciente la dosis que el médico desea aplicar es de 20 mg y se pregunta por el peso p de ese paciente. La estructura algebraica es análoga a la original (constante + fracción de una diferencia, con la incógnita dentro de la diferencia en el numerador) y el estudiante debe reemplazar D = 20 en la ecuación y despejar p.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar que el valor conocido es la dosis D y no el peso p, identificar correctamente dónde sustituir el 20 en la ecuación y seguir el porqué del procedimiento inverso (restar 10, luego multiplicar por 7, luego sumar 40). Los distractores se diseñan para capturar errores de comprensión del modelo (por ejemplo, sumar 40 antes de dividir o multiplicar 10 por 7 directamente) y no simples errores de cálculo, obligando a comprender la secuencia lógica de aislación de la variable.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q35_v9",
+      "scenario_description": "El contexto se cambia a un ARRIENDO DE AUTO por kilómetros recorridos. Se entrega un modelo del tipo C = 10 + (k − 40)/7, donde C es el costo total en miles de pesos y k la cantidad de kilómetros. Se explica brevemente que se cobra un monto base y luego se ajusta el precio según cuántos kilómetros sobrepasan un cierto umbral. Se fija un costo total C = 20 (20 mil pesos) para un viaje concreto y se pregunta cuántos kilómetros se recorrieron, manteniendo la misma estructura de resolución: sustituir C, resolver la ecuación lineal y hallar k.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_dependencia"
+      ],
+      "required_reasoning": "El estudiante debe entender que el modelo incluye un cargo base (10) y un ajuste proporcional a la diferencia k − 40 dividida por 7. Para obtener k desde C, debe invertir conscientemente las operaciones del modelo (primero deshacer la suma de 10, luego deshacer la división por 7, luego deshacer la resta de 40), en lugar de aplicar una fórmula de memoria. El orden de las operaciones está invertido respecto a cómo está escrita la ecuación, lo que exige razonar sobre la estructura y no aplicar mecánicamente un algoritmo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q35_v10",
+      "scenario_description": "Se plantea un contexto de PAGO MENSUAL DE UN PLAN DE INTERNET según los gigabytes usados. El modelo se entrega como una función en notación de planilla de cálculo: P(g) = 10 + (g − 40)/7, donde P(g) es el valor en miles de pesos y g los GB consumidos. En el enunciado se indica que para cierto cliente la boleta muestra un cobro de 20 mil pesos y se pregunta «¿cuántos gigabytes de datos usó este cliente, según el modelo P(g)?». La representación incorpora notación funcional y referencia a ‘celda de entrada g’ en lugar de la forma directa de la ecuación original.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe comprender que P(g) es el resultado del modelo y que el 20 corresponde a P(g), no a g. Debe identificar correctamente cuál es la variable independiente y cuál el resultado en la ecuación, substituyendo 20 en el lado de P(g) y luego razonando sobre cómo invertir las operaciones que se realizan a g para obtener el valor original. La presencia de notación funcional evita un uso puramente mecánico de la ecuación T = 10 + (n − 40)/7 y exige reconocer la misma estructura en una representación distinta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q35_v11",
+      "scenario_description": "Se mantiene el contexto de GRILLOS, pero ahora el modelo está parcialmente indefinido: T = a + (n − 40)/7, donde a es una constante desconocida que representa la temperatura base. Se indica que, para cierto grillo que emite 110 chirridos por minuto, se midió una temperatura de 20 °C. Se pide determinar el valor de a que hace coherente el modelo con esta observación. La solución requiere sustituir T = 20 y n = 110 y resolver la ecuación lineal para a.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_dependencia"
+      ],
+      "required_reasoning": "En lugar de despejar n directamente, el estudiante debe reconocer que el par (n, T) conocido permite ajustar el parámetro a. Esto lo obliga a ver la ecuación como una relación general con un parámetro y no solo como una ‘fórmula para calcular n’. Luego debe invertir las operaciones de manera análoga al ítem fuente, pero ahora sobre a: restar la fracción al 20, etc. El razonamiento exige entender la estructura del modelo y cómo un dato experimental fija el valor de un parámetro.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q35_v12",
+      "scenario_description": "Se presenta de nuevo el contexto de GRILLOS, pero ahora el parámetro desconocido es el número de chirridos de referencia b: T = 10 + (n − b)/7. Se explica que b representa el número de chirridos por minuto a partir del cual se empieza a ajustar la temperatura. Se indica que, para un grillo que emite 110 chirridos por minuto, la temperatura medida fue de 20 °C, y se pide encontrar b. Esto mantiene la misma forma de relación (constante + fracción de una diferencia) pero transmite el despeje a un parámetro dentro de la diferencia.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_dependencia"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que la incógnita ya no es la cantidad de chirridos n, sino el valor b que hace que el modelo se ajuste a la medición conocida. Al sustituir n = 110 y T = 20, el despeje involucra los mismos pasos conceptuales que antes (deshacer suma, deshacer división, deshacer resta), pero ahora centrados en b. Comprender qué representa b en el contexto y cómo se lo aísla en la ecuación requiere ir más allá de aplicar un procedimiento memorizado para ‘encontrar n’.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q35_v13",
+      "scenario_description": "Se conserva el contexto de GRILLOS, pero ahora el parámetro desconocido es el factor de ajuste k en el denominador: T = 10 + (n − 40)/k. Se indique que k representa cuántos chirridos extra se necesitan para aumentar la temperatura en 1 °C. Se sabe que cuando el grillo emite 110 chirridos por minuto, la temperatura es 20 °C. Se pide determinar el valor de k que hace coherente el modelo con esta observación. La resolución exige sustituir T = 20 y n = 110 y despejar k mediante equivalencias lineales.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "representacion"
+      ],
+      "required_reasoning": "Para encontrar k, el estudiante debe interpretar correctamente el rol de este parámetro en el denominador, establecer la ecuación 20 = 10 + (110 − 40)/k y reorganizarla, lo que implica comprender la relación de cociente y usar la multiplicación cruzada de manera consciente. Aunque el despeje es sencillo, requiere entender que el incremento de 10 °C debe igualarse a 70/k, lo que fuerza a razonar sobre el significado de dividir por k en el modelo y no solo a reemplazar valores mecánicamente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q35_v14",
+      "scenario_description": "Se mantiene el contexto de GRILLOS y la ecuación original T = 10 + (n − 40)/7. Se indica que un estudiante quiso encontrar cuántos chirridos por minuto emite un grillo cuando la temperatura es 20 °C y se muestran explícitamente los pasos que realizó (por ejemplo: 1) 20 = 10 + (n − 40)/7; 2) 20 − 10 = n − 40/7; 3) 10 = n − 40/7; 4) 70 = n − 40; 5) n = 30). Se pide identificar en cuál paso aparece el error. Las alternativas se refieren textual y explícitamente a los pasos numerados.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_dependencia"
+      ],
+      "required_reasoning": "El estudiante debe comprender la secuencia correcta de transformaciones al resolver la ecuación original para n y detectar en qué punto el procedimiento se desvía (por ejemplo, en la manipulación de la fracción o del 40/7). Para lograrlo, no basta saber el resultado; debe analizar por qué cada equivalencia es válida o no, reconociendo que 20 − 10 no puede convertirse en n − 40/7 sin un tratamiento correcto de la fracción. Esto evalúa entendimiento estructural del despeje lineal más que la aplicación mecánica de reglas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q35_v15",
+      "scenario_description": "Se cambia el contexto a PAGO DE PLAN DE INTERNET con la ecuación P = 10 + (g − 40)/7, pero la tarea sigue siendo encontrar g cuando P = 20. En lugar de pedir el resultado, se muestran los pasos que siguió un estudiante en la resolución (por ejemplo: 1) 20 = 10 + (g − 40)/7; 2) 20 − 10 = (g − 40)/7; 3) 10 · 7 = g − 40; 4) 70 = g − 40; 5) g = 30) y se pregunta en cuál paso cometió el error. Las alternativas nombran cada paso o un posible ‘no hay error’, pero solo uno coincide con la primera transformación incorrecta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe tener claro cómo se resuelve correctamente una ecuación lineal con una fracción y distinguir una multiplicación o resta mal aplicada (por ejemplo, multiplicar 10 por 7 en lugar de toda la parte fraccionaria). Esto obliga a revisar el razonamiento detrás de cada paso y no solo a reproducir el algoritmo desde cero. Los distractores se basan en errores típicos (confusión entre numerador y denominador, tratar 40/7 como 40 ÷ 7 en el lugar equivocado), lo que exige una comprensión fina del porqué de cada transformación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "error_analysis"
+    },
+    {
+      "variant_id": "Q35_v16",
+      "scenario_description": "Se usa el contexto de una PLANILLA DE CÁLCULO que registra la temperatura según los chirridos de grillos. En la descripción se indica que en una columna se ingresan los valores n y en otra columna la hoja usa la fórmula T = 10 + (n − 40)/7 para calcular la temperatura. Se plantea que en cierta fila la temperatura debe quedar en 20 °C y la celda donde va n está vacía. La pregunta es: «¿Qué número debe escribirse en la celda de n para que la fórmula devuelva 20?».",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que la fórmula de la planilla expresa la misma relación algebraica y que se trata de encontrar el valor de entrada n que produce una salida T = 20. Esto demanda entender la dirección de cálculo inversa: en la práctica, imaginar ‘deshacer’ lo que hace la fórmula, en lugar de simplemente evaluar T para un n dado. Así, debe razonarse sobre el orden inverso de operaciones para aislar n y no limitarse a un reemplazo directo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q35_v17",
+      "scenario_description": "Se cambia el contexto a un MODELO DE PUNTAJE en un juego en línea: S = 10 + (m − 40)/7, donde S es el puntaje final y m el número de misiones completadas. Se explica que la fórmula suma un puntaje base de 10 y luego agrega una séptima parte de la diferencia entre las misiones realizadas y 40. Se indica que cierto jugador terminó una partida con puntaje S = 20 y se pregunta cuántas misiones completó, manteniendo la misma estructura algebraica y necesidad de despejar m desde el resultado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar la ecuación en un contexto nuevo, identificar que el dato conocido es el puntaje S y no el número de misiones m, y comprender que para recuperar m se deben invertir las operaciones en el orden correcto (restar 10, luego multiplicar por 7, luego sumar 40). Las alternativas se diseñan para captar errores conceptuales como no restar 10 antes de multiplicar por 7 o sumar 40 al 20 antes de cualquier otro paso, lo que obliga a entender la lógica del despeje y no aplicar un cálculo directo mal razonado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    }
+  ]
+}

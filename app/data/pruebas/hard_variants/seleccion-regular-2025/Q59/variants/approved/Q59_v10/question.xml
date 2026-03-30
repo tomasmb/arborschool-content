@@ -1,0 +1,225 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q59_v10" title="Q59_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Se va a colar un bloque de concreto en un molde con forma de paralelepípedo recto. El molde mide 2,5 m de ancho, 3 m de largo y 0,6 m de altura. No se llenará hasta el borde, porque se dejará libre una capa de 5 cm en la parte superior.</p>
+    <p>Se presentan cuatro propuestas sobre la cantidad de concreto a preparar, expresadas como volúmenes en m³ y con una breve justificación. ¿Cuál de ellas corresponde a la cantidad de concreto que realmente llenará el molde?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mn>4,5</m:mn>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>m</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>, porque se multiplica 2,5 · 3 · 0,6 usando toda la altura del molde.
+      <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si se deja libre una capa de 5 cm, la altura ocupada no es 0,6 m, sino 0,55 m. Por eso el volumen que llena el molde es 2,5 × 3 × 0,55 = 7,5 × 0,55 = 4,125 m³, que es distinto de 4,5 m³.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>4,125</m:mn>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>m</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>, porque el concreto ocupará 0,55 m de altura, al restar correctamente 5 cm (0,05 m) a los 0,6 m del molde.
+      <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La capa libre es 5 cm = 0,05 m, así que la altura de concreto es 0,6 − 0,05 = 0,55 m. Entonces el volumen es 2,5 × 3 × 0,55 = 7,5 × 0,55 = 4,125 m³.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mn>0,75</m:mn>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>m</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>, porque se considera que la altura ocupada es solo 0,1 m al hacer 0,6 m − 0,5 m, confundiendo 5 cm con 0,5 m.
+      <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Como 5 cm = 0,05 m, la altura que se debe usar es 0,6 − 0,05 = 0,55 m. Con esa altura, el volumen es 2,5 × 3 × 0,55 = 4,125 m³. El valor 0,75 m³ corresponde a 2,5 × 3 × 0,1, y no satisface la condición dada.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mn>3,375</m:mn>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>m</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>, porque se toma la altura del concreto como 0,45 m al restar mal 0,6 m − 0,05 m.
+      <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Al dejar libre 5 cm = 0,05 m, la altura de concreto es 0,6 − 0,05 = 0,55 m, no 0,45 m. Por eso el volumen correcto es 2,5 × 3 × 0,55 = 4,125 m³. En cambio, 3,375 m³ resulta de 2,5 × 3 × 0,45, que no corresponde a la situación del problema.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las dimensiones del molde</strong></p>
+            <p>El molde tiene ancho 2,5 m, largo 3 m y altura 0,6 m.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Convertir la capa libre a metros</strong></p>
+            <p>La capa que se deja libre es 5 cm. Como 100 cm = 1 m, entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>5</m:mn>
+                  <m:mtext> cm</m:mtext>
+                  <m:mo>=</m:mo>
+                  <m:mn>0,05</m:mn>
+                  <m:mtext> m</m:mtext>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular la altura que ocupará el concreto</strong></p>
+            <p>Como no se llena hasta el borde, se resta la capa libre a la altura total del molde:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>0,6</m:mn>
+                  <m:mo>−</m:mo>
+                  <m:mn>0,05</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>0,55</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La altura de concreto será 0,55 m.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el volumen del concreto</strong></p>
+            <p>El volumen de un paralelepípedo recto se obtiene multiplicando ancho × largo × altura:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>V</m:mi>
+                  <m:mo>=</m:mo>
+                  <m:mn>2,5</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>0,55</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Primero:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>2,5</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>7,5</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Luego:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>7,5</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>0,55</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>4,125</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad de concreto que realmente llenará el molde es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>4,125</m:mn>
+                  <m:mo> </m:mo>
+                  <m:msup>
+                    <m:mi>m</m:mi>
+                    <m:mn>3</m:mn>
+                  </m:msup>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es la opción B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

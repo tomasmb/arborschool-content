@@ -1,0 +1,124 @@
+{
+  "variant_id": "Q15_v9",
+  "source_question_id": "Q15",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q15_v9",
+    "scenario_description": "Admisión a dos clubes escolares: Club de Ciencia y Club de Teatro. La información de postulantes y admitidos por sexo se presenta como un párrafo continuo, no en tabla, describiendo en orden desfasado las cifras de cada combinación (por ejemplo, primero mujeres de Ciencia, luego hombres de Teatro, etc.). Después se formulan cuatro posibles conclusiones de la directora sobre la equidad en la admisión. La afirmación correcta señala que en el Club de Teatro se admitió al 50% de los hombres y al 50% de las mujeres que postularon a ese club. Las otras tres reproducen los mismos tipos de errores porcentuales que la pregunta original: usar como base una suma parcial mal definida, tomar el total conjunto de postulantes en lugar del club al que se alude, y exagerar fuertemente el porcentaje de admitidos de un grupo. Se pide decidir qué conclusión está respaldada por el texto.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "orden_o_dependencia_de_pasos"
+    ],
+    "required_reasoning": "Es necesario decodificar primero el texto para identificar correctamente a qué club y a qué sexo se refiere cada número, y luego analizar cada conclusión determinando si usa la base adecuada; esto fuerza a entender el rol del denominador en un porcentaje en lugar de aplicar un cálculo directo sobre la primera cifra disponible.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "orden_o_dependencia_de_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que el paso de tabla a párrafo no convirtiera el ítem en un problema de varios pasos ni cambiara el tipo de razonamiento: sigue siendo selección de la única afirmación consistente con los porcentajes, con distractores que replican errores de base porcentual (subconjunto, total global y sobreestimación)."
+  },
+  "generator_declared_correct_identifier": "ChoiceD",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-11"
+    ],
+    "primary_atom_titles": [
+      "Resolución de problemas contextualizados con porcentajes"
+    ],
+    "family_id": "percentage_context_application",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "direct_resolution",
+    "operation_signature": "percentage_increase_application",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "routine_procedural",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "unknown",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "requires_base_selection",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "tabular_context",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=percentage_increase_application",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

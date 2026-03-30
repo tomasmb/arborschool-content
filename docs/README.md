@@ -17,6 +17,7 @@
 - [Método de Aprendizaje](specifications/learning-method-specification.md)
 - [Mini-Clase](specifications/mini-class-specification.md)
 - [Pipeline de Variantes](specifications/variant-generation-pipeline.md)
+- [Variantes No Mecanizables (Plan)](specifications/variant-generation-hard-variants-plan.md)
 - [Estructura del Repo](specifications/repo-structure-and-modules.md)
 - [Estándares de Código Python](specifications/python-best-practices.md)
 - [Transformación Temarios → Standards](specifications/standards-from-temarios.md)
@@ -29,9 +30,9 @@
 ## Research
 
 - [Generación de Preguntas con IA](research/ai-question-generation/)
+- [Model Selection Variantes Difíciles (2026-03-11)](research/variant-model-selection-2026-03-11.md)
 
 ## Análisis de Contenido
 
 - [Cobertura de Átomos](analysis/analisis_cobertura_atomos.md)
 - [Justificación de Átomos No Cubiertos](analysis/justificacion_atomos_no_cubiertos.md)
-

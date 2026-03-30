@@ -1,0 +1,126 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v11" title="Q51_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un plano cuadriculado de una ciudad, el terminal de buses está en el punto (0,0). Un folleto turístico registra los desplazamientos desde el terminal como pares de números enteros con signo: el primer número indica cuadras hacia el norte (positivo) o hacia el sur (negativo) y el segundo, cuadras hacia el este (positivo) o hacia el oeste (negativo). Para llegar originalmente a un museo desde el terminal se registró el desplazamiento (+5, +11).</p>
+    <p>Con el tiempo, el museo se trasladó dos veces. En el registro del plano estos cambios aparecen como (−8, +2) y luego (+6, −5), siempre medidos desde la posición anterior del museo.</p>
+    <p>Si quieren escribir en un nuevo folleto una sola indicación directa desde la misma salida del terminal hasta la ubicación actual del museo, ¿cuál de las siguientes frases corresponde a ese desplazamiento total?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Avance tres cuadras hacia el sur y ocho cuadras hacia el este.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento total se obtiene sumando componente a componente: (+5) + (−8) + (+6) = +3 en la dirección norte-sur, y (+11) + (+2) + (−5) = +8 en la dirección este-oeste. El resultado es (+3, +8), que corresponde a tres cuadras hacia el norte y ocho hacia el este, no hacia el sur.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Avance tres cuadras hacia el norte y ocho cuadras hacia el este.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al sumar los tres desplazamientos, la componente norte-sur es (+5) + (−8) + (+6) = +3 y la componente este-oeste es (+11) + (+2) + (−5) = +8. Por lo tanto, el desplazamiento directo desde el terminal es (+3, +8): tres cuadras hacia el norte y ocho cuadras hacia el este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Avance diecinueve cuadras hacia el norte y ocho cuadras hacia el este.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La componente este-oeste sí da +8, porque (+11) + (+2) + (−5) = +8, pero la componente norte-sur no da +19. El cálculo correcto es (+5) + (−8) + (+6) = +3. Por eso el desplazamiento total es (+3, +8), no (+19, +8).</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Avance dos cuadras hacia el sur y tres cuadras hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el desplazamiento total fuera dos cuadras hacia el sur y tres hacia el oeste, correspondería al par (−2, −3). Pero al sumar los desplazamientos del problema se obtiene (+5) + (−8) + (+6) = +3 y (+11) + (+2) + (−5) = +8, es decir, (+3, +8). Ese resultado apunta hacia el norte y hacia el este, no hacia el sur y hacia el oeste.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: suma de desplazamientos en el plano</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el desplazamiento inicial</strong></p>
+            <p>Desde el terminal hasta la ubicación original del museo, el desplazamiento es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>+5</mn><mo>,</mo><mn>+11</mn><mo>)</mo></mrow></math>.</p>
+            <p>Esto significa 5 cuadras hacia el norte y 11 cuadras hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Incorporar el primer traslado del museo</strong></p>
+            <p>El primer cambio es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>−8</mn><mo>,</mo><mn>+2</mn><mo>)</mo></mrow></math>, medido desde la posición anterior.</p>
+            <p>Sumamos componente a componente:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>+5</mn><mo>+</mo><mo>(</mo><mn>−8</mn><mo>)</mo><mo>=</mo><mn>−3</mn></mrow></math></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>+11</mn><mo>+</mo><mn>+2</mn><mo>=</mo><mn>+13</mn></mrow></math></p>
+            <p>Después del primer traslado, la posición del museo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>−3</mn><mo>,</mo><mn>+13</mn><mo>)</mo></mrow></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Incorporar el segundo traslado del museo</strong></p>
+            <p>El segundo cambio es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>+6</mn><mo>,</mo><mn>−5</mn><mo>)</mo></mrow></math>, también medido desde la posición anterior.</p>
+            <p>Volvemos a sumar componente a componente:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>−3</mn><mo>+</mo><mn>+6</mn><mo>=</mo><mn>+3</mn></mrow></math></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>+13</mn><mo>+</mo><mo>(</mo><mn>−5</mn><mo>)</mo><mo>=</mo><mn>+8</mn></mrow></math></p>
+            <p>La ubicación actual del museo respecto del terminal es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>+3</mn><mo>,</mo><mn>+8</mn><mo>)</mo></mrow></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar el par ordenado final</strong></p>
+            <p>La primera componente es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>+3</mn></mrow></math>, así que son 3 cuadras hacia el norte.</p>
+            <p>La segunda componente es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>+8</mn></mrow></math>, así que son 8 cuadras hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La indicación directa correcta es: <strong>Avance tres cuadras hacia el norte y ocho cuadras hacia el este</strong>.</p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

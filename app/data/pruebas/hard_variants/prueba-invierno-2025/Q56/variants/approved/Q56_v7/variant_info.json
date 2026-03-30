@@ -1,0 +1,122 @@
+{
+  "variant_id": "Q56_v7",
+  "source_question_id": "Q56",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q56_v7",
+    "scenario_description": "Se presenta un extracto de un registro interno de un consultorio de atención primaria, en formato de lista tipo ficha: \n- \"Personas mayores de 70 años inscritas en el consultorio: 12 300\" \n- \"Porcentaje de estas personas que recibieron la vacuna antigripal este año: 8,5 %\" \n- Otros datos irrelevantes (porcentaje con enfermedades crónicas, edad promedio, etc.).\nLuego se entregan 4 afirmaciones del tipo: \"Aproximadamente, X personas mayores de 70 años de este consultorio recibieron la vacuna antigripal este año\" con distintos valores de X. Solo una afirmación corresponde al cálculo correcto del 8,5 % de 12 300; las demás usan errores típicos (tomar 8,5 como cantidad, sumar 8,5 al total, o un número que sobrestima mucho el porcentaje).",
+    "non_mechanizable_axes": [
+      "representacion"
+    ],
+    "required_reasoning": "El estudiante debe comprender que el 8,5 % se aplica específicamente al total de 12 300 inscritos y que calcular \"8,5 % de 12 300\" implica multiplicar la fracción 0,085 por el total (o un procedimiento equivalente), no sumar ni restar el porcentaje. Debe identificar cuál afirmación numérica se ajusta a ese valor aproximado y descartar las que reflejan errores conceptuales sobre qué significa un porcentaje de una cantidad.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "ledger_context"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea siguiera siendo el cálculo directo de un porcentaje de una sola cantidad (8,5 % de 12 300) y que el cambio a formato de registro no introdujera pasos adicionales ni otro tipo de relación porcentual."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-06"
+    ],
+    "primary_atom_titles": [
+      "Cálculo directo del porcentaje de una cantidad"
+    ],
+    "family_id": "direct_percentage_calculation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.65,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_percentage_calculation",
+    "requires_direct_computation": true,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "direct_single_step",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "medium",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "visual_support_with_self_containment",
+    "explicit_dataset_policy": "required_or_described",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_percentage_calculation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic",
+      "must_preserve_direct_computation",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -1,0 +1,239 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v7" title="Q54_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En la siguiente tabla se muestran los resultados de una encuesta realizada a 50 niños sobre su mascota favorita.</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Mascota</th>
+            <th>Cantidad de niños</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Perro</td>
+            <td>20</td>
+          </tr>
+          <tr>
+            <td>Gato</td>
+            <td>15</td>
+          </tr>
+          <tr>
+            <td>Pez</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>Hámster</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Ave</td>
+            <td>6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Si se elige a uno de estos niños al azar, ¿cuál es la probabilidad de que la mascota favorita del niño elegido <strong>NO</strong> sea ni perro ni gato?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Seleccione la opción que corresponde.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        
+        <m:math>
+          <m:mfrac>
+            <m:mn>7</m:mn>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los casos favorables son los niños cuya mascota favorita no es perro ni gato: pez, hámster y ave. Eso da 5 + 4 + 6 = 15 niños de un total de 50. Entonces la probabilidad es 15 de 50, que se simplifica a 3 de 10. En cambio, 7 de 10 equivale a 35 de 50, y no corresponde a los datos de la tabla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los niños cuya mascota favorita no es ni perro ni gato son 5 + 4 + 6 = 15. Como el total es 50, la probabilidad es 15 de 50. Al simplificar dividiendo numerador y denominador por 5, se obtiene 3 de 10.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        
+        <m:math>
+          <m:mfrac>
+            <m:mn>3</m:mn>
+            <m:mn>5</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Los casos favorables son 15 niños: 5 que prefieren pez, 4 que prefieren hámster y 6 que prefieren ave. Por lo tanto, la probabilidad es 15 de 50, que se simplifica a 3 de 10. En cambio, 3 de 5 equivale a 30 de 50, y 30 no coincide con la cantidad de casos favorables.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        
+        <m:math>
+          <m:mfrac>
+            <m:mn>11</m:mn>
+            <m:mn>50</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La cantidad de niños cuya mascota favorita no es ni perro ni gato se obtiene sumando pez, hámster y ave: 5 + 4 + 6 = 15. Entonces la probabilidad correcta es 15 de 50, que se simplifica a 3 de 10. La fracción 11 de 50 no representa los 15 casos favorables que muestra la tabla.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el total de niños</strong></p>
+            <p>El enunciado indica que la encuesta fue realizada a 50 niños.</p>
+            <p>
+              <m:math>
+                <m:mn>50</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los casos favorables</strong></p>
+            <p>Se pide que la mascota favorita <strong>no</strong> sea ni perro ni gato. Por lo tanto, solo cuentan las categorías pez, hámster y ave.</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>5</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>6</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>15</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Hay 15 casos favorables.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>casos favorables</m:mtext>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mtext>casos totales</m:mtext>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Entonces:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>15</m:mn>
+                  <m:mn>50</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Simplificar la fracción</strong></p>
+            <p>Dividimos numerador y denominador por 5:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>15</m:mn>
+                  <m:mn>50</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mn>3</m:mn>
+                  <m:mn>10</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de elegir al azar a un niño cuya mascota favorita no sea ni perro ni gato es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>3</m:mn>
+                  <m:mn>10</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

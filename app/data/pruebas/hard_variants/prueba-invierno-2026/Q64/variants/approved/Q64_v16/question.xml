@@ -1,0 +1,141 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v16" title="Q64_v16" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la probabilidad de que cada línea de bus pase primero por una parada.</p>
+    <table>
+      <tr><th>Línea de bus</th><th>Probabilidad</th></tr>
+      <tr><td>A</td><td>0,1</td></tr>
+      <tr><td>B</td><td>0,2</td></tr>
+      <tr><td>C</td><td>0,3</td></tr>
+      <tr><td>D</td><td>0,15</td></tr>
+      <tr><td>E</td><td>0,25</td></tr>
+    </table>
+    <p>¿Cuál de las siguientes afirmaciones es verdadera con respecto a la información entregada?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La probabilidad de que pase primero una línea cuya letra sea anterior a "D" es 0,75.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las letras anteriores a "D" son A, B y C, por lo que se debe sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,1</mn><mo>+</mo><mn>0,2</mn><mo>+</mo><mn>0,3</mn><mo>=</mo><mn>0,6</mn></mrow></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,6</mn><mo>≠</mo><mn>0,75</mn></mrow></math>, la afirmación es falsa.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La probabilidad de que pase primero una línea cuya letra sea anterior a "D" (A, B o C) es 0,6.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Las letras anteriores a "D" son A, B y C. Entonces la probabilidad pedida es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,1</mn><mo>+</mo><mn>0,2</mn><mo>+</mo><mn>0,3</mn><mo>=</mo><mn>0,6</mn></mrow></math>. Por eso la afirmación verdadera es la alternativa B.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La probabilidad de que pase primero una línea cuya letra sea posterior a "B" (C, D o E) es 0,8.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Las letras posteriores a "B" indicadas son C, D y E, así que se suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,3</mn><mo>+</mo><mn>0,15</mn><mo>+</mo><mn>0,25</mn><mo>=</mo><mn>0,7</mn></mrow></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,7</mn><mo>≠</mo><mn>0,8</mn></mrow></math>, la afirmación es falsa.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La probabilidad de que pase primero una línea que no sea ni A ni E es 0,35.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Que no sea ni A ni E significa considerar B, C y D. Entonces la probabilidad es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,2</mn><mo>+</mo><mn>0,3</mn><mo>+</mo><mn>0,15</mn><mo>=</mo><mn>0,65</mn></mrow></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,65</mn><mo>≠</mo><mn>0,35</mn></mrow></math>, la afirmación es falsa.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la afirmación de cada alternativa</strong></p>
+            <p>Se debe revisar si la probabilidad indicada en cada opción coincide con la suma de las probabilidades de las líneas mencionadas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la probabilidad de las líneas anteriores a "D"</strong></p>
+            <p>Las letras anteriores a "D" son A, B y C.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>0,1</mn><mo>+</mo><mn>0,2</mn><mo>+</mo><mn>0,3</mn><mo>=</mo><mn>0,6</mn></mrow>
+              </math>
+            </p>
+            <p>Entonces la afirmación de la alternativa B es verdadera, y la de la alternativa A es falsa porque dice 0,75.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar la alternativa C</strong></p>
+            <p>Las letras posteriores a "B" que aparecen en la opción son C, D y E.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>0,3</mn><mo>+</mo><mn>0,15</mn><mo>+</mo><mn>0,25</mn><mo>=</mo><mn>0,7</mn></mrow>
+              </math>
+            </p>
+            <p>La opción dice 0,8, por lo tanto es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar la alternativa D</strong></p>
+            <p>No ser ni A ni E significa considerar B, C y D.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>0,2</mn><mo>+</mo><mn>0,3</mn><mo>+</mo><mn>0,15</mn><mo>=</mo><mn>0,65</mn></mrow>
+              </math>
+            </p>
+            <p>La opción dice 0,35, por lo tanto es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única afirmación verdadera es: “La probabilidad de que pase primero una línea cuya letra sea anterior a "D" (A, B o C) es 0,6”.</p>
+            <p>La respuesta correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

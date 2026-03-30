@@ -1,18 +1,24 @@
-"""Variant question validator.
+"""Variant question validator -- simplified 3-gate validation.
 
-This module validates generated variants to ensure they:
-1. Are valid QTI 3.0 XML
-2. Test the EXACT SAME concept as the original
-3. Have the same difficulty level
-4. Have a mathematically correct answer
-5. Have plausible distractors
+Deterministic pre-checks (no LLM cost):
+  1. Valid XML
+  2. Choice interaction integrity (QTI wiring)
+  3. Visual completeness (mentions figure/table -> must exist in XML)
+
+LLM semantic gates (3 essential):
+  1. respuesta_correcta -- is the marked answer mathematically correct?
+  2. concepto_alineado -- does it test the same atoms/concept?
+  3. es_diferente -- is it genuinely different from the original?
 """
 
+from __future__ import annotations
+
 import json
+import logging
+import re
 import xml.etree.ElementTree as ET
 from typing import Optional
 
-from app.llm_clients import load_default_gemini_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -20,71 +26,37 @@ from app.question_variants.models import (
     ValidationVerdict,
     VariantQuestion,
 )
-from app.utils.mathml_parser import process_mathml
-from app.utils.qti_extractor import extract_choices_from_qti, get_correct_answer_text
+from app.question_variants.qti_validation_utils import (
+    extract_choices,
+    extract_question_text,
+    find_correct_answer,
+    validate_choice_interaction_integrity,
+)
+
+logger = logging.getLogger(__name__)
 
 
-class VariantValidator:
-    """Validates generated variant questions."""
+# ---------------------------------------------------------------------------
+# Pure functions -- shared by sync and batch paths (DRY)
+# ---------------------------------------------------------------------------
 
-    def __init__(self, config: Optional[PipelineConfig] = None):
-        """Initialize the validator.
 
-        Args:
-            config: Pipeline configuration. Uses defaults if not provided.
-        """
-        self.config = config or PipelineConfig()
-        self.service = load_default_gemini_service()
+def build_validation_prompt(variant: VariantQuestion, source: SourceQuestion) -> str:
+    """Build the LLM validation prompt for a variant.
 
-    def validate(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
-        """Validate a variant question against its source.
+    Pure function with no side effects -- used by both the sync validator
+    and the batch request builders.
+    """
+    variant_text = extract_question_text(variant.qti_xml)
+    variant_choices = extract_choices(variant.qti_xml)
+    variant_correct = find_correct_answer(variant.qti_xml)
 
-        Args:
-            variant: The variant to validate
-            source: The original source question
+    atoms_json = json.dumps(
+        [a.get("atom_title") for a in source.primary_atoms],
+        ensure_ascii=False,
+    )
 
-        Returns:
-            ValidationResult with verdict and details
-        """
-        print(f"    Validating {variant.variant_id}...")
-
-        # Step 1: Basic XML validation
-        xml_valid, xml_error = self._validate_xml(variant.qti_xml)
-        if not xml_valid:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                rejection_reason=f"XML inválido: {xml_error}",
-            )
-
-        # Step 2: LLM-based validation
-        return self._validate_with_llm(variant, source)
-
-    def _validate_xml(self, xml_content: str) -> tuple[bool, str]:
-        """Validate that the XML is parseable.
-
-        Returns:
-            Tuple of (is_valid, error_message)
-        """
-        try:
-            # Basic parse check
-            ET.fromstring(xml_content)
-            return True, ""
-        except ET.ParseError as e:
-            return False, str(e)
-
-    def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
-        """Use LLM to validate concept alignment, difficulty, and correctness."""
-
-        # Extract variant text for easier reading
-        variant_text = self._extract_question_text(variant.qti_xml)
-        variant_choices = self._extract_choices(variant.qti_xml)
-        variant_correct = self._find_correct_answer(variant.qti_xml)
-
-        prompt = f"""
-<role>
+    return f"""<role>
 Eres un revisor de calidad de exámenes matemáticos PAES.
 Tu tarea es verificar que una variante generada automáticamente es válida.
 </role>
@@ -96,7 +68,7 @@ Opciones: {json.dumps(source.choices, ensure_ascii=False)}
 
 Respuesta correcta: {source.correct_answer}
 
-Concepto evaluado: {json.dumps([a.get("atom_title") for a in source.primary_atoms], ensure_ascii=False)}
+Concepto evaluado: {atoms_json}
 
 Dificultad: {source.difficulty.get("level", "Medium")}
 </pregunta_original>
@@ -110,42 +82,33 @@ Respuesta marcada como correcta: {variant_correct}
 </variante_a_validar>
 
 <tarea>
-Verifica cuidadosamente:
+Verifica cuidadosamente estos 3 criterios:
 
-1. **CONCEPTO ALINEADO**: ¿La variante evalúa EXACTAMENTE el mismo concepto matemático?
-   - Debe requerir las mismas operaciones/habilidades
-   - No puede ser más abstracta ni más concreta
+1. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
+   - Resuelve el problema paso a paso.
+   - Muestra tu cálculo completo.
+   - Verifica que tu resultado coincide con la opción marcada.
 
-2. **DIFICULTAD IGUAL**: ¿Tiene el mismo nivel de dificultad?
-   - Misma cantidad de pasos
-   - Mismo nivel de complejidad numérica
+2. **CONCEPTO ALINEADO**: ¿La variante evalúa el mismo concepto matemático?
+   - Un estudiante necesita los mismos conocimientos matemáticos para resolver ambas.
+   - La variante puede presentar el concepto de forma diferente (distinto contexto,
+     distinta representación, distinto orden de pasos) siempre que el conocimiento
+     requerido sea el mismo.
 
-3. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
-   - Resuelve el problema paso a paso
-   - Muestra tu cálculo completo
-   - Verifica que tu resultado coincide con la opción marcada
-
-4. **DISTRACTORES PLAUSIBLES**: ¿Los distractores representan errores comunes?
-   - No deben ser valores absurdos o aleatorios
-   - Deben ser errores que un estudiante podría cometer
-
-5. **VARIANTE DIFERENTE**: ¿Es suficientemente diferente de la original?
-   - Debe tener al menos un cambio significativo (números diferentes, contexto diferente)
-   - La respuesta correcta debe ser DIFERENTE a la original
+3. **ES DIFERENTE**: ¿Es una pregunta genuinamente diferente de la original?
+   - No basta con cambiar números: debe cambiar contexto, representación o forma.
+   - La respuesta correcta debe ser diferente a la de la original.
 </tarea>
 
 <formato_respuesta>
 Responde en JSON:
 {{
-  "concepto_alineado": true/false,
-  "razon_concepto": "Explicación breve...",
-  "dificultad_igual": true/false,
-  "razon_dificultad": "Explicación breve...",
   "respuesta_correcta": true/false,
   "tu_calculo": "Paso 1: ... Paso 2: ... Resultado: ...",
-  "distractores_plausibles": true/false,
-  "razon_distractores": "Explicación breve...",
+  "concepto_alineado": true/false,
+  "razon_concepto": "Explicación breve...",
   "es_diferente": true/false,
+  "razon_diferencia": "Explicación breve...",
   "veredicto": "APROBADA" o "RECHAZADA",
   "razon_rechazo": "Si es rechazada, explicar por qué..."
 }}
@@ -154,107 +117,226 @@ Responde en JSON:
 <regla_critica>
 Si la respuesta marcada como correcta NO es matemáticamente correcta,
 el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
-</regla_critica>
-"""
+</regla_critica>"""
 
+
+def parse_validation_json(raw: str) -> ValidationResult:
+    """Parse LLM validation JSON into a ValidationResult.
+
+    Pure function -- shared by sync and batch paths.
+    """
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return ValidationResult(
+            verdict=ValidationVerdict.REJECTED,
+            concept_aligned=False,
+            difficulty_equal=True,
+            answer_correct=False,
+            rejection_reason="No se pudo parsear respuesta de validación",
+        )
+
+    answer_correct = data.get("respuesta_correcta", False)
+    concept_aligned = data.get("concepto_alineado", False)
+    is_different = data.get("es_diferente", False)
+    calculation_steps = data.get("tu_calculo", "")
+    rejection_reason = data.get("razon_rechazo", "")
+
+    verdict_str = data.get("veredicto", "")
+    verdict = (
+        ValidationVerdict.APPROVED
+        if verdict_str == "APROBADA"
+        else ValidationVerdict.REJECTED
+    )
+
+    if not answer_correct:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La respuesta marcada como correcta no coincide "
+            "con la resolución matemática del ítem."
+        )
+    if not concept_aligned:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La variante no evalúa el mismo concepto "
+            "matemático que la fuente."
+        )
+    if not is_different:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La variante no es suficientemente diferente "
+            "de la fuente."
+        )
+
+    return ValidationResult(
+        verdict=verdict,
+        concept_aligned=concept_aligned,
+        difficulty_equal=True,
+        answer_correct=answer_correct,
+        calculation_steps=calculation_steps,
+        rejection_reason=rejection_reason,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Deterministic checks -- no LLM cost
+# ---------------------------------------------------------------------------
+
+
+def validate_xml(xml_content: str) -> tuple[bool, str]:
+    """Check that the XML is parseable."""
+    try:
+        ET.fromstring(xml_content)
+        return True, ""
+    except ET.ParseError as e:
+        return False, str(e)
+
+
+def validate_visual_completeness(
+    xml_content: str, source: SourceQuestion,
+) -> tuple[bool, str]:
+    """Reject variants that mention visuals but don't include them."""
+    lowered = extract_question_text(xml_content).lower()
+    image_tokens = (
+        "figura", "gráfico", "grafico",
+        "diagrama", "infografía", "infografia",
+    )
+    mentions_image = any(t in lowered for t in image_tokens)
+    mentions_table = "tabla" in lowered
+
+    has_img = _contains_xml_visual_object(xml_content)
+    has_table = _contains_xml_table(xml_content)
+    has_dataset = has_table or _has_explicit_textual_dataset(lowered)
+
+    if (mentions_image and not has_img and not has_dataset) or (
+        mentions_table and not has_table and not has_dataset
+    ):
+        return False, (
+            "La variante está incompleta: menciona una figura, "
+            "gráfico, diagrama, infografía o tabla pero no incluye "
+            "esa representación en el XML."
+        )
+
+    if not source.image_urls and (mentions_image or has_img):
+        return False, (
+            "La variante introduce soporte visual que no existe "
+            "en la pregunta fuente."
+        )
+
+    return True, ""
+
+
+# ---------------------------------------------------------------------------
+# XML helpers
+# ---------------------------------------------------------------------------
+
+
+def _contains_xml_visual_object(xml_content: str) -> bool:
+    lo = xml_content.lower()
+    return bool(
+        re.search(r"<(?:[\w.-]+:)?img\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?object\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?qti-object\b", lo)
+    )
+
+
+def _contains_xml_table(xml_content: str) -> bool:
+    lo = xml_content.lower()
+    return bool(
+        re.search(r"<(?:[\w.-]+:)?table\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?qti-table\b", lo)
+    )
+
+
+def _has_explicit_textual_dataset(lowered_text: str) -> bool:
+    pairs = re.findall(
+        r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)",
+        lowered_text,
+    )
+    labels = re.findall(
+        r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?",
+        lowered_text,
+    )
+    return len(pairs) >= 2 or len(labels) >= 3
+
+
+# ---------------------------------------------------------------------------
+# VariantValidator class -- sync path (used by --no-batch mode)
+# ---------------------------------------------------------------------------
+
+
+class VariantValidator:
+    """Validates generated variant questions (sync mode)."""
+
+    def __init__(self, config: Optional[PipelineConfig] = None):
+        self.config = config or PipelineConfig()
+        from app.question_variants.llm_service import build_text_service
+
+        self.service = build_text_service(
+            "openai",
+            self.config.model,
+            timeout_seconds=self.config.llm_request_timeout_seconds,
+            max_attempts=self.config.llm_max_attempts,
+        )
+
+    def validate(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+    ) -> ValidationResult:
+        """Run deterministic checks then LLM validation."""
+        print(f"    Validating {variant.variant_id}...")
+
+        xml_ok, xml_err = validate_xml(variant.qti_xml)
+        if not xml_ok:
+            return _rejected(f"XML inválido: {xml_err}")
+
+        wire_ok, wire_err = validate_choice_interaction_integrity(
+            variant.qti_xml,
+        )
+        if not wire_ok:
+            return _rejected(wire_err)
+
+        vis_ok, vis_err = validate_visual_completeness(
+            variant.qti_xml, source,
+        )
+        if not vis_ok:
+            return _rejected(vis_err)
+
+        return self._validate_with_llm(variant, source)
+
+    def _validate_with_llm(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+    ) -> ValidationResult:
+        """Call the LLM for semantic validation."""
+        prompt = build_validation_prompt(variant, source)
         try:
             response = self.service.generate_text(
                 prompt,
                 response_mime_type="application/json",
-                temperature=0.0,  # Deterministic for validation
+                temperature=0.0,
+                reasoning_effort="medium",
             )
-
-            result = self._parse_validation_response(response)
-
+            result = parse_validation_json(response)
             if result.is_approved:
                 print(f"    ✅ {variant.variant_id} APROBADA")
             else:
-                print(f"    ❌ {variant.variant_id} RECHAZADA: {result.rejection_reason}")
-
+                reason = result.rejection_reason
+                print(f"    ❌ {variant.variant_id} RECHAZADA: {reason}")
             return result
-
         except Exception as e:
             print(f"    ⚠️ Error validating: {e}")
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                rejection_reason=f"Error de validación: {str(e)}",
-            )
+            return _rejected(f"Error de validación: {e}")
 
-    def _parse_validation_response(self, response: str) -> ValidationResult:
-        """Parse LLM validation response into ValidationResult."""
-        try:
-            data = json.loads(response)
 
-            verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
-
-            return ValidationResult(
-                verdict=verdict,
-                concept_aligned=data.get("concepto_alineado", False),
-                difficulty_equal=data.get("dificultad_igual", False),
-                answer_correct=data.get("respuesta_correcta", False),
-                calculation_steps=data.get("tu_calculo", ""),
-                distractors_plausible=data.get("distractores_plausibles", False),
-                rejection_reason=data.get("razon_rechazo", ""),
-            )
-        except json.JSONDecodeError:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                rejection_reason="No se pudo parsear respuesta de validación",
-            )
-
-    def _extract_question_text(self, xml_content: str) -> str:
-        """Extract question text from QTI XML, properly handling MathML.
-
-        Delegates to shared utility with local helper for element-to-text conversion.
-        """
-        try:
-            root = ET.fromstring(xml_content)
-            # Find item body (use explicit 'is not None' to avoid Element truthiness bug)
-            item_body = root.find(".//{*}qti-item-body")
-            if item_body is None:
-                item_body = root.find(".//{*}itemBody")
-            if item_body is not None:
-                return self._element_to_text(item_body)
-            return ""
-        except Exception:
-            return ""
-
-    def _element_to_text(self, element: ET.Element) -> str:
-        """Recursively extract text from an element, properly handling MathML."""
-        parts = []
-
-        if element.text:
-            parts.append(element.text.strip())
-
-        for child in element:
-            tag = child.tag.split("}")[-1].lower()
-
-            if tag == "math":
-                # Process MathML to readable text using shared utility
-                parts.append(process_mathml(child))
-            elif tag in ("qti-simple-choice", "simplechoice"):
-                # Skip individual choices (we extract them separately)
-                pass
-            else:
-                # Include qti-prompt, qti-choice-interaction, and all other elements
-                parts.append(self._element_to_text(child))
-
-            if child.tail:
-                parts.append(child.tail.strip())
-
-        return " ".join(filter(None, parts))
-
-    def _extract_choices(self, xml_content: str) -> list[str]:
-        """Extract choice texts from QTI XML, properly handling MathML."""
-        choices, _ = extract_choices_from_qti(xml_content)
-        return choices
-
-    def _find_correct_answer(self, xml_content: str) -> str:
-        """Find the correct answer from QTI XML, properly handling MathML."""
-        return get_correct_answer_text(xml_content)
+def _rejected(reason: str) -> ValidationResult:
+    """Shorthand for a rejected ValidationResult."""
+    return ValidationResult(
+        verdict=ValidationVerdict.REJECTED,
+        concept_aligned=False,
+        difficulty_equal=True,
+        answer_correct=False,
+        rejection_reason=reason,
+    )

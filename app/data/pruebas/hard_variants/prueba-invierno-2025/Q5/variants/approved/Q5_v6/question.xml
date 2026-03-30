@@ -1,0 +1,145 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v6" title="Q5_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una prueba de matemáticas, cuatro estudiantes obtuvieron los siguientes puntajes (de 0 a 10, con decimales):</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Estudiante</th>
+          <th>Puntaje</th>
+        </tr>
+        <tr>
+          <td>Camilo</td>
+          <td>7,85</td>
+        </tr>
+        <tr>
+          <td>Daniela</td>
+          <td>7,805</td>
+        </tr>
+        <tr>
+          <td>Ignacio</td>
+          <td>7,9</td>
+        </tr>
+        <tr>
+          <td>Paula</td>
+          <td>7,50</td>
+        </tr>
+      </table>
+    </div>
+    <p>¿Cuál de las siguientes afirmaciones describe correctamente quién obtuvo el puntaje más alto?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Ignacio obtuvo el puntaje más alto.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Al comparar los puntajes con el mismo número de decimales, se obtiene: Camilo 7,850; Daniela 7,805; Ignacio 7,900; Paula 7,500. Como 7,900 es mayor que 7,850, 7,805 y 7,500, Ignacio obtuvo el puntaje más alto.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Camilo obtuvo el puntaje más alto.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Camilo tiene 7,85, que escrito con tres decimales es 7,850. Ignacio tiene 7,9, que escrito con tres decimales es 7,900. Como 7,900 es mayor que 7,850, Camilo no obtuvo el puntaje más alto.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Daniela obtuvo el puntaje más alto.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Daniela tiene 7,805. Ignacio tiene 7,9, que escrito con tres decimales es 7,900. Como 7,900 es mayor que 7,805, Daniela no obtuvo el puntaje más alto.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Camilo e Ignacio empataron con el puntaje más alto.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Camilo tiene 7,85, que equivale a 7,850, e Ignacio tiene 7,9, que equivale a 7,900. Como 7,850 es distinto de 7,900 y además 7,900 es mayor, no hay empate entre ellos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Escribir todos los puntajes con la misma cantidad de decimales</strong></p>
+            <p>Camilo: 7,85 = 7,850</p>
+            <p>Daniela: 7,805 = 7,805</p>
+            <p>Ignacio: 7,9 = 7,900</p>
+            <p>Paula: 7,50 = 7,500</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar las partes enteras</strong></p>
+            <p>Todos los puntajes tienen parte entera 7, así que la comparación depende de los decimales.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los decimales</strong></p>
+            <p>Los decimales son 850, 805, 900 y 500.</p>
+            <p>Se cumple que 900 es mayor que 850, 805 y 500.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir quién tiene el mayor puntaje</strong></p>
+            <p>Como 7,900 es el mayor de los cuatro puntajes, el puntaje más alto es 7,9.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Ignacio obtuvo el puntaje más alto. La alternativa correcta es la A.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,124 @@
+{
+  "variant_id": "Q39_v3",
+  "source_question_id": "Q39",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q39_v3",
+    "scenario_description": "Se mantiene el contexto de gasfitería: se da explícitamente la función de Gola, G(t)=10 000+15 000t. Luego se indica que Colón cobra un 30 % menos por visita domiciliaria y un 20 % más por hora que Gola. En vez de preguntar por la función directamente, se pide: \"¿Cuál de las siguientes afirmaciones sobre el cobro de Colón es correcta?\". Cada afirmación incluye una descripción y una función, por ejemplo: (a) \"Cobra 7 000 por visita y 18 000 por hora, por lo que C(t)=7 000+18 000t\" (correcta); (b) una afirmación que solo resta 3 000 al fijo pero deja 15 000t igual (increment_only); (c) una que descuenta 30 % a todo el monto 10 000+15 000t en conjunto (base_plus_increment); (d) una que disminuye la hora y aumenta la visita intercambiando los signos (gross_overestimate).",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe comprender que el anuncio describe cambios relativos independientes en el término fijo y en el coeficiente de t, y reconocer qué afirmación refleja correctamente esos cambios; no puede limitarse a reconocer un patrón algebraico, sino que debe descartar afirmaciones que aplican el porcentaje sobre el total o solo a una parte.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "decision_statement"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la tarea sigue siendo la aplicación de un descuento del 30 % al término fijo y un aumento del 20 % al término proporcional, sin introducir más pasos ni cambiar el tipo de variación porcentual; solo se requiere comparar las afirmaciones con el mismo modelo lineal subyacente."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-09",
+      "A-M1-ALG-05-11"
+    ],
+    "primary_atom_titles": [
+      "Aplicación de aumentos porcentuales",
+      "Formulación de Modelos Lineales y Afines"
+    ],
+    "family_id": "percentage_context_application",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "ledger_context",
+        "description": "Presentar el caso como un breve registro narrativo o desglose contextual, manteniendo el mismo patrón porcentual de la fuente.",
+        "required_changes": [
+          "Contexto narrativo nuevo",
+          "Presentación tipo registro o desglose"
+        ],
+        "forbidden_changes": [
+          "Cambiar la secuencia/polaridad de cambios porcentuales",
+          "Introducir una base extra no presente en la fuente"
+        ]
+      },
+      {
+        "shape_id": "decision_statement",
+        "description": "Pedir elegir la afirmación o resultado contextual coherente con la aplicación porcentual, en vez de repetir la misma pregunta directa.",
+        "required_changes": [
+          "Forma de pregunta basada en decisión o afirmación",
+          "Distractores con errores porcentuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Aumentar la cantidad de pasos",
+          "Cambiar el tipo de variación porcentual"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "MOD",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "direct_resolution",
+    "operation_signature": "percentage_increase_application",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "routine_procedural",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "small",
+    "percentage_change_pattern": "unknown_then_unknown",
+    "selection_load": "single_given_base",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "plain_narrative",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [
+      "increment_only",
+      "base_plus_increment",
+      "gross_overestimate"
+    ],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=percentage_increase_application",
+      "must_not_introduce_algebraic_unknowns",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "postprocess_summary": {}
+}

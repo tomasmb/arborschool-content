@@ -1,0 +1,134 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q29_v7" title="Q29_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un escenario de teatro de 3 m de ancho se cuelga un telón central de 180 cm, de forma que queden dos espacios laterales iguales, como se muestra en la figura.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="Escenario rectangular de teatro visto de frente. En la parte inferior se indica el ancho total con una flecha horizontal rotulada 3 m. En la parte superior, el mismo ancho está dividido en tres tramos contiguos: un tramo izquierdo rotulado x cm (espacio lateral izquierdo), un tramo central rotulado 180 cm (telón) y un tramo derecho rotulado x cm (espacio lateral derecho)." />
+    </p>
+    <p>
+      Un estudiante quiere calcular el ancho x de cada espacio lateral y razona de la siguiente manera:
+      <br />Paso 1: 3 m = 300 cm.
+      <br />Paso 2: 300 = x + 180.
+      <br />Paso 3: x = 120.
+      <br />
+      ¿En qué consiste el error en su razonamiento?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Se equivocó al convertir los metros a centímetros en el paso 1, porque 3 m no son 300 cm.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La conversión del paso 1 sí es correcta, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mtext> m </mtext><mo>=</mo><mn>100</mn><mtext> cm</mtext></mrow></math> y entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mtext> m </mtext><mo>=</mo><mn>3</mn><mo>×</mo><mn>100</mn><mtext> cm </mtext><mo>=</mo><mn>300</mn><mtext> cm</mtext></mrow></math>. Por lo tanto, el error no está en el paso 1.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En el paso 2 olvidó que hay dos espacios de ancho x, uno a cada lado del telón, por lo que debió plantear 300 = 2x + 180 y no 300 = x + 180.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El ancho total es la suma de tres partes: espacio izquierdo, telón y espacio derecho. Por eso debe cumplirse <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>180</mn><mo>+</mo><mi>x</mi><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>180</mn></mrow></math>. Luego, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>−</mo><mn>180</mn><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math>, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>120</mn><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math>, y así <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>=</mo><mn>60</mn></mrow></math>. El error consiste en haber considerado solo un espacio lateral en vez de dos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">El error está en el cálculo final del paso 3, porque al restar 180 a 300 debería obtenerse 80 y no 120.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La resta del paso 3 está bien hecha, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>−</mo><mn>180</mn><mo>=</mo><mn>120</mn></mrow></math>. El problema es que ese <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>120</mn></math> corresponde a la suma de los dos espacios laterales, ya que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>−</mo><mn>180</mn><mo>=</mo><mn>120</mn></mrow></math> y entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>+</mo><mi>x</mi><mo>=</mo><mn>120</mn></mrow></math>, no a un solo espacio.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Debería haber dividido 300 entre 3 para encontrar directamente el valor de x, en vez de plantear una ecuación.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Dividir <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>300</mn></math> entre <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> da <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>÷</mo><mn>3</mn><mo>=</mo><mn>100</mn></mrow></math>, pero eso supondría que las tres partes tienen el mismo ancho. Aquí solo los dos espacios laterales son iguales; el tramo central mide <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>180</mn></math> cm. De hecho, si cada tramo midiera <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100</mn></math> cm, el centro no mediría <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>180</mn></math> cm, así que ese procedimiento no representa la situación.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Expresar todas las medidas en la misma unidad</strong></p>
+            <p>El ancho total del escenario es 3 m. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mtext> m </mtext><mo>=</mo><mn>100</mn><mtext> cm</mtext></mrow></math>, entonces:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mtext> m </mtext><mo>=</mo><mn>3</mn><mo>×</mo><mn>100</mn><mtext> cm </mtext><mo>=</mo><mn>300</mn><mtext> cm</mtext></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Representar correctamente el ancho total</strong></p>
+            <p>El dibujo muestra tres tramos consecutivos: un espacio lateral de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> cm, el telón de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>180</mn></math> cm y otro espacio lateral de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> cm.</p>
+            <p>Por eso, el ancho total se expresa como:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>180</mn><mo>+</mo><mi>x</mi></mrow></math></p>
+            <p>Equivalentemente:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>180</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la ecuación</strong></p>
+            <p>Restamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>180</mn></math> en ambos lados:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>−</mo><mn>180</mn><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>120</mn><mo>=</mo><mn>2</mn><mi>x</mi></mrow></math></p>
+            <p>Ahora dividimos por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn></math>:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>=</mo><mn>120</mn><mo>÷</mo><mn>2</mn><mo>=</mo><mn>60</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar el error del estudiante</strong></p>
+            <p>El estudiante escribió <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>180</mn></mrow></math>, pero esa igualdad solo considera un espacio lateral y el telón. Falta el otro espacio lateral de ancho <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El error consiste en que debió plantear <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mn>2</mn><mi>x</mi><mo>+</mo><mn>180</mn></mrow></math> y no <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>300</mn><mo>=</mo><mi>x</mi><mo>+</mo><mn>180</mn></mrow></math>. Por lo tanto, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,188 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q38_v3" title="Q38_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un aviso publicitario se muestran los siguientes precios de planes mensuales de dos gimnasios que ofrecen acceso a clases grupales:
+      Gimnasio A: cuota mensual de $4000, precio por cada clase con membresía de $400 y precio normal de cada clase sin membresía de $600.
+      Gimnasio B: cuota mensual de $4500, precio por cada clase con membresía de $350 y precio normal de cada clase sin membresía de $600.
+    </p>
+    <p>
+      Si una persona ya decidió pagar la membresía en solo uno de los dos gimnasios, ¿cuál es la cantidad mínima de clases que debe tomar en un mes para que le convenga económicamente inscribirse en el Gimnasio B en lugar del Gimnasio A?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">5<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si toma 5 clases, en el Gimnasio A paga $4 000 + 5×$400 = $6 000, mientras que en el Gimnasio B paga $4 500 + 5×$350 = $6 250. En ese caso, B no conviene económicamente porque cuesta más que A.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">10<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si toma 10 clases, en el Gimnasio A paga $4 000 + 10×$400 = $8 000 y en el Gimnasio B paga $4 500 + 10×$350 = $8 000. A las 10 clases ambos cuestan lo mismo, así que todavía no conviene inscribirse en B en lugar de A.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">11<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Si toma 11 clases, en el Gimnasio A paga $4 000 + 11×$400 = $8 400 y en el Gimnasio B paga $4 500 + 11×$350 = $8 350. Como $8 350 es menor que $8 400, desde 11 clases el Gimnasio B pasa a ser más conveniente. Además, con 10 clases ambos cuestan $8 000, por lo que 11 es la cantidad mínima.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">19<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con 19 clases sí conviene B, porque en A se paga $4 000 + 19×$400 = $11 600 y en B se paga $4 500 + 19×$350 = $11 150. Sin embargo, no es la cantidad mínima. Por ejemplo, con 11 clases ya conviene B: en A se paga $8 400 y en B, $8 350.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Expresar el costo mensual de cada gimnasio según la cantidad de clases</strong></p>
+            <p>Sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> la cantidad de clases tomadas en el mes.</p>
+            <p>Costo en el Gimnasio A:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>A</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>4&#160;000</mn><mo>+</mo><mn>400</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Costo en el Gimnasio B:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>B</mi><mo>(</mo><mi>n</mi><mo>)</mo><mo>=</mo><mn>4&#160;500</mn><mo>+</mo><mn>350</mn><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Plantear la condición para que convenga económicamente el Gimnasio B</strong></p>
+            <p>Debe cumplirse que el costo de B sea menor que el de A:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>4&#160;500</mn><mo>+</mo><mn>350</mn><mi>n</mi><mo>&lt;</mo><mn>4&#160;000</mn><mo>+</mo><mn>400</mn><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la desigualdad</strong></p>
+            <p>Restamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>350</mn><mi>n</mi></mrow></math> en ambos lados:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>4&#160;500</mn><mo>&lt;</mo><mn>4&#160;000</mn><mo>+</mo><mn>50</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Restamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4&#160;000</mn></math> en ambos lados:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>500</mn><mo>&lt;</mo><mn>50</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Dividimos por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>50</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>50</mn></math> es positivo, el sentido de la desigualdad no cambia:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>10</mn><mo>&lt;</mo><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar el resultado</strong></p>
+            <p>La cantidad de clases debe ser mayor que 10. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> representa un número entero de clases, la menor cantidad posible es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>n</mi><mo>=</mo><mn>11</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 5: Verificar con 10 y 11 clases</strong></p>
+            <p>Con 10 clases:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>A</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mn>4&#160;000</mn><mo>+</mo><mn>400</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>8&#160;000</mn>
+              </mrow>
+            </math>
+            <br/>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>B</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mn>4&#160;500</mn><mo>+</mo><mn>350</mn><mo>×</mo><mn>10</mn><mo>=</mo><mn>8&#160;000</mn>
+              </mrow>
+            </math>
+            <p>Aún no conviene B, porque ambos cuestan lo mismo.</p>
+            <p>Con 11 clases:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>A</mi><mo>(</mo><mn>11</mn><mo>)</mo><mo>=</mo><mn>4&#160;000</mn><mo>+</mo><mn>400</mn><mo>×</mo><mn>11</mn><mo>=</mo><mn>8&#160;400</mn>
+              </mrow>
+            </math>
+            <br/>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>B</mi><mo>(</mo><mn>11</mn><mo>)</mo><mo>=</mo><mn>4&#160;500</mn><mo>+</mo><mn>350</mn><mo>×</mo><mn>11</mn><mo>=</mo><mn>8&#160;350</mn>
+              </mrow>
+            </math>
+            <p>Ahora sí conviene B, porque <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8&#160;350</mn></math> es menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8&#160;400</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad mínima de clases para que convenga económicamente inscribirse en el Gimnasio B en lugar del Gimnasio A es <strong>11</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

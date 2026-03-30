@@ -1,0 +1,149 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q1_v6" title="Q1_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En una ciudad se registra la temperatura en el interior de una sala. Se anota una temperatura inicial y luego, cada hora, cuánto sube o baja la temperatura respecto de la hora anterior.</p>
+    <p>Las reglas son: si la temperatura <strong>sube</strong> X grados, se <strong>suma</strong> X; si la temperatura <strong>baja</strong> Y grados, se <strong>resta</strong> Y.</p>
+    <ul>
+      <li>Temperatura inicial: 6 °C.</li>
+      <li>Luego, sube 3 °C.</li>
+      <li>Luego, baja 5 °C.</li>
+      <li>Luego, sube 2 °C.</li>
+      <li>Luego, baja 4 °C.</li>
+      <li>Luego, sube 6 °C.</li>
+      <li>Luego, baja 1 °C.</li>
+      <li>Luego, sube 5 °C.</li>
+      <li>Luego, baja 3 °C.</li>
+      <li>Luego, sube 4 °C.</li>
+    </ul>
+    <p>La siguiente imagen muestra el mismo registro de cambios de temperatura en forma de esquema.</p>
+    <p><img src="requiere_nueva_imagen.png" alt="[Dibujar una línea de tiempo horizontal con 10 marcas igualmente espaciadas. Sobre la primera marca escribir 'Inicio: 6 °C'. Sobre cada una de las nueve marcas siguientes escribir, en orden: '+3 °C', '−5 °C', '+2 °C', '−4 °C', '+6 °C', '−1 °C', '+5 °C', '−3 °C', '+4 °C'. No mostrar la temperatura final calculada.]" /></p>
+    <p>Cuatro estudiantes calcularon la temperatura al final de todos estos cambios y obtuvieron los siguientes resultados. Según las reglas indicadas, ¿cuál de estas temperaturas finales es coherente con el registro anterior?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">-27 °C<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al aplicar los cambios en orden desde 6 °C se obtiene 9 °C, luego 4 °C, luego 6 °C, luego 2 °C, luego 8 °C, luego 7 °C, luego 12 °C, luego 9 °C y finalmente 13 °C. Por lo tanto, la temperatura final no es -27 °C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">7 °C<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Al aplicar todos los cambios en orden, la secuencia termina en 13 °C: 6, 9, 4, 6, 2, 8, 7, 12, 9, 13. El valor 7 °C aparece antes del final del registro, pero todavía faltan los cambios +5 °C, −3 °C y +4 °C.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">13 °C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Partiendo de 6 °C y aplicando los cambios en orden se obtiene 9 °C, 4 °C, 6 °C, 2 °C, 8 °C, 7 °C, 12 °C, 9 °C y finalmente 13 °C. Por eso, la temperatura final coherente con el registro es 13 °C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">39 °C<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La temperatura final se obtiene sumando y restando los cambios al valor inicial de 6 °C. Al hacerlo en orden se llega a 13 °C, no a 39 °C. Además, el cambio total es de 7 °C respecto del inicio, porque las subidas suman 20 °C y las bajadas suman 13 °C.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Partir desde la temperatura inicial</strong></p>
+            <p>La temperatura inicial es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>°</mo><mi>C</mi></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar cada cambio en el orden dado</strong></p>
+            <p>Primero sube 3 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>9</mn></math></p>
+            <p>Luego baja 5 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>4</mn></math></p>
+            <p>Luego sube 2 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>6</mn></math></p>
+            <p>Luego baja 4 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>2</mn></math></p>
+            <p>Luego sube 6 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>8</mn></math></p>
+            <p>Luego baja 1 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>8</mn><mo>−</mo><mn>1</mn><mo>=</mo><mn>7</mn></math></p>
+            <p>Luego sube 5 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>12</mn></math></p>
+            <p>Luego baja 3 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>12</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>9</mn></math></p>
+            <p>Luego sube 4 °C:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>13</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con el cambio total</strong></p>
+            <p>La suma de las subidas es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>+</mo><mn>2</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>20</mn></math></p>
+            <p>La suma de las bajadas es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>13</mn></math></p>
+            <p>Entonces el cambio neto es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>20</mn><mo>−</mo><mn>13</mn><mo>=</mo><mn>7</mn></math></p>
+            <p>Sumado a la temperatura inicial:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La temperatura final coherente con el registro es 13 °C.</p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

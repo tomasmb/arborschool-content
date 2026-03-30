@@ -1,0 +1,155 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q28_v7" title="Q28_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se tiene el siguiente registro de una escala de mapa:<br />- En el mapa: 3 cm<br />- En la realidad: 12 km<br />- Distancia medida en el mapa entre dos pueblos: 7,5 cm</p>
+    <p>¿Cuál es la distancia real aproximada entre los dos pueblos, en kilómetros?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">7,5 km<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si 3 cm en el mapa representan 12 km en la realidad, entonces 1 cm representa 4 km. Por lo tanto, 7,5 cm representan 30 km, no 7,5 km.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">30 km<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si 3 cm en el mapa representan 12 km, entonces 1 cm representa 4 km. Al multiplicar 7,5 por 4 se obtiene 30, así que la distancia real es 30 km.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2 km<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La escala indica que 3 cm corresponden a 12 km, es decir, 1 cm corresponde a 4 km. Entonces 7,5 cm corresponden a 30 km. Por eso 2 km no coincide con la escala dada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">90 km<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con la escala dada, 3 cm representan 12 km, por lo que 1 cm representa 4 km. Entonces 7,5 cm representan 30 km. Además, 90 km corresponderían a 22,5 cm en el mapa, porque 90 dividido por 4 es 22,5.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso con escala</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar la escala</strong></p>
+            <p>El enunciado indica que:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn>
+                <mtext> cm </mtext>
+                <mo>→</mo>
+                <mn>12</mn>
+                <mtext> km</mtext>
+              </mrow>
+            </math>
+            <p>Esto significa que cada longitud en el mapa se puede convertir a la realidad usando una proporción.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Hallar cuántos kilómetros representa 1 cm</strong></p>
+            <p>Dividimos ambos valores por 3:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>12</mn>
+                <mo>÷</mo>
+                <mn>3</mn>
+                <mo>=</mo>
+                <mn>4</mn>
+              </mrow>
+            </math>
+            <p>Entonces:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>1</mn>
+                <mtext> cm </mtext>
+                <mo>→</mo>
+                <mn>4</mn>
+                <mtext> km</mtext>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Convertir 7,5 cm a kilómetros reales</strong></p>
+            <p>Como 1 cm representa 4 km, multiplicamos:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>7,5</mn>
+                <mo>×</mo>
+                <mn>4</mn>
+                <mo>=</mo>
+                <mn>30</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La distancia real aproximada entre los dos pueblos es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>30</mn>
+                <mtext> km</mtext>
+              </mrow>
+            </math>
+            <p>Por lo tanto, la alternativa correcta es <strong>30 km</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,206 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v2" title="Q40_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      La batería de un teléfono se modela mediante la función 
+      <m:math>
+        <m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi>
+      </m:math>,
+      donde <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo></m:math> representa el porcentaje de batería que queda luego de <m:math><m:mi>t</m:mi></m:math> horas de uso continuo, contadas desde que el teléfono estaba completamente cargado.
+    </p>
+    <p>
+      Un fabricante propone las siguientes afirmaciones para explicar el significado del número <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math> en este modelo.
+      
+      ¿Cuál de ellas interpreta correctamente ese número en este contexto?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        El teléfono tarda exactamente 5 horas de uso continuo en descargarse por completo, según este modelo.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el modelo <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi></m:math>, para descargarse por completo se debe cumplir <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0</m:mn></m:math>. Entonces <m:math><m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>, de donde <m:math><m:mn>5</m:mn><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>100</m:mn></m:math> y <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:math>. El modelo indica 20 horas, no 5 horas.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Durante el uso continuo, por cada hora adicional que el teléfono permanece encendido, el porcentaje de batería disminuye en 5 puntos porcentuales.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi></m:math>, el coeficiente de <m:math><m:mi>t</m:mi></m:math> es <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math>. Eso significa que si el tiempo aumenta en 1 hora, la batería cambia en <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math>. Por ejemplo, <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>100</m:mn></m:math> y <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>95</m:mn></m:math>, así que disminuye en 5 puntos porcentuales por cada hora adicional.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        El número 5 indica que, después de cargarse por completo, el teléfono comienza con solo un 5 % de batería.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El porcentaje inicial se obtiene en <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>. Al reemplazar, <m:math><m:mi>B</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>100</m:mn></m:math>. Por lo tanto, el teléfono comienza con 100 % de batería, no con 5 %.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        Según este modelo, el teléfono pierde 1 punto porcentual de batería cada 5 minutos de uso continuo.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El modelo indica una disminución de 5 puntos porcentuales por cada 1 hora, es decir, por cada 60 minutos. Eso equivale a 1 punto porcentual cada 12 minutos, porque <m:math><m:mn>60</m:mn><m:mo>÷</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>12</m:mn></m:math>. Un contraejemplo concreto es que en 5 minutos, que son <m:math><m:mfrac><m:mn>1</m:mn><m:mn>12</m:mn></m:mfrac></m:math> de hora, la baja es <m:math><m:mn>5</m:mn><m:mo>·</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>12</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>5</m:mn><m:mn>12</m:mn></m:mfrac></m:math> de punto porcentual, no 1.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Recuerda que el número <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math> representa la tasa de cambio de la batería en el tiempo.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Interpretación de la tasa de cambio en una función lineal</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la función y sus partes</strong></p>
+            <p>El modelo es:</p>
+            <p>
+              <m:math>
+                <m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi>
+              </m:math>
+            </p>
+            <p>El número 100 representa el porcentaje inicial de batería, porque corresponde al valor de la función cuando <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>.</p>
+            <p>El número <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math> es el coeficiente de <m:math><m:mi>t</m:mi></m:math>, por lo que indica cómo cambia la batería por cada hora de uso.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar el signo negativo</strong></p>
+            <p>Como el coeficiente es negativo, la batería va disminuyendo a medida que pasa el tiempo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Interpretar el valor 5</strong></p>
+            <p>El valor 5 indica la magnitud de esa disminución: por cada 1 hora adicional, el porcentaje de batería baja en 5 puntos porcentuales.</p>
+            <p>Se puede verificar con dos valores consecutivos:</p>
+            <p>
+              <m:math>
+                <m:mi>B</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>0</m:mn>
+                <m:mo>=</m:mo><m:mn>100</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>B</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>1</m:mn>
+                <m:mo>=</m:mo><m:mn>95</m:mn>
+              </m:math>
+            </p>
+            <p>Entre 0 y 1 hora, la batería pasa de 100 a 95, es decir, disminuye en 5 puntos porcentuales.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar por qué las otras opciones no describen el número <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math></strong></p>
+            <p><em>Opción A:</em> habla del tiempo total para descargarse. Eso se obtiene resolviendo:</p>
+            <p>
+              <m:math>
+                <m:mi>B</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo><m:mn>0</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>100</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>t</m:mi>
+                <m:mo>=</m:mo><m:mn>0</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>5</m:mn><m:mi>t</m:mi>
+                <m:mo>=</m:mo><m:mn>100</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mi>t</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac><m:mn>100</m:mn><m:mn>5</m:mn></m:mfrac>
+                <m:mo>=</m:mo><m:mn>20</m:mn>
+              </m:math>
+            </p>
+            <p>No son 5 horas.</p>
+            <p><em>Opción C:</em> confunde el coeficiente con el valor inicial. El valor inicial es:</p>
+            <p>
+              <m:math>
+                <m:mi>B</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo><m:mn>100</m:mn>
+              </m:math>
+            </p>
+            <p><em>Opción D:</em> 5 puntos porcentuales por hora no es lo mismo que 1 punto porcentual cada 5 minutos. Si baja 5 puntos en 60 minutos, entonces baja 1 punto en 12 minutos.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La interpretación correcta del número <m:math><m:mo>-</m:mo><m:mn>5</m:mn></m:math> es que, durante el uso continuo, por cada hora adicional que el teléfono permanece encendido, el porcentaje de batería disminuye en 5 puntos porcentuales.</p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

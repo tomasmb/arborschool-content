@@ -1,0 +1,135 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q22_v10" title="Q22_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un gimnasio se lleva el siguiente registro de socios:<br />- Socios activos al cierre de 2022: 600.<br />- Nuevos socios inscritos durante 2023 (respecto de 2022): 30.</p>
+    <p>¿Qué porcentaje de aumento representan los nuevos socios de 2023 respecto del número de socios que había al final de 2022?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">30 %<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El porcentaje de aumento se calcula comparando los 30 nuevos socios con los 600 socios que había al final de 2022: 30 ÷ 600 = 0,05, y 0,05 × 100 = 5. Por lo tanto, 30 % no corresponde al aumento pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">5 %<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El aumento porcentual respecto de 600 socios es 30 ÷ 600 = 0,05. Al convertir a porcentaje, 0,05 × 100 = 5. Por eso, los 30 nuevos socios representan un aumento de 5 %.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">4,8 %<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El porcentaje de aumento respecto de 2022 se obtiene con 30 ÷ 600 = 0,05. Luego, 0,05 × 100 = 5. Como 5 % es distinto de 4,8 %, esta alternativa no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">50 %<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el aumento fuera 50 %, entonces debería cumplirse 50 % de 600 = 0,5 × 600 = 300. Pero en el problema los nuevos socios son 30, no 300. Además, 30 ÷ 600 = 0,05, que corresponde a 5 %.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los datos del problema</strong></p>
+            <p>Al final de 2022 había 600 socios y durante 2023 se inscribieron 30 nuevos socios.</p>
+          </li>
+          <li>
+            <p><strong>Reconocer qué se pide</strong></p>
+            <p>Se pide el porcentaje de aumento que representan los 30 nuevos socios respecto de los 600 socios que había al final de 2022.</p>
+          </li>
+          <li>
+            <p><strong>Aplicar la fórmula de porcentaje de aumento</strong></p>
+            <p>Se divide el aumento por la cantidad inicial:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>30</mn>
+                  <mn>600</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,05</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Convertir a porcentaje</strong></p>
+            <p>Para pasar de decimal a porcentaje, se multiplica por 100:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,05</mn>
+                <mo>×</mo>
+                <mn>100</mn>
+                <mo>=</mo>
+                <mn>5</mn>
+              </mrow>
+            </math>
+            <p>Entonces, el aumento es 5 %.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Los 30 nuevos socios de 2023 representan un aumento de 5 % respecto del número de socios que había al final de 2022.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

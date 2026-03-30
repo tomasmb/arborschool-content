@@ -1,0 +1,238 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q56_v7" title="Q56_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un departamento de un colegio registró los resultados de una prueba de Matemáticas en cuatro niveles (A, B, C y D). Para cada nivel se anotó cuántos estudiantes reprobaron y cuántos aprobaron la prueba durante el semestre.</p>
+    <div>
+      <p>Registro de resultados de la prueba de Matemáticas:</p>
+      <p>Nivel A: 18 estudiantes reprobaron y 42 aprobaron.</p>
+      <p>Nivel B: 24 estudiantes reprobaron y 46 aprobaron.</p>
+      <p>Nivel C: 20 estudiantes reprobaron y 60 aprobaron.</p>
+      <p>Nivel D: 30 estudiantes reprobaron y 90 aprobaron.</p>
+    </div>
+    <p>Se implementarán clases de reforzamiento comenzando por el nivel que tenga el mayor porcentaje de estudiantes reprobados respecto del total de estudiantes de ese nivel.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Con qué nivel se debe comenzar el reforzamiento?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Con el nivel A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el nivel A, el total de estudiantes es 18 + 42 = 60, así que el porcentaje de reprobación es 18/60 = 0,3 = 30%. En el nivel B, el total es 24 + 46 = 70 y el porcentaje de reprobación es 24/70 = 0,342857..., es decir, aproximadamente 34,29%. Como 34,29% es mayor que 30%, no se debe comenzar con el nivel A.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Con el nivel B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el nivel B, el total de estudiantes es 24 + 46 = 70, y el porcentaje de reprobación es 24/70 = 0,342857..., aproximadamente 34,29%. Comparando con los otros niveles: A tiene 18/60 = 30%, C tiene 20/80 = 25% y D tiene 30/120 = 25%. El mayor porcentaje de reprobación es el del nivel B.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Con el nivel C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En el nivel C, el total de estudiantes es 20 + 60 = 80, así que el porcentaje de reprobación es 20/80 = 0,25 = 25%. Pero en el nivel B, el total es 24 + 46 = 70 y el porcentaje de reprobación es 24/70 = 0,342857..., aproximadamente 34,29%. Como 34,29% es mayor que 25%, no se debe comenzar con el nivel C.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Con el nivel D<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En el nivel D, el total de estudiantes es 30 + 90 = 120, así que el porcentaje de reprobación es 30/120 = 0,25 = 25%. Pero en el nivel B, el total es 24 + 46 = 70 y el porcentaje de reprobación es 24/70 = 0,342857..., aproximadamente 34,29%. Como 34,29% es mayor que 25%, no se debe comenzar con el nivel D.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del mayor porcentaje de reprobación</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular el total de estudiantes en cada nivel</strong></p>
+            <p>Nivel A:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>18</mn>
+                <mo>+</mo>
+                <mn>42</mn>
+                <mo>=</mo>
+                <mn>60</mn>
+              </mrow>
+            </math>
+            <p>Nivel B:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>24</mn>
+                <mo>+</mo>
+                <mn>46</mn>
+                <mo>=</mo>
+                <mn>70</mn>
+              </mrow>
+            </math>
+            <p>Nivel C:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>20</mn>
+                <mo>+</mo>
+                <mn>60</mn>
+                <mo>=</mo>
+                <mn>80</mn>
+              </mrow>
+            </math>
+            <p>Nivel D:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>30</mn>
+                <mo>+</mo>
+                <mn>90</mn>
+                <mo>=</mo>
+                <mn>120</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el porcentaje de reprobación en cada nivel</strong></p>
+            <p>Se compara la cantidad de estudiantes reprobados con el total de estudiantes de cada nivel.</p>
+            <p>Nivel A:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>18</mn>
+                  <mn>60</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>3</mn>
+                  <mn>10</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,3</mn>
+                <mo>=</mo>
+                <mn>30</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+            <p>Nivel B:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>24</mn>
+                  <mn>70</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>12</mn>
+                  <mn>35</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,342857...</mn>
+                <mo>=</mo>
+                <mn>34,2857...</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+            <p>Nivel C:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>20</mn>
+                  <mn>80</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mn>4</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,25</mn>
+                <mo>=</mo>
+                <mn>25</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+            <p>Nivel D:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>30</mn>
+                  <mn>120</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mn>4</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,25</mn>
+                <mo>=</mo>
+                <mn>25</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los porcentajes</strong></p>
+            <p>Los porcentajes obtenidos son:</p>
+            <p>A: 30%</p>
+            <p>B: 34,2857...%</p>
+            <p>C: 25%</p>
+            <p>D: 25%</p>
+            <p>El mayor porcentaje es 34,2857...%, que corresponde al nivel B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Se debe comenzar el reforzamiento con el nivel B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

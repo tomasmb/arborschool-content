@@ -1,0 +1,154 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v15" title="Q64_v15" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la cantidad de pelotas de cada color contenidas en una bolsa.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Color de la pelota</th>
+          <th>Cantidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Roja</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Azul</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>Verde</td>
+          <td>4</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Se extrae una pelota al azar desde la bolsa. ¿Cuál de las siguientes fracciones representa correctamente la probabilidad de que la pelota NO sea roja ni azul?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">3/12<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Que la pelota NO sea roja ni azul significa que debe ser verde. Hay 4 pelotas verdes de un total de 12, por lo tanto la probabilidad es 4/12. La fracción 3/12 no coincide con esa cantidad.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">7/12<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Las pelotas que NO son rojas ni azules son solo las verdes, y hay 4. El total de pelotas es 5 + 3 + 4 = 12, así que la probabilidad correcta es 4/12. La fracción 7/12 representa 7 casos favorables, pero aquí solo hay 4.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">4/12<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Que la pelota NO sea roja ni azul significa que debe ser verde. En la bolsa hay 4 pelotas verdes y en total hay 5 + 3 + 4 = 12 pelotas. Entonces la probabilidad es 4/12.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">9/12<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Las pelotas que NO sean rojas ni azules son únicamente las verdes. Como hay 4 verdes y 12 pelotas en total, la probabilidad correcta es 4/12. La fracción 9/12 no corresponde a los casos favorables del problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular el total de pelotas</strong></p>
+            <p>Según la tabla, hay 5 pelotas rojas, 3 azules y 4 verdes.</p>
+            <p>Entonces, el total es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5</mn>
+                <mo>+</mo>
+                <mn>3</mn>
+                <mo>+</mo>
+                <mn>4</mn>
+                <mo>=</mo>
+                <mn>12</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los casos favorables</strong></p>
+            <p>El enunciado pide la probabilidad de que la pelota NO sea roja ni azul.</p>
+            <p>Eso significa que la pelota debe ser verde.</p>
+            <p>Hay 4 pelotas verdes.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la probabilidad como fracción</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>casos favorables sobre casos posibles.</p>
+            <p>Entonces:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mfrac>
+                <mn>4</mn>
+                <mn>12</mn>
+              </mfrac>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La fracción correcta es 4/12, que corresponde a la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

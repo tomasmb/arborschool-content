@@ -1,0 +1,262 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q65_v1" title="Q65_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un curso de 20 estudiantes se realizó una encuesta en la que se consultó cuántas horas semanales usan Internet en su hogar. Las respuestas se registran en la siguiente tabla (en horas):</p>
+    <div>
+      <table border="1" cellpadding="4" cellspacing="0">
+        <tbody>
+          <tr>
+            <td>3</td>
+            <td>1</td>
+            <td>0</td>
+            <td>4</td>
+            <td>2</td>
+            <td>6</td>
+            <td>1</td>
+            <td>3</td>
+            <td>2</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>0</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>1</td>
+            <td>6</td>
+            <td>0</td>
+            <td>5</td>
+            <td>4</td>
+            <td>3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes diagramas de caja representa correctamente estos datos?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <img src="requiere_nueva_imagen.png" alt="Diagrama de caja con eje horizontal de 0 a 6 horas. La caja se extiende desde 1 hasta 4 horas, con una línea de mediana en 2 horas, y bigotes que se extienden desde 0 hasta 6 horas (mínimo 0, cuartil inferior 1, mediana 2, cuartil superior 4 y máximo 6)." />
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al ordenar los 20 datos se obtiene 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6. Como hay 20 datos, la mediana es el promedio del décimo y undécimo valor: 3 y 3, por lo tanto la mediana es 3. Esta opción muestra mediana 2, así que no representa correctamente los datos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <img src="requiere_nueva_imagen.png" alt="Diagrama de caja con eje horizontal de 0 a 6 horas. La caja se extiende desde 1 hasta 4 horas, con una línea de mediana en 3 horas, y bigotes que se extienden desde 0 hasta 6 horas (mínimo 0, cuartil inferior 1, mediana 3, cuartil superior 4 y máximo 6)." />
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al ordenar los datos queda 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6. El mínimo es 0 y el máximo es 6. La mediana es el promedio del décimo y undécimo valor, 3 y 3, así que es 3. El cuartil inferior es el promedio del quinto y sexto dato de la mitad inferior, 1 y 1, así que es 1. El cuartil superior es el promedio del quinto y sexto dato de la mitad superior, 4 y 4, así que es 4. Por eso el diagrama correcto tiene resumen 0, 1, 3, 4, 6.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <img src="requiere_nueva_imagen.png" alt="Diagrama de caja con eje horizontal de 0 a 6 horas. La caja se extiende desde 0 hasta 4 horas, con una línea de mediana en 2 horas, y bigotes que se extienden desde 0 hasta 6 horas (mínimo 0, cuartil inferior 0, mediana 2, cuartil superior 4 y máximo 6)." />
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la mitad inferior de los datos ordenados, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, el cuartil inferior es el promedio del quinto y sexto valor: 1 y 1, por lo tanto es 1, no 0. Además, la mediana total es el promedio del décimo y undécimo valor: 3 y 3, por lo tanto es 3, no 2. Esta opción no coincide con los datos.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <img src="requiere_nueva_imagen.png" alt="Diagrama de caja con eje horizontal de 0 a 6 horas. La caja se extiende desde 2 hasta 5 horas, con una línea de mediana en 3 horas, y bigotes que se extienden desde 0 hasta 6 horas (mínimo 0, cuartil inferior 2, mediana 3, cuartil superior 5 y máximo 6)." />
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En la mitad inferior de los datos ordenados, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, el cuartil inferior es el promedio del quinto y sexto valor: 1 y 1, así que es 1, no 2. En la mitad superior, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6, el cuartil superior es el promedio del quinto y sexto valor: 4 y 4, así que es 4, no 5. Esta opción no representa correctamente el diagrama de caja.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del diagrama de caja</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Ordenar los datos de menor a mayor</strong></p>
+            <p>Los 20 datos son:</p>
+            <p>3, 1, 0, 4, 2, 6, 1, 3, 2, 5, 0, 2, 3, 4, 1, 6, 0, 5, 4, 3.</p>
+            <p>Ordenados de menor a mayor quedan:</p>
+            <p>0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6, 6.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar mínimo y máximo</strong></p>
+            <p>El mínimo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0</mn></math> y el máximo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular la mediana</strong></p>
+            <p>Como hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>20</mn></math> datos, la mediana se obtiene promediando el décimo y el undécimo valor.</p>
+            <p>Décimo valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math></p>
+            <p>Undécimo valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mn>3</mn>
+                      <mo>+</mo>
+                      <mn>3</mn>
+                    </mrow>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mn>6</mn>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>3</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, la mediana es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el cuartil inferior</strong></p>
+            <p>La mitad inferior de los datos es:</p>
+            <p>0, 0, 0, 1, 1, 1, 2, 2, 2, 3.</p>
+            <p>Como esta mitad tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> datos, el cuartil inferior es el promedio del quinto y sexto valor.</p>
+            <p>Quinto valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math></p>
+            <p>Sexto valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>1</mn>
+                    </mrow>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mn>2</mn>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>1</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mn>1</mn></mrow></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Calcular el cuartil superior</strong></p>
+            <p>La mitad superior de los datos es:</p>
+            <p>3, 3, 3, 4, 4, 4, 5, 5, 6, 6.</p>
+            <p>Como esta mitad tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> datos, el cuartil superior es el promedio del quinto y sexto valor.</p>
+            <p>Quinto valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math></p>
+            <p>Sexto valor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mn>4</mn>
+                      <mo>+</mo>
+                      <mn>4</mn>
+                    </mrow>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mn>8</mn>
+                    <mn>2</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>4</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mn>4</mn></mrow></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Formar el resumen de cinco números</strong></p>
+            <p>Resumen:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>0</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                  <mo>,</mo>
+                  <mn>3</mn>
+                  <mo>,</mo>
+                  <mn>4</mn>
+                  <mo>,</mo>
+                  <mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Es decir: mínimo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0</mn></math>, cuartil inferior <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>, mediana <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math>, cuartil superior <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> y máximo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El diagrama de caja correcto es el que tiene caja desde <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math> hasta <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math>, línea de mediana en <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> y bigotes desde <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0</mn></math> hasta <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn></math>. Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

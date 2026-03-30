@@ -1,0 +1,131 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q45_v9" title="Q45_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>El terreno de la siguiente figura está formado por 10 parcelas cuadradas, todas congruentes entre sí, acomodadas en dos filas de 5 parcelas cada una (es decir, forman un gran rectángulo de 2 por 5 parcelas).</p>
+    <p><img src="requiere_nueva_imagen.png" alt="Terreno rectangular formado por 10 cuadrados congruentes: dos filas horizontales de 5 cuadrados cada una, alineados, formando un gran rectángulo de 2 parcelas de alto por 5 de ancho." /></p>
+    <p>El área total del terreno es de <m:math><m:mn>250</m:mn><m:mtext> </m:mtext><m:msup><m:mi>m</m:mi><m:mn>2</m:mn></m:msup></m:math>.</p>
+    <p>Una inmobiliaria aplica el siguiente procedimiento para calcular la longitud del cerco exterior (perímetro) del terreno, cometiendo un error.</p>
+    <p>Paso 1: se determina el área de cada parcela cuadrada dividiendo el área total por la cantidad de parcelas, obteniéndose <m:math><m:mn>25</m:mn><m:mtext> </m:mtext><m:msup><m:mi>m</m:mi><m:mn>2</m:mn></m:msup></m:math> para cada cuadrado.</p>
+    <p>Paso 2: se determina la medida del lado de una parcela calculando la raíz cuadrada de la medida de su área, obteniéndose <m:math><m:mn>5</m:mn><m:mtext> </m:mtext><m:mi>m</m:mi></m:math>.</p>
+    <p>Paso 3: se afirma que, para calcular la longitud del cerco exterior del terreno, basta sumar las longitudes de todos los lados de las 10 parcelas, contando en total 40 lados. Paso 4: se calcula entonces el perímetro multiplicando <m:math><m:mn>40</m:mn><m:mo>·</m:mo><m:mn>5</m:mn><m:mtext> </m:mtext><m:mi>m</m:mi></m:math>, obteniéndose <m:math><m:mn>200</m:mn><m:mtext> </m:mtext><m:mi>m</m:mi></m:math> como longitud del cerco.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones describe de manera más precisa por qué el procedimiento de la inmobiliaria no es válido para esta situación?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">El procedimiento es incorrecto porque el área total del terreno no se puede dividir entre 10 para obtener el área de cada parcela.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Sí se puede dividir el área total entre 10 porque las 10 parcelas son congruentes: 250 ÷ 10 = 25, así que cada parcela tiene 25 m². Luego, como cada parcela es cuadrada, su lado mide 5 m porque 5 × 5 = 25. El procedimiento falla después, cuando suma los 40 lados de las parcelas y cuenta también lados internos que no pertenecen al cerco exterior.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El procedimiento sería correcto si las 10 parcelas estuvieran separadas unas de otras, pero como están unidas se están contando lados internos que no forman parte del cerco exterior del terreno.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si las 10 parcelas estuvieran separadas, 10 × 4 = 40 lados sí correspondería al contorno de todas ellas. Pero al estar unidas, muchos de esos lados quedan en el interior y no forman parte del cerco exterior. Por eso 40 × 5 = 200 m sobrecuenta el perímetro. Siguiendo la descripción del enunciado, el terreno es un rectángulo de 5 parcelas por 2 parcelas, así que su contorno exterior tiene 2 × (5 + 2) = 14 lados de parcela, y el perímetro correcto es 14 × 5 = 70 m.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">El error está en suponer que, conociendo el área de una parcela, se puede determinar la medida de su lado mediante una raíz cuadrada.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En un cuadrado sí se puede obtener el lado a partir del área usando la raíz cuadrada. Aquí cada parcela tiene 25 m², y su lado es 5 m porque 5 × 5 = 25. El error no está en ese cálculo, sino en sumar los 40 lados de las 10 parcelas como si todos fueran exteriores.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">El método confunde perímetro con área, porque en lugar de sumar las longitudes de los lados del terreno, multiplica la medida del lado por un número de lados.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Multiplicar la medida de un lado por la cantidad de lados es justamente una forma válida de calcular un perímetro cuando todos esos lados pertenecen al borde exterior. Por ejemplo, un cuadrado de lado 5 m tiene perímetro 4 × 5 = 20 m. En este problema, la falla es otra: el número 40 incluye lados internos de las parcelas, no solo los del cerco exterior.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular el área de cada parcela</strong></p>
+            <p>Como el terreno completo tiene 10 parcelas cuadradas congruentes y el área total es <m:math><m:mn>250</m:mn><m:mtext> </m:mtext><m:msup><m:mi>m</m:mi><m:mn>2</m:mn></m:msup></m:math>, el área de una parcela es:</p>
+            <p><m:math><m:mrow><m:mn>250</m:mn><m:mo>÷</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>25</m:mn></m:mrow><m:mtext> </m:mtext><m:msup><m:mi>m</m:mi><m:mn>2</m:mn></m:msup></m:math></p>
+            <p>Por lo tanto, cada parcela tiene área <m:math><m:mn>25</m:mn><m:mtext> </m:mtext><m:msup><m:mi>m</m:mi><m:mn>2</m:mn></m:msup></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el lado de cada parcela</strong></p>
+            <p>Como cada parcela es un cuadrado, la medida de su lado es la raíz cuadrada del área:</p>
+            <p><m:math><m:mrow><m:msqrt><m:mn>25</m:mn></m:msqrt><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow><m:mtext> </m:mtext><m:mi>m</m:mi></m:math></p>
+            <p>Así, cada lado de parcela mide <m:math><m:mn>5</m:mn><m:mtext> </m:mtext><m:mi>m</m:mi></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Identificar el error del procedimiento</strong></p>
+            <p>La inmobiliaria cuenta <m:math><m:mn>10</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>40</m:mn></m:math> lados, porque suma los 4 lados de cada una de las 10 parcelas.</p>
+            <p>Ese conteo sería válido solo si las 10 parcelas estuvieran separadas. Pero en el terreno están unidas, por lo que varios lados quedan en el interior del terreno.</p>
+            <p>Los lados interiores no forman parte del cerco exterior y, por lo tanto, no deben contarse en el perímetro.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar el contorno exterior según la descripción del enunciado</strong></p>
+            <p>El enunciado indica que las 10 parcelas forman un rectángulo de 2 filas por 5 columnas. Entonces el terreno completo tiene dimensiones:</p>
+            <p><m:math><m:mrow><m:mn>5</m:mn><m:mo>×</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>25</m:mn></m:mrow><m:mtext> </m:mtext><m:mi>m</m:mi></m:math> de largo</p>
+            <p><m:math><m:mrow><m:mn>2</m:mn><m:mo>×</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>10</m:mn></m:mrow><m:mtext> </m:mtext><m:mi>m</m:mi></m:math> de ancho</p>
+            <p>Por ello, su perímetro correcto es:</p>
+            <p><m:math><m:mrow><m:mn>2</m:mn><m:mo>×</m:mo><m:mo>(</m:mo><m:mn>25</m:mn><m:mo>+</m:mo><m:mn>10</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2</m:mn><m:mo>×</m:mo><m:mn>35</m:mn><m:mo>=</m:mo><m:mn>70</m:mn></m:mrow><m:mtext> </m:mtext><m:mi>m</m:mi></m:math></p>
+            <p>Equivalentemente, el borde exterior tiene <m:math><m:mrow><m:mn>2</m:mn><m:mo>×</m:mo><m:mo>(</m:mo><m:mn>5</m:mn><m:mo>+</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>14</m:mn></m:mrow></m:math> lados de parcela, y entonces:</p>
+            <p><m:math><m:mrow><m:mn>14</m:mn><m:mo>×</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>70</m:mn></m:mrow><m:mtext> </m:mtext><m:mi>m</m:mi></m:math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La razón más precisa de la invalidez del procedimiento es que se están contando lados internos que no forman parte del cerco exterior del terreno.</p>
+            <p>Por eso, la alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

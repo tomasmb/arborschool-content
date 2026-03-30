@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q55_v5",
+  "source_question_id": "Q55",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q55_v5",
+    "scenario_description": "Escenario de transporte urbano. En una infografía se describe el registro de viajes diarios: primero se clasifica cada viaje según modo principal (Bus, Metro, Automóvil particular) y se muestra su distribución porcentual en un pequeño gráfico de sectores. Luego, en un recuadro solo para los viajes en Bus, se indica mediante un mini gráfico de columnas cómo se reparten esos viajes por tipo de pasajero (Estudiante, Adulto, Adulto mayor), con porcentajes que suman 100 % dentro del grupo bus. El texto señala explícitamente: \"Una vez identificado que el viaje es en Bus, se clasifica al pasajero según tipo\". Se pregunta la probabilidad de que un viaje elegido al azar sea de bus y de un estudiante.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "Se debe entender que el segundo conjunto de porcentajes se aplica solo a los viajes en bus (es decir, el espacio muestral ya está reducido) y que la probabilidad de que un viaje sea 'bus y estudiante' corresponde a P(bus)·P(estudiante | bus). No se puede responder mecánicamente mirando un solo gráfico; hay que articular la secuencia de clasificación y el hecho de que la segunda probabilidad está condicionada al resultado de la primera.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Pequeño gráfico de torta con la proporción de viajes por modo de transporte (bus, metro, auto) y, unido a la sección 'bus', un gráfico de columnas con la proporción de tipos de pasajero (estudiante, adulto, adulto mayor) dentro del conjunto de viajes en bus.",
+    "selected_shape_id": "reduced_sample_space_record"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué que la segunda distribución se presenta explícitamente como condicionada a 'viajes en Bus' y que el estudiante debe articular ambos gráficos sin poder tratarlo como una probabilidad simple independiente."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-12"
+    ],
+    "primary_atom_titles": [
+      "Aplicación de la regla multiplicativa para eventos dependientes"
+    ],
+    "family_id": "conditional_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "reduced_sample_space_record",
+        "description": "Presentar el caso como un registro breve o selección sucesiva donde la segunda probabilidad depende explícitamente del resultado de la primera.",
+        "required_changes": [
+          "Registro de extracción/selección sucesiva",
+          "Distractores con errores de espacio muestral no actualizado"
+        ],
+        "forbidden_changes": [
+          "Reducirlo a probabilidad simple independiente",
+          "Introducir combinatoria avanzada innecesaria"
+        ]
+      },
+      {
+        "shape_id": "conditional_claim_check",
+        "description": "Pedir identificar qué afirmación o cálculo representa correctamente la probabilidad condicionada dentro del mismo espacio muestral dependiente.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación/cálculo",
+          "Distractores que confunden total inicial con total condicionado"
+        ],
+        "forbidden_changes": [
+          "Eliminar la condición del evento previo",
+          "Transformarlo en puro conteo sin dependencia"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "medium",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "representation_interpretation",
+    "operation_signature": "conditional_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=conditional_probability",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

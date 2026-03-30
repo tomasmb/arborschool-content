@@ -1,0 +1,168 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q47_v3" title="Q47_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un plano se representan cuatro terrenos triangulares rectángulos apoyados en una calle recta y una pared. En la siguiente tabla se indican las longitudes de la base junto a la calle y de la pared de cada terreno.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Terreno</th>
+          <th>Base junto a la calle (m)</th>
+          <th>Longitud de la pared (m)</th>
+        </tr>
+        <tr>
+          <td>R</td>
+          <td>4</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>S</td>
+          <td>6</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>T</td>
+          <td>2</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>U</td>
+          <td>7</td>
+          <td>4</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es verdadera?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">El terreno U es el que tiene la hipotenusa de mayor longitud entre todos.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La hipotenusa de U mide aproximadamente 8,06 m, porque sus catetos son 7 m y 4 m. En cambio, la hipotenusa de T mide aproximadamente 9,22 m, porque sus catetos son 2 m y 9 m. Como 9,22 es mayor que 8,06, U no es el terreno con mayor hipotenusa.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El terreno que tiene la hipotenusa de mayor longitud es también el que tiene el mayor perímetro.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El terreno T tiene la hipotenusa más larga, de aproximadamente 9,22 m. Su perímetro es aproximadamente 20,22 m. Los demás perímetros son menores: R ≈ 15,40 m, S ≈ 15,71 m y U ≈ 19,06 m. Por lo tanto, el terreno con mayor hipotenusa es también el de mayor perímetro.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">El terreno S es el que tiene el menor perímetro entre todos.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El perímetro de S es aproximadamente 15,71 m. El perímetro de R es aproximadamente 15,40 m. Como 15,40 es menor que 15,71, S no es el terreno de menor perímetro.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Los terrenos R y S tienen igual perímetro.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El perímetro de R es aproximadamente 15,40 m y el de S es aproximadamente 15,71 m. Como 15,40 es distinto de 15,71, los perímetros de R y S no son iguales.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular la hipotenusa de cada terreno</strong></p>
+            <p>Como cada terreno es un triángulo rectángulo, se aplica el teorema de Pitágoras:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>h</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mrow></math></p>
+            <p><em>Terreno R:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>h</mi><mo>=</mo><msqrt><mrow><msup><mn>4</mn><mn>2</mn></msup><mo>+</mo><msup><mn>5</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>16</mn><mo>+</mo><mn>25</mn></mrow></msqrt><mo>=</mo><msqrt><mn>41</mn></msqrt><mo>≈</mo><mn>6,40</mn></mrow></math></p>
+            <p><em>Terreno S:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>h</mi><mo>=</mo><msqrt><mrow><msup><mn>6</mn><mn>2</mn></msup><mo>+</mo><msup><mn>3</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>36</mn><mo>+</mo><mn>9</mn></mrow></msqrt><mo>=</mo><msqrt><mn>45</mn></msqrt><mo>≈</mo><mn>6,71</mn></mrow></math></p>
+            <p><em>Terreno T:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>h</mi><mo>=</mo><msqrt><mrow><msup><mn>2</mn><mn>2</mn></msup><mo>+</mo><msup><mn>9</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>4</mn><mo>+</mo><mn>81</mn></mrow></msqrt><mo>=</mo><msqrt><mn>85</mn></msqrt><mo>≈</mo><mn>9,22</mn></mrow></math></p>
+            <p><em>Terreno U:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>h</mi><mo>=</mo><msqrt><mrow><msup><mn>7</mn><mn>2</mn></msup><mo>+</mo><msup><mn>4</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>49</mn><mo>+</mo><mn>16</mn></mrow></msqrt><mo>=</mo><msqrt><mn>65</mn></msqrt><mo>≈</mo><mn>8,06</mn></mrow></math></p>
+            <p>La hipotenusa mayor es la del terreno T.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el perímetro de cada terreno</strong></p>
+            <p>El perímetro es la suma de los dos catetos y la hipotenusa.</p>
+            <p><em>Terreno R:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>=</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>+</mo><msqrt><mn>41</mn></msqrt><mo>≈</mo><mn>4</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>6,40</mn><mo>=</mo><mn>15,40</mn></mrow></math></p>
+            <p><em>Terreno S:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>=</mo><mn>6</mn><mo>+</mo><mn>3</mn><mo>+</mo><msqrt><mn>45</mn></msqrt><mo>≈</mo><mn>6</mn><mo>+</mo><mn>3</mn><mo>+</mo><mn>6,71</mn><mo>=</mo><mn>15,71</mn></mrow></math></p>
+            <p><em>Terreno T:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>=</mo><mn>2</mn><mo>+</mo><mn>9</mn><mo>+</mo><msqrt><mn>85</mn></msqrt><mo>≈</mo><mn>2</mn><mo>+</mo><mn>9</mn><mo>+</mo><mn>9,22</mn><mo>=</mo><mn>20,22</mn></mrow></math></p>
+            <p><em>Terreno U:</em></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>=</mo><mn>7</mn><mo>+</mo><mn>4</mn><mo>+</mo><msqrt><mn>65</mn></msqrt><mo>≈</mo><mn>7</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>8,06</mn><mo>=</mo><mn>19,06</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los resultados</strong></p>
+            <p>Hipotenusas aproximadas:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mtable><mtr><mtd><mi>R</mi></mtd><mtd><mn>6,40</mn></mtd></mtr><mtr><mtd><mi>S</mi></mtd><mtd><mn>6,71</mn></mtd></mtr><mtr><mtd><mi>T</mi></mtd><mtd><mn>9,22</mn></mtd></mtr><mtr><mtd><mi>U</mi></mtd><mtd><mn>8,06</mn></mtd></mtr></mtable></math></p>
+            <p>Perímetros aproximados:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mtable><mtr><mtd><mi>R</mi></mtd><mtd><mn>15,40</mn></mtd></mtr><mtr><mtd><mi>S</mi></mtd><mtd><mn>15,71</mn></mtd></mtr><mtr><mtd><mi>T</mi></mtd><mtd><mn>20,22</mn></mtd></mtr><mtr><mtd><mi>U</mi></mtd><mtd><mn>19,06</mn></mtd></mtr></mtable></math></p>
+            <p>Se observa que el terreno T tiene tanto la hipotenusa más larga como el perímetro mayor.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Evaluar cada afirmación</strong></p>
+            <p>La alternativa A es falsa porque U no tiene la mayor hipotenusa; la mayor es la de T.</p>
+            <p>La alternativa B es verdadera porque el terreno con mayor hipotenusa, que es T, también tiene el mayor perímetro.</p>
+            <p>La alternativa C es falsa porque el menor perímetro es el de R, no el de S.</p>
+            <p>La alternativa D es falsa porque los perímetros de R y S son distintos: 15,40 m y 15,71 m.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación verdadera es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

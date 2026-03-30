@@ -1,0 +1,124 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q46_v13" title="Q46_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se construye un bloque hueco pegando cuatro prismas rectos idénticos de base rectangular, de modo que forman un "marco" rectangular con un vacío central.</p>
+    <p><img src="q46.png" alt="Diagrama que muestra la secuencia de unión de dos prismas rectos de base cuadrada. Primero se muestran separados, luego alineados para unirse por una cara lateral, y finalmente como un solo prisma resultante más ancho." /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Cada prisma, por separado, tenía todas sus caras exteriores pintadas. Luego se pegan para formar el marco y solo se vuelve a pintar la superficie que queda expuesta al exterior. ¿Cuál de las siguientes razones justifica que el área total pintada del marco sea menor que la suma de las áreas pintadas de los cuatro prismas por separado?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Porque los cuatro prismas originales tienen en total 8 bases pintadas, mientras que el marco resultante solo tiene 2 bases visibles.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La disminución del área pintada no se justifica por contar bases visibles, sino porque al pegar prismas algunas caras que antes estaban pintadas quedan en contacto y ya no pertenecen a la superficie exterior. Aunque el sólido final tenga dos caras paralelas principales, eso por sí solo no explica la reducción del área total pintada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Porque varias de las caras que antes eran exteriores quedan pegadas entre sí en el interior del marco y dejan de formar parte de la superficie exterior pintada.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si dos prismas se pegan por una cara lateral, esas dos caras estaban pintadas cuando los prismas estaban separados, pero después quedan ocultas en el interior de la unión. Por eso dejan de contarse en la superficie exterior. Al formar el marco ocurre esto en varias uniones, de modo que el área pintada final es menor que la suma de las áreas pintadas de los cuatro prismas por separado.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Porque cualquier cuerpo formado pegando cuatro prismas idénticos siempre tiene un área total pintada cuatro veces menor que la suma de las áreas pintadas de cada prisma por separado.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La afirmación dice “siempre”, y eso es falso. Contraejemplo concreto: si se pegan cuatro prismas idénticos en una fila, solo desaparecen las caras de contacto entre prismas consecutivos; muchas otras caras siguen expuestas. Entonces el área exterior final no queda necesariamente dividida por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math>. La reducción depende de cuántas caras queden pegadas, no de una regla fija universal.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Porque el área total pintada no cambia al pegar los prismas: como no se quita material, la suma de las áreas pintadas se mantiene igual.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aunque no se quite material, sí cambian las caras expuestas al exterior. Cuando dos prismas se pegan, las caras de contacto quedan internas y ya no se pintan por fuera. Por eso la superficie exterior del marco es menor que la suma de las superficies exteriores de los cuatro prismas separados.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué se compara</strong></p>
+            <p>Se compara el área pintada de cuatro prismas separados con el área pintada del sólido que se forma al pegarlos en forma de marco.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar qué ocurre al pegar dos prismas</strong></p>
+            <p>Si dos prismas estaban separados, cada uno tenía pintada su cara exterior completa. Pero al pegarlos, las dos caras que quedan una contra la otra pasan a quedar internas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Determinar el efecto sobre el área exterior</strong></p>
+            <p>Las caras internas ya no forman parte de la superficie exterior del nuevo cuerpo. Entonces ya no se vuelven a pintar cuando se pinta solo lo que queda expuesto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Aplicar esta idea al marco formado por cuatro prismas</strong></p>
+            <p>En el marco hay varias uniones entre prismas. En cada unión, un par de caras que antes era exterior deja de contarse en la superficie pintada final. Por eso el área total exterior disminuye respecto de la suma inicial.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Evaluar las alternativas</strong></p>
+            <p>La alternativa A no justifica correctamente la reducción, porque el punto clave no es contar bases visibles.</p>
+            <p>La alternativa C es falsa porque afirma que eso ocurre siempre y con una razón fija; basta un arreglo distinto de cuatro prismas para que esa razón cambie.</p>
+            <p>La alternativa D es falsa porque sí cambia la superficie exterior al quedar caras ocultas en el interior.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La razón correcta es que varias caras que antes eran exteriores quedan pegadas entre sí y dejan de pertenecer a la superficie exterior pintada. Por eso la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

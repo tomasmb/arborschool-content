@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q64",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q64_v1",
+      "scenario_description": "Se mantiene el contexto de urna con bolitas. En una urna hay 36 bolitas rojas, verdes y azules, todas indistinguibles al tacto. Se sabe que, al sacar una bolita al azar, la probabilidad de que sea ROJA es 1/4. Se pregunta: «¿Cuántas bolitas VERDES o AZULES hay en la urna?», con cuatro opciones numéricas plausibles (por ejemplo, valores cercanos a 36/4 y a 36·3/4, y algún distractor que confunda probabilidad con cantidad).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que la probabilidad 1/4 representa la fracción de bolitas ROJAS respecto del total (P(roja) = n_rojas / 36). Debe calcular n_rojas = (1/4)*36 y luego entender que el número solicitado es el COMPLEMENTO (todas las que no son rojas): 36 − n_rojas. No puede limitarse a 'aplicar una fórmula' sin identificar qué conjunto es favorable y qué es su complemento.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q64_v2",
+      "scenario_description": "Se introduce una pequeña tabla de probabilidades. Se dice: «En una caja hay 30 fichas rojas, azules y verdes. Al sacar una ficha al azar, se tiene la siguiente información:»\n\nEvento | Probabilidad\n------ | ------------\n'roja o azul' | 4/5\n\nNo se da directamente la cantidad de cada color, solo el total (30) y la probabilidad del evento combinado 'roja o azul'. Se pregunta: «¿Cuántas fichas VERDES hay en la caja?», con opciones numéricas plausibles.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe interpretarse la tabla como descripción de probabilidades y no como conteo. El estudiante tiene que traducir P(roja o azul) = 4/5 a (n_rojas + n_azules) / 30 = 4/5, deducir n_rojas + n_azules = (4/5)*30 y luego reconocer que las verdes son el COMPLEMENTO en el conteo: 30 − (n_rojas + n_azules). Esto obliga a entender la relación probabilidad = casos favorables / casos posibles y su uso para obtener la cantidad complementaria.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q64_v3",
+      "scenario_description": "Se plantea un espacio muestral muy simple con conteos dados y se pregunta por la fracción correcta. «En una urna hay 36 bolitas: 12 son ROJAS y 24 son AZULES. Todas las bolitas son igualmente probables al sacar una al azar. ¿Cuál de las siguientes fracciones representa la probabilidad de obtener una bolita AZUL?» Las opciones incluyen fracciones típicas que confunden casos favorables y posibles: 12/36, 24/36, 12/24, 36/24, etc.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe identificar qué constituye el conjunto de casos favorables (bolitas azules) y qué constituye el total de casos posibles (todas las bolitas). No basta con 'usar números al azar'; debe elegir la fracción que respeta la estructura P = favorables / totales. Los distractores fuerzan a distinguir entre numeradores y denominadores que representan subconjuntos distintos (solo azules, solo rojas, parte del total, etc.).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q64_v4",
+      "scenario_description": "Se da un total fijo y una probabilidad, y se plantean varias descripciones posibles del contenido. «En una caja hay 50 boletos: algunos son ‘ganadores’ y los demás son ‘no ganadores’. La probabilidad de sacar al azar un boleto GANADOR es 3/10. Se proponen las siguientes afirmaciones sobre cuántos boletos ganadores y no ganadores hay en la caja:\nA) Hay 15 ganadores y 35 no ganadores.\nB) Hay 5 ganadores y 45 no ganadores.\nC) Hay 30 ganadores y 20 no ganadores.\nD) Hay 3 ganadores y 10 no ganadores.\nSe pide elegir la afirmación correcta.»",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Debe comprender que P(ganador) = n_ganadores / 50 = 3/10, lo que implica n_ganadores = (3/10)*50. Luego debe verificar qué afirmación respeta simultáneamente esa cantidad y el total 50. Los distractores explotan confusiones entre usar el total correcto (50) y otros totales implícitos (por ejemplo, tomar el 3 y el 10 como cantidades en vez de como razón), por lo que es necesario entender la definición de probabilidad clásica y no solo manipular números.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q64_v5",
+      "scenario_description": "Se expresa la probabilidad como porcentaje. «En una baraja especial hay 32 cartas blancas, negras y rojas en total. Se sabe que el 25% de las cartas son BLANCAS o NEGRAS. Si se elige una carta al azar, ¿cuántas cartas ROJAS hay en la baraja?» Las opciones numéricas incluyen valores que resultan de errores típicos al interpretar el 25% (por ejemplo, tomar 25 cartas en vez de el 25% de 32, o confundir la parte con el complemento).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que '25%' es una probabilidad equivalente a la fracción 1/4. Debe aplicar P(blanca o negra) = (n_blanca + n_negra)/32 = 1/4, encontrar n_blanca + n_negra, y luego usar el complemento para hallar n_rojas = 32 − (n_blanca + n_negra). Esto exige entender la probabilidad como proporción del total, no solo como un número porcentual suelto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q64_v6",
+      "scenario_description": "La probabilidad se describe mediante una razón verbal. «En una bolsa hay 40 bolitas rojas, azules y amarillas. Se sabe que, por cada 5 bolitas de la bolsa, 3 son ROJAS o AZULES. Si se saca una bolita al azar, ¿cuántas bolitas AMARILLAS hay en la bolsa?» Las opciones incluyen valores que surgen de interpretar mal la razón (p. ej., tomar 3 y 5 como cantidades absolutas).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe traducirse 'por cada 5 bolitas, 3 son rojas o azules' en una probabilidad P(roja o azul) = 3/5. Luego aplicar P = favorables / total = (n_rojas + n_azules)/40 = 3/5 y calcular n_rojas + n_azules = (3/5)*40. Finalmente, usar el complemento para obtener n_amarillas. Esta traducción de enunciado verbal a fracción impide un uso mecánico de la fórmula sin entender qué indica el numerador y qué el denominador.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q64_v7",
+      "scenario_description": "Se cambia el contexto de bolitas a días, manteniendo el mismo modelo de probabilidad clásica. «En un calendario de un mes de 30 días, algunos días son FIN DE SEMANA o FERIADOS, y los demás son días HABILES comunes. Si se escoge un día al azar del mes, la probabilidad de que sea fin de semana o feriado es 2/5. ¿Cuántos días del mes NO son fin de semana ni feriado?»",
+      "non_mechanizable_axes": [
+        "contexto_semantico",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que el espacio muestral son los 30 días y que 'fin de semana o feriado' define el conjunto de casos favorables al evento dado. Con P(fin de semana o feriado) = n_favorables / 30 = 2/5 se obtiene n_favorables = (2/5)*30. Luego, el número pedido es el complemento: 30 − n_favorables. El cambio de contexto obliga a trasladar conscientemente el modelo de 'bolitas' a 'días', en vez de aplicar una receta solo por la apariencia de la urna.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q64_v8",
+      "scenario_description": "Se presenta el espacio muestral como una lista simbólica. «Se tiene la siguiente fila de 15 fichas, donde cada letra representa el color de una ficha:\nR R A A A V V V V V R A V\n(R = roja, A = azul, V = verde). Todas las fichas son igualmente probables al elegir una al azar. ¿Cuál de las siguientes fracciones representa la probabilidad de obtener una ficha VERDE?» Las opciones mezclan numeradores y denominadores posibles (número de verdes, de no verdes, total, etc.).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Antes de formar la fracción, el estudiante debe interpretar la representación simbólica y CONTAR cuántas fichas de cada color hay, especialmente las verdes. Luego debe identificar correctamente que la probabilidad es (n_verdes)/(total de fichas). Los distractores, al usar conteos erróneos o intercambiar numerador y denominador, obligan a comprender qué conjunto es 'favorable' y cuál es el espacio muestral completo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "favorable_case_check"
+    },
+    {
+      "variant_id": "Q64_v9",
+      "scenario_description": "Se da una probabilidad y se proponen distintas descripciones posibles de la distribución. «En una bolsa hay 36 caramelos: algunos son ÁCIDOS y los demás NO ÁCIDOS. La probabilidad de sacar al azar un caramelo NO ÁCIDO es 3/4. Se proponen las siguientes afirmaciones:\nA) Hay 9 caramelos ácidos y 27 no ácidos.\nB) Hay 12 caramelos ácidos y 24 no ácidos.\nC) Hay 18 caramelos ácidos y 18 no ácidos.\nD) Hay 24 caramelos ácidos y 12 no ácidos.\n¿Cuál descripción es coherente con la probabilidad dada?»",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Debe entender que P(no ácido) = n_noácidos / 36 = 3/4, de modo que n_noácidos = (3/4)*36 y n_ácidos = 36 − n_noácidos. Luego tiene que contrastar este resultado con cada afirmación. Los distractores representan distribuciones que a primera vista parecen razonables (suman 36), pero no respetan la fracción 3/4; por tanto, es indispensable aplicar el modelo de probabilidad clásica y no decidir solo por intuición de 'proporciones aproximadas'.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    },
+    {
+      "variant_id": "Q64_v10",
+      "scenario_description": "Se mantiene el mismo tipo de urna y totales, pero ahora se pide directamente la probabilidad del complemento en lugar de un conteo. «En una urna hay 36 bolitas amarillas, azules y rojas, todas del mismo tipo. Al sacar una bolita al azar, la probabilidad de que sea AMARILLA o AZUL es 2/3. ¿Cuál es la probabilidad de que la bolita extraída sea ROJA?» Las opciones son fracciones simples (por ejemplo, 1/3, 2/3, 1/2, 3/4), que explotan errores de complemento.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que los eventos 'amarilla o azul' y 'roja' son complementarios respecto del espacio muestral completo. A partir de P(amarilla o azul) = 2/3 debe concluir que P(roja) = 1 − 2/3, o bien razonar con conteo implícito: si (2/3)·36 bolitas son amarillas o azules, entonces el resto de las 36 son rojas, por lo que la probabilidad de roja es (#rojas)/36. Elegir la fracción correcta requiere comprender la relación entre probabilidad de un evento y la de su complemento, no solo repetir el número dado en el enunciado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "probability_statement_selection"
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q61_v7" title="Q61_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera un pilar metálico hueco de 5 m de largo. Su sección transversal es rectangular, como se muestra a continuación.</p>
+    <p>En el diagrama, las medidas exteriores del rectángulo son 120 mm por 80 mm, y las medidas del vacío interior (rectángulo interno) son 108 mm por 68 mm.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="Sección transversal de un pilar rectangular hueco: un rectángulo exterior de 120 mm de ancho (horizontal) y 80 mm de alto (vertical). En su interior, centrado, un rectángulo más pequeño que representa el vacío, con lados de 108 mm (horizontal) y 68 mm (vertical). El marco uniforme entre ambos rectángulos corresponde al metal del pilar." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Por cuál de los siguientes números hay que multiplicar el largo del pilar, en mm, para obtener el volumen de metal que contiene, en mm³?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>+</m:mo><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para obtener el volumen de metal se debe usar el área de la parte metálica de la sección transversal, que es área exterior menos área interior. El área exterior es <m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn></m:math> mm² y el vacío interior es <m:math><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>=</m:mo><m:mn>7344</m:mn></m:math> mm². Sumarlos da <m:math><m:mn>9600</m:mn><m:mo>+</m:mo><m:mn>7344</m:mn><m:mo>=</m:mo><m:mn>16&#160;944</m:mn></m:math> mm², que no corresponde solo al metal.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>−</m:mo><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El volumen del metal se obtiene multiplicando el largo por el área de la sección metálica. Esa área es área exterior menos área interior: <m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn></m:math> mm² y <m:math><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>=</m:mo><m:mn>7344</m:mn></m:math> mm². Entonces el número buscado es <m:math><m:mn>9600</m:mn><m:mo>−</m:mo><m:mn>7344</m:mn><m:mo>=</m:mo><m:mn>2256</m:mn></m:math>, es decir, <m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>−</m:mo><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>−</m:mo><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El área interior es menor que el área exterior: <m:math><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>=</m:mo><m:mn>7344</m:mn></m:math> mm² y <m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn></m:math> mm². Esta opción da <m:math><m:mn>7344</m:mn><m:mo>−</m:mo><m:mn>9600</m:mn><m:mo>=</m:mo><m:mn>−2256</m:mn></m:math> mm², un valor negativo, y un área para calcular volumen no puede ser negativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Solo se debe restar una vez el área del vacío interior. Aquí se está restando dos veces. Como <m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn></m:math> y <m:math><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>=</m:mo><m:mn>7344</m:mn></m:math>, esta opción da <m:math><m:mn>9600</m:mn><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>·</m:mo><m:mn>7344</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn><m:mo>−</m:mo><m:mn>14&#160;688</m:mn><m:mo>=</m:mo><m:mn>−5088</m:mn></m:math> mm², que no puede representar el área de metal.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Para obtener el volumen de metal, primero se debe determinar el área de la parte metálica de la sección transversal.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué número se debe multiplicar por el largo</strong></p>
+            <p>El volumen de un prisma se obtiene multiplicando el área de su sección transversal por el largo. Entonces, el número pedido debe ser el área de metal de la sección transversal, medida en mm².</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el área del rectángulo exterior</strong></p>
+            <p>El rectángulo exterior mide 120 mm por 80 mm, por lo tanto:</p>
+            <p><m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>9600</m:mn></m:math></p>
+            <p>El área exterior es 9600 mm².</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el área del rectángulo interior</strong></p>
+            <p>El vacío interior mide 108 mm por 68 mm, por lo tanto:</p>
+            <p><m:math><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn><m:mo>=</m:mo><m:mn>7344</m:mn></m:math></p>
+            <p>El área interior es 7344 mm².</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Restar para obtener solo el área del metal</strong></p>
+            <p>Como la parte interior es un vacío, se debe restar:</p>
+            <p><m:math><m:mn>9600</m:mn><m:mo>−</m:mo><m:mn>7344</m:mn><m:mo>=</m:mo><m:mn>2256</m:mn></m:math></p>
+            <p>El área de metal es 2256 mm².</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Relacionar con la expresión pedida</strong></p>
+            <p>La expresión que representa esa área, antes de efectuar la resta, es:</p>
+            <p><m:math><m:mn>120</m:mn><m:mo>·</m:mo><m:mn>80</m:mn><m:mo>−</m:mo><m:mn>108</m:mn><m:mo>·</m:mo><m:mn>68</m:mn></m:math></p>
+            <p>Ese es el número por el cual hay que multiplicar el largo del pilar, en mm, para obtener el volumen en mm³.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

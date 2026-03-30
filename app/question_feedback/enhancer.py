@@ -90,7 +90,7 @@ class FeedbackEnhancer:
     immediately after generation with retry logic.
     """
 
-    DEFAULT_MODEL = "gpt-5.1"
+    DEFAULT_MODEL = "gpt-5.4"
 
     def __init__(
         self,
@@ -101,7 +101,7 @@ class FeedbackEnhancer:
         """Initialise the enhancer.
 
         Args:
-            model: OpenAI model to use.  Defaults to gpt-5.1.
+            model: OpenAI model to use.  Defaults to gpt-5.4.
             max_retries: Maximum XSD validation retries.
             client: Pre-built client (DIP).  When ``None`` the factory
                 ``load_default_openai_client()`` is used.
@@ -274,4 +274,3 @@ class FeedbackEnhancer:
             return EnhancementResult(
                 success=False, error=f"Correction failed: {e}", attempts=1,
             )
-

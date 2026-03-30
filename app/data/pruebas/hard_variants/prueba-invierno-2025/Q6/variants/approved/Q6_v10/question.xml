@@ -1,0 +1,189 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v10" title="Q6_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una prueba escolar, las preguntas se clasifican en tres tipos según su dificultad.</p>
+    <p>Las preguntas de tipo A otorgan 1 punto, las de tipo B otorgan 4 puntos y las de tipo C otorgan 6 puntos.
+    <br />
+    <img src="recurso.png" alt="Ilustración de una caja con tres agujeros en forma de arco y sus puntajes." /></p>
+    <p>Un estudiante responde exactamente cinco preguntas en total y se sabe que respondió al menos una pregunta de cada tipo. El puntaje final es la suma de los puntos obtenidos en cada pregunta.</p>
+    <p>Cuatro estudiantes proponen distintos valores para el máximo puntaje que se puede obtener en estas condiciones: 20, 23, 21 y 26 puntos. Solo uno de estos valores podría corresponder efectivamente al máximo puntaje posible.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">20<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para maximizar el puntaje se debe responder la menor cantidad posible de preguntas de 1 punto y la mayor cantidad posible de preguntas de 6 puntos, cumpliendo que haya al menos una de cada tipo. Eso da 1 pregunta A, 1 pregunta B y 3 preguntas C, con puntaje 1 + 4 + 6 + 6 + 6 = 23. Como 23 es mayor que 20, 20 no puede ser el máximo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">23<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Como debe haber al menos una pregunta de cada tipo entre 5 preguntas, primero se consideran 1 de tipo A, 1 de tipo B y 1 de tipo C, que suman 1 + 4 + 6 = 11 puntos. Quedan 2 preguntas por elegir. Para obtener el máximo, ambas deben ser de tipo C, porque 6 es el mayor puntaje por pregunta. Entonces el máximo es 11 + 6 + 6 = 23.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">21<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Sí es posible obtener un puntaje mayor que 21 cumpliendo todas las condiciones: 1 pregunta de tipo A, 1 de tipo B y 3 de tipo C suman 1 + 4 + 6 + 6 + 6 = 23. Como 23 es mayor que 21 y usa exactamente cinco preguntas con al menos una de cada tipo, 21 no puede ser el máximo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">26<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El mayor puntaje por pregunta es 6. Si se respondieran cinco preguntas de 6 puntos, se obtendrían 30 puntos, pero eso no cumple la condición de responder al menos una de cada tipo. Al obligar a incluir una pregunta de 1 punto y una de 4 puntos, la mejor distribución posible es 1 de tipo A, 1 de tipo B y 3 de tipo C, con 1 + 4 + 6 + 6 + 6 = 23. Por lo tanto, 26 no puede ser el máximo.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los puntajes de cada tipo</strong></p>
+            <p>Según el enunciado, una pregunta de tipo A vale 1 punto, una de tipo B vale 4 puntos y una de tipo C vale 6 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar la condición “al menos una de cada tipo”</strong></p>
+            <p>Como el estudiante responde exactamente cinco preguntas y debe haber al menos una de cada tipo, una selección mínima obligatoria es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn><mtext> pregunta A</mtext><mo>,</mo>
+                  <mn>1</mn><mtext> pregunta B</mtext><mo>,</mo>
+                  <mn>1</mn><mtext> pregunta C</mtext>
+                </mrow>
+              </math>
+            </p>
+            <p>Eso ocupa 3 preguntas. Como en total son 5, faltan 2 preguntas por asignar.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Maximizar el puntaje</strong></p>
+            <p>Para que el puntaje total sea máximo, las 2 preguntas que faltan deben ser del tipo que más puntos entrega.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>6</mn><mo>&gt;</mo><mn>4</mn><mo>&gt;</mo><mn>1</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces conviene que ambas sean de tipo C.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Formar la distribución que da el máximo</strong></p>
+            <p>La distribución óptima es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn><mtext> A</mtext><mo>,</mo>
+                  <mn>1</mn><mtext> B</mtext><mo>,</mo>
+                  <mn>3</mn><mtext> C</mtext>
+                </mrow>
+              </math>
+            </p>
+            <p>Verificamos que son cinco preguntas:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>5</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Calcular el puntaje total</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn><mo>×</mo><mn>1</mn>
+                  <mo>+</mo>
+                  <mn>1</mn><mo>×</mo><mn>4</mn>
+                  <mo>+</mo>
+                  <mn>3</mn><mo>×</mo><mn>6</mn>
+                  <mo>=</mo>
+                  <mn>1</mn><mo>+</mo><mn>4</mn><mo>+</mo><mn>18</mn>
+                  <mo>=</mo><mn>23</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar con las alternativas</strong></p>
+            <p>El máximo puntaje posible es 23. Por eso:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>20</mn><mo>&lt;</mo><mn>23</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>21</mn><mo>&lt;</mo><mn>23</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>y 26 no es posible, porque ya mostramos que la mejor distribución permitida alcanza 23.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única opción que puede corresponder al máximo puntaje posible es <strong>23 puntos</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

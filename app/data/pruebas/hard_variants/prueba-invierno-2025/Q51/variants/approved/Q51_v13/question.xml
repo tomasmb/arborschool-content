@@ -1,0 +1,154 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v13" title="Q51_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      Un dron parte desde una plataforma de despegue. El piloto automático tiene registrada la siguiente ruta: primero avanza 5 unidades hacia el norte y 9 hacia el este para alcanzar un punto de referencia. Luego, el operador corrige la posición del dron dos veces.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="[Dibujar una rosa de los vientos con cuatro flechas que salgan desde el centro, etiquetadas N (norte) hacia arriba, S (sur) hacia abajo, E (este) hacia la derecha y O (oeste) hacia la izquierda, sin otros elementos adicionales.]" />
+    </p>
+    <p>
+      Resumen de los desplazamientos registrados (medidos desde la misma plataforma):
+      <br />
+      
+      1) Desplazamiento inicial: 5 unidades al norte y 9 unidades al este.
+      <br />
+      2) Primera corrección: 6 unidades al sur y 3 unidades al este.
+      <br />
+      3) Segunda corrección: 14 unidades al norte y 5 unidades al oeste.
+    </p>
+    <p>
+      Considerando estos tres desplazamientos en conjunto, ¿cuál de las siguientes descripciones es consistente con la posición final del dron respecto de la plataforma de despegue?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">El dron terminó 14 unidades al norte y 5 unidades al oeste de la plataforma.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al sumar los desplazamientos verticales se obtiene 5 al norte, luego 6 al sur y luego 14 al norte, es decir, 5 − 6 + 14 = 13, por lo que no termina 14 unidades al norte. Al sumar los desplazamientos horizontales se obtiene 9 al este, luego 3 al este y luego 5 al oeste, es decir, 9 + 3 − 5 = 7, por lo que tampoco termina 5 unidades al oeste.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El dron terminó 13 unidades al norte y 7 unidades al este de la plataforma.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La componente norte-sur es 5 − 6 + 14 = 13, así que el dron queda 13 unidades al norte. La componente este-oeste es 9 + 3 − 5 = 7, así que queda 7 unidades al este. Por eso la descripción coincide exactamente con la posición final.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">El dron terminó 13 unidades al norte y 17 unidades al este de la plataforma.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La componente norte-sur sí da 13, porque 5 − 6 + 14 = 13. Pero la componente este-oeste no da 17: 9 + 3 − 5 = 7. Por lo tanto, la posición final no es 13 unidades al norte y 17 unidades al este.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">El dron terminó 25 unidades al norte y 7 unidades al este de la plataforma.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La componente este-oeste sí da 7, porque 9 + 3 − 5 = 7. Sin embargo, la componente norte-sur no da 25: 5 − 6 + 14 = 13. Por lo tanto, la posición final no es 25 unidades al norte y 7 unidades al este.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Separar los desplazamientos verticales y horizontales</strong></p>
+            <p>Verticales: 5 unidades al norte, 6 unidades al sur y 14 unidades al norte.</p>
+            <p>Horizontales: 9 unidades al este, 3 unidades al este y 5 unidades al oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la componente norte-sur</strong></p>
+            <p>Tomamos norte como positivo y sur como negativo.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5</mn>
+                <mo>−</mo>
+                <mn>6</mn>
+                <mo>+</mo>
+                <mn>14</mn>
+                <mo>=</mo>
+                <mn>13</mn>
+              </mrow>
+            </math>
+            <p>Entonces el dron queda 13 unidades al norte de la plataforma.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular la componente este-oeste</strong></p>
+            <p>Tomamos este como positivo y oeste como negativo.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>9</mn>
+                <mo>+</mo>
+                <mn>3</mn>
+                <mo>−</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>7</mn>
+              </mrow>
+            </math>
+            <p>Entonces el dron queda 7 unidades al este de la plataforma.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Escribir la posición final completa</strong></p>
+            <p>La posición final del dron, respecto de la plataforma de despegue, es:</p>
+            <p>13 unidades al norte y 7 unidades al este.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

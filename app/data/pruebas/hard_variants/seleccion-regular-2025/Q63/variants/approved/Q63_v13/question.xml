@@ -1,0 +1,118 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q63_v13" title="Q63_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente dibujo se muestra un velero en la posición A y el mismo velero en la posición B. Ambos veleros tienen exactamente la misma forma, tamaño y orientación; solo cambia su ubicación dentro de la imagen. ¿Cuál de las siguientes descripciones corresponde a la transformación geométrica que lleva el velero de la posición A a la posición B?</p>
+    <p><img src="velero.png" alt="Dibujo de un velero en dos posiciones" /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Rotación alrededor de un punto de la imagen.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En una rotación la figura gira alrededor de un punto, por lo que cambia su orientación. En la imagen, el velero de A y el de B conservan la misma orientación. Como no se observa giro, no corresponde a una rotación.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Traslación en el plano de la imagen.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Una traslación desplaza una figura completa de un lugar a otro sin cambiar su forma, su tamaño ni su orientación. Eso es exactamente lo que ocurre entre A y B: el velero mantiene las mismas características y solo cambia de posición. Por lo tanto, la transformación es una traslación.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Reflexión respecto de un eje vertical.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En una reflexión respecto de un eje vertical la figura queda invertida de izquierda a derecha. En la imagen, el velero de B no aparece invertido respecto del de A; mantiene la misma orientación. Por eso no es una reflexión vertical.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Agrandamiento respecto de un punto de la imagen.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En un agrandamiento la figura cambia de tamaño, aunque conserve la forma. Aquí el velero en A y el velero en B tienen el mismo tamaño. Como no hay cambio de escala, no corresponde a un agrandamiento.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué se conserva</strong></p>
+            <p>El enunciado indica que el velero en A y el velero en B tienen la misma forma, el mismo tamaño y la misma orientación. Por lo tanto, la transformación no altera ninguna de esas características.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar si puede ser una rotación</strong></p>
+            <p>Una rotación hace girar la figura alrededor de un punto. Si hubiera rotación, la orientación del velero cambiaría. Como en A y en B la orientación se mantiene, se descarta la rotación.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar si puede ser una reflexión</strong></p>
+            <p>Una reflexión respecto de un eje vertical produce una inversión lateral. Eso no ocurre en la imagen, porque el velero conserva la misma orientación en ambas posiciones. Entonces no es una reflexión.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Analizar si puede ser un agrandamiento</strong></p>
+            <p>Un agrandamiento modifica el tamaño de la figura. Como el enunciado establece que ambas figuras tienen el mismo tamaño, también se descarta esa opción.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Determinar la transformación correcta</strong></p>
+            <p>Si una figura conserva forma, tamaño y orientación, y solo cambia de lugar, la transformación correspondiente es una traslación.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La transformación geométrica que lleva el velero desde la posición A a la posición B es una <strong>traslación en el plano</strong>. La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

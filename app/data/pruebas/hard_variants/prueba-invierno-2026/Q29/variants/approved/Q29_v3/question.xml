@@ -1,0 +1,204 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q29_v3" title="Q29_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un plan de internet prepago, el costo es proporcional a la cantidad de datos móviles que se compran. En el siguiente registro se muestran algunos valores.</p>
+    <div>
+      <m:math display="block">
+        <m:mtable>
+          <m:mtr>
+            <m:mtd><m:mtext>GB de datos</m:mtext></m:mtd>
+            <m:mtd><m:mtext>Precio en pesos</m:mtext></m:mtd>
+          </m:mtr>
+          <m:mtr>
+            <m:mtd><m:mn>1</m:mn></m:mtd>
+            <m:mtd><m:mn>1&#160;500</m:mn></m:mtd>
+          </m:mtr>
+          <m:mtr>
+            <m:mtd><m:mn>4</m:mn></m:mtd>
+            <m:mtd><m:mn>6&#160;000</m:mn></m:mtd>
+          </m:mtr>
+          <m:mtr>
+            <m:mtd><m:mn>6</m:mn></m:mtd>
+            <m:mtd><m:mn>9&#160;000</m:mn></m:mtd>
+          </m:mtr>
+        </m:mtable>
+      </m:math>
+    </div>
+    <p>Si <m:math><m:mi>x</m:mi></m:math> representa la cantidad de GB de datos que se compran, ¿cuál de las siguientes expresiones da el precio, en pesos, por <m:math><m:mi>x</m:mi></m:math> GB?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mn>1&#160;500</m:mn><m:mi>x</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Como el costo es proporcional, el precio por 1 GB es 1 500 pesos. Entonces, por x GB el precio se obtiene multiplicando 1 500 × x, es decir, 1 500x. Además, se verifica con la tabla: 4 GB → 1 500 × 4 = 6 000 y 6 GB → 1 500 × 6 = 9 000.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>1&#160;500</m:mn>
+            <m:mi>x</m:mi>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera 1 500 ÷ x, al tomar x = 4 se obtendría 1 500 ÷ 4 = 375 pesos, pero la tabla muestra que 4 GB cuestan 6 000 pesos. Por lo tanto, 1 500 ÷ x no representa el precio por x GB.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mi>x</m:mi><m:mo>+</m:mo><m:mn>1&#160;500</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera x + 1 500, al tomar x = 4 se obtendría 4 + 1 500 = 1 504 pesos, pero la tabla muestra que 4 GB cuestan 6 000 pesos. Entonces, x + 1 500 no da el precio correcto.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mi>x</m:mi><m:mo>+</m:mo><m:mn>6&#160;000</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera x + 6 000, al tomar x = 1 se obtendría 1 + 6 000 = 6 001 pesos, pero la tabla muestra que 1 GB cuesta 1 500 pesos. Por lo tanto, x + 6 000 no representa el precio por x GB.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la relación entre GB y precio</strong></p>
+            <p>El enunciado dice que el costo es proporcional a la cantidad de datos móviles. Eso significa que el precio se puede expresar como una constante multiplicada por la cantidad de GB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Encontrar el valor de la constante de proporcionalidad</strong></p>
+            <p>De la tabla se observa que:</p>
+            <p>
+              <m:math display="block">
+                <m:mrow>
+                  <m:mn>1</m:mn><m:mtext> GB </m:mtext><m:mo>→</m:mo><m:mtext> </m:mtext><m:mn>1&#160;500</m:mn><m:mtext> pesos</m:mtext>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces, cada GB cuesta 1 500 pesos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Escribir la expresión para x GB</strong></p>
+            <p>Si cada GB cuesta 1 500 pesos, entonces x GB cuestan:</p>
+            <p>
+              <m:math display="block">
+                <m:mrow>
+                  <m:mn>1&#160;500</m:mn><m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con los datos de la tabla</strong></p>
+            <p>Para 4 GB:</p>
+            <p>
+              <m:math display="block">
+                <m:mrow>
+                  <m:mn>1&#160;500</m:mn><m:mo>×</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>6&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Para 6 GB:</p>
+            <p>
+              <m:math display="block">
+                <m:mrow>
+                  <m:mn>1&#160;500</m:mn><m:mo>×</m:mo><m:mn>6</m:mn><m:mo>=</m:mo><m:mn>9&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Los resultados coinciden con la tabla.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión que da el precio, en pesos, por x GB es:</p>
+            <p>
+              <m:math display="block">
+                <m:mrow>
+                  <m:mn>1&#160;500</m:mn><m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La alternativa correcta es <strong>A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

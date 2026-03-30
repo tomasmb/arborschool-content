@@ -1,0 +1,163 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v5" title="Q51_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una ciudad con calles en forma de cuadrícula, un dron despega siempre desde una plataforma central. Cuando se programó por primera vez para llegar a una tienda, debía volar siete cuadras hacia el norte y cinco cuadras hacia el oeste desde la plataforma.</p>
+    <p>Con el tiempo, la tienda se mudó dos veces: primero cuatro cuadras hacia el sur y dos cuadras hacia el oeste, y luego ocho cuadras hacia el norte y seis cuadras hacia el este. Para orientar los movimientos del dron se usa la siguiente rosa de los vientos:<br />
+<img src="requiere_nueva_imagen.png" alt="Ilustración de un dron sobre una cuadrícula de ciudad vista desde arriba. En el centro hay una plataforma cuadrada marcada como 'Plataforma'. En una esquina superior del dibujo aparece una rosa de los vientos con las letras N en la parte superior, S en la parte inferior, E a la derecha y O a la izquierda, sin coordenadas numéricas ni distancias indicadas." />
+    </p>
+    <p>Si se quiere programar el dron con una sola instrucción desde la plataforma hasta la ubicación actual de la tienda, ¿cuál de las siguientes instrucciones es correcta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Vuele diecinueve cuadras hacia el norte y trece cuadras hacia el este desde la plataforma.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La posición final se obtiene así: 7 cuadras al norte y 5 al oeste; luego 4 al sur y 2 al oeste dejan 3 al norte y 7 al oeste; después 8 al norte y 6 al este dejan 11 al norte y 1 al oeste. Por eso no corresponde volar 19 cuadras al norte y 13 al este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Vuele once cuadras hacia el norte y trece cuadras hacia el este desde la plataforma.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Al combinar los desplazamientos, la tienda queda 11 cuadras al norte y 1 al oeste: desde 7 norte y 5 oeste, pasar 4 al sur y 2 al oeste da 3 norte y 7 oeste; luego 8 al norte y 6 al este da 11 norte y 1 oeste. Por eso no corresponde 13 cuadras al este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Vuele diecinueve cuadras hacia el norte y una cuadra hacia el oeste desde la plataforma.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento oeste sí termina en 1 cuadra al oeste, pero el desplazamiento norte no es 19. Se calcula 7 al norte menos 4 al sur más 8 al norte, y eso da 11 al norte. Por lo tanto, la instrucción correcta no puede ser 19 cuadras al norte y 1 al oeste.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Vuele once cuadras hacia el norte y una cuadra hacia el oeste desde la plataforma.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! La posición final resulta de sumar desplazamientos por separado: en dirección norte-sur, 7 al norte menos 4 al sur más 8 al norte da 11 al norte; en dirección este-oeste, 5 al oeste más 2 al oeste menos 6 al este da 1 al oeste. Por eso la instrucción correcta es volar 11 cuadras hacia el norte y 1 cuadra hacia el oeste.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la posición inicial de la tienda respecto de la plataforma</strong></p>
+            <p>Al comienzo, la tienda estaba ubicada a 7 cuadras hacia el norte y 5 cuadras hacia el oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar la primera mudanza</strong></p>
+            <p>La tienda se mueve 4 cuadras hacia el sur y 2 cuadras hacia el oeste.</p>
+            <p>En dirección norte-sur:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>7</mn>
+                <mo>−</mo>
+                <mn>4</mn>
+                <mo>=</mo>
+                <mn>3</mn>
+              </mrow>
+            </math>
+            <p>Queda 3 cuadras hacia el norte.</p>
+            <p>En dirección este-oeste:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>5</mn>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mo>=</mo>
+                <mn>7</mn>
+              </mrow>
+            </math>
+            <p>Queda 7 cuadras hacia el oeste.</p>
+            <p>Después de la primera mudanza, la tienda queda a 3 cuadras al norte y 7 cuadras al oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la segunda mudanza</strong></p>
+            <p>Luego la tienda se mueve 8 cuadras hacia el norte y 6 cuadras hacia el este.</p>
+            <p>En dirección norte-sur:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn>
+                <mo>+</mo>
+                <mn>8</mn>
+                <mo>=</mo>
+                <mn>11</mn>
+              </mrow>
+            </math>
+            <p>Queda 11 cuadras hacia el norte.</p>
+            <p>En dirección este-oeste:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>7</mn>
+                <mo>−</mo>
+                <mn>6</mn>
+                <mo>=</mo>
+                <mn>1</mn>
+              </mrow>
+            </math>
+            <p>Queda 1 cuadra hacia el oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Escribir la instrucción única desde la plataforma</strong></p>
+            <p>La ubicación actual de la tienda es 11 cuadras hacia el norte y 1 cuadra hacia el oeste desde la plataforma.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La instrucción correcta es: <strong>Vuele once cuadras hacia el norte y una cuadra hacia el oeste desde la plataforma.</strong></p>
+            <p>Corresponde a la <strong>opción D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

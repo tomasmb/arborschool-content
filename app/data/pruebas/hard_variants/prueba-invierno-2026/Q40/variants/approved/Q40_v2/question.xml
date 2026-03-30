@@ -1,0 +1,189 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v2" title="Q40_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La distancia de reacción es la distancia recorrida por un vehículo desde que el conductor se percata de un obstáculo hasta que comienza a pisar el pedal de freno.</p>
+    <p>La distancia de reacción <m:math><m:mi>f</m:mi></m:math> y la rapidez del vehículo se relacionan mediante una función de la forma <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi>x</m:mi></m:math>, con <m:math><m:mi>a</m:mi></m:math> constante, donde <m:math><m:mi>x</m:mi></m:math> es la rapidez en km/h y <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:math> la distancia de reacción en metros.</p>
+    <p>Por ejemplo, cuando el vehículo se desplaza a 120 km/h, la distancia de reacción es 36 m, y cuando se desplaza a 80 km/h, la distancia de reacción es 24 m. ¿Cuál de las siguientes funciones <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:math>, donde <m:math><m:mi>x</m:mi></m:math> es la rapidez en km/h y <m:math><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo></m:math> la distancia de reacción en metros, modela correctamente esta situación?</p>
+    <table>
+      <tr>
+        <th>Rapidez del vehículo (km/h)</th>
+        <th>Distancia de reacción (m)</th>
+      </tr>
+      <tr>
+        <td>120</td>
+        <td>36</td>
+      </tr>
+      <tr>
+        <td>80</td>
+        <td>24</td>
+      </tr>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Seleccione la función que representa correctamente la relación descrita.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mn>0,3</m:mn>
+            <m:mi>x</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Esta función cumple los dos datos de la tabla: 0,3 × 120 = 36 y 0,3 × 80 = 24. Además, 36 ÷ 120 = 0,3 y 24 ÷ 80 = 0,3, por lo que la constante es la misma en ambos casos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mn>3</m:mn>
+            <m:mi>x</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si f(x) = 3x, entonces para 120 km/h se obtiene 3 × 120 = 360, pero la tabla indica 36. También, para 80 km/h se obtiene 3 × 80 = 240, pero la tabla indica 24. No modela la situación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mi>x</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si f(x) = x + 3, entonces para 120 km/h se obtiene 120 + 3 = 123, pero la tabla indica 36. Además, para 80 km/h se obtiene 80 + 3 = 83, pero la tabla indica 24. No corresponde a los datos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mi>f</m:mi>
+            <m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo>
+            <m:mo>=</m:mo>
+            <m:mfrac>
+              <m:mn>36</m:mn>
+              <m:mn>80</m:mn>
+            </m:mfrac>
+            <m:mi>x</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En esta opción la constante es 36 ÷ 80 = 0,45. Entonces, para 80 km/h se obtiene 0,45 × 80 = 36, pero la tabla indica 24. También, para 120 km/h se obtiene 0,45 × 120 = 54, pero la tabla indica 36. No satisface los datos dados.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el tipo de función</strong></p>
+            <p>El enunciado dice que la relación tiene la forma <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mi>x</m:mi></m:mrow></m:math>, donde <m:math><m:mi>a</m:mi></m:math> es constante. Por lo tanto, se trata de una proporcionalidad directa.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la constante usando el primer dato</strong></p>
+            <p>Cuando <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>120</m:mn></m:math>, la distancia es <m:math><m:mn>36</m:mn></m:math>. Entonces:</p>
+            <p><m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>36</m:mn><m:mn>120</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>0,3</m:mn></m:mrow></m:math></p>
+            <p>En notación decimal usada en Chile, <m:math><m:mn>0,3</m:mn></m:math> corresponde a 0,3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con el segundo dato</strong></p>
+            <p>Cuando <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>80</m:mn></m:math>, la distancia es <m:math><m:mn>24</m:mn></m:math>. Entonces:</p>
+            <p><m:math><m:mrow><m:mfrac><m:mn>24</m:mn><m:mn>80</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>0,3</m:mn></m:mrow></m:math></p>
+            <p>Se obtiene la misma constante, así que el modelo es consistente.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Escribir la función</strong></p>
+            <p>Como <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>0,3</m:mn></m:math>, la función es:</p>
+            <p><m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,3</m:mn><m:mi>x</m:mi></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comprobar la opción correcta</strong></p>
+            <p>Si se reemplaza <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>120</m:mn></m:math>, resulta <m:math><m:mrow><m:mn>0,3</m:mn><m:mo>×</m:mo><m:mn>120</m:mn><m:mo>=</m:mo><m:mn>36</m:mn></m:mrow></m:math>.</p>
+            <p>Si se reemplaza <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>80</m:mn></m:math>, resulta <m:math><m:mrow><m:mn>0,3</m:mn><m:mo>×</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>24</m:mn></m:mrow></m:math>.</p>
+            <p>Ambos valores coinciden con la tabla.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La función que modela correctamente la situación es la alternativa A: <m:math><m:mrow><m:mi>f</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,3</m:mn><m:mi>x</m:mi></m:mrow></m:math>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

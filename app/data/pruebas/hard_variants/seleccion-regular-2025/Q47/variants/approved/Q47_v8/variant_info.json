@@ -1,0 +1,120 @@
+{
+  "variant_id": "Q47_v8",
+  "source_question_id": "Q47",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q47_v8",
+    "scenario_description": "El contexto se cambia a una encuesta sobre cuál actividad prefieren realizar los estudiantes en una jornada de convivencia: Deporte, Música, Cine o Juegos de mesa. Se presentan dos grupos: estudiantes del turno MAÑANA y del turno TARDE. Para el turno MAÑANA se usa un gráfico circular con porcentajes por actividad. Para el turno TARDE se emplea un gráfico de barras con frecuencias absolutas (número de estudiantes). El enunciado aclara que la cantidad de estudiantes encuestados en la mañana es igual a la de la tarde. La pregunta plantea cuatro afirmaciones del tipo: A) \"En total, más de 80 estudiantes prefieren Deporte\"; B) \"La actividad menos elegida en total es Juegos de mesa\"; C) \"Música y Cine suman el mismo número total de preferencias\"; D) \"La actividad más elegida en la mañana también es la más elegida en el total\". Se pide seleccionar la única verdadera.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "required_reasoning": "El estudiante debe determinar el total de estudiantes por grupo sumando las barras del turno tarde, luego calcular x% de ese total para cada actividad en el turno mañana, sumar por actividad y usar esos totales para verificar varias afirmaciones cuantitativas y comparativas. No puede resolver solo por intuición visual, pues las opciones se construyen para que pequeñas diferencias importen. Es necesario entender que los porcentajes de la mañana se aplican sobre el mismo N que las barras de la tarde, lo que obliga a razonar con el método, no solo con lecturas superficiales de los gráficos.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Dos gráficos: a la izquierda, gráfico circular titulado \"Actividad preferida turno mañana\" con cuatro sectores etiquetados por actividad y porcentaje; a la derecha, gráfico de barras vertical titulado \"Actividad preferida turno tarde\" con cuatro barras (Deporte, Música, Cine, Juegos de mesa) y número de estudiantes sobre cada una.",
+    "selected_shape_id": "extremum_focus"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta"
+    ],
+    "main_risk_checked": "Verifiqué que la respuesta exige leer ambos gráficos, deducir el total por turno a partir de las barras y convertir porcentajes en cantidades para comparar totales por actividad, sin convertir la tarea en un cálculo directo basado en una tabla textual que reemplace la representación gráfica."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-NUM-02-06"
+    ],
+    "primary_atom_titles": [
+      "Cálculo directo del porcentaje de una cantidad"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": true,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "representation_primary",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "multiple_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_preserve_direct_computation",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

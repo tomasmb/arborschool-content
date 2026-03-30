@@ -1,0 +1,127 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q56_v5" title="Q56_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una biblioteca escolar se registró, para cada usuario, la cantidad de años que lleva inscrito. A continuación se muestra la cantidad de usuarios según tramos de antigüedad:</p>
+    <div>
+      <p>Tramo de antigüedad - Cantidad de usuarios</p>
+      <p>1–2 años: 18 usuarios</p>
+      <p>3–4 años: 25 usuarios</p>
+      <p>5–6 años: 31 usuarios</p>
+      <p>7 o más años: 16 usuarios</p>
+    </div>
+    <p>¿Cuántos usuarios llevan al menos 3 años y menos de 7 años inscritos en la biblioteca?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">25<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. “Al menos 3 años y menos de 7 años” incluye dos tramos: 3–4 años y 5–6 años. Por eso se debe sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>=</mo><mn>56</mn></mrow></math>. La opción 25 cuenta solo el tramo 3–4 años, pero falta agregar el tramo 5–6 años.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">56<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! “Al menos 3 años y menos de 7 años” corresponde a los tramos 3–4 años y 5–6 años. Entonces se suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>=</mo><mn>56</mn></mrow></math>. Por lo tanto, hay 56 usuarios.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">31<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. “Al menos 3 años y menos de 7 años” no corresponde solo al tramo 5–6 años. También incluye el tramo 3–4 años. Entonces el total correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>=</mo><mn>56</mn></mrow></math>. La opción 31 deja fuera a los 25 usuarios del tramo 3–4 años.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">72<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Para “al menos 3 años y menos de 7 años” se consideran solo los tramos 3–4 años y 5–6 años, de modo que el cálculo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>=</mo><mn>56</mn></mrow></math>. El valor 72 se obtiene con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>+</mo><mn>16</mn><mo>=</mo><mn>72</mn></mrow></math>, pero eso incluye también a quienes tienen 7 o más años, y esa parte no cumple la condición “menos de 7 años”.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué tramos cumplen la condición</strong></p>
+            <p>La expresión “al menos 3 años” significa 3 años o más.</p>
+            <p>La expresión “menos de 7 años” significa una cantidad menor que 7.</p>
+            <p>Por lo tanto, los tramos que cumplen ambas condiciones son:</p>
+            <p>3–4 años: 25 usuarios</p>
+            <p>5–6 años: 31 usuarios</p>
+          </li>
+          <li>
+            <p><strong>Excluir los tramos que no corresponden</strong></p>
+            <p>El tramo 1–2 años no sirve porque no llega a 3 años.</p>
+            <p>El tramo 7 o más años no sirve porque no es menor que 7.</p>
+          </li>
+          <li>
+            <p><strong>Sumar las cantidades de los tramos válidos</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>25</mn><mo>+</mo><mn>31</mn><mo>=</mo><mn>56</mn></mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad de usuarios que llevan al menos 3 años y menos de 7 años inscritos en la biblioteca es 56.</p>
+            <p>La alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

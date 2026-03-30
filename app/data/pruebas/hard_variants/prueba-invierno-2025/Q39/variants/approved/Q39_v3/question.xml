@@ -1,0 +1,149 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q39_v3" title="Q39_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un registro breve se reportaron 100 unidades. Luego se estimó un aumento de 30 % respecto de esa cantidad.</p>
+    <p>Selecciona la afirmación que interpreta correctamente el aumento porcentual aplicado a esa cantidad.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones describe correctamente el nuevo total?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Se calculó que el aumento equivalía a 30 unidades y ese valor se tomó como total final: 30 unidades.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El 30 % de 100 es 30, pero 30 corresponde solo al aumento y no al total final. El nuevo total se obtiene sumando 100 + 30, por lo que el total correcto es 130 unidades, no 30 unidades.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Se vendieron 30 unidades más que antes, por lo que el total actualizado fue 130 unidades.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El 30 % de 100 es 30 unidades. Como el aumento es respecto de la cantidad inicial, el nuevo total es 100 + 30 = 130 unidades. Por eso la afirmación describe correctamente el total actualizado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Se volvió a sumar el aumento calculado y por eso el total registrado fue 160 unidades.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El 30 % de 100 es 30 unidades. Entonces el nuevo total correcto es 100 + 30 = 130 unidades. La afirmación indica 160 unidades, pero 160 = 100 + 30 + 30, lo que agrega el aumento dos veces y no corresponde al enunciado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">No hubo cambio relevante y el total actualizado siguió siendo 100 unidades.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí hubo un aumento de 30 % respecto de 100 unidades. Ese aumento es 30 unidades, porque 30 % de 100 es 30. Entonces el total actualizado es 100 + 30 = 130 unidades, no 100 unidades.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Para resolver el ejercicio, primero se calcula el 30 % de 100, que es 30. Luego se suma ese aumento a la cantidad inicial: 100 + 30 = 130. Por lo tanto, la afirmación correcta es la alternativa B.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la cantidad inicial</strong></p>
+            <p>La cantidad inicial reportada es 100 unidades.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el 30 % de la cantidad inicial</strong></p>
+            <p>Para hallar el aumento, calculamos el 30 % de 100:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mn>30</mn>
+                    <mn>100</mn>
+                  </mfrac>
+                  <mo>×</mo>
+                  <mn>100</mn>
+                  <mo>=</mo>
+                  <mn>30</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El aumento es 30 unidades.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar el aumento a la cantidad inicial</strong></p>
+            <p>El nuevo total se obtiene así:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>100</mn>
+                  <mo>+</mo>
+                  <mn>30</mn>
+                  <mo>=</mo>
+                  <mn>130</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La alternativa A dice 30 unidades, pero 30 es solo el aumento.</p>
+            <p>La alternativa B dice 130 unidades, que coincide con el total calculado.</p>
+            <p>La alternativa C dice 160 unidades, que no corresponde al aumento de 30 % aplicado una sola vez.</p>
+            <p>La alternativa D dice 100 unidades, pero eso ignora el aumento.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es la alternativa B: el total actualizado fue 130 unidades.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

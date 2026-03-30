@@ -1,0 +1,217 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q52_v3" title="Probabilidad carrera no salud" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una encuesta a un grupo de 2400 personas se les preguntó por la preferencia de estudiar una de cuatro carreras profesionales, de modo que cada persona escogió solo una carrera. Los resultados fueron los siguientes:</p>
+    <div>
+      <p>Carrera profesional — Frecuencia</p>
+      <p>Ingeniería civil: 1000</p>
+      <p>Periodismo: 500</p>
+      <p>Medicina: 600</p>
+      <p>Enfermería: 300</p>
+    </div>
+    <p>Se considera que las carreras del área de la salud son Medicina y Enfermería. Si se escoge al azar a una de estas personas, ¿cuál de las siguientes expresiones permite determinar la probabilidad de que esta persona NO prefiera una carrera del área de la salud?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mtext>Frecuencia ingeniería civil</m:mtext>
+              <m:mo>+</m:mo>
+              <m:mtext>Frecuencia periodismo</m:mtext>
+            </m:mrow>
+            <m:mn>1500</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las personas que NO prefieren carreras del área de la salud son las que prefieren Ingeniería civil o Periodismo: 1000 + 500 = 1500. Pero la probabilidad se calcula dividiendo los casos favorables por el total de personas encuestadas, que es 2400, no por 1500. Esta opción representa 1500 dividido por 1500, es decir, 1, y eso no corresponde a la situación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mrow>
+              <m:mtext>Frecuencia ingeniería civil</m:mtext>
+              <m:mo>+</m:mo>
+              <m:mtext>Frecuencia periodismo</m:mtext>
+            </m:mrow>
+            <m:mn>2400</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Las carreras que NO son del área de la salud son Ingeniería civil y Periodismo. Sus frecuencias suman 1000 + 500 = 1500. Como el total de personas encuestadas es 2400, la probabilidad se determina con la expresión 1500 dividido por 2400, que corresponde exactamente a esta opción.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>−</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia ingeniería civil</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia periodismo</m:mtext>
+              </m:mrow>
+              <m:mn>2400</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En esta opción se calcula 1 menos la probabilidad de preferir Ingeniería civil o Periodismo. Como 1000 + 500 = 1500, esta expresión es 1 menos 1500 dividido por 2400, o sea la probabilidad complementaria. Esa probabilidad corresponde a preferir una carrera del área de la salud, no a NO preferirla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mn>1</m:mn>
+            <m:mo>−</m:mo>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia ingeniería civil</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia periodismo</m:mtext>
+              </m:mrow>
+              <m:mn>1500</m:mn>
+            </m:mfrac>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aquí se usa 1 menos 1500 dividido por 1500. Como 1000 + 500 = 1500, esa fracción es 1, y entonces la expresión completa vale 0. Sin embargo, sí hay personas que no prefieren carreras del área de la salud: son 1500 de 2400. Por eso esta opción no determina la probabilidad pedida.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las carreras del área de la salud</strong></p>
+            <p>El enunciado indica que las carreras del área de la salud son Medicina y Enfermería.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar las carreras que NO son del área de la salud</strong></p>
+            <p>Las carreras que no pertenecen al área de la salud son Ingeniería civil y Periodismo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las frecuencias favorables</strong></p>
+            <p>Las personas que NO prefieren una carrera del área de la salud son:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1000</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>500</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>1500</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Identificar el total de casos posibles</strong></p>
+            <p>El total de personas encuestadas es 2400.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Formar la probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>casos favorables</m:mtext>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mtext>casos posibles</m:mtext>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Entonces, la expresión pedida es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>1500</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>2400</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión correcta es la que tiene en el numerador la suma de las frecuencias de Ingeniería civil y Periodismo, y en el denominador el total de 2400 personas. Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

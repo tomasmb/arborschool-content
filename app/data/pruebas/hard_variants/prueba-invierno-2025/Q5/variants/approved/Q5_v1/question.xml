@@ -1,0 +1,182 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v1" title="Q5_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se registran los volúmenes de agua que tienen cuatro botellas.</p>
+    <div>
+      <table border="1" cellpadding="4" cellspacing="0">
+        <tr>
+          <th>Botella</th>
+          <th>Volumen de agua (en litros)</th>
+        </tr>
+        <tr>
+          <td>Ana</td>
+          <td>1,5</td>
+        </tr>
+        <tr>
+          <td>Beto</td>
+          <td>1,50</td>
+        </tr>
+        <tr>
+          <td>Carla</td>
+          <td>1,48</td>
+        </tr>
+        <tr>
+          <td>Diego</td>
+          <td>1,52</td>
+        </tr>
+      </table>
+    </div>
+    <p>¿Qué botella o botellas tienen más agua que la botella de Ana?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">La botella de Beto<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ana tiene 1,5 L y Beto tiene 1,50 L. Como 1,50 = 1,5, la botella de Beto no tiene más agua que la de Ana.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La botella de Diego<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Ana tiene 1,5 L y Diego tiene 1,52 L. Como 1,52 &gt; 1,5, la botella de Diego sí tiene más agua. Además, Beto tiene 1,50 = 1,5 y Carla tiene 1,48 &lt; 1,5, así que solo Diego cumple.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Las botellas de Beto y Diego<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Diego sí cumple porque 1,52 &gt; 1,5, pero Beto no cumple porque 1,50 = 1,5. Como la opción incluye a Beto, no responde correctamente la pregunta.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Ninguna de las botellas<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí hay una botella con más agua que la de Ana: Diego tiene 1,52 L y Ana tiene 1,5 L, y se cumple que 1,52 &gt; 1,5. Por eso no puede ser “ninguna de las botellas”.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el volumen de referencia</strong></p>
+            <p>La botella de Ana tiene:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>1,5</mn>
+            </math>
+            <p>Debemos comparar cada botella con 1,5 L.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar la botella de Beto con la de Ana</strong></p>
+            <p>Beto tiene:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>1,50</mn>
+            </math>
+            <p>Comparamos:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>1,50</mn>
+                <mo>=</mo>
+                <mn>1,5</mn>
+              </mrow>
+            </math>
+            <p>Entonces, Beto no tiene más agua; tiene la misma cantidad que Ana.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar la botella de Carla con la de Ana</strong></p>
+            <p>Carla tiene:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>1,48</mn>
+            </math>
+            <p>Comparamos:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>1,48</mn>
+                <mo>&lt;</mo>
+                <mn>1,5</mn>
+              </mrow>
+            </math>
+            <p>Entonces, Carla tiene menos agua que Ana.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar la botella de Diego con la de Ana</strong></p>
+            <p>Diego tiene:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>1,52</mn>
+            </math>
+            <p>Comparamos:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>1,52</mn>
+                <mo>&gt;</mo>
+                <mn>1,5</mn>
+              </mrow>
+            </math>
+            <p>Entonces, Diego sí tiene más agua que Ana.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Concluir</strong></p>
+            <p>La única botella que tiene más agua que la de Ana es la de Diego.</p>
+            <p>Por lo tanto, la respuesta correcta es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

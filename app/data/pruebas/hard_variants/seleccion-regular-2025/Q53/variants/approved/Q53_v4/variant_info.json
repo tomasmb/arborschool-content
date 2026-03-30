@@ -1,0 +1,118 @@
+{
+  "variant_id": "Q53_v4",
+  "source_question_id": "Q53",
+  "source_test_id": "seleccion-regular-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q53_v4",
+    "scenario_description": "Se entrega una tabla con tres frascos (F1, F2 y F3). En cada frasco hay bolitas rojas y blancas, con totales distintos. Por ejemplo: F1: 5 rojas y 5 blancas; F2: 4 rojas y 2 blancas; F3: 3 rojas y 5 blancas. Bajo la tabla se presentan cuatro afirmaciones del tipo: (A) «En el frasco F1 la probabilidad de sacar una bolita roja es mayor que 0,5 y menor que 1»; (B) «En el frasco F2 la probabilidad de sacar una bolita roja es mayor que 0,5 y menor que 1»; (C) «En el frasco F3 la probabilidad de sacar una bolita roja es mayor que 0,5 y menor que 1»; (D) «Ninguno de los frascos cumple esa condición». Solo una afirmación es verdadera. Se pide seleccionar la afirmación correcta.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "La persona debe calcular o razonar la probabilidad en cada frasco como rojas / total de bolitas, y luego decidir en cuál esa razón está estrictamente entre 0,5 y 1. Los distractores inducen errores de confundir “más rojas que blancas” con “probabilidad > 0,5” sin revisar el cociente, o de ignorar el total de bolitas. La forma de pregunta basada en afirmaciones obliga a justificar internamente por qué cada desigualdad es verdadera o falsa, en vez de solo emparejar un contenedor con una descripción.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "probability_statement_selection"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que el problema sigue siendo de probabilidad clásica simple (casos favorables sobre casos posibles) sin introducir probabilidad condicional ni combinatoria, y que el cambio a afirmaciones mantiene el mismo tipo de razonamiento sobre la razón rojas/total y la desigualdad estricta entre 0,5 y 1."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-01"
+    ],
+    "primary_atom_titles": [
+      "Concepto de probabilidad clásica (Laplace)"
+    ],
+    "family_id": "simple_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "favorable_case_check",
+        "description": "Mantener el mismo espacio muestral simple y pedir reconocer qué opción representa correctamente los casos favorables o la probabilidad resultante.",
+        "required_changes": [
+          "Nueva presentación del espacio muestral",
+          "Distractores de conteo simple plausibles"
+        ],
+        "forbidden_changes": [
+          "Introducir dependencia/condicionalidad",
+          "Subirlo a combinatoria más compleja"
+        ]
+      },
+      {
+        "shape_id": "probability_statement_selection",
+        "description": "Plantear varias afirmaciones simples sobre la probabilidad del evento y pedir seleccionar la correcta dentro del mismo espacio muestral clásico.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación",
+          "Distractores que confunden casos favorables y posibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar a probabilidad condicional",
+          "Agregar más de un nivel de selección"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "direct_resolution",
+    "operation_signature": "simple_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "generic_visual_support",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "mixed_selection",
+    "evidence_mode": "visual_structural_support",
+    "explicit_dataset_policy": "not_required_if_geometry_is_explicit",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=simple_probability",
+      "must_not_introduce_algebraic_unknowns",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

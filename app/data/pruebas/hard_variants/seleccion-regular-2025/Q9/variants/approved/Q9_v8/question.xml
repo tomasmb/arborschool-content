@@ -1,0 +1,128 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q9_v8" title="Q9_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la ficha médica de un paciente se registra la siguiente información:</p>
+    <p>(1) La dosis total en miligramos que recibe el paciente está dada por <m:math><m:mi>D</m:mi><m:mo>=</m:mo><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:math>, donde <m:math><m:mi>x</m:mi></m:math> es el número de comprimidos que toma.</p>
+    <p>(2) Equivalencia: <m:math><m:mn>1</m:mn><m:mo> </m:mo><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>1000</m:mn><m:mo> </m:mo><m:mi>mg</m:mi></m:math>.</p>
+    <p>Si <m:math><m:mi>g</m:mi></m:math> representa la dosis total en gramos que recibe el paciente al tomar <m:math><m:mi>x</m:mi></m:math> comprimidos, ¿cuál de las siguientes igualdades relaciona <m:math><m:mi>g</m:mi></m:math> con <m:math><m:mi>x</m:mi></m:math> de acuerdo con el registro médico?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA"><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi><m:mo>·</m:mo><m:mn>1000</m:mn></m:math><qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si la dosis en miligramos es 550·x, para convertir a gramos se debe dividir por 1000, no multiplicar por 1000. Esta opción da 550 000·x gramos, pero para x = 1 comprimido la ficha indica 550 mg, que equivalen a 0,55 g y no a 550 000 g.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB"><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>1000</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:mrow><m:mrow><m:mn>550</m:mn></m:mrow></m:mfrac></m:math><qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La relación dada por la ficha es 550·x miligramos. Al pasar a gramos se obtiene 550·x dividido por 1000. Esta opción propone 1000·x dividido por 550, que no coincide con la dosis registrada. Por ejemplo, para x = 1 entrega 1000/550 g, mientras que 550 mg equivalen exactamente a 550/1000 g = 0,55 g.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC"><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:mrow><m:mrow><m:mn>1000</m:mn></m:mrow></m:mfrac></m:math><qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La ficha da la dosis total como 550·x miligramos. Como 1 g = 1000 mg, para expresar esa misma dosis en gramos se divide por 1000. Entonces g = (550·x)/1000. Por ejemplo, si x = 1, se obtiene 550/1000 g = 0,55 g, que corresponde exactamente a 550 mg.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD"><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi><m:mo>-</m:mo><m:mn>1000</m:mn></m:math><qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La equivalencia 1 g = 1000 mg se usa para convertir unidades, no para restar 1000 a la dosis. Si x = 2, la ficha da 550·2 = 1100 mg, que equivalen a 1100/1000 g = 1,1 g. Esta opción da 550·2 − 1000 = 100, que no representa la conversión correcta a gramos.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar la dosis dada en la ficha</strong></p>
+            <p>La dosis total en miligramos es:</p>
+            <p><m:math><m:mi>D</m:mi><m:mo>=</m:mo><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:math></p>
+            <p>Esto significa que, si el paciente toma <m:math><m:mi>x</m:mi></m:math> comprimidos, recibe <m:math><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:math> miligramos.</p>
+          </li>
+          <li>
+            <p><strong>Usar la equivalencia entre gramos y miligramos</strong></p>
+            <p>El enunciado indica:</p>
+            <p><m:math><m:mn>1</m:mn><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>1000</m:mn><m:mi>mg</m:mi></m:math></p>
+            <p>Por lo tanto, para pasar de miligramos a gramos se divide por <m:math><m:mn>1000</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Convertir la dosis a gramos</strong></p>
+            <p>Como la dosis en miligramos es <m:math><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:math>, la dosis en gramos será:</p>
+            <p><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:mrow><m:mrow><m:mn>1000</m:mn></m:mrow></m:mfrac></m:math></p>
+          </li>
+          <li>
+            <p><strong>Verificar con un valor concreto</strong></p>
+            <p>Si <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>, entonces la ficha indica:</p>
+            <p><m:math><m:mi>D</m:mi><m:mo>=</m:mo><m:mn>550</m:mn><m:mi>mg</m:mi></m:math></p>
+            <p>En gramos, eso es:</p>
+            <p><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>550</m:mn><m:mn>1000</m:mn></m:mfrac></m:math></p>
+            <p><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mn>0,55</m:mn></m:math></p>
+            <p>La fórmula obtenida funciona correctamente.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La igualdad correcta es:</p>
+            <p><m:math><m:mi>g</m:mi><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>550</m:mn><m:mo>·</m:mo><m:mi>x</m:mi></m:mrow><m:mrow><m:mn>1000</m:mn></m:mrow></m:mfrac></m:math></p>
+            <p>Por lo tanto, la alternativa correcta es <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

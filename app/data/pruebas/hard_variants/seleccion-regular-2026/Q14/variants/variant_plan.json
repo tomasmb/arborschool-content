@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q14",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q14_v1",
+      "scenario_description": "Se muestra un procedimiento para factorizar la suma 18 + 30 en cuatro pasos, análogo al de la fuente: primero se escribe cada sumando como producto con un mismo factor (por ejemplo, 6·3 + 6·5), luego se descompone en factores primos, luego se reescribe usando potencias y, en el último paso, se comete un error al factorizar (por ejemplo, se 'pierde' un factor común). La pregunta NO pide directamente el paso con error, sino: «¿Cuál es el último paso en el que la igualdad sigue siendo verdadera?». Esto implementa la shape claim_archetype_switch porque la afirmación correcta ya no es 'el paso X está mal', sino 'el paso X es el último que todavía es correcto', obligando a localizar el quiebre pero expresado con otro arquetipo de afirmación.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender en qué momento deja de preservarse la igualdad, distinguiendo pasos correctos de incorrectos, no solo reconocer una receta de factorización.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_v1"
+    },
+    {
+      "variant_id": "Q14_v2",
+      "scenario_description": "Se presenta un procedimiento casi idéntico al original para factorizar correctamente una suma de dos números naturales (como 12 + 20), con un único paso incorrecto en la factorización o en el uso de potencias. Luego se dan cuatro afirmaciones verbales sobre el procedimiento, por ejemplo: «(A) Todos los pasos conservan el valor de la expresión», «(B) En el paso 2 se factorizaron correctamente los números primos», «(C) La igualdad deja de ser válida a partir del paso 4», «(D) El error está en la escritura de las potencias». La consigna pide identificar la afirmación INCORRECTA. Esto sigue la shape false_claim_hunt: se mantiene el mismo conjunto de datos (el procedimiento) pero la tarea es cazar la descripción falsa sobre ese procedimiento.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe revisar la cadena de igualdades, decidir dónde aparece el error y luego evaluar qué enunciado describe incorrectamente esa situación, articulando procedimiento y metadescripción.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_v1"
+    },
+    {
+      "variant_id": "Q14_v3",
+      "scenario_description": "Se muestra en una pequeña tabla un procedimiento para simplificar una fracción, por ejemplo 60/84, factorizando numerador y denominador en cuatro pasos: se expresan como productos, se descomponen en primos, se reescriben con potencias y, finalmente, se simplifica cancelando factores comunes, pero en el último paso se comete una cancelación indebida que cambia el valor de la fracción. La pregunta es: «¿Cuál es el último paso que muestra una fracción equivalente a 60/84?». Es decir, la afirmación correcta es sobre el último paso que sigue siendo válido, no sobre el paso en que se comete el error. Esto materializa la shape claim_archetype_switch en un nuevo contexto (fracciones) pero con la misma habilidad de detección de manipulación incorrecta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe identificar en qué paso la cancelación de factores deja de ser legítima, diferenciando equivalencia de fracciones y factorización correcta, para luego inferir cuál es el último paso aún equivalente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_v2"
+    },
+    {
+      "variant_id": "Q14_v4",
+      "scenario_description": "Se entrega el mismo procedimiento de simplificación de una fracción (por ejemplo, 60/84) descrito paso a paso, con una única igualdad incorrecta debido a una simplificación mal aplicada. A continuación se presentan cuatro afirmaciones sobre el procedimiento, del tipo: «(A) El numerador y el denominador están bien factorizados en primos», «(B) En el paso 3 se cambia el valor de la fracción», «(C) El error se debe a cancelar un factor que no es común», «(D) La fracción final es equivalente a 60/84». Solo una de ellas es falsa. La tarea consiste en identificar cuál afirmación es incorrecta respecto del conjunto de pasos, aplicando la shape false_claim_hunt.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe analizar con cuidado la legitimidad de cada paso de factorización y simplificación y contrastar esa comprensión con varias descripciones posibles, descartando las tres verdaderas y aislando la falsa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_v2"
+    },
+    {
+      "variant_id": "Q14_v5",
+      "scenario_description": "Se muestra un procedimiento en cuatro pasos que parte de un producto del tipo 7·(4 + 6) y lo transforma usando la propiedad distributiva y factorización inversa. Por ejemplo: se expande a 7·4 + 7·6, se reemplaza por productos de primos, se intentan reescribir potencias y, en uno de los pasos, se usa incorrectamente una ley de exponentes o la distributiva (por ejemplo, elevando indebidamente la suma). La pregunta no es '¿Dónde está el error?', sino: «¿En qué paso se aplica correctamente la propiedad distributiva?», teniendo opciones con los distintos pasos. Es claim_archetype_switch porque la afirmación buscada es sobre el uso correcto de una propiedad particular dentro de un procedimiento parcialmente erróneo.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para responder, el estudiante debe entender qué significa aplicar bien la distributiva, identificar los pasos válidos e inválidos y aislar el paso cuya justificación es matemáticamente correcta dentro de una cadena con errores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_v3"
+    },
+    {
+      "variant_id": "Q14_v6",
+      "scenario_description": "Se entrega el mismo procedimiento con 7·(4 + 6) transformado en varios pasos (expansión, descomposición en factores, intento de reagrupación), con un uso incorrecto de la propiedad distributiva o de potencias en uno de ellos. Luego se proponen cuatro afirmaciones del tipo: «(A) La igualdad se mantiene en todos los pasos», «(B) En el paso 2 se aplica correctamente la distributiva», «(C) El error aparece al reagrupar factores en el paso 3», «(D) La expresión final no es equivalente a 7·(4 + 6)». Tres son verdaderas y una falsa. El estudiante debe elegir la afirmación que no concuerda con lo sucedido en el procedimiento, cumpliendo la shape false_claim_hunt.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante tiene que seguir el hilo de las igualdades, determinar exactamente dónde se deja de respetar la distributiva o las potencias, y luego evaluar cada afirmación para detectar la que describe erróneamente el comportamiento del procedimiento.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_v3"
+    },
+    {
+      "variant_id": "Q14_v7",
+      "scenario_description": "Se muestra un intento de factorizar una suma de tres términos, por ejemplo 21 + 14 + 35, en cuatro pasos: se agrupan algunos sumandos, se extrae un factor común parcial, se reescribe usando descomposición en primos y finalmente se intenta extraer un factor común 7. En uno de los pasos la agrupación o extracción del factor común se hace mal y la igualdad deja de ser válida. La pregunta no pide directamente el paso erróneo, sino: «¿Cuál de los pasos corresponde a una extracción CORRECTA del factor común 7?». La afirmación correcta se refiere al paso donde la operación de factorización está bien justificada, instanciando la shape claim_archetype_switch.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender cómo se extrae correctamente un factor común en una suma de tres términos, identificar qué paso respeta esa idea y distinguirlo de los pasos donde la igualdad se rompe o la agrupación es inválida.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_v4"
+    },
+    {
+      "variant_id": "Q14_v8",
+      "scenario_description": "Se da un procedimiento de cuatro pasos para factorizar una diferencia simple, por ejemplo 45 − 15, extrayendo un factor común (por ejemplo, 15·3 − 15·1, etc.), con un único paso donde el manejo del signo o del factor común es incorrecto y la igualdad deja de mantenerse. Luego se presentan cuatro afirmaciones sobre este procedimiento: algunas señalan correctamente en qué paso se pierde la igualdad o cuál es la causa del error (signo o factor común), y una de ellas lo describe de forma equivocada. La consigna es: «¿Cuál de las siguientes afirmaciones sobre el procedimiento es incorrecta?». Esto sigue la shape false_claim_hunt con el mismo tipo de razonamiento de detección de error.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Debe analizar el efecto de cada paso sobre la igualdad, reconocer el mal manejo del signo o del factor común y luego confrontar esa comprensión con las descripciones dadas para encontrar la única que no concuerda.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_v4"
+    },
+    {
+      "variant_id": "Q14_v9",
+      "scenario_description": "Se presenta un procedimiento en cuatro pasos para obtener la factorización prima de un número, por ejemplo 72, descomponiéndolo en factores y luego reescribiendo con potencias: se van formando productos como 2·36, luego 2·2·18, etc., hasta llegar a una expresión con potencias del tipo 2^a·3^b. En uno de los pasos, al pasar de producto repetido a potencia, se comete un error en el exponente y la igualdad se rompe. La pregunta plantea: «¿En cuál de los pasos se reescriben CORRECTAMENTE los productos como potencias?», con varias opciones referidas a distintos pasos. Así se aplica la shape claim_archetype_switch: se evalúa qué paso está bien justificado, dentro de una cadena donde hay una mala manipulación algebraica con exponentes.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender la relación entre producto repetido y exponente, seguir la cadena de igualdades y detectar en qué paso la conversión a potencias respeta completamente la descomposición prima, separando los pasos correctos de aquel donde falla el exponente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_v5"
+    },
+    {
+      "variant_id": "Q14_v10",
+      "scenario_description": "Se muestran dos procedimientos alternativos (A y B), cada uno en tres o cuatro pasos, que intentan factorizar la misma suma numérica, por ejemplo 24 + 16, usando extracción de factor común y descomposición en primos. En uno de los procedimientos todas las igualdades son correctas; en el otro, una de las igualdades contiene un error de factorización (por ejemplo, un factor mal contado o una potencia incorrecta). Luego se proponen cuatro afirmaciones sobre ambos procedimientos, del tipo: «(A) Solo el procedimiento A mantiene la igualdad en todos sus pasos», «(B) Solo el procedimiento B mantiene la igualdad en todos sus pasos», «(C) Ambos procedimientos son correctos en todos los pasos», «(D) En ambos hay un paso que cambia el valor de la expresión». Tres afirmaciones son verdaderas y una es falsa; se pide identificar la afirmación falsa sobre los procedimientos, siguiendo la shape false_claim_hunt.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_o_dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe analizar y comparar dos cadenas de igualdades, decidir en cuál aparece una factorización incorrecta y luego evaluar qué afirmaciones describen correctamente o incorrectamente esa situación para localizar la falsa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_v5"
+    }
+  ]
+}

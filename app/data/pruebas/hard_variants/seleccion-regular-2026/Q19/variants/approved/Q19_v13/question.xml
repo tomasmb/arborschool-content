@@ -1,0 +1,139 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q19_v13" title="Q19_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un fabricante de celulares declara que la batería de un modelo nuevo tiene el 100 % de capacidad cuando es nueva. Sin embargo, por diseño solo el 80 % de esa capacidad es realmente utilizable. Después de varias actualizaciones de sistema, solo el 80 % de esa capacidad utilizable inicial sigue disponible.</p>
+    <p>En relación con la capacidad original de la batería, ¿cuál de las siguientes afirmaciones es correcta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La capacidad utilizable final es el 80 % de la capacidad original.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Primero, la capacidad utilizable inicial es 80 % de la original. Después queda disponible el 80 % de ese 80 %. Entonces la capacidad final es 80 % × 80 % = 64 % de la capacidad original, no 80 %.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La capacidad utilizable final es el 180 % de la capacidad original.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La capacidad final se obtiene tomando el 80 % de la capacidad utilizable inicial, que ya era 80 % de la original. Por eso 80 % × 80 % = 64 %. Además, 180 % es mayor que 100 %, así que no puede representar una capacidad final respecto de la original en esta situación.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La capacidad utilizable final es el 64 % de la capacidad original.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La capacidad utilizable inicial es 80 % de la original, y luego queda disponible el 80 % de esa parte. Entonces 80 % × 80 % = 64 %, por lo que la capacidad utilizable final es 64 % de la capacidad original.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La capacidad utilizable final es el 260 % de la capacidad original.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La situación describe dos reducciones sucesivas: primero queda 80 % de la capacidad original como utilizable y luego queda 80 % de esa parte. Entonces 80 % × 80 % = 64 %. Por eso 260 % no corresponde, porque incluso supera ampliamente el 100 % de la capacidad original.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la capacidad original</strong></p>
+            <p>La batería nueva tiene como referencia el 100 % de capacidad original.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la capacidad realmente utilizable al inicio</strong></p>
+            <p>Por diseño, solo el 80 % de la capacidad original es utilizable.</p>
+            <p>Si la capacidad original es 100 %, entonces la capacidad utilizable inicial es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>80</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la segunda reducción</strong></p>
+            <p>Después de las actualizaciones, solo sigue disponible el 80 % de esa capacidad utilizable inicial.</p>
+            <p>Entonces debemos calcular el 80 % de 80 %.</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,8</mn>
+                <mo>×</mo>
+                <mn>0,8</mn>
+                <mo>=</mo>
+                <mn>0,64</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Expresar el resultado como porcentaje</strong></p>
+            <p>El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,64</mn></mrow></math> equivale a:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>64</mn>
+                <mo>%</mo>
+              </mrow>
+            </math>
+            <p>Por lo tanto, la capacidad utilizable final es 64 % de la capacidad original.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es: <strong>La capacidad utilizable final es el 64 % de la capacidad original.</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceC</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

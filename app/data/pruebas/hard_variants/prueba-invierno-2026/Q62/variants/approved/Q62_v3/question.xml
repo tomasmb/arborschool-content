@@ -1,0 +1,147 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v3" title="Q62_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una universidad postularon 60 personas a cuatro carreras, en jornada diurna o vespertina: 18 a Ingeniería (12 en jornada diurna y 6 en jornada vespertina), 16 a Derecho (9 en jornada diurna y 7 en jornada vespertina), 14 a Psicología (8 en jornada diurna y 6 en jornada vespertina) y 12 a Enfermería (5 en jornada diurna y 7 en jornada vespertina). Si se elige al azar a una de estas personas, ¿cuál es la probabilidad de que postule a Enfermería en jornada vespertina?</p>
+    <div>Selecciona una sola alternativa.</div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mn>12</m:mn>
+            <m:mn>60</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En Enfermería en jornada vespertina hay 7 personas, no 12. La probabilidad pedida es casos favorables sobre total de personas, es decir <m:math><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:math>. El valor <m:math><m:mfrac><m:mn>12</m:mn><m:mn>60</m:mn></m:mfrac></m:math> usa 12 como numerador, pero 12 corresponde al total de postulantes a Enfermería.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>7</m:mn>
+            <m:mn>60</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En Enfermería en jornada vespertina postulan 7 personas y el total de postulantes es 60. Entonces la probabilidad es <m:math><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mn>7</m:mn>
+            <m:mn>12</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El numerador 7 sí corresponde a quienes postulan a Enfermería en jornada vespertina, pero el denominador debe ser el total de personas elegidas al azar, que es 60. Por eso la probabilidad pedida es <m:math><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:math>, no <m:math><m:mfrac><m:mn>7</m:mn><m:mn>12</m:mn></m:mfrac></m:math>. El denominador 12 corresponde solo al total de postulantes a Enfermería.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mn>26</m:mn>
+            <m:mn>60</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El numerador 26 no corresponde a quienes postulan a Enfermería en jornada vespertina. Sumando los postulantes en jornada vespertina de todas las carreras se obtiene <m:math><m:mrow><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>+</m:mo><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>26</m:mn></m:mrow></m:math>, pero la pregunta pide solo Enfermería en jornada vespertina, que son 7 personas. Por eso la probabilidad correcta es <m:math><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el total de casos posibles</strong></p>
+            <p>Se elige al azar a una persona entre todas las que postularon. El total es 60 personas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los casos favorables</strong></p>
+            <p>La pregunta pide a quienes postulan a Enfermería en jornada vespertina.</p>
+            <p>Según el enunciado, en Enfermería hay 7 personas en jornada vespertina.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la definición de probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p><m:math><m:mrow><m:mtext>probabilidad</m:mtext><m:mo>=</m:mo><m:mfrac><m:mtext>casos favorables</m:mtext><m:mtext>casos posibles</m:mtext></m:mfrac></m:mrow></m:math></p>
+            <p>Reemplazando los valores:</p>
+            <p><m:math><m:mrow><m:mtext>probabilidad</m:mtext><m:mo>=</m:mo><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir</strong></p>
+            <p>La probabilidad de que la persona elegida postule a Enfermería en jornada vespertina es <m:math><m:mfrac><m:mn>7</m:mn><m:mn>60</m:mn></m:mfrac></m:math>.</p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

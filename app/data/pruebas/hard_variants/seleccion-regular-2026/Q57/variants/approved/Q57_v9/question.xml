@@ -1,0 +1,202 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q57_v9" title="Q57_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Un estanque contiene inicialmente 150 litros de agua. Al abrir una llave, entra agua al estanque a razón de 8 litros por minuto, de manera constante.</p>
+    <p>¿Cuál de las siguientes funciones modela la cantidad de agua que hay en el estanque por cada minuto que la llave se encuentra abierta, si <m:math><m:mi>t</m:mi></m:math> representa los minutos transcurridos desde que se abre la llave?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>150</m:mn>
+          <m:mo>-</m:mo>
+          <m:mn>8</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión parte en 150 litros cuando t vale 0, pero luego disminuye 8 litros por minuto. Por ejemplo, al minuto 1 entrega 142 litros, y el enunciado dice que entra agua al estanque a razón constante de 8 litros por minuto, así que la cantidad de agua debe aumentar, no disminuir.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>150</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>8</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Esta función parte con 150 litros cuando t vale 0 y suma 8 litros por cada minuto transcurrido. Por ejemplo, al minuto 1 entrega 158 litros y al minuto 2 entrega 166 litros, que coincide con una entrada constante de 8 litros por minuto.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>8</m:mn>
+          <m:mo>+</m:mo>
+          <m:mn>150</m:mn><m:mi>t</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión no representa 150 litros iniciales, porque cuando t vale 0 entrega 8 litros. Además, hace crecer la cantidad en 150 litros por minuto, pero el enunciado indica una entrada constante de 8 litros por minuto.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo>
+          <m:mo>=</m:mo>
+          <m:mn>150</m:mn>
+          <m:mo>+</m:mo>
+          <m:mfrac><m:mi>t</m:mi><m:mn>8</m:mn></m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión parte en 150 litros cuando t vale 0, pero no aumenta 8 litros por minuto. Por ejemplo, al minuto 8 entrega 151 litros, así que en 8 minutos solo aumentó 1 litro. El enunciado indica que deben entrar 8 litros cada minuto.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la cantidad inicial</strong></p>
+            <p>El estanque contiene inicialmente 150 litros. Eso significa que cuando han transcurrido 0 minutos, la función debe cumplir:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar la tasa de cambio</strong></p>
+            <p>Entra agua al estanque a razón de 8 litros por minuto, de manera constante. Entonces la cantidad de agua aumenta 8 litros cada minuto.</p>
+            <p>Eso corresponde a una función lineal de la forma:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>cantidad</m:mi><m:mi>inicial</m:mi><m:mo>+</m:mo><m:mi>tasa</m:mi><m:mo>×</m:mo><m:mi>tiempo</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Reemplazar los datos del problema</strong></p>
+            <p>La cantidad inicial es 150 y la tasa de cambio es 8 litros por minuto, por lo tanto:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mi>t</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con valores concretos</strong></p>
+            <p>Si <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>0</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Si <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>1</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>(</m:mo><m:mn>1</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>158</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Si <m:math><m:mi>t</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mo>(</m:mo><m:mn>2</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>16</m:mn><m:mo>=</m:mo><m:mn>166</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La cantidad aumenta 8 litros por minuto, exactamente como indica el enunciado.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La función que modela la situación es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>F</m:mi><m:mo>(</m:mo><m:mi>t</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>8</m:mn><m:mi>t</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

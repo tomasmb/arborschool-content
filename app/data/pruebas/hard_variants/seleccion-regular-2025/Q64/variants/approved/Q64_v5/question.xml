@@ -1,0 +1,137 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v5" title="Q64_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el plano de una plaza se representa una cuadrícula de 7×7 casillas con letras de la A a la G en sentido horizontal y números del 1 al 7 en sentido vertical. El dron despega desde la plataforma ubicada en la casilla central D4 y debe llegar a la casilla marcada con una X en la posición B7.</p>
+    <p>
+      <img src="requiere_nueva_imagen1.png" alt="Cuadrícula 7×7 vista desde arriba, con columnas rotuladas de A a G y filas de 1 a 7. La casilla D4, en el centro de la cuadrícula, está marcada como punto de partida con un círculo. La casilla B7 está marcada con una X como destino." />
+    </p>
+    <p>El dron se controla mediante comandos de movimiento de una casilla: N (norte), S (sur), E (este), O (oeste), NE (noreste), NO (noroeste), SE (sureste) y SO (suroeste). Cada comando indica una traslación fija con respecto a la posición anterior; por ejemplo, el comando NE traslada al dron una casilla hacia el norte y una casilla hacia el este.</p>
+    <p>
+      <img src="requiere_nueva_imagen2.png" alt="Detalle de la misma cuadrícula 7×7 donde se muestra específicamente el movimiento NE del dron desde la casilla D4 hasta la casilla E5 mediante una flecha diagonal apuntando hacia arriba y hacia la derecha." />
+    </p>
+    <p>En la siguiente lista se muestran cuatro rutas posibles para el dron, cada una formada por una serie de comandos consecutivos. ¿Cuál de las siguientes rutas lleva al dron desde la plataforma D4 hasta la casilla B7?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Elige la serie de comandos que sitúa al dron exactamente en la casilla B7.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">NE, NE, NE, O, O, O, O, E<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Desde D4, aplicar NE tres veces lleva a G7. Luego, O cuatro veces lleva a C7 y finalmente E lleva a D7. La ruta termina en D7, no en B7.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">NE, NE, NE, O, O, O, O, O<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde D4, aplicar NE tres veces lleva a G7. Luego, O cinco veces lleva sucesivamente a F7, E7, D7, C7 y B7. La ruta termina exactamente en B7.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">N, NE, S, N, N, E, O, O<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Desde D4: N lleva a D5, NE a E6, S a E5, N a E6, N a E7, E a F7, O a E7 y O a D7. La ruta termina en D7, no en B7.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">NO, NO, N, E, E, S, N, O<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Desde D4: NO lleva a C5, NO a B6, N a B7, E a C7, E a D7, S a D6, N a D7 y O a C7. Aunque pasa por B7 en un momento, la ruta final termina en C7, no en B7.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar origen y destino</strong></p>
+            <p>El dron parte en D4 y debe llegar a B7.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar las coordenadas</strong></p>
+            <p>Para pasar de D a B, el dron debe avanzar 2 casillas hacia el oeste.</p>
+            <p>Para pasar de 4 a 7, el dron debe avanzar 3 casillas hacia el norte.</p>
+            <p>Entonces, el desplazamiento total necesario es: 2 casillas al oeste y 3 casillas al norte.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar la alternativa B</strong></p>
+            <p>La ruta es: NE, NE, NE, O, O, O, O, O.</p>
+            <p>Siguiendo la ruta desde D4:</p>
+            <ol>
+              <li>D4 → E5</li>
+              <li>E5 → F6</li>
+              <li>F6 → G7</li>
+              <li>G7 → F7</li>
+              <li>F7 → E7</li>
+              <li>E7 → D7</li>
+              <li>D7 → C7</li>
+              <li>C7 → B7</li>
+            </ol>
+            <p>La posición final es B7.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar que las otras opciones no sirven</strong></p>
+            <p>Opción A termina en D7.</p>
+            <p>Opción C termina en D7.</p>
+            <p>Opción D termina en C7.</p>
+            <p>Solo una alternativa deja al dron exactamente en B7.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La ruta correcta es la alternativa B: NE, NE, NE, O, O, O, O, O.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q56",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q56_v1",
+      "scenario_description": "Se mantiene una tabla de frecuencias similar (años que los estudiantes de un instituto de idiomas llevan en el establecimiento). Una fila combina varios años en un tramo límite, por ejemplo: '0 a 2 años', '3 años', '4 años', '5 años o más', con sus respectivas cantidades de estudiantes. La pregunta es: «¿Cuántos estudiantes llevan MÁS de 2 años en el instituto?». Las alternativas numéricas se construyen para explotar errores típicos: incluir erróneamente la categoría '0 a 2 años', interpretar 'más de 2' como '2 o más', u olvidar sumar la categoría '5 años o más'.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe identificar con precisión qué categorías cumplen la condición 'más de 2 años', distinguiendo entre 'más de' y 'al menos', y entre tramos agrupados y años puntuales. No basta con sumar filas mecánicamente: debe comprender el significado de cada intervalo y excluir los que no cumplen la desigualdad.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "distractor_focus"
+    },
+    {
+      "variant_id": "Q56_v2",
+      "scenario_description": "Se presenta una tabla de frecuencia de años que los estudiantes llevan en un preuniversitario: filas '1', '2', '3', ..., '7 o más años' con sus cantidades. En el enunciado se indica además el total de estudiantes encuestados (por ejemplo, 140). La pregunta pide: «¿Cuántos estudiantes llevan MENOS de 5 años en el preuniversitario?». Las alternativas incluyen: (a) la suma correcta de las categorías 1,2,3,4; (b) un valor que suma también la fila '5 años'; (c) un valor obtenido restando mal desde el total; y (d) un valor que omite una de las filas válidas.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe decidir si resolver sumando directamente las categorías menores que 5 o usando el total y el complemento. En cualquier caso, tiene que entender qué filas corresponden a 'menos de 5 años' y evitar sumar o restar categorías inadecuadas. Esto obliga a interpretar el criterio (<5) y el rol del total, no solo a operar números de la tabla sin criterio.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "distractor_focus"
+    },
+    {
+      "variant_id": "Q56_v3",
+      "scenario_description": "En lugar de una tabla, la información se entrega en un texto continuo sobre un curso de IV medio: «De los estudiantes encuestados, 18 llevan 1 año en el colegio, 20 llevan 2 años, 15 llevan 3 años, 10 llevan 4 años, 12 llevan 5 años, 14 llevan 6 años y 11 llevan 7 o más años en el establecimiento». Se pregunta: «¿Cuántos estudiantes llevan al menos 3 años en el establecimiento educacional?». Las opciones son cuatro números plausibles, cercanos entre sí.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe extraer desde un texto no tabulado qué conteos cumplen 'al menos 3 años' (≥3), reorganizar mentalmente esos datos y luego sumarlos. No puede limitarse a identificar una columna en una tabla; debe comprender el criterio de selección de categorías, localizar esas categorías en el texto y recién después aplicar la suma.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "dataset_inversion"
+    },
+    {
+      "variant_id": "Q56_v4",
+      "scenario_description": "Se informa primero la conclusión: «En un colegio hay 150 estudiantes de IV medio, de los cuales exactamente 70 llevan 5 años o más en este establecimiento». Luego, cada alternativa muestra una posible tabla de distribución de estudiantes por años (1,2,3,4,5,6,7,8,9 o más) y sus cantidades, variando ligeramente los repartos. Se pregunta: «¿Cuál de las siguientes tablas podría corresponder a la encuesta realizada?». Solo una tabla hace que la suma de las frecuencias de las categorías de 5 años o más sea 70 y que el total de la tabla sea 150.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "Para cada tabla propuesta, el estudiante debe identificar correctamente qué filas cuentan como '5 años o más', sumar sus frecuencias y comparar tanto con el total de 150 como con el subtotal de 70 dado en el enunciado. Invertir el problema (comprobar el dataset a partir de la medida ya conocida) obliga a aplicar el mismo método de suma de frecuencias, pero en sentido de verificación y no de cálculo directo, evitando atajos mecánicos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "dataset_inversion"
+    },
+    {
+      "variant_id": "Q56_v5",
+      "scenario_description": "Se entrega una tabla de frecuencias por TRAMOS de antigüedad de usuarios de una biblioteca escolar, por ejemplo: '1–2 años', '3–4 años', '5–6 años', '7 o más años', con sus cantidades de usuarios. La pregunta es: «¿Cuántos usuarios llevan al menos 3 años y menos de 7 años inscritos en la biblioteca?». Las alternativas contemplan errores típicos: sumar solo 3–4 y 5–6 pero excluyendo equivocadamente uno de los tramos, incluir el tramo '7 o más' por confundir 'menos de 7' con '7 o menos', o dejar fuera los límites 3 y 6 al interpretar mal el 'al menos' y el 'menos que'.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar dos condiciones simultáneas ('al menos 3' y 'menos de 7') y traducirlas a qué intervalos de la tabla se incluyen completamente. Debe razonar sobre la inclusión o exclusión de los límites de cada intervalo y recién después decidir qué filas sumar. Entender el significado de los tramos y las desigualdades es esencial; un enfoque meramente mecánico de sumar 'las filas del medio' lleva a errores.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "distractor_focus"
+    },
+    {
+      "variant_id": "Q56_v6",
+      "scenario_description": "Se muestran dos tablas, una para 4°A y otra para 4°B, con la distribución de estudiantes según los años que llevan en el colegio (1,2,3,4,5,6,7,8,9 o más). La pregunta es: «Considerando solo a los estudiantes que llevan al menos 5 años en el colegio, ¿en cuál curso hay MÁS estudiantes?». Las alternativas son: '4°A', '4°B', 'En ambos cursos hay la misma cantidad', 'No se puede determinar con los datos'.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe repetir el mismo procedimiento de selección y suma de frecuencias (≥5 años) en DOS subgrupos distintos y luego comparar los resultados. No basta con leer el número mayor en una sola fila; debe seleccionar las filas pertinentes en cada tabla, sumar en cada curso y luego razonar comparativamente. Esto exige comprender la condición 'al menos 5 años' y aplicarla de forma consistente en ambos conjuntos de datos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "subgroup_comparison"
+    },
+    {
+      "variant_id": "Q56_v7",
+      "scenario_description": "Se presentan dos cursos (Jornada Mañana y Jornada Tarde) en una única tabla de doble entrada: las filas son los años que llevan en el establecimiento (1,2,3,4,5,6,7 o más) y las columnas 'Mañana' y 'Tarde' muestran las cantidades de estudiantes para cada año. La pregunta es: «Si se consideran AMBAS jornadas juntas, ¿cuántos estudiantes en total llevan 4 años o más en el establecimiento?». Las opciones son cuatro números factibles.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe identificar las categorías que cumplen '4 años o más' en una tabla bidimensional y agregar primero dentro de cada columna (o por filas sumando ambas jornadas) y luego combinar ambos resultados. Esto impide una suma lineal inmediata: debe organizar un procedimiento (por columnas o por filas) que respete el criterio '≥4', sin olvidar ninguna combinación, lo que exige comprender cómo se distribuye la frecuencia en dos subgrupos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "subgroup_comparison"
+    },
+    {
+      "variant_id": "Q56_v8",
+      "scenario_description": "Se indica de antemano que en una escuela de oficios hay 120 participantes y que 55 de ellos llevan 3 años o más asistiendo a la misma institución. Luego, las alternativas describen cada una un POSIBLE reparto de participantes por años en la escuela, pero en forma de texto breve, por ejemplo: «Alt. A: 30 llevan 1 año, 35 llevan 2 años, 25 llevan 3 años, 15 llevan 4 años y 15 llevan 5 o más años», etc. Solo una alternativa hace que la suma de los que tienen 3 años o más sea 55 y el total 120.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "En cada alternativa, el estudiante debe reinterpretar un texto como una distribución de frecuencias, decidir qué partes del texto cumplen '3 años o más' y sumar esas cantidades, además de verificar el total. Es el mismo método de trabajar con frecuencias absolutas, pero aplicado a opciones textuales y en sentido inverso (comprobar cuál descripción produce la medida dada), lo que impide un cálculo directo único y exige pensar en cómo la suma de ciertas categorías genera el subtotal mencionado en el enunciado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "dataset_inversion"
+    },
+    {
+      "variant_id": "Q56_v9",
+      "scenario_description": "La información de años que los estudiantes llevan en un taller artístico se entrega en viñetas en lugar de tabla, por ejemplo: '- 12 estudiantes llevan 1 año', '- 18 estudiantes llevan 2 años', '- 20 estudiantes llevan 3 años', '- 15 estudiantes llevan 4 años', '- 10 estudiantes llevan 5 años o más'. Después se pregunta: «¿Cuántos estudiantes llevan como máximo 4 años en el taller?». Las opciones numéricas son cercanas para evitar respuestas por descarte trivial.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir 'como máximo 4 años' a la selección correcta de viñetas (1,2,3,4 años), ignorando la categoría '5 años o más'. Luego debe reunir la información dispersa en viñetas y sumarla. No puede apoyarse en la lectura inmediata de una sola celda; necesita comprender el significado de 'como máximo' y asociarlo a las categorías correspondientes antes de operar.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "distractor_focus"
+    },
+    {
+      "variant_id": "Q56_v10",
+      "scenario_description": "Se entrega una tabla de años que los funcionarios de un colegio llevan trabajando allí: 1,2,3,4,5,6,7,8,9 y '10 o más años', con sus respectivas cantidades. La pregunta es: «¿Cuántos funcionarios llevan al menos 10 años trabajando en el colegio?». Se incluyen alternativas diseñadas para reflejar errores como: sumar desde 9 años hacia arriba por confundir 'al menos 10' con '9 o más', solo tomar una parte de la categoría '10 o más' como si representara exactamente 10 años, o mezclar todas las filas de los años altos por no distinguir la categoría agrupada.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que toda la categoría '10 o más años' cumple la condición 'al menos 10 años', mientras que la fila '9 años' no. Tiene que interpretar correctamente el sentido de la etiqueta '10 o más' y su relación con la desigualdad planteada, para luego tomar SOLO esa frecuencia. Esto requiere entender cómo una categoría agrupada se relaciona con condiciones del tipo 'al menos', evitando sumar mecánicamente las últimas filas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "distractor_focus"
+    }
+  ]
+}

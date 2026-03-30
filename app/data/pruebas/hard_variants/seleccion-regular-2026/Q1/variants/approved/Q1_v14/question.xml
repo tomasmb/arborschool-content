@@ -1,0 +1,135 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q1_v14" title="Q1_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un juego, el puntaje de un jugador se representa con una ficha sobre una recta numérica horizontal.</p>
+    <p>La posición de la ficha cambia según las cartas que se van revelando:</p>
+    <ul>
+      <li>La ficha parte desde un puntaje inicial indicado en la recta.</li>
+      <li>Cada carta con una flecha hacia la derecha hace que la ficha avance hacia la derecha tantos espacios como indica el número de la carta (se suma ese valor al puntaje).</li>
+      <li>Cada carta con una flecha hacia la izquierda hace que la ficha retroceda hacia la izquierda tantos espacios como indica el número de la carta (se resta ese valor al puntaje).</li>
+    </ul>
+    <p>En la siguiente figura, la ficha parte en −1 y luego se desplaza en este orden: 3 unidades a la derecha, 2 unidades a la izquierda, 4 unidades a la derecha, 3 unidades a la izquierda, 2 unidades a la derecha, 4 unidades a la izquierda, 1 unidad a la derecha, 2 unidades a la izquierda y 3 unidades a la derecha.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Recta numérica horizontal que va desde −10 hasta 10, marcada con todos los enteros. Sobre la recta, hay un punto grande marcado en −1 con una ficha. Desde ese punto sale una primera flecha hacia la derecha que termina en 2, rotulada con '+3'. Desde 2 sale una flecha hacia la izquierda que termina en 0, rotulada '−2'. Desde 0 sale una flecha hacia la derecha que termina en 4, rotulada '+4'. Desde 4 sale una flecha hacia la izquierda que termina en 1, rotulada '−3'. Desde 1 sale una flecha hacia la derecha que termina en 3, rotulada '+2'. Desde 3 sale una flecha hacia la izquierda que termina en −1, rotulada '−4'. Desde −1 sale una flecha hacia la derecha que termina en 0, rotulada '+1'. Desde 0 sale una flecha hacia la izquierda que termina en −2, rotulada '−2'. Desde −2 sale una flecha hacia la derecha que termina en 1, rotulada '+3'. No se marca explícitamente el número final, sólo la punta de la última flecha sobre el 1." />
+    </p>
+    <p>¿En qué número termina la ficha después de realizar todos los movimientos?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">−2<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo todos los movimientos desde −1 se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math>. Por lo tanto, la ficha no termina en −2.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">1<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Partiendo en −1 y aplicando los desplazamientos en orden: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>2</mn><mo>,</mo><mn>2</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>4</mn><mo>,</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn><mo>,</mo><mn>3</mn><mo>−</mo><mn>4</mn><mo>=</mo><mo>−</mo><mn>1</mn><mo>,</mo><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math>. La ficha termina en 1.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">23<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En este juego también hay movimientos hacia la izquierda, por eso no corresponde sumar solo valores positivos. El cálculo completo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math>. Por lo tanto, la ficha no termina en 23.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">0<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aunque en un momento la ficha llega a 0, todavía faltan movimientos. Después de llegar a 0, se hace <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn><mo>,</mo><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math>. Entonces el valor final no es 0, sino 1.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso en la recta numérica</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el punto de partida</strong></p>
+            <p>La ficha comienza en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn></mrow></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar los movimientos en el orden dado</strong></p>
+            <p>Primer movimiento, 3 a la derecha:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>2</mn></mrow></math></p>
+            <p>Segundo movimiento, 2 a la izquierda:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>0</mn></mrow></math></p>
+            <p>Tercer movimiento, 4 a la derecha:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0</mn><mo>+</mo><mn>4</mn><mo>=</mo><mn>4</mn></mrow></math></p>
+            <p>Cuarto movimiento, 3 a la izquierda:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>4</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math></p>
+            <p>Quinto movimiento, 2 a la derecha:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>3</mn></mrow></math></p>
+            <p>Sexto movimiento, 4 a la izquierda:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>−</mo><mn>4</mn><mo>=</mo><mo>−</mo><mn>1</mn></mrow></math></p>
+            <p>Séptimo movimiento, 1 a la derecha:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>0</mn></mrow></math></p>
+            <p>Octavo movimiento, 2 a la izquierda:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0</mn><mo>−</mo><mn>2</mn><mo>=</mo><mo>−</mo><mn>2</mn></mrow></math></p>
+            <p>Noveno movimiento, 3 a la derecha:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con una sola suma</strong></p>
+            <p>También se puede resumir todo en una expresión:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>−</mo><mn>1</mn><mo>+</mo><mn>3</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>4</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>1</mn><mo>−</mo><mn>2</mn><mo>+</mo><mn>3</mn><mo>=</mo><mn>1</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Después de realizar todos los movimientos, la ficha termina en <strong>1</strong>. La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

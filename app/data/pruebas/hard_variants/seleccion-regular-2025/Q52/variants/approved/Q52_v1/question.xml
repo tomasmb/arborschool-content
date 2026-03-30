@@ -1,0 +1,340 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q52_v1" title="Probabilidad simple - talleres extracurriculares" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la tabla adjunta se presentan los resultados obtenidos al consultar a un grupo de estudiantes sobre la preferencia por uno de los cuatro talleres extracurriculares disponibles, tal que cada estudiante escogió solo un taller.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Taller</th>
+          <th>Frecuencia</th>
+        </tr>
+        <tr>
+          <td>Danza</td>
+          <td>120</td>
+        </tr>
+        <tr>
+          <td>Teatro</td>
+          <td>80</td>
+        </tr>
+        <tr>
+          <td>Robótica</td>
+          <td>140</td>
+        </tr>
+        <tr>
+          <td>Ajedrez</td>
+          <td>60</td>
+        </tr>
+      </table>
+    </div>
+    <p>Si se elige al azar a uno de estos estudiantes, ¿cuál de las siguientes expresiones permite determinar la probabilidad de que este haya escogido un taller del área artística (Danza o Teatro)?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <p>
+          <m:math>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia danza</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia teatro</m:mtext>
+              </m:mrow>
+              <m:mn>200</m:mn>
+            </m:mfrac>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La frecuencia favorable es 120 + 80 = 200, pero la probabilidad se calcula dividiendo por el total de estudiantes. El total es 120 + 80 + 140 + 60 = 400, por lo que la expresión correcta debe tener denominador 400, no 200.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <p>
+          <m:math>
+            <m:mfrac>
+              <m:mrow>
+                <m:mtext>Frecuencia danza</m:mtext>
+                <m:mo>+</m:mo>
+                <m:mtext>Frecuencia teatro</m:mtext>
+              </m:mrow>
+              <m:mn>400</m:mn>
+            </m:mfrac>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los casos favorables son Danza o Teatro: 120 + 80 = 200. El total de estudiantes es 120 + 80 + 140 + 60 = 400. Entonces la probabilidad se determina con 200/400, es decir, con la suma de las frecuencias de Danza y Teatro dividida por 400.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <p>
+          <m:math>
+            <m:mrow>
+              <m:mn>1</m:mn>
+              <m:mo>-</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mtext>Frecuencia danza</m:mtext>
+                  <m:mo>+</m:mo>
+                  <m:mtext>Frecuencia teatro</m:mtext>
+                </m:mrow>
+                <m:mn>400</m:mn>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad pedida es la de escoger Danza o Teatro, por lo que debe escribirse directamente como la suma de esas frecuencias sobre el total:
+<m:math><m:mfrac><m:mrow><m:mn>120</m:mn><m:mo>+</m:mo><m:mn>80</m:mn></m:mrow><m:mn>400</m:mn></m:mfrac></m:math>.
+En cambio, la expresión dada en esta alternativa calcula el complemento de ese evento:
+<m:math><m:mrow><m:mn>1</m:mn><m:mo>-</m:mo><m:mfrac><m:mn>200</m:mn><m:mn>400</m:mn></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>200</m:mn><m:mn>400</m:mn></m:mfrac></m:mrow></m:math>,
+que corresponde a
+<m:math><m:mfrac><m:mrow><m:mn>140</m:mn><m:mo>+</m:mo><m:mn>60</m:mn></m:mrow><m:mn>400</m:mn></m:mfrac></m:math>,
+es decir, Robótica o Ajedrez. En esta tabla ambos valores coinciden numéricamente porque
+<m:math><m:mrow><m:mn>120</m:mn><m:mo>+</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>140</m:mn><m:mo>+</m:mo><m:mn>60</m:mn><m:mo>=</m:mo><m:mn>200</m:mn></m:mrow></m:math>,
+pero la expresión solicitada para el evento “Danza o Teatro” es la de la alternativa B.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <p>
+          <m:math>
+            <m:mrow>
+              <m:mn>1</m:mn>
+              <m:mo>-</m:mo>
+              <m:mfrac>
+                <m:mrow>
+                  <m:mtext>Frecuencia danza</m:mtext>
+                  <m:mo>+</m:mo>
+                  <m:mtext>Frecuencia teatro</m:mtext>
+                </m:mrow>
+                <m:mn>200</m:mn>
+              </m:mfrac>
+            </m:mrow>
+          </m:math>
+        </p>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Aquí se usa denominador 200, pero el total de estudiantes es 400. Además, al reemplazar los valores se obtiene 1 − (120 + 80)/200 = 1 − 200/200 = 1 − 1 = 0, y la probabilidad de escoger un taller artístico no es 0, porque sí hay 200 estudiantes que eligieron Danza o Teatro.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una alternativa válida. Para calcular la probabilidad pedida, se debe dividir la frecuencia de los casos favorables entre el total de estudiantes.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los casos favorables</strong></p>
+            <p>El problema pide la probabilidad de escoger a un estudiante que haya elegido un taller del área artística, es decir, Danza o Teatro.</p>
+            <p>Entonces, la frecuencia favorable es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>120</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>80</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>200</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Calcular el total de estudiantes</strong></p>
+            <p>Como cada estudiante escogió solo un taller, el total se obtiene sumando todas las frecuencias de la tabla:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>120</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>80</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>140</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>60</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>400</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Aplicar la definición de probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>casos favorables</m:mtext>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mtext>casos totales</m:mtext>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>En este caso:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>200</m:mn>
+                  <m:mn>400</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Esta fracción se puede simplificar a:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>1</m:mn>
+                  <m:mn>2</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Analizar por qué la alternativa C no es la expresión pedida</strong></p>
+            <p>La alternativa C propone restar a 1 la probabilidad de Danza o Teatro:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>1</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>120</m:mn>
+                      <m:mo>+</m:mo>
+                      <m:mn>80</m:mn>
+                    </m:mrow>
+                    <m:mn>400</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Esa expresión representa el evento complementario, es decir, escoger Robótica o Ajedrez:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>140</m:mn>
+                    <m:mo>+</m:mo>
+                    <m:mn>60</m:mn>
+                  </m:mrow>
+                  <m:mn>400</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>En esta tabla ocurre que:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>140</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>60</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>200</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por eso el complemento también vale:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>200</m:mn>
+                  <m:mn>400</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>Sin embargo, la pregunta solicita la expresión directa para “Danza o Teatro”, no la del evento contrario.</p>
+          </li>
+          <li>
+            <p><strong>Relacionar con las alternativas</strong></p>
+            <p>La expresión correcta es la que tiene en el numerador la suma de las frecuencias de Danza y Teatro, y en el denominador el total de estudiantes, 400.</p>
+            <p>Esa expresión corresponde a la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión que permite determinar la probabilidad pedida es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>Frecuencia danza</m:mtext>
+                    <m:mo>+</m:mo>
+                    <m:mtext>Frecuencia teatro</m:mtext>
+                  </m:mrow>
+                  <m:mn>400</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

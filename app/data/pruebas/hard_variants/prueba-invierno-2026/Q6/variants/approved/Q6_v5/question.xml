@@ -1,0 +1,355 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v5" title="Q6_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un cuestionario en línea, cada bloque tiene 10 preguntas de opción múltiple.</p>
+    <p>• Cada respuesta correcta suma 3 puntos.</p>
+    <p>• Cada respuesta incorrecta resta 1 punto.</p>
+    <p>Luego de responder tres bloques, un estudiante obtuvo los siguientes resultados: Bloque 1: 6 correctas y 3 incorrectas; Bloque 2: 5 correctas y 4 incorrectas; Bloque 3: 7 correctas y 2 incorrectas. El resto de las preguntas, si las hay, quedó sin responder.
+      <img src="requiere_nueva_imagen.png" alt="Esquema con tres recuadros titulados Bloque 1, Bloque 2 y Bloque 3. En Bloque 1 aparece: '6 correctas, 3 incorrectas y el resto en blanco'. En Bloque 2: '5 correctas, 4 incorrectas y el resto en blanco'. En Bloque 3: '7 correctas, 2 incorrectas y el resto en blanco'." />
+    </p>
+    <p>¿Cuál de las siguientes expresiones representa el puntaje total obtenido en los tres bloques?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>−</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>−</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>−</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión resta un término que ya es negativo. En el bloque 1 produce 6·3 − (3·−1) = 18 − (−3) = 21, pero el puntaje correcto del bloque 1 es 18 + (−3) = 15. Por eso la expresión no representa el puntaje total.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Cada bloque se calcula como puntos por correctas más puntos por incorrectas: bloque 1, 6·3 + 3·(−1) = 18 − 3 = 15; bloque 2, 5·3 + 4·(−1) = 15 − 4 = 11; bloque 3, 7·3 + 2·(−1) = 21 − 2 = 19. El total es 15 + 11 + 19 = 45, y esta expresión representa exactamente ese cálculo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>6</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>7</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión asigna −1 a las correctas y 3 a las incorrectas. En el bloque 1 produce 6·(−1) + 3·3 = −6 + 9 = 3, pero el enunciado dice que las 6 correctas suman 6·3 = 18 y las 3 incorrectas restan 3·1 = 3, así que el bloque 1 debe valer 15. Por eso no representa el puntaje pedido.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>3</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>4</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+            <m:mo>+</m:mo>
+            <m:mo>(</m:mo>
+            <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>2</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión suma 3 puntos también por las incorrectas. En el bloque 2 produce 5·3 + 4·3 = 15 + 12 = 27, pero las 4 incorrectas deben restar 4 puntos, no sumar 12. El puntaje correcto del bloque 2 es 5·3 + 4·(−1) = 15 − 4 = 11.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar cómo se calcula el puntaje en cada bloque</strong></p>
+            <p>Cada respuesta correcta aporta 3 puntos y cada incorrecta aporta −1 punto. Por lo tanto, en cada bloque el puntaje se representa como:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mi>correctas</m:mi>
+                  <m:mo>·</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mi>incorrectas</m:mi>
+                  <m:mo>·</m:mo>
+                  <m:mo>−</m:mo>
+                  <m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Las preguntas en blanco no suman ni restan puntaje, así que no aparecen en la expresión.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir la expresión de cada bloque</strong></p>
+            <p>Bloque 1:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Bloque 2:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Bloque 3:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar los tres bloques</strong></p>
+            <p>El puntaje total se representa por:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo>
+                  <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo>
+                  <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>)</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con el cálculo numérico</strong></p>
+            <p>Bloque 1:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>6</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>18</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>15</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Bloque 2:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>5</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>15</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>11</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Bloque 3:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>7</m:mn><m:mo>·</m:mo><m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>2</m:mn><m:mo>·</m:mo><m:mo>−</m:mo><m:mn>1</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>21</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mo>(</m:mo><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>19</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Total:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>15</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>11</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>19</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>45</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La expresión correcta es la alternativa B, porque suma en cada bloque los puntos de las correctas y los puntos negativos de las incorrectas.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

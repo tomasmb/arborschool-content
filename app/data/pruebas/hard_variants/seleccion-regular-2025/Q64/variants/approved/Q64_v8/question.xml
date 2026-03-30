@@ -1,0 +1,157 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v8" title="Q64_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente tablero cuadriculado se muestran los puntos M y N.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Plano cuadriculado de al menos 10 columnas por 10 filas. Las columnas se etiquetan de izquierda a derecha con las letras A, B, C, D, E, F, G, H, I, J y las filas de abajo hacia arriba con los números 1 al 10. El punto M se ubica en la casilla G2 (columna G, fila 2) y el punto N en la casilla D10 (columna D, fila 10). No se muestran flechas entre M y N, solo los dos puntos marcados claramente."/>
+    </p>
+    <p>Un personaje se desplaza desde M hasta N utilizando siempre la misma secuencia de movimientos: F, F, F, V, V, V, V, V (3 movimientos F y 5 movimientos V, en ese orden). Cada F representa un movimiento diagonal de una casilla y cada V representa un movimiento vertical de una casilla en el tablero.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Pequeño extracto de una cuadrícula que muestra una casilla central con una flecha diagonal ↗ que va de esa casilla a la casilla situada arriba y a la derecha, otra flecha diagonal ↖ que va arriba y a la izquierda, una flecha ↑ que va hacia arriba y una flecha ↓ que va hacia abajo. No se indica cuál de estas flechas corresponde específicamente a F o a V; solo se ilustran posibles direcciones diagonales y verticales."/>
+    </p>
+    <p>¿Cuál de las siguientes definiciones de los movimientos F y V es coherente con el desplazamiento observado entre M y N en la cuadrícula?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">F = ↗ (diagonal hacia arriba y hacia la derecha), V = ↑ (vertical hacia arriba)<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La imagen auxiliar solo muestra direcciones posibles, pero no asigna cuál corresponde a F ni a V, así que la decisión debe justificarse con la secuencia completa F, F, F, V, V, V, V, V. Desde G2 hasta D10 se necesita terminar 3 columnas a la izquierda y 8 filas más arriba. Si F = ↗ y V = ↑, la trayectoria ordenada sería G2 → H3 → I4 → J5 → J6 → J7 → J8 → J9 → J10. Esa ruta sube 8 filas, pero avanza 3 columnas a la derecha, no 3 a la izquierda. Por eso no llega a D10.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">F = ↖ (diagonal hacia arriba y hacia la izquierda), V = ↑ (vertical hacia arriba)<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Como la imagen auxiliar no fija la correspondencia entre letras y flechas, hay que comprobar la secuencia exacta F, F, F, V, V, V, V, V. Desde G2, si F = ↖, los tres primeros movimientos llevan a F3, luego E4 y después D5. Desde allí, si V = ↑, los cinco movimientos verticales llevan a D6, D7, D8, D9 y D10. La trayectoria completa es G2 → F3 → E4 → D5 → D6 → D7 → D8 → D9 → D10. Además, nunca sale del tablero. Por lo tanto, esta definición sí es coherente con el recorrido desde M hasta N.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">F = ↗ (diagonal hacia arriba y hacia la derecha), V = ↓ (vertical hacia abajo)<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La imagen auxiliar solo ilustra direcciones posibles; para decidir hay que revisar la secuencia en el orden dado. Si F = ↗ y V = ↓, partiendo en G2 los tres movimientos F producen la ruta G2 → H3 → I4 → J5. Luego los cinco movimientos V hacen bajar: J4, J3, J2, J1 y después se intentaría salir del tablero por debajo al hacer un quinto descenso. Incluso antes de comparar con D10, esta opción ya falla porque la trayectoria ordenada no coincide con el destino y además no se mantiene dentro del tablero.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">F = ↖ (diagonal hacia arriba y hacia la izquierda), V = ↓ (vertical hacia abajo)<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La imagen auxiliar no decide por sí sola qué flecha representa a cada letra; se debe verificar la secuencia completa. Si F = ↖, desde G2 los tres primeros movimientos llevan a F3, E4 y D5. Pero si después V = ↓, los cinco movimientos verticales bajan a D4, D3, D2, D1 y luego obligan a salir del tablero al intentar bajar una vez más. Esta trayectoria no llega a D10 y tampoco respeta permanecer dentro del tablero hasta completar la secuencia.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Comparar la posición inicial y final</strong></p>
+            <p>El punto M está en G2 y el punto N está en D10.</p>
+            <p>En sentido horizontal, se pasa de la columna G a la columna D, es decir, 3 columnas hacia la izquierda.</p>
+            <p>En sentido vertical, se pasa de la fila 2 a la fila 10, es decir, 8 filas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar la información de la secuencia</strong></p>
+            <p>La secuencia no es cualquier combinación de movimientos, sino exactamente:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>F</mi><mo>,</mo><mi>F</mi><mo>,</mo><mi>F</mi><mo>,</mo><mi>V</mi><mo>,</mo><mi>V</mi><mo>,</mo><mi>V</mi><mo>,</mo><mi>V</mi><mo>,</mo><mi>V</mi></mrow></math></p>
+            <p>Por lo tanto, no basta con mirar solo el desplazamiento total: también hay que verificar que ese orden permita recorrer el tablero desde G2 hasta D10 sin salir de él.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Determinar qué debe ser F</strong></p>
+            <p>Hay 3 movimientos F y cada uno es diagonal de una casilla.</p>
+            <p>Cada movimiento diagonal cambia una columna y una fila al mismo tiempo.</p>
+            <p>Como el cambio horizontal total es exactamente 3 columnas hacia la izquierda, los 3 movimientos F deben aportar una columna hacia la izquierda cada uno.</p>
+            <p>Entonces F tiene que ser ↖ y no ↗.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Determinar qué debe ser V</strong></p>
+            <p>Si F = ↖, entonces cada F también sube 1 fila.</p>
+            <p>Con los 3 movimientos F, el avance vertical es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mtext> filas hacia arriba</mtext></mrow></math></p>
+            <p>Como el total debe ser 8 filas hacia arriba, los 5 movimientos V deben aportar las 5 filas restantes:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>3</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>8</mn></mrow></math></p>
+            <p>Por lo tanto, V debe ser ↑.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Verificar la trayectoria exacta en el orden dado</strong></p>
+            <p>Ahora se comprueba la ruta completa usando primero los 3 movimientos F y luego los 5 movimientos V.</p>
+            <p>Partiendo en G2:</p>
+            <ol>
+              <li><p>Primer F = ↖: G2 → F3</p></li>
+              <li><p>Segundo F = ↖: F3 → E4</p></li>
+              <li><p>Tercer F = ↖: E4 → D5</p></li>
+              <li><p>Primer V = ↑: D5 → D6</p></li>
+              <li><p>Segundo V = ↑: D6 → D7</p></li>
+              <li><p>Tercer V = ↑: D7 → D8</p></li>
+              <li><p>Cuarto V = ↑: D8 → D9</p></li>
+              <li><p>Quinto V = ↑: D9 → D10</p></li>
+            </ol>
+            <p>La trayectoria completa es:</p>
+            <p><strong>G2 → F3 → E4 → D5 → D6 → D7 → D8 → D9 → D10</strong></p>
+            <p>Esta ruta termina exactamente en N y en ningún momento sale del tablero.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Interpretar correctamente la imagen auxiliar</strong></p>
+            <p>La segunda imagen solo muestra direcciones posibles de movimientos diagonales y verticales.</p>
+            <p>No indica por sí sola cuál flecha corresponde a F ni cuál corresponde a V.</p>
+            <p>Por eso la respuesta correcta se obtiene analizando el cambio de G2 a D10 y verificando la trayectoria completa en el orden exigido.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La definición coherente es <strong>F = ↖</strong> y <strong>V = ↑</strong>, que corresponde a la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

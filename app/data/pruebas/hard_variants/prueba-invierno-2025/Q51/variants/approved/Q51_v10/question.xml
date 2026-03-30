@@ -1,0 +1,156 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v10" title="Q51_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una plaza, un plano indica cómo llegar desde la entrada principal a una fuente usando una cuadrícula de baldosas. El plano original decía: Desde la entrada camine 9 baldosas hacia el norte y 4 baldosas hacia el oeste.</p>
+    <p>Con el tiempo, la fuente se ha movido dos veces: primero, 6 baldosas hacia el sur y 5 hacia el oeste; después, 7 baldosas hacia el norte y 3 hacia el este. En un recuadro al costado del plano se resumen estos tres desplazamientos (el camino original y los dos cambios de posición de la fuente) como una secuencia de filas con los movimientos: (Norte +9, Oeste +4), (Sur +6, Oeste +5), (Norte +7, Este +3).</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Plano esquemático de una plaza dibujado como una cuadrícula de baldosas. En la parte inferior se marca la Entrada. Desde allí se indica un camino de 9 baldosas hacia el norte y luego 4 baldosas hacia el oeste hasta la Fuente original. Desde la Fuente original se dibuja una flecha 6 baldosas hacia el sur y 5 hacia el oeste hasta una posición intermedia de la fuente, y desde esa posición otra flecha 7 baldosas hacia el norte y 3 hacia el este hasta la Fuente actual. A la derecha del plano hay un cuadro con tres filas que resumen los movimientos: Fila 1: Norte +9, Oeste +4; Fila 2: Sur +6, Oeste +5; Fila 3: Norte +7, Este +3." />
+    </p>
+    <p>Quieren actualizar las indicaciones en el plano para que una persona que entra ahora por la entrada principal llegue directamente a la fuente actual.</p>
+    <p>¿Cuál de las siguientes indicaciones describe correctamente cuántas baldosas y en qué dirección (norte/sur y este/oeste) debe caminar ahora una persona desde la entrada para llegar a la fuente?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Camine diez baldosas hacia el norte y seis baldosas hacia el este.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento vertical total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></math> hacia el norte, pero el desplazamiento horizontal total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn></math> hacia el oeste. Por eso la fuente queda 10 baldosas al norte y 6 al oeste, no 6 al este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Camine diez baldosas hacia el norte y seis baldosas hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al sumar los movimientos verticales se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></math>, así que el desplazamiento final es 10 baldosas hacia el norte. Al sumar los movimientos horizontales se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn></math>, así que el desplazamiento final es 6 baldosas hacia el oeste. La indicación correcta es caminar 10 baldosas al norte y 6 al oeste.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Camine diez baldosas hacia el norte y doce baldosas hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El desplazamiento vertical total sí es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></math> hacia el norte, pero el horizontal no es 12. Horizontalmente se debe calcular <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn></math>, porque moverse 3 baldosas hacia el este reduce el avance hacia el oeste. Por eso la fuente queda 6 baldosas al oeste, no 12.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Camine veintidós baldosas hacia el norte y doce baldosas hacia el oeste.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esa opción no considera que uno de los cambios fue hacia el sur y otro hacia el este. El desplazamiento vertical correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn></math>, no 22. El desplazamiento horizontal correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn></math>, no 12. La posición final no es 22 al norte y 12 al oeste.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: suma de desplazamientos</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el recorrido original</strong></p>
+            <p>Desde la entrada hasta la fuente original se avanza 9 baldosas hacia el norte y 4 baldosas hacia el oeste.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Incorporar el primer cambio de posición de la fuente</strong></p>
+            <p>La fuente se mueve 6 baldosas hacia el sur y 5 hacia el oeste.</p>
+            <p>Hasta ese momento, el desplazamiento total desde la entrada es:</p>
+            <p>Vertical:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>9</mn><mo>−</mo><mn>6</mn><mo>=</mo><mn>3</mn>
+              </math>
+              , es decir, 3 baldosas hacia el norte.
+            </p>
+            <p>Horizontal:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>4</mn><mo>+</mo><mn>5</mn><mo>=</mo><mn>9</mn>
+              </math>
+              , es decir, 9 baldosas hacia el oeste.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Incorporar el segundo cambio de posición de la fuente</strong></p>
+            <p>Luego la fuente se mueve 7 baldosas hacia el norte y 3 hacia el este.</p>
+            <p>Ahora sumamos esos movimientos al resultado anterior.</p>
+            <p>Vertical:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>3</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn>
+              </math>
+              , así que la fuente actual queda 10 baldosas hacia el norte.
+            </p>
+            <p>Horizontal:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>9</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn>
+              </math>
+              , así que la fuente actual queda 6 baldosas hacia el oeste.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con una sola suma</strong></p>
+            <p>También se puede calcular directamente por ejes:</p>
+            <p>Desplazamiento norte-sur:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>9</mn><mo>−</mo><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>10</mn>
+              </math>
+            </p>
+            <p>Desplazamiento oeste-este:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>4</mn><mo>+</mo><mn>5</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>6</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La persona debe caminar 10 baldosas hacia el norte y 6 baldosas hacia el oeste.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

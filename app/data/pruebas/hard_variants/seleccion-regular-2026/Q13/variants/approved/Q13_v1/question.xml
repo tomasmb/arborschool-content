@@ -1,0 +1,114 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v1" title="Q13_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En cierta calculadora científica se pueden ingresar ceros agrupados usando tres botones especiales: [1], [00] y [000].</p>
+    <p>Para abreviar, se registra una secuencia de pulsaciones escribiendo los botones separados por guiones. Por ejemplo, el registro "1-000-00" significa que se presiona primero [1], luego [000] y finalmente [00].</p>
+    <p>Con esta notación, el registro "1-000" representa el número 1000, porque después del 1 aparecen tres ceros.</p>
+    <p>A continuación se muestran cuatro posibles registros de teclas.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de estos registros permite escribir el número <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math> en la calculadora?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">1-000-00-00<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Este registro escribe un 1 seguido de 3 + 2 + 2 = 7 ceros, o sea 10 000 000, que es <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>, no <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">1-000-000-00<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Este registro escribe un 1 seguido de 3 + 3 + 2 = 8 ceros, es decir 100 000 000, que corresponde a <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">1-000-000-000<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Este registro escribe un 1 seguido de 3 + 3 + 3 = 9 ceros, o sea 1 000 000 000, que es <m:math><m:msup><m:mn>10</m:mn><m:mn>9</m:mn></m:msup></m:math>, no <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">1-000-00-00-00<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Este registro escribe un 1 seguido de 3 + 2 + 2 + 2 = 9 ceros, o sea 1 000 000 000, que es <m:math><m:msup><m:mn>10</m:mn><m:mn>9</m:mn></m:msup></m:math>, no <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>El número <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math> es 1 seguido de 8 ceros: 100 000 000.</p>
+          </li>
+          <li>
+            <p>En cada registro, el botón [1] aporta el dígito 1, el botón [00] agrega 2 ceros y el botón [000] agrega 3 ceros.</p>
+          </li>
+          <li>
+            <p>Contemos los ceros de cada opción.</p>
+            <p>Opción A: 1-000-00-00 → 3 + 2 + 2 = 7 ceros → 10 000 000.</p>
+            <p>Opción B: 1-000-000-00 → 3 + 3 + 2 = 8 ceros → 100 000 000.</p>
+            <p>Opción C: 1-000-000-000 → 3 + 3 + 3 = 9 ceros → 1 000 000 000.</p>
+            <p>Opción D: 1-000-00-00-00 → 3 + 2 + 2 + 2 = 9 ceros → 1 000 000 000.</p>
+          </li>
+          <li>
+            <p>La única opción que produce un 1 seguido de exactamente 8 ceros es la opción B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión:</strong> el registro correcto es <strong>1-000-000-00</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,150 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q43_v1" title="Q43_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una persona ordena cajas, de un mismo tipo, en una bodega de tal manera que ubica una caja sobre otra y no deja espacios entre ellas, dejándolas perfectamente alineadas.</p>
+    <p>En la siguiente imagen se representan las cajas que se tienen ordenadas en la bodega. El bloque completo tendría 4 cajas de largo, 3 de ancho y 2 de alto, pero en la esquina superior frontal falta un bloque de cajas de 1 de largo, 2 de ancho y 1 de alto.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujo isométrico de un bloque de cajas alineadas formando un prisma rectangular de 4 cajas de largo, 3 de ancho y 2 de alto. En la esquina superior frontal falta un prisma de cajas de 1 caja de largo, 2 de ancho y 1 de alto, de modo que se ve claramente un hueco rectangular en esa esquina." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuántas cajas hay en total en la bodega?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">24<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El bloque completo tendría 24 cajas porque 4 de largo por 3 de ancho por 2 de alto da 24, pero en la esquina falta un bloque de 2 cajas porque 1 por 2 por 1 da 2. Entonces no quedan 24, sino 22.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">23<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El bloque completo tiene 24 cajas y el bloque faltante tiene 2 cajas. Al quitar 2 cajas de 24 quedan 22, no 23.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">22<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! El bloque completo tendría 24 cajas porque 4 por 3 por 2 es 24. Como falta un bloque de 1 por 2 por 1, faltan 2 cajas. Entonces el total es 24 menos 2, es decir, 22 cajas.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">20<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El bloque completo tiene 24 cajas. El hueco indicado corresponde a 2 cajas porque mide 1 de largo, 2 de ancho y 1 de alto. Por eso el total correcto es 22. Para obtener 20 habría que quitar 4 cajas, y eso no coincide con el bloque faltante del enunciado.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular cuántas cajas tendría el bloque completo</strong></p>
+            <p>El prisma completo tendría 4 cajas de largo, 3 de ancho y 2 de alto.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn>
+                  <mo>×</mo>
+                  <mn>3</mn>
+                  <mo>×</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mn>24</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, si no faltara ninguna parte, habría 24 cajas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular cuántas cajas faltan</strong></p>
+            <p>Falta un bloque de 1 de largo, 2 de ancho y 1 de alto.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn>
+                  <mo>×</mo>
+                  <mn>2</mn>
+                  <mo>×</mo>
+                  <mn>1</mn>
+                  <mo>=</mo>
+                  <mn>2</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Eso significa que faltan 2 cajas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Restar las cajas que faltan</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>24</mn>
+                  <mo>−</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mn>22</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>En total hay 22 cajas en la bodega. La alternativa correcta es la C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

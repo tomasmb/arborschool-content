@@ -1,0 +1,117 @@
+{
+  "variant_id": "Q64_v14",
+  "source_question_id": "Q64",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q64_v14",
+    "scenario_description": "Se muestra una tabla comparativa entre un dado común y uno cargado. Para el dado cargado se indican las probabilidades: cara 1: 0,25; 2: 0,05; 3: 0,15; 4: 0,15; 5: 0,25; 6: 0,15. Del dado común se recuerda que todas las caras tienen probabilidad 1/6. Se ofrecen afirmaciones del tipo: «La probabilidad de obtener 1 o 2 con el dado cargado es mayor que con el dado común», «La probabilidad de obtener un número mayor que 4 es 0,4 en el dado cargado», «La probabilidad de obtener un número par es la misma en ambos dados». Solo una afirmación es correcta. Los distractores se basan en comparar mal la suma de probabilidades (por ejemplo, usar 2/6 para cualquier “1 o 2” sin considerar el modelo cargado).",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "Se obliga a identificar las caras que conforman cada evento (por ejemplo, ‘1 o 2’, ‘mayor que 4’: 5 y 6; ‘par’: 2,4,6), sumar sus probabilidades en el dado cargado y contrastarlas con las probabilidades correspondientes en el dado común. No basta un cálculo aislado: para validar o refutar cada afirmación, el estudiante debe aplicar el modelo de probabilidad en ambos casos y entender cómo la suma de resultados mutuamente excluyentes afecta la comparación.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "probability_statement_selection"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que no se introducen probabilidades condicionales ni combinatoria: el estudiante sigue identificando los resultados que conforman cada evento (por ejemplo, \"mayor que 4\", \"par\", \"1 o 2\", \"3, 4 o 6\"), suma las probabilidades correspondientes en el dado cargado y las compara con las del dado común (1/6 por cara), manteniendo probabilidad clásica simple con eventos mutuamente excluyentes."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-04-05"
+    ],
+    "primary_atom_titles": [
+      "Aplicación de la regla aditiva para eventos mutuamente excluyentes"
+    ],
+    "family_id": "simple_probability",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "favorable_case_check",
+        "description": "Mantener el mismo espacio muestral simple y pedir reconocer qué opción representa correctamente los casos favorables o la probabilidad resultante.",
+        "required_changes": [
+          "Nueva presentación del espacio muestral",
+          "Distractores de conteo simple plausibles"
+        ],
+        "forbidden_changes": [
+          "Introducir dependencia/condicionalidad",
+          "Subirlo a combinatoria más compleja"
+        ]
+      },
+      {
+        "shape_id": "probability_statement_selection",
+        "description": "Plantear varias afirmaciones simples sobre la probabilidad del evento y pedir seleccionar la correcta dentro del mismo espacio muestral clásico.",
+        "required_changes": [
+          "Forma de pregunta basada en afirmación",
+          "Distractores que confunden casos favorables y posibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar a probabilidad condicional",
+          "Agregar más de un nivel de selección"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "ARG",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.35,
+    "task_form": "direct_resolution",
+    "operation_signature": "simple_probability",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "apply_probability_model",
+    "solution_structure": "probability_counting",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "classical_probability",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=simple_probability",
+      "must_not_introduce_algebraic_unknowns"
+    ]
+  },
+  "postprocess_summary": {}
+}

@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q8_v10",
+  "source_question_id": "Q8",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q8_v10",
+    "scenario_description": "Se presenta un registro tipo \"ficha de preparación de bebida isotónica\" en formato de lista, sin imagen. Contexto: preparación de botellas individuales para un equipo deportivo. La ficha dice:\n- Agua: 2 onzas por botella\n- Concentrado sabor limón: 0,75 onzas por botella\nSe indica que se prepararán 400 botellas y, en una línea aparte, \"1 onza = 30 mL\". Se pregunta directamente: \"¿Cuántos mL de concentrado sabor limón se necesitan en total para preparar las 400 botellas?\". Las opciones incluyen resultados basados en usar 2 onzas en vez de 0,75, en no convertir a mL o en redondear mal el 0,75.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El uso de un decimal (0,75) obliga a entender que se trata de una cantidad por unidad que también se escala proporcionalmente, no de algo que deba redondearse arbitrariamente. El estudiante debe elegir el renglón correcto de la ficha, aplicar la proporcionalidad directa (0,75 onzas × 400) y luego la conversión fija (×30), distinguiendo el papel de cada dato y evitando usar el volumen del agua como factor.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "structured_case_record"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué mantener una sola relación de proporcionalidad directa (cantidad por botella–número de botellas) más la misma equivalencia fija de unidades de la fuente, sin introducir segundas razones ni pasos adicionales, y cambié la representación a ficha estructurada sin convertir el problema en lectura puramente verbal ni en ecuación afín."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-ALG-02-06"
+    ],
+    "primary_atom_titles": [
+      "Resolución de Problemas de Proporción Directa (Regla de Tres)"
+    ],
+    "family_id": "direct_proportion_reasoning",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "structured_case_record",
+        "description": "Presentar los datos en un registro breve o listado estructurado, manteniendo exactamente una sola relación proporcional directa.",
+        "required_changes": [
+          "Presentación en registro o lista",
+          "Contexto y magnitudes nuevas"
+        ],
+        "forbidden_changes": [
+          "Agregar conversiones",
+          "Convertirlo en fórmula afín o ecuación con término fijo"
+        ]
+      },
+      {
+        "shape_id": "consistency_check",
+        "description": "Pedir identificar qué resultado o registro es consistente con una razón/proporción dada, en lugar de pedir sólo el valor final.",
+        "required_changes": [
+          "Forma de pregunta basada en consistencia",
+          "Distractores con errores de escala plausibles"
+        ],
+        "forbidden_changes": [
+          "Agregar una segunda relación proporcional",
+          "Introducir pasos auxiliares extra"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Low",
+    "difficulty_score": 0.25,
+    "task_form": "direct_resolution",
+    "operation_signature": "direct_proportion_reasoning",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "generic_visual_support",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "compute_value",
+    "solution_structure": "proportional_setup",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "direct_proportion_setup",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "generic_proportional_rule",
+    "response_mode": "label_selection",
+    "evidence_mode": "visual_structural_support",
+    "explicit_dataset_policy": "not_required_if_geometry_is_explicit",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=direct_resolution",
+      "operation_signature=direct_proportion_reasoning",
+      "must_not_introduce_algebraic_unknowns",
+      "must_not_add_auxiliary_transformations",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

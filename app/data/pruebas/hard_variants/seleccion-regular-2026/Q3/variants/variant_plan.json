@@ -1,0 +1,133 @@
+{
+  "source_question_id": "Q3",
+  "source_test_id": "seleccion-regular-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q3_v8",
+      "scenario_description": "Contexto de dron de reparto. Desde el depósito D al punto P1 hay 7 km. Del punto P1 al punto P2 hay el triple de distancia que de D a P1. El dron hace el trayecto D → P1 → P2 por la mañana y regresa exactamente por el mismo camino P2 → P1 → D en la tarde. La batería permite al dron recorrer 14 km con 1 unidad de batería. Se pregunta directamente cuántas unidades de batería necesita para completar todo el recorrido del día.\nEste escenario mantiene una sola relación de proporcionalidad directa (km por unidad de batería), pero obliga a deducir una de las distancias a partir de una relación verbal (“el triple”) antes de sumar el recorrido de ida y vuelta.",
+      "non_mechanizable_axes": [
+        "orden/dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe primero interpretar la relación \"el triple\" para obtener la longitud del segundo tramo, luego componer el trayecto completo de ida y vuelta y recién después aplicar la proporción km–unidad de batería. No puede limitarse a copiar y dividir un total ya dado, porque el total debe construirse a partir de la descripción.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q3_v9",
+      "scenario_description": "Contexto de entrenamiento en bicicleta. Desde la casa de Ana al parque hay 6 km y desde el parque al mirador hay 9 km. Ana hace el recorrido casa → parque → mirador por la mañana y luego regresa por la misma ruta mirador → parque → casa en la tarde. Su botella de hidratación le permite recorrer 24 km consumiendo 0,5 litros de bebida. Se pregunta cuántos litros de bebida necesita para tener suficiente para todo el día.\nSe mantiene una sola relación de proporcionalidad directa (km por litro), pero el rendimiento se da como \"24 km con 0,5 L\" en lugar de \"x km con 1 L\", obligando a usar la proporción de manera más flexible.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe comprender que la razón \"24 km con 0,5 L\" describe la misma relación km–litros y que puede usarse directamente para escalar al total de km del día. No basta con un esquema mecánico 'dividir por 10', sino entender cómo se ajusta el consumo al doble o al cuádruple de distancia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q3_v10",
+      "scenario_description": "Mismo tipo de viaje por tramos, pero con tasa invertida. Un bus escolar recorre 4 km desde la escuela al barrio Norte y 11 km desde el barrio Norte al estadio. Hace el trayecto escuela → barrio Norte → estadio y luego vuelve por el mismo camino al finalizar la jornada. El consumo de combustible se describe como 0,08 litros por cada kilómetro recorrido. Se pregunta cuántos litros de combustible consume en total en ese recorrido de ida y vuelta.\nLa estructura sigue siendo una sola proporción directa distancia–combustible, pero ahora la razón se expresa como litros por kilómetro, en lugar de kilómetros por litro.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que, dada una tasa en litros por kilómetro, el procedimiento correcto es multiplicar la distancia total por esa tasa, en vez de aplicar de manera rutinaria \"distancia ÷ rendimiento\". Esto requiere entender qué magnitud está en el numerador de la razón y cómo se escala, no solo aplicar una forma fija de regla de tres.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q3_v11",
+      "scenario_description": "Contexto de costo por kilómetro. Un servicio de traslado cobra 250 pesos por cada kilómetro recorrido. De la ciudad X al pueblo Y hay 8 km y del pueblo Y al balneario Z hay 17 km. Una familia contrata el servicio para ir desde X hasta Z pasando por Y y luego regresar por el mismo camino al final del día. Se pregunta cuál es el costo total del servicio para todo el recorrido de ida y vuelta.\nSe mantiene una sola relación de proporcionalidad directa (costo por km) con una ruta compuesta de dos tramos repetida ida y vuelta; cambia la magnitud asociada (dinero en lugar de combustible).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe construir el recorrido completo (sumar ambos tramos y luego considerar ida y vuelta) y luego aplicar la tarifa proporcional por km. Los distractores plausibles surgen de errores conceptuales: cobrar solo un sentido, olvidar un tramo o aplicar mal la tarifa (por ejemplo, multiplicar la tarifa por el número de tramos en lugar de por la distancia), lo que obliga a entender realmente la relación costo–distancia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q3_v12",
+      "scenario_description": "Contexto de lancha a motor presentado como registro estructurado. Se entrega un listado tipo ficha:\n- Tramo 1: muelle M → isla I: 9 km.\n- Tramo 2: isla I → playa P: 6 km.\n- Recorrido del día: M → I → P y luego P → I → M (ida y vuelta por los mismos tramos).\n- Consumo: la lancha recorre 15 km con 2 litros de combustible.\nLa pregunta pide directamente cuántos litros de combustible se necesitan para completar el recorrido del día.\nEste diseño materializa la shape \"structured_case_record\" al presentar los datos en formato de lista clara, con un solo vínculo proporcional directo (km–litros) y un contexto distinto (lancha y tramos marítimos).",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe leer y combinar la información del registro: identificar los tramos, construir la distancia total de ida y vuelta y luego usar la razón 15 km ↔ 2 L de forma proporcional. No basta con seguir una receta fija, porque debe reconocer cómo se aplica la razón dada a un total que no coincide exactamente con 15 km.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q3_v13",
+      "scenario_description": "Contexto de impresión de documentos, en registro. Se entrega una ficha:\n- Documento A: 12 páginas.\n- Documento B: 18 páginas.\n- Actividad de la mañana: imprimir A y B una vez.\n- Actividad de la tarde: volver a imprimir A y B una vez (misma cantidad de páginas que en la mañana).\n- Rendimiento del tóner: 120 páginas con 3 cartuchos.\nSe pregunta cuántos cartuchos de tóner se necesitan para imprimir todos los documentos de la mañana y la tarde.\nSe materializa \"structured_case_record\" mediante una lista de cantidades de páginas y un único rendimiento proporcional (páginas–cartuchos) en un contexto nuevo.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden/dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe reconstruir el total de páginas a partir de la ficha (sumar A y B, luego duplicar por mañana y tarde) y solo luego escalar la razón 120 páginas ↔ 3 cartuchos. Este encadenamiento fuerza a comprender la proporcionalidad páginas–cartuchos, no solo a aplicar una operación aislada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q3_v14",
+      "scenario_description": "Contexto de riego de surcos agrícolas con ficha. Se presenta:\n- Longitud del surco corto: 20 m.\n- Longitud del surco largo: es el doble de la longitud del surco corto.\n- Recorrido del sistema de riego: iniciar en el extremo del surco corto, recorrer ambos surcos completos de ida y luego volver por los mismos hasta el punto inicial.\n- Consumo de agua: 5 litros por cada 10 metros de surco recorrido.\nSe pregunta cuántos litros de agua se requieren para realizar todo el recorrido descrito.\nSe usa la shape \"structured_case_record\" con lista de datos y solo una relación proporcional directa (metros–litros), donde una de las longitudes se define mediante una relación verbal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden/dependencia_de_pasos"
+      ],
+      "required_reasoning": "El estudiante debe traducir la condición \"el doble\" en una longitud concreta, sumar la distancia de ambos surcos, considerar ida y vuelta y finalmente aplicar la proporción metros–litros. La comprensión de cómo se compone la distancia total y cómo se escala con la razón dada es esencial; no hay un número total explícito que permita un cálculo mecánico inmediato.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "structured_case_record"
+    },
+    {
+      "variant_id": "Q3_v15",
+      "scenario_description": "Mismo tipo de viaje por tramos que en la fuente, pero en formato de verificación de plan de combustible. Un auto recorre 6 km desde la ciudad A a la ciudad B y 19 km desde B a la ciudad C. El rendimiento es de 10 km por litro. Debe hacer el viaje A → B → C y luego C → B → A en el mismo día. En lugar de preguntar \"¿cuántos litros necesita?\", se presentan cuatro planes posibles de carga de combustible (por ejemplo, \"cargar 4 L\", \"cargar 5 L\", etc.) y se pregunta cuál de ellos es coherente con el rendimiento del auto para hacer exactamente el recorrido completo, sin que sobre ni falte combustible.\nSe materializa la shape \"consistency_check\" al centrar la pregunta en qué plan es consistente con la proporción km–litros, y se diseñan distractores con errores de escala (mitad, doble, ida sola, etc.).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe calcular mentalmente o explícitamente la cantidad de litros que corresponde al total de km basándose en la proporción 10 km ↔ 1 L y luego identificar cuál de los planes coincide con ese valor. Los distractores corresponden a errores conceptuales típicos (considerar solo un sentido, usar un factor de escala incorrecto), lo que obliga a entender la proporcionalidad para distinguir el plan correcto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q3_v16",
+      "scenario_description": "Contexto de caminata con agua. Un grupo recorre un sendero desde el refugio R al mirador M (5 km) y luego del mirador a la laguna L (15 km). Hacen el trayecto R → M → L y después regresan por el mismo camino L → M → R el mismo día. Se sabe que 1 litro de agua alcanza para recorrer 8 km. Se presentan cuatro propuestas de reparto de agua del guía (por ejemplo, \"llevar 3 L para el grupo\", \"llevar 4 L\", etc.) y se pregunta cuál de ellas es la única que permite cubrir exactamente el recorrido de ida y vuelta, sin quedarse cortos ni llevar agua de sobra.\nSe materializa la shape \"consistency_check\" al pedir elegir la propuesta coherente con la tasa km–litro, con distractores que representan errores de escala como considerar solo la ida, solo un tramo o una multiplicación incorrecta.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Para decidir, el estudiante debe componer la distancia total de ida y vuelta, compararla con la capacidad de 1 L para 8 km y detectar qué propuesta coincide exactamente. No puede usar una regla mecánica de elegir el número \"que se ve bien\"; debe comprobar la coherencia proporcional entre distancia total y litros propuestos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    },
+    {
+      "variant_id": "Q3_v17",
+      "scenario_description": "Contexto de tarifa de taxi con verificación. Un taxi cobra 600 pesos por cada kilómetro recorrido, sin recargo fijo. De la estación central S al hotel H hay 3 km y del hotel H al centro de conferencias C hay 12 km. Una empresa contrata el taxi para llevar a un invitado desde S hasta C pasando por H y, al finalizar la jornada, devolverlo desde C a S pasando nuevamente por H (mismo recorrido de ida y vuelta). La empresa propone cuatro montos distintos como \"pago justo\" por todo el servicio. Se pregunta cuál de esos montos es coherente con la tarifa del taxi y el recorrido descrito.\nEsta variante implementa la shape \"consistency_check\" al exigir que se identifique qué monto respeta la proporción costo–km, manteniendo una sola relación proporcional directa.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe determinar la distancia total (sumar ambos tramos y considerar ida y vuelta) y luego aplicar la tarifa proporcional para encontrar el costo correcto. Después, debe contrastar ese resultado con las opciones, donde los distractores reflejan errores como pagar solo un sentido o usar una tarifa multiplicada/mitad. Esto obliga a comprender cómo se combina distancia y tarifa en una relación de proporcionalidad directa.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "consistency_check"
+    }
+  ]
+}

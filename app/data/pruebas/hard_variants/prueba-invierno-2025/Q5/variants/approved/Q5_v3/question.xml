@@ -1,0 +1,153 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v3" title="Q5_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un experimento se midieron las temperaturas (en °C) de cuatro líquidos al mismo instante, obteniéndose los siguientes resultados:</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Muestra</th>
+          <th>Temperatura (°C)</th>
+        </tr>
+        <tr>
+          <td>A</td>
+          <td>18,7</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>18,68</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>18,75</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>18,705</td>
+        </tr>
+      </table>
+    </div>
+    <p>¿Qué muestras tienen temperatura mayor que la de la muestra B?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Solo la muestra C<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La muestra C sí cumple, porque 18,75 es mayor que 18,68. Pero no es la única: 18,7 = 18,70, y 18,70 es mayor que 18,68; además, 18,705 también es mayor que 18,68. Por lo tanto, no es solo la muestra C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Las muestras A y C<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Las muestras A y C cumplen porque 18,7 = 18,70 &gt; 18,68 y 18,75 &gt; 18,68. Sin embargo, la muestra D también cumple, ya que 18,705 &gt; 18,68. Por eso, faltó incluir la muestra D.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Las muestras A, C y D<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Al comparar con la muestra B, que tiene 18,68, se obtiene: A = 18,7 = 18,70, y 18,70 &gt; 18,68; C = 18,75, y 18,75 &gt; 18,68; D = 18,705, y 18,705 &gt; 18,68. Por lo tanto, las muestras con temperatura mayor que la de B son A, C y D.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Ninguna de las muestras<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí existen muestras con temperatura mayor que la de B. Por ejemplo, A = 18,7 = 18,70, y 18,70 es mayor que 18,68. También C = 18,75 y D = 18,705 son mayores que 18,68. Por lo tanto, no es cierto que ninguna de las muestras tenga temperatura mayor que B.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la temperatura de referencia</strong></p>
+            <p>La muestra B tiene temperatura:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,68</mn></math></p>
+            <p>Debemos buscar las muestras cuya temperatura sea mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,68</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar la muestra A con B</strong></p>
+            <p>La muestra A tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,7</mn></math>. Para compararla mejor con B, escribimos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,7</mn><mo>=</mo><mn>18,70</mn></math></p>
+            <p>Ahora comparamos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,70</mn><mo>&gt;</mo><mn>18,68</mn></math></p>
+            <p>Entonces, la muestra A sí tiene temperatura mayor que la de B.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar la muestra C con B</strong></p>
+            <p>Comparamos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,75</mn><mo>&gt;</mo><mn>18,68</mn></math></p>
+            <p>Entonces, la muestra C también tiene temperatura mayor que la de B.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar la muestra D con B</strong></p>
+            <p>Comparamos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,705</mn><mo>&gt;</mo><mn>18,68</mn></math></p>
+            <p>Esto se puede verificar igualando la cantidad de cifras decimales:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>18,705</mn><mo>&gt;</mo><mn>18,680</mn></math></p>
+            <p>Entonces, la muestra D también tiene temperatura mayor que la de B.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Reunir las muestras que cumplen</strong></p>
+            <p>Las muestras mayores que B son:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>A</mi><mo>,</mo><mi>C</mi><mo>,</mo><mi>D</mi></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>Las muestras A, C y D</strong>, es decir, la alternativa <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

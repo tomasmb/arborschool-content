@@ -1,0 +1,189 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q38_v6_variant" title="Q38_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos servicios de transporte compartido ofrecen pases mensuales. El Pase Estándar de la empresa R cobra una tarifa fija mensual de $2000 y luego $1500 por cada viaje realizado en el mes. El Pase Plus de la empresa S cobra una tarifa fija mensual de $2600 y luego $1300 por cada viaje del mes.</p>
+    <p>Por ejemplo, si una persona realiza 1 viaje en el mes, el Pase Estándar le costaría en total $3500 y el Pase Plus $3900. Si realiza 2 viajes, el Pase Estándar le costaría $5000 y el Pase Plus $5200, por lo que en esos casos la empresa R resulta más barata. Usando esta información y sin considerar otros cargos, ¿cuál es la cantidad mínima de viajes mensuales a partir de la cual conviene económicamente elegir el Pase Plus de la empresa S?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Con 1 viaje, el Pase Estándar cuesta $3500 y el Pase Plus cuesta $3900. Como $3900 &gt; $3500, con 1 viaje no conviene elegir el Pase Plus.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Con 2 viajes, el Pase Estándar cuesta $5000 y el Pase Plus cuesta $5200. Como $5200 &gt; $5000, con 2 viajes todavía no conviene elegir el Pase Plus.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Con 3 viajes, el Pase Estándar cuesta $6500 y el Pase Plus también cuesta $6500. Como los dos cuestan lo mismo, con 3 viajes aún no conviene económicamente el Pase Plus. Recién con 4 viajes el Pase Plus cuesta $7800 y el Pase Estándar $8000.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Con 3 viajes ambos pases cuestan $6500, así que todavía no hay ventaja económica para el Pase Plus. Con 4 viajes, el Pase Estándar cuesta $8000 y el Pase Plus $7800. Como $7800 &lt; $8000, la cantidad mínima a partir de la cual conviene el Pase Plus es 4.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Representar el costo de cada pase</strong></p>
+            <p>Sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> la cantidad de viajes mensuales. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> cuenta viajes, debe ser un número natural.</p>
+            <p>Costo del Pase Estándar de la empresa R:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>R</mi><mo>=</mo><mn>2000</mn><mo>+</mo><mn>1500</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Costo del Pase Plus de la empresa S:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>S</mi><mo>=</mo><mn>2600</mn><mo>+</mo><mn>1300</mn><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Plantear cuándo conviene económicamente el Pase Plus</strong></p>
+            <p>Conviene elegir el Pase Plus cuando su costo es menor que el del Pase Estándar, es decir, cuando:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>S</mi><mo>&lt;</mo><mi>R</mi>
+              </mrow>
+            </math>
+            <p>Sustituyendo las expresiones:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>2600</mn><mo>+</mo><mn>1300</mn><mi>n</mi><mo>&lt;</mo><mn>2000</mn><mo>+</mo><mn>1500</mn><mi>n</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la desigualdad</strong></p>
+            <p>Restamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1300</mn><mi>n</mi></mrow></math> en ambos lados:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>2600</mn><mo>&lt;</mo><mn>2000</mn><mo>+</mo><mn>200</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Restamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2000</mn></math> en ambos lados:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>600</mn><mo>&lt;</mo><mn>200</mn><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>200</mn></math> es positivo, al dividir ambos lados por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>200</mn></math> no cambia el sentido de la desigualdad:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn><mo>&lt;</mo><mi>n</mi>
+              </mrow>
+            </math>
+            <p>Entonces debe cumplirse:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>n</mi><mo>&gt;</mo><mn>3</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Buscar la cantidad mínima de viajes</strong></p>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math> es un número natural y debe ser mayor que 3, el menor valor posible es 4.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Verificar con los costos</strong></p>
+            <p>Para <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>=</mo><mn>3</mn></math>:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>R</mi><mo>=</mo><mn>2000</mn><mo>+</mo><mn>1500</mn><mo>×</mo><mn>3</mn><mo>=</mo><mn>2000</mn><mo>+</mo><mn>4500</mn><mo>=</mo><mn>6500</mn>
+              </mrow>
+            </math>
+            <br/>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>S</mi><mo>=</mo><mn>2600</mn><mo>+</mo><mn>1300</mn><mo>×</mo><mn>3</mn><mo>=</mo><mn>2600</mn><mo>+</mo><mn>3900</mn><mo>=</mo><mn>6500</mn>
+              </mrow>
+            </math>
+            <p>Con 3 viajes, ambos cuestan lo mismo, así que todavía no conviene el Pase Plus.</p>
+            <p>Para <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi><mo>=</mo><mn>4</mn></math>:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>R</mi><mo>=</mo><mn>2000</mn><mo>+</mo><mn>1500</mn><mo>×</mo><mn>4</mn><mo>=</mo><mn>2000</mn><mo>+</mo><mn>6000</mn><mo>=</mo><mn>8000</mn>
+              </mrow>
+            </math>
+            <br/>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>S</mi><mo>=</mo><mn>2600</mn><mo>+</mo><mn>1300</mn><mo>×</mo><mn>4</mn><mo>=</mo><mn>2600</mn><mo>+</mo><mn>5200</mn><mo>=</mo><mn>7800</mn>
+              </mrow>
+            </math>
+            <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7800</mn><mo>&lt;</mo><mn>8000</mn></math>, desde 4 viajes el Pase Plus sí conviene económicamente.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad mínima de viajes mensuales a partir de la cual conviene elegir el Pase Plus de la empresa S es <strong>4</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

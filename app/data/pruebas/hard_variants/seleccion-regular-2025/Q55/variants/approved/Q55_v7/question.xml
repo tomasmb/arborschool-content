@@ -1,0 +1,206 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q55_v7" title="Q55_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El Fondo Nacional de Salud (Fonasa) es un tipo de previsión de salud, junto con las Isapres y otras instituciones.</p>
+    <p>Las personas solo pueden tener un tipo de previsión y, entre quienes tienen Fonasa, se clasifican en los tramos A, B, C y D, según su nivel socioeconómico.</p>
+    <p>En los siguientes gráficos se presenta la distribución de la población según tipo de previsión y, solo para quienes tienen Fonasa, la distribución por tramos en 2021.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="A la izquierda, un gráfico de líneas con los años 2019, 2020 y 2021 en el eje horizontal y el porcentaje de población en el eje vertical. Tres líneas representan los tipos de previsión: 'Fonasa', 'Isapres' y 'Otros'. En el punto del año 2021 se destacan y etiquetan los valores: Fonasa 65 %, Isapres 22 %, Otros 13 %. A la derecha, un gráfico de barras verticales titulado 'Distribución interna Fonasa 2021', con cuatro barras rotuladas A, B, C y D. En sus partes superiores se indican los porcentajes: tramo A 18 %, tramo B 34 %, tramo C 27 % y tramo D 21 %." />
+    </p>
+    <p>Del gráfico de líneas se observa que, en 2021, un 65 % de la población estaba en Fonasa, un 22 % en Isapres y un 13 % en Otros. Del gráfico de barras se observa que, entre las personas con Fonasa en 2021, un 18 % pertenecía al tramo A, un 34 % al tramo B, un 27 % al tramo C y un 21 % al tramo D.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Si se elige al azar a una persona de la población nacional en 2021, ¿cuál de las siguientes expresiones representa correctamente la probabilidad de que esa persona haya estado en Fonasa y, además, en el tramo D en 2021?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>)</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo><m:mo>≠</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo></m:math>. Esta opción solo representa estar en Fonasa. Con los datos, <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,65</m:mn></m:math>, pero la probabilidad pedida es <m:math><m:mn>0,65</m:mn><m:mo>·</m:mo><m:mn>0,21</m:mn><m:mo>=</m:mo><m:mn>0,1365</m:mn></m:math>, que no es igual a <m:math><m:mn>0,65</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>)</m:mo>
+          <m:mo>·</m:mo>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>)</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La probabilidad de que una persona esté en Fonasa y además en el tramo D se expresa como <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>·</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo></m:math>. Con los datos del enunciado, <m:math><m:mn>0,65</m:mn><m:mo>·</m:mo><m:mn>0,21</m:mn><m:mo>=</m:mo><m:mn>0,1365</m:mn></m:math>, es decir, <m:math><m:mn>13,65</m:mn><m:mo>%</m:mo></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D 2021</m:mtext><m:mo>)</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El <m:math><m:mn>21</m:mn><m:mo>%</m:mo></m:math> del tramo D corresponde solo a quienes ya están en Fonasa, por lo que representa <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,21</m:mn></m:math>, no la probabilidad sobre toda la población nacional. La probabilidad pedida es <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,65</m:mn><m:mo>·</m:mo><m:mn>0,21</m:mn><m:mo>=</m:mo><m:mn>0,1365</m:mn></m:math>, que no es igual a <m:math><m:mn>0,21</m:mn></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D 2021</m:mtext><m:mo>)</m:mo>
+          <m:mo>·</m:mo>
+          <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>|</m:mo><m:mtext>D 2021</m:mtext><m:mo>)</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La igualdad <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>)</m:mo><m:mo>·</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>|</m:mo><m:mtext>D</m:mtext><m:mo>)</m:mo></m:math> también describe una probabilidad conjunta, pero usa el evento <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>)</m:mo></m:math>, que no aparece directamente en los datos entregados. El problema pide la expresión correcta a partir de la información dada: porcentaje en Fonasa y porcentaje en D dentro de Fonasa. Esa expresión es <m:math><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>·</m:mo><m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué evento se pide</strong></p>
+            <p>Se pide la probabilidad de que una persona elegida al azar de toda la población nacional haya estado en Fonasa y, además, en el tramo D en 2021.</p>
+            <p>Eso corresponde al evento conjunto:</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar la información entregada</strong></p>
+            <p>Del enunciado se obtiene:</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,65</m:mn>
+              </m:math>
+            </p>
+            <p>y, entre quienes tienen Fonasa:</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>0,21</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la regla de probabilidad conjunta</strong></p>
+            <p>Cuando se conoce la probabilidad de un grupo y luego la probabilidad de un subgrupo dentro de ese grupo, se multiplica:</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo>
+                <m:mo>·</m:mo>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa</m:mtext><m:mo>)</m:mo>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sustituir los valores</strong></p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa y D</m:mtext><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>0,65</m:mn>
+                <m:mo>·</m:mo>
+                <m:mn>0,21</m:mn>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mn>0,65</m:mn>
+                <m:mo>·</m:mo>
+                <m:mn>0,21</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>0,1365</m:mn>
+              </m:math>
+            </p>
+            <p>En porcentaje, esto es:</p>
+            <p>
+              <m:math>
+                <m:mn>0,1365</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>13,65</m:mn><m:mo>%</m:mo>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La expresión que representa correctamente esta situación es:</p>
+            <p>
+              <m:math>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>)</m:mo>
+                <m:mo>·</m:mo>
+                <m:mi>P</m:mi><m:mo>(</m:mo><m:mtext>D</m:mtext><m:mo>|</m:mo><m:mtext>Fonasa 2021</m:mtext><m:mo>)</m:mo>
+              </m:math>
+            </p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

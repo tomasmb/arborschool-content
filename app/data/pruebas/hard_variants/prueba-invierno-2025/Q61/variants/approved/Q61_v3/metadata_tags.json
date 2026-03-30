@@ -1,0 +1,160 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-PROB-01-18",
+      "relevance": "primary",
+      "reasoning": "La pregunta requiere explícitamente evaluar la veracidad de varias afirmaciones ('siempre verdadera') basadas en datos estadísticos (probablemente presentados en una tabla o resumen), discriminando entre conclusiones válidas e interpretaciones erróneas.",
+      "atom_title": "Evaluación de afirmaciones basadas en datos",
+      "atom_eje": "probabilidad_y_estadistica",
+      "atom_standard": "M1-PROB-01"
+    },
+    {
+      "atom_id": "A-M1-PROB-01-17",
+      "relevance": "secondary",
+      "reasoning": "Para evaluar las opciones que mencionan la 'suma de los salarios' (Opciones 1 y 4), es necesario aplicar la relación inversa del promedio: calcular o estimar la suma total a partir del promedio y la cantidad de datos ($Suma = Promedio \\times n$).",
+      "atom_title": "Resolución de problemas inversos de promedio",
+      "atom_eje": "probabilidad_y_estadistica",
+      "atom_standard": "M1-PROB-01"
+    }
+  ],
+  "general_analysis": "La pregunta demanda habilidades de interpretación y análisis crítico de información estadística. El estudiante no solo debe conocer el algoritmo del promedio, sino comprender sus propiedades conceptuales, como la relación entre el promedio y la suma total de los datos, y evitar conceptos erróneos comunes (como asumir que el promedio total es el promedio de los promedios sin considerar los pesos/cantidades). La tarea central es validar inferencias lógicas a partir de medidas de resumen.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.65,
+    "analysis": "La pregunta presenta una demanda cognitiva media-alta. No requiere cálculos complejos, pero sí un razonamiento conceptual sólido sobre estadística descriptiva. El estudiante debe discernir entre medidas de tendencia central (promedio/mediana), medidas de posición (cuartiles/máximos/mínimos) y valores agregados (sumas). La dificultad principal radica en reconocer que, sin conocer el tamaño de la muestra (número de trabajadores 'n') de cada sucursal, no es posible deducir sumas totales ni promedios combinados simples, lo que descarta varias opciones por lógica abstracta más que por lectura directa de datos."
+  },
+  "validation": {},
+  "habilidad_principal": {
+    "habilidad_principal": "ARG",
+    "justificacion": "La pregunta requiere evaluar la veracidad de distintas afirmaciones basándose en propiedades estadísticas (promedios y sumas). El estudiante debe analizar y justificar cuál de las inferencias es lógicamente válida dadas las condiciones, más que simplemente ejecutar un cálculo mecánico."
+  },
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "argumentation_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "claim_archetype_switch",
+        "description": "Mantener la evaluación de afirmaciones, pero cambiar el arquetipo semántico de la afirmación correcta respecto de la fuente.",
+        "required_changes": [
+          "Nuevo arquetipo de afirmación correcta",
+          "Distractores coherentes con el nuevo arquetipo"
+        ],
+        "forbidden_changes": [
+          "Repetir la misma afirmación correcta con números nuevos",
+          "Convertirlo en cálculo directo"
+        ]
+      },
+      {
+        "shape_id": "false_claim_hunt",
+        "description": "Invertir la polaridad local de las opciones para pedir identificar la afirmación incorrecta dentro del mismo conjunto de datos o evidencia.",
+        "required_changes": [
+          "Polaridad local de la pregunta",
+          "Reescritura completa de opciones"
+        ],
+        "forbidden_changes": [
+          "Cambiar el dataset o la evidencia por cálculo puro",
+          "Eliminar la lectura argumentativa"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "ARG",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.65,
+    "task_form": "claim_evaluation",
+    "operation_signature": "argumentation_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": true,
+    "cognitive_action": "evaluate_claims",
+    "solution_structure": "data_to_claim_check",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "explicit_dataset_and_claims",
+    "explicit_dataset_policy": "required",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": true,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=claim_evaluation",
+      "operation_signature=argumentation_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_claim_evaluation",
+      "must_include_explicit_dataset",
+      "must_preserve_distractor_logic"
+    ]
+  },
+  "source_info": {
+    "source_question_id": "Q61",
+    "source_test_id": "prueba-invierno-2025",
+    "change_description": "Cambié el contexto a dos plantas de producción con datos explícitos de número de trabajadores y salario promedio en cada planta (10 trabajadores y $800 000 en la Planta 1, 30 trabajadores y $500 000 en la Planta 2). El arquetipo de la afirmación correcta ahora es que la suma total pagada en salarios en la Planta 2 es mayor que en la Planta 1, lo que obliga a integrar promedio y cantidad de trabajadores para comparar las masas salariales. Los distractores mantienen la lógica original: comparación ingenua de promedios, extrapolación indebida a un trabajador individual y cálculo incorrecto de un promedio global no ponderado."
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué no convertir el ítem en un ejercicio de cálculo directo: se requiere evaluar cuál afirmación es siempre verdadera a partir del conjunto de datos (promedios y cantidades) y no solo efectuar operaciones numéricas aisladas."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "planning_blueprint": {
+    "variant_id": "Q61_v3",
+    "scenario_description": "El contexto cambia a dos plantas de producción. Se muestra una pequeña tabla con tres columnas: Planta, número de trabajadores, salario promedio. Por ejemplo: Planta 1: 10 trabajadores, promedio $800 000; Planta 2: 30 trabajadores, promedio $500 000. La pregunta sigue siendo: «¿Cuál de las siguientes afirmaciones es SIEMPRE verdadera?». El arquetipo de afirmación correcta cambia respecto de la fuente: ahora la afirmación verdadera es que la suma total pagada en salarios en la Planta 2 es mayor que la de la Planta 1 («La suma total de salarios en la Planta 2 es mayor que la suma total en la Planta 1»). Esto obliga a integrar promedio y cantidad de trabajadores para comparar masas salariales totales. Los distractores retoman los arquetipos originales: (i) una afirmación equivocada que invierte esa comparación de sumas totales, apoyada solo en que el promedio de la Planta 1 es mayor, (ii) una afirmación sobre la existencia de un trabajador de una planta que gana más que cualquiera de la otra, que no está garantizada por los datos, y (iii) una afirmación sobre el promedio global construido como promedio simple de $800 000 y $500 000, ignorando los tamaños distintos.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe comprender que el total de salarios es el producto entre el promedio y la cantidad de trabajadores, y que un promedio menor puede corresponder a una suma total mayor si hay muchos más trabajadores; no basta con comparar promedios de forma ingenua.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "claim_archetype_switch_2"
+  },
+  "postprocess_summary": {
+    "pre_parse_cleaned": true,
+    "presentation_normalized": false,
+    "family_repaired": false,
+    "correct_declaration_synced": true,
+    "qti_canonicalized": true,
+    "choice_identifiers_stripped": false,
+    "comments_stripped": false
+  },
+  "enrichment": "pass",
+  "final_validation": "pass"
+}

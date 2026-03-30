@@ -1,0 +1,134 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v13" title="Q54_v13" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En el siguiente gráfico se representan las cantidades de equipos reparados diariamente en un servicio técnico, por cuatro técnicos (María, Óscar, Pilar y Raúl), durante una semana de trabajo (de lunes a viernes).
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales agrupadas por día (lunes a viernes) en el eje horizontal y número de equipos reparados en el eje vertical de 0 a 15, con una línea horizontal punteada en 10 equipos indicando la meta. Para cada día hay cuatro barras, una por técnico: María (barras negras), Óscar (barras gris oscuro), Pilar (barras gris claro) y Raúl (barras blancas). Los valores representados son: Lunes: María 9, Óscar 10, Pilar 10, Raúl 8; Martes: María 10, Óscar 12, Pilar 10, Raúl 9; Miércoles: María 8, Óscar 10, Pilar 10, Raúl 11; Jueves: María 11, Óscar 13, Pilar 7, Raúl 10; Viernes: María 10, Óscar 9, Pilar 6, Raúl 12." />
+    </p>
+    <p>
+      La línea punteada indica la meta diaria de 10 equipos reparados. En el gráfico (y en los datos) se observa que, de lunes a viernes, aproximadamente:
+      María repara 9, 10, 8, 11 y 10 equipos;
+      Óscar repara 10, 12, 10, 13 y 9 equipos;
+      Pilar repara 10, 10, 10, 7 y 6 equipos;
+      y Raúl repara 8, 9, 11, 10 y 12 equipos, respectivamente.
+    </p>
+    <p>
+      La empresa quiere destacar al técnico que haya trabajado con mayor regularidad, es decir, el que tuvo el MAYOR número de días con exactamente 10 equipos reparados (ni más ni menos). Según el gráfico, ¿qué técnico será destacado?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">María<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. María tiene exactamente 10 equipos en 2 días: martes y viernes. Sus datos son 9, 10, 8, 11 y 10, así que el número de días con exactamente 10 es 2. Pilar tiene 10, 10, 10, 7 y 6, por lo que alcanza exactamente 10 en 3 días: lunes, martes y miércoles. Como 3 es mayor que 2, María no es la técnica destacada.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Óscar<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Óscar tiene exactamente 10 equipos en 2 días: lunes y miércoles. Sus datos son 10, 12, 10, 13 y 9, así que el número de días con exactamente 10 es 2. Pilar tiene 10, 10, 10, 7 y 6, por lo que alcanza exactamente 10 en 3 días. Como 3 es mayor que 2, Óscar no es el técnico destacado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Pilar<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Pilar repara 10, 10, 10, 7 y 6 equipos entre lunes y viernes. Eso significa que tuvo exactamente 10 equipos reparados en 3 días: lunes, martes y miércoles. Comparando, María tuvo 2 días con 10, Óscar tuvo 2 días con 10 y Raúl tuvo 1 día con 10. Como 3 es la mayor cantidad, la técnica destacada es Pilar.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Raúl<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Raúl tiene exactamente 10 equipos en 1 día: jueves. Sus datos son 8, 9, 11, 10 y 12, así que solo una vez alcanza exactamente la meta. En cambio, Pilar tiene 10, 10, 10, 7 y 6, es decir, 3 días con exactamente 10 equipos. Como 3 es mayor que 1, Raúl no es el técnico destacado.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué se debe contar</strong></p>
+            <p>El enunciado no pide quién reparó más equipos en total. Pide el técnico con el mayor número de días en que reparó exactamente 10 equipos, ni más ni menos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar los datos de cada técnico</strong></p>
+            <p>María: 9, 10, 8, 11 y 10.</p>
+            <p>Óscar: 10, 12, 10, 13 y 9.</p>
+            <p>Pilar: 10, 10, 10, 7 y 6.</p>
+            <p>Raúl: 8, 9, 11, 10 y 12.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar cuántas veces aparece el 10 en cada caso</strong></p>
+            <p>María tiene exactamente 10 en martes y viernes: 2 días.</p>
+            <p>Óscar tiene exactamente 10 en lunes y miércoles: 2 días.</p>
+            <p>Pilar tiene exactamente 10 en lunes, martes y miércoles: 3 días.</p>
+            <p>Raúl tiene exactamente 10 en jueves: 1 día.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar las cantidades obtenidas</strong></p>
+            <p>María: 2</p>
+            <p>Óscar: 2</p>
+            <p>Pilar: 3</p>
+            <p>Raúl: 1</p>
+            <p>La mayor cantidad de días con exactamente 10 equipos es 3.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La técnica que será destacada es Pilar, porque fue quien tuvo el mayor número de días con exactamente 10 equipos reparados.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

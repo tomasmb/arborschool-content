@@ -1,0 +1,149 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q65_v4" title="Q65_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En 20 hogares de un barrio se registró cuántas mascotas hay en cada hogar. El siguiente diagrama de cajón resume estos datos (número de mascotas por hogar, entre 0 y 6).</p>
+    <div>
+      <img src="requiere_nueva_imagen.png" alt="Diagrama de cajón de una sola serie sobre un eje horizontal que va de 0 a 6 mascotas, con marcas en cada número entero. La caja va desde 1 hasta 4 mascotas. En el interior de la caja hay una línea vertical de mediana en 3 mascotas. Un bigote izquierdo se extiende desde el borde izquierdo de la caja (1 mascota) hasta el mínimo en 0 mascotas. Un bigote derecho se extiende desde el borde derecho de la caja (4 mascotas) hasta el máximo en 6 mascotas. El gráfico está titulado «Número de mascotas por hogar»." />
+      <table border="1">
+        <tr>
+          <th>Conjunto</th>
+          <th>Datos (20 hogares, valores ordenados)</th>
+        </tr>
+        <tr>
+          <td>A</td>
+          <td>0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5, 6, 6</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">Conjunto A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el conjunto A, el mínimo es 0 y el máximo es 6, y la mediana sí es 3 porque los datos 10 y 11 son 3 y 3. Pero el primer cuartil no coincide con el diagrama: en la mitad inferior, los datos 5 y 6 son 1 y 2, por lo que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>1,5</mn></mrow></math>, no 1.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Conjunto B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el conjunto B se obtiene exactamente el resumen del diagrama: mínimo 0, máximo 6, mediana <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>3</mn><mo>+</mo><mn>3</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>3</mn></mrow></math> porque los datos 10 y 11 son 3 y 3; primer cuartil <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>1</mn><mo>+</mo><mn>1</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>1</mn></mrow></math> porque los datos 5 y 6 de la mitad inferior son 1 y 1; y tercer cuartil <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>4</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4</mn></mrow></math> porque los datos 5 y 6 de la mitad superior son 4 y 4.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Conjunto C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En el conjunto C, el mínimo es 0 y el máximo es 6, y el primer cuartil es 1 porque en la mitad inferior los datos 5 y 6 son 1 y 1. Sin embargo, la mediana no coincide con el diagrama: los datos 10 y 11 son 2 y 2, así que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>mediana</mtext><mo>=</mo><mfrac><mrow><mn>2</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>2</mn></mrow></math>, no 3.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Conjunto D<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En el conjunto D, el mínimo es 0, el primer cuartil es 1, la mediana es 3 y el tercer cuartil es 4. Pero el máximo no coincide con el diagrama: el último dato es 5, así que el máximo es 5 y no 6.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer el diagrama de cajón</strong></p>
+            <p>Del gráfico se obtiene el siguiente resumen de cinco números:</p>
+            <p>Mínimo = 0, primer cuartil = 1, mediana = 3, tercer cuartil = 4, máximo = 6.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Recordar cómo se calculan los cuartiles con 20 datos ordenados</strong></p>
+            <p>Como hay 20 datos, la mediana se calcula con los datos 10 y 11.</p>
+            <p>El primer cuartil se calcula con la mitad inferior, es decir, con los primeros 10 datos; por eso se promedian los datos 5 y 6 de esa mitad.</p>
+            <p>El tercer cuartil se calcula con la mitad superior, es decir, con los últimos 10 datos; por eso se promedian los datos 5 y 6 de esa mitad.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar el conjunto B</strong></p>
+            <p>Conjunto B: 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 6, 6.</p>
+            <p>Mínimo: 0.</p>
+            <p>Máximo: 6.</p>
+            <p>Mediana: datos 10 y 11 son 3 y 3, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>3</mn><mo>+</mo><mn>3</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>3</mn></mrow></math>.</p>
+            <p>Primer cuartil: mitad inferior = 0, 1, 1, 1, 1, 1, 2, 2, 3, 3. Los datos 5 y 6 son 1 y 1, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mn>1</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>1</mn></mrow></math>.</p>
+            <p>Tercer cuartil: mitad superior = 3, 3, 4, 4, 4, 4, 5, 5, 6, 6. Los datos 5 y 6 son 4 y 4, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mfrac><mrow><mn>4</mn><mo>+</mo><mn>4</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>4</mn></mrow></math>.</p>
+            <p>Todos los valores coinciden con el diagrama.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar por qué las otras opciones no sirven</strong></p>
+            <p>Conjunto A: en la mitad inferior los datos 5 y 6 son 1 y 2, así que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>1,5</mn></mrow></math>. No coincide con 1.</p>
+            <p>Conjunto C: los datos 10 y 11 son 2 y 2, así que la mediana es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>2</mn><mo>+</mo><mn>2</mn></mrow><mn>2</mn></mfrac><mo>=</mo><mn>2</mn></mrow></math>. No coincide con 3.</p>
+            <p>Conjunto D: el último dato es 5, por lo tanto el máximo es 5. No coincide con 6.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El único conjunto que tiene mínimo 0, primer cuartil 1, mediana 3, tercer cuartil 4 y máximo 6 es el <strong>Conjunto B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

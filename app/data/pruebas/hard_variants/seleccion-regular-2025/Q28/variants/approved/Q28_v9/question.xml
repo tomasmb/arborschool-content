@@ -1,0 +1,191 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q28_v9" title="Q28_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una ficha de panadería se registra la siguiente información:
+- Receta base: con 0,9 kg de harina se hornean 24 panes.
+- Pedido especial: se necesitan hornear 40 panes con la misma receta.</p>
+    <p>¿Cuántos kg de harina se necesitan para hornear 40 panes, manteniendo la misma proporción de la receta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">0,54 kg<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si 24 panes requieren 0,9 kg, entonces 40 panes requieren más harina que 24 panes. Además, 0,54 kg corresponde a 0,9 × 0,6, y 24 × 0,6 = 14,4 panes, no 40 panes.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">1,5 kg<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La proporción se mantiene: 40 ÷ 24 = 5 ÷ 3. Entonces la harina necesaria es 0,9 × 5 ÷ 3 = 1,5 kg. Por lo tanto, para 40 panes se necesitan 1,5 kg de harina.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">0,9 kg<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. 0,9 kg alcanza para 24 panes según la receta base. Como el pedido es de 40 panes y 40 &gt; 24, 0,9 kg no basta para mantener la misma proporción.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">1,8 kg<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con la misma proporción, duplicar 0,9 kg a 1,8 kg duplicaría también los panes: 24 × 2 = 48 panes. Pero el pedido es de 40 panes, no de 48.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso por proporcionalidad directa</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la relación</strong></p>
+            <p>Como se mantiene la misma receta, la cantidad de harina y la cantidad de panes son magnitudes directamente proporcionales.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir la proporción</strong></p>
+            <p>Si con 0,9 kg de harina se hacen 24 panes, para 40 panes se necesita una cantidad <em>x</em> de harina tal que:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>0,9</mn>
+                  <mn>24</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mi>x</mi>
+                  <mn>40</mn>
+                </mfrac>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Despejar la cantidad de harina</strong></p>
+            <p>Multiplicamos 0,9 por 40 y luego dividimos por 24:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>x</mi>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mn>0,9</mn>
+                    <mo>×</mo>
+                    <mn>40</mn>
+                  </mrow>
+                  <mn>24</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Primero:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,9</mn>
+                <mo>×</mo>
+                <mn>40</mn>
+                <mo>=</mo>
+                <mn>36</mn>
+              </mrow>
+            </math>
+            <p>Luego:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>x</mi>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>36</mn>
+                  <mn>24</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>1,5</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar el resultado</strong></p>
+            <p>También se puede verificar observando que:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>40</mn>
+                <mo>÷</mo>
+                <mn>24</mn>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>3</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Entonces la harina debe multiplicarse por ese mismo factor:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,9</mn>
+                <mo>×</mo>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>3</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>1,5</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Para hornear 40 panes, manteniendo la misma proporción de la receta, se necesitan <strong>1,5 kg de harina</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

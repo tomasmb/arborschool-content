@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q61_v6",
+  "source_question_id": "Q61",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q61_v6",
+    "scenario_description": "Se proporciona un conjunto de 11 datos (por ejemplo, alturas) y un único diagrama de caja horizontal que corresponde a esos datos. Las alternativas son afirmaciones del tipo: \"El valor mínimo del 25% superior de los datos es 170 cm\", \"El valor máximo del 25% inferior es 160 cm\", etc. Cada afirmación menciona explícitamente extremos de los cuartiles (Q1 o Q3) usando lenguaje de \"25% inferior/superior\". Una sola afirmación coincide con los cuartiles que se obtienen de los datos y con la posición de la caja en el diagrama.",
+    "non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "Se debe identificar qué significan expresiones como \"máximo del 25% inferior\" (Q1) y \"mínimo del 25% superior\" (Q3) y, con base en el conjunto de datos, calcular esos valores. Luego hay que vincularlos con los extremos de la caja en el diagrama. Los distractores se apoyan en confundir estos extremos con el mínimo/máximo global o con la mediana.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Un diagrama de caja horizontal con valores enteros marcados en el eje numérico, donde los extremos de la caja y la mediana recaen exactamente en algunos de los datos entregados.",
+    "selected_shape_id": "extremum_focus"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Verifiqué que la respuesta sigue dependiendo de interpretar el diagrama de caja (min, Q1, mediana, Q3, máx) y de entender las expresiones \"25% inferior/superior\", sin convertir la tarea en un cálculo puramente numérico ni en una tabla que regale la respuesta."
+  },
+  "generator_declared_correct_identifier": "ChoiceA",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-03-03",
+      "A-M1-PROB-03-07"
+    ],
+    "primary_atom_titles": [
+      "Cálculo de Cuartiles en datos no agrupados",
+      "Elementos del Diagrama de Cajón (Box Plot)"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.55,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "representation_primary",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "statement_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

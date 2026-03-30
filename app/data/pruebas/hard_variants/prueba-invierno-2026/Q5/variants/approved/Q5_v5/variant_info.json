@@ -1,0 +1,119 @@
+{
+  "variant_id": "Q5_v5",
+  "source_question_id": "Q5",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q5_v5",
+    "scenario_description": "Se presenta un gráfico tipo \"slopegraph\": las cinco habilidades de un equipo de trabajo (colaboración, iniciativa, organización, creatividad y comunicación interna) se listan en el eje vertical. En el eje horizontal se muestra el puntaje en una escala de −20 a 20. Para cada habilidad hay dos puntos sobre la línea horizontal: uno etiquetado como evaluación inicial y otro como evaluación final, unidos por un segmento inclinado. La pregunta es directa: \"¿En cuál habilidad la diferencia entre la evaluación inicial y la final fue mayor?\". Los valores se eligen de modo que algunos segmentos tengan una fuerte pendiente visual pero magnitud de cambio similar, obligando a comparar cuidadosamente la longitud de cada segmento.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "El estudiante debe adaptarse a una representación donde el cambio se ve como la longitud y dirección de un segmento horizontalmente orientado, y recorrer todas las filas comparando cuál segmento es más largo, sin dejarse llevar solo por la inclinación aparente. Esto obliga a comprender que el criterio es la diferencia de puntajes en la misma escala, independientemente de la posición vertical de la habilidad o de la dirección del cambio.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Slopegraph con cinco filas (una por habilidad). En cada fila, dos puntos sobre el eje horizontal (−20 a 20) unidos por un segmento inclinado que puede ir hacia la derecha (mejora) o hacia la izquierda (empeora).",
+    "selected_shape_id": "extremum_focus"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué no agregar series adicionales ni convertir la tarea en un cálculo numérico multi-paso; sigue siendo lectura de un único slopegraph para hallar la mayor variación absoluta entre dos mediciones."
+  },
+  "generator_declared_correct_identifier": "ChoiceC",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-08"
+    ],
+    "primary_atom_titles": [
+      "Interpretación de información en gráficos de línea"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "representation_primary",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "maximum_target",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

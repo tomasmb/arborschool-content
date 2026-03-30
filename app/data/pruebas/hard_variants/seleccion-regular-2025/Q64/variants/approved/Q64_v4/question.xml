@@ -1,0 +1,244 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v4" title="Traslaciones en plano cuadriculado" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En el siguiente plano cuadriculado, el punto A se ubica inicialmente en una casilla y el punto A′ indica su posición final luego de una secuencia de movimientos.
+      <br />
+      <img src="requiere_nueva_imagen_1.png" alt="Plano cuadriculado de al menos 10 columnas por 8 filas. Se marca el punto A en una casilla interior cualquiera (por ejemplo, 3 columnas desde la izquierda y 3 filas desde abajo) y el punto A′ exactamente 4 casillas a la derecha y 1 casilla arriba de A. No se dibujan los vectores intermedios, solo las posiciones inicial A y final A′ claramente rotuladas." />
+    </p>
+    <p>
+      Cada movimiento consiste en avanzar exactamente una casilla sobre la cuadrícula. Los movimientos posibles se representan con flechas: por ejemplo, la flecha ↗ corresponde a un paso de una casilla hacia arriba y una casilla hacia la derecha respecto de la posición anterior.
+      <br />
+      <img src="requiere_nueva_imagen_2.png" alt="Fragmento ampliado de un plano cuadriculado mostrando un punto y una flecha ↗ desde ese punto hacia la casilla ubicada una fila más arriba y una columna más a la derecha. Opcionalmente se pueden indicar también flechas ↖, ↘, ↙, → y ←, cada una mostrando un paso de una casilla en la dirección indicada." />
+    </p>
+    <p>
+      Se sabe que para ir desde A hasta A′ se realizaron, en este orden, 3 veces un mismo movimiento diagonal D, luego 2 veces otro movimiento diagonal E (opuesto a D), y finalmente 3 veces un movimiento horizontal H (hacia la izquierda o hacia la derecha). No se indica de antemano en qué dirección apuntan D, E y H.
+    </p>
+    <p>
+      ¿Cuál de las siguientes definiciones de los movimientos D, E y H es compatible con la posición inicial de A y la posición final de A′ mostradas en la figura?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">D = ↗, E = ↙, H = ←<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Hacer 3 veces ↗ y luego 2 veces ↙ deja un avance neto de 1 casilla a la derecha y 1 casilla hacia arriba. Si después se hacen 3 movimientos ←, el resultado total queda 2 casillas a la izquierda y 1 hacia arriba, que no coincide con A′, que está 4 casillas a la derecha y 1 hacia arriba de A.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">D = ↗, E = ↙, H = →<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Tres movimientos ↗ avanzan 3 a la derecha y 3 hacia arriba. Dos movimientos ↙ retroceden 2 a la izquierda y 2 hacia abajo, por lo que queda un avance neto de 1 a la derecha y 1 hacia arriba. Al agregar 3 movimientos →, el desplazamiento total es 4 a la derecha y 1 hacia arriba, exactamente la posición de A′.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">D = ↖, E = ↘, H = →<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Tres movimientos ↖ producen 3 casillas a la izquierda y 3 hacia arriba. Dos movimientos ↘ compensan 2 a la derecha y 2 hacia abajo, así que el avance neto de las diagonales es 1 a la izquierda y 1 hacia arriba. Si luego se hacen 3 movimientos →, el resultado total queda 2 casillas a la derecha y 1 hacia arriba, no 4 casillas a la derecha y 1 hacia arriba.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">D = ↖, E = ↘, H = ←<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con 3 movimientos ↖ y 2 movimientos ↘, el efecto neto es 1 casilla a la izquierda y 1 hacia arriba. Si además se hacen 3 movimientos ←, el desplazamiento total queda 4 casillas a la izquierda y 1 hacia arriba. Eso contradice la figura, donde A′ está 4 casillas a la derecha y 1 hacia arriba de A.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el desplazamiento total entre A y A′</strong></p>
+            <p>Según el enunciado y la figura, para pasar de A a A′ se avanza 4 casillas a la derecha y 1 casilla hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Analizar la opción B</strong></p>
+            <p>En la opción B se propone:</p>
+            <p>D = ↗, E = ↙, H = →.</p>
+            <p>Como E es opuesto a D, esto coincide con la condición del enunciado.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el efecto de los 3 movimientos D</strong></p>
+            <p>Cada ↗ mueve 1 casilla a la derecha y 1 casilla hacia arriba.</p>
+            <p>Entonces, 3 veces ↗ producen:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn>
+                <mo>×</mo>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>,</mo>
+                <mn>1</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>(</mo>
+                <mn>3</mn>
+                <mo>,</mo>
+                <mn>3</mn>
+                <mo>)</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el efecto de los 2 movimientos E</strong></p>
+            <p>Cada ↙ mueve 1 casilla a la izquierda y 1 casilla hacia abajo.</p>
+            <p>Entonces, 2 veces ↙ producen:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>2</mn>
+                <mo>×</mo>
+                <mo>(</mo>
+                <mo>−</mo>
+                <mn>1</mn>
+                <mo>,</mo>
+                <mo>−</mo>
+                <mn>1</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>(</mo>
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>,</mo>
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>)</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 5: Sumar los movimientos diagonales</strong></p>
+            <p>El efecto conjunto de 3 veces D y 2 veces E es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mo>(</mo>
+                <mn>3</mn>
+                <mo>,</mo>
+                <mn>3</mn>
+                <mo>)</mo>
+                <mo>+</mo>
+                <mo>(</mo>
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>,</mo>
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>,</mo>
+                <mn>1</mn>
+                <mo>)</mo>
+              </mrow>
+            </math>
+            <p>Hasta aquí se ha avanzado 1 casilla a la derecha y 1 hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Agregar los 3 movimientos horizontales H</strong></p>
+            <p>Como H = →, cada movimiento agrega 1 casilla a la derecha.</p>
+            <p>Entonces, 3 veces → producen:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>3</mn>
+                <mo>×</mo>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>,</mo>
+                <mn>0</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>(</mo>
+                <mn>3</mn>
+                <mo>,</mo>
+                <mn>0</mn>
+                <mo>)</mo>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 7: Obtener el desplazamiento total</strong></p>
+            <p>Ahora sumamos el resultado anterior:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mo>(</mo>
+                <mn>1</mn>
+                <mo>,</mo>
+                <mn>1</mn>
+                <mo>)</mo>
+                <mo>+</mo>
+                <mo>(</mo>
+                <mn>3</mn>
+                <mo>,</mo>
+                <mn>0</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mo>(</mo>
+                <mn>4</mn>
+                <mo>,</mo>
+                <mn>1</mn>
+                <mo>)</mo>
+              </mrow>
+            </math>
+            <p>Esto significa 4 casillas a la derecha y 1 casilla hacia arriba, exactamente lo que muestra la figura.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La definición compatible con la posición inicial A y la posición final A′ es la alternativa <strong>B</strong>: D = ↗, E = ↙, H = →.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

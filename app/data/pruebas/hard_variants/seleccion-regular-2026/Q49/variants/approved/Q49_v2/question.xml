@@ -1,0 +1,190 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q49_v2" title="Q49_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una librería, Ana y Luis cargan una tarjeta de regalo con el mismo monto de dinero. Ana usa la tarjeta para comprar 6 cuadernos del mismo precio y, después de pagar, le quedan $1800 en la tarjeta. Luis, en cambio, compra 4 cuadernos del mismo tipo que Ana y le quedan $5800 en la tarjeta. Se proponen los siguientes posibles precios para cada cuaderno: ¿Cuál de estos precios hace posible que Ana y Luis hayan partido con el mismo saldo en la tarjeta de regalo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">$300<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si cada cuaderno costara $300, Ana habría gastado 6 × 300 = $1800 y por eso su saldo inicial sería $1800 + $1800 = $3600. Luis habría gastado 4 × 300 = $1200 y por eso su saldo inicial sería $5800 + $1200 = $7000. Como $3600 ≠ $7000, no habrían partido con el mismo saldo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">$2000<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Si cada cuaderno costara $2000, Ana habría gastado 6 × 2000 = $12 000 y su saldo inicial sería $1800 + $12 000 = $13 800. Luis habría gastado 4 × 2000 = $8 000 y su saldo inicial sería $5800 + $8 000 = $13 800. Ambos resultados coinciden, así que sí pudieron partir con el mismo saldo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">$1450<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si cada cuaderno costara $1450, Ana habría gastado 6 × 1450 = $8700 y su saldo inicial sería $1800 + $8700 = $10 500. Luis habría gastado 4 × 1450 = $5800 y su saldo inicial sería $5800 + $5800 = $11 600. Como $10 500 ≠ $11 600, no habrían partido con el mismo saldo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">$760<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si cada cuaderno costara $760, Ana habría gastado 6 × 760 = $4560 y su saldo inicial sería $1800 + $4560 = $6360. Luis habría gastado 4 × 760 = $3040 y su saldo inicial sería $5800 + $3040 = $8840. Como $6360 ≠ $8840, no habrían partido con el mismo saldo.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Representar el precio del cuaderno</strong></p>
+            <p>Sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi></math> el precio de un cuaderno y sea <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi></math> el saldo inicial de la tarjeta de regalo.</p>
+          </li>
+          <li>
+            <p><strong>Plantear la información de Ana</strong></p>
+            <p>Ana compra 6 cuadernos y le quedan $1800. Entonces:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>M</mi><mo>−</mo><mn>6</mn><mi>p</mi><mo>=</mo><mn>1800</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Plantear la información de Luis</strong></p>
+            <p>Luis compra 4 cuadernos y le quedan $5800. Entonces:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>M</mi><mo>−</mo><mn>4</mn><mi>p</mi><mo>=</mo><mn>5800</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Restar las ecuaciones</strong></p>
+            <p>Como en ambas ecuaciones aparece el mismo saldo inicial <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>M</mi></math>, restamos la segunda menos la primera:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mrow><mi>M</mi><mo>−</mo><mn>4</mn><mi>p</mi></mrow>
+                  <mo>−</mo>
+                  <mrow><mi>M</mi><mo>−</mo><mn>6</mn><mi>p</mi></mrow>
+                  <mo>=</mo>
+                  <mn>5800</mn><mo>−</mo><mn>1800</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2</mn><mi>p</mi><mo>=</mo><mn>4000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Ahora dividimos por 2:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>p</mi><mo>=</mo><mn>2000</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar con el saldo inicial</strong></p>
+            <p>Con <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi><mo>=</mo><mn>2000</mn></math>:</p>
+            <p>Ana: gastó</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>6</mn><mo>×</mo><mn>2000</mn><mo>=</mo><mn>12&#160;000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces su saldo inicial fue</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>12&#160;000</mn><mo>+</mo><mn>1800</mn><mo>=</mo><mn>13&#160;800</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Luis: gastó</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4</mn><mo>×</mo><mn>2000</mn><mo>=</mo><mn>8&#160;000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces su saldo inicial fue</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>8&#160;000</mn><mo>+</mo><mn>5800</mn><mo>=</mo><mn>13&#160;800</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Los dos saldos iniciales son iguales.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El único precio que hace posible que Ana y Luis hayan partido con el mismo saldo es <strong>$2000</strong>, es decir, la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

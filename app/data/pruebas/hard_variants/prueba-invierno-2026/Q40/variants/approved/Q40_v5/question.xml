@@ -1,0 +1,141 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v5" title="Q40_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una tienda de fotocopias, el costo total que paga un cliente depende de la cantidad de fotocopias que realiza. No se cobra un monto fijo adicional, solo se paga por cada hoja.</p>
+    <p>El costo total C(n) y el número de fotocopias n se relacionan mediante una función de la forma <m:math><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>⋅</m:mo><m:mi>n</m:mi></m:math>, donde a es una constante.</p>
+    <p>Por ejemplo, por 70 fotocopias se pagan $2100 y por 110 fotocopias se pagan $3300. Se sabe que el costo total es directamente proporcional al número de fotocopias. La siguiente tabla resume esta información.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Número de fotocopias</th>
+          <th>Costo total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>70</td>
+          <td>$2100</td>
+        </tr>
+        <tr>
+          <td>110</td>
+          <td>$3300</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuánto se pagará por 30 fotocopias en esta tienda?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">300 pesos<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Como el costo es directamente proporcional, el valor por fotocopia es 2100 ÷ 70 = 30 pesos y también 3300 ÷ 110 = 30 pesos. Entonces, por 30 fotocopias se paga 30 × 30 = 900 pesos. Por eso, 300 pesos no corresponde al problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">900 pesos<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El costo por fotocopia es 2100 ÷ 70 = 30 pesos. Se verifica también con 3300 ÷ 110 = 30 pesos. Entonces, para 30 fotocopias, el costo total es 30 × 30 = 900 pesos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2100 pesos<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El valor 2100 pesos corresponde a 70 fotocopias, no a 30. Como cada fotocopia cuesta 2100 ÷ 70 = 30 pesos, por 30 fotocopias se paga 30 × 30 = 900 pesos. Por eso, 2100 pesos no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">630 pesos<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Como el costo es directamente proporcional, el precio por fotocopia es 2100 ÷ 70 = 30 pesos y también 3300 ÷ 110 = 30 pesos. Entonces, por 30 fotocopias corresponde pagar 30 × 30 = 900 pesos. Por eso, 630 pesos no es correcto.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el modelo</strong></p>
+            <p>El enunciado indica que el costo total es directamente proporcional al número de fotocopias, por lo que se usa una función de la forma:</p>
+            <p><m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mi>a</m:mi><m:mo>⋅</m:mo><m:mi>n</m:mi></m:mrow></m:math></p>
+            <p>Aquí, <m:math><m:mi>a</m:mi></m:math> representa el costo de una fotocopia.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el costo por fotocopia</strong></p>
+            <p>Usando el dato de 70 fotocopias por $2100:</p>
+            <p><m:math><m:mrow><m:mi>a</m:mi><m:mo>=</m:mo><m:mfrac><m:mn>2100</m:mn><m:mn>70</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>30</m:mn></m:mrow></m:math></p>
+            <p>Entonces, cada fotocopia cuesta 30 pesos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con el segundo dato</strong></p>
+            <p>Usando el dato de 110 fotocopias por $3300:</p>
+            <p><m:math><m:mrow><m:mfrac><m:mn>3300</m:mn><m:mn>110</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>30</m:mn></m:mrow></m:math></p>
+            <p>Se obtiene el mismo valor, así que la constante de proporcionalidad es correcta.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular el costo de 30 fotocopias</strong></p>
+            <p>Sustituyendo <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>30</m:mn></m:math> en la función:</p>
+            <p><m:math><m:mrow><m:mi>C</m:mi><m:mo>(</m:mo><m:mn>30</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>30</m:mn><m:mo>⋅</m:mo><m:mn>30</m:mn><m:mo>=</m:mo><m:mn>900</m:mn></m:mrow></m:math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Por 30 fotocopias se pagará <strong>900 pesos</strong>. La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

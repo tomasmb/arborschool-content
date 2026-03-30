@@ -1,0 +1,220 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q56_v6" title="Q56_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un colegio se encuestó a los estudiantes de 4° medio de los cursos 4°A y 4°B sobre la cantidad de años que llevan estudiando en ese establecimiento. En la siguiente tabla se presentan los resultados de la encuesta.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Cantidad de años en el colegio</th>
+            <th>Cantidad de estudiantes 4°A</th>
+            <th>Cantidad de estudiantes 4°B</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>20</td>
+            <td>18</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>16</td>
+            <td>19</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>11</td>
+            <td>13</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>9</td>
+            <td>10</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>10</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>18</td>
+            <td>15</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>9</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>7</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>9 o más</td>
+            <td>11</td>
+            <td>9</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Considerando solo a los estudiantes que llevan al menos 5 años en el colegio, ¿en cuál curso hay más estudiantes?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">4°A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Al considerar 5 o más años, en 4°A se suman 10, 18, 9, 7 y 11 estudiantes, lo que da 55. En 4°B se suman 14, 15, 8, 6 y 9 estudiantes, lo que da 52. Como 55 es mayor que 52, en 4°A hay más estudiantes.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">4°B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Al considerar 5 o más años, en 4°B hay 14 + 15 + 8 + 6 + 9 = 52 estudiantes. En 4°A hay 10 + 18 + 9 + 7 + 11 = 55 estudiantes. Como 52 es menor que 55, 4°B no es el curso con más estudiantes.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En ambos cursos hay la misma cantidad<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si ambos cursos tuvieran la misma cantidad, las sumas deberían coincidir. Pero en 4°A hay 10 + 18 + 9 + 7 + 11 = 55 estudiantes y en 4°B hay 14 + 15 + 8 + 6 + 9 = 52 estudiantes. Como 55 ≠ 52, no tienen la misma cantidad.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">No se puede determinar con los datos entregados<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí se puede determinar con los datos entregados, porque la tabla muestra cuántos estudiantes hay en cada curso para 5, 6, 7, 8 y 9 o más años. Al sumar esos valores se obtiene 55 para 4°A y 52 para 4°B. Como 55 es mayor que 52, la respuesta sí se puede determinar y corresponde a 4°A.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué datos se deben considerar</strong></p>
+            <p>La pregunta dice “al menos 5 años”, por lo tanto se deben considerar las categorías 5, 6, 7, 8 y 9 o más años.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar los estudiantes de 4°A en esas categorías</strong></p>
+            <p>Para 4°A, los valores son 10, 18, 9, 7 y 11.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>10</mn>
+                  <mo>+</mo>
+                  <mn>18</mn>
+                  <mo>+</mo>
+                  <mn>9</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>+</mo>
+                  <mn>11</mn>
+                  <mo>=</mo>
+                  <mn>55</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, en 4°A hay 55 estudiantes que llevan al menos 5 años en el colegio.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar los estudiantes de 4°B en esas categorías</strong></p>
+            <p>Para 4°B, los valores son 14, 15, 8, 6 y 9.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>14</mn>
+                  <mo>+</mo>
+                  <mn>15</mn>
+                  <mo>+</mo>
+                  <mn>8</mn>
+                  <mo>+</mo>
+                  <mn>6</mn>
+                  <mo>+</mo>
+                  <mn>9</mn>
+                  <mo>=</mo>
+                  <mn>52</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, en 4°B hay 52 estudiantes que llevan al menos 5 años en el colegio.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar las cantidades obtenidas</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>55</mn>
+                  <mo>&gt;</mo>
+                  <mn>52</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Como 55 es mayor que 52, el curso con más estudiantes es 4°A.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>4°A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

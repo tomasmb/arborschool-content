@@ -1,0 +1,154 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q46_v9" title="Q46_v9" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Se tienen tres cubos idénticos y separados. Cada cubo tiene sus 6 caras cuadradas pintadas. Luego, se pegan por caras laterales, uno al lado del otro, formando un bloque recto de tres cubos, sin volver a pintar, como se representa en la figura adjunta.</p>
+    <p><img src="imagen.png" alt="Diagrama que muestra la secuencia de unión de dos prismas rectos de base cuadrada." /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes razones justifica que el área total pintada del bloque de tres cubos sea menor que la suma de las áreas totales pintadas de los tres cubos por separado?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Porque en total los cubos separados tienen 6 bases cuadradas, mientras que el bloque de tres cubos tiene solo 2 bases cuadradas.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La disminución del área pintada no se justifica contando bases, sino contando caras pintadas que quedan ocultas al pegar los cubos. Tres cubos separados tienen 18 caras pintadas visibles. Al formar el bloque, quedan 14 caras pintadas visibles, porque 4 caras pintadas quedan en contacto entre cubo y cubo y ya no están a la vista.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Porque un solo cuerpo recto siempre tiene un área total pintada menor que varios cuerpos rectos separados con la misma forma.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La palabra siempre hace falsa la afirmación. Por ejemplo, si un cubo de arista 1 está pintado, su área total es 6. En cambio, si se consideran dos cubos separados de arista 0,5, cada uno tiene área total 1,5 y juntos suman 3. En ese caso, el cuerpo único no tiene un área menor. Aquí la justificación correcta depende de que algunas caras pintadas quedan ocultas al pegar.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Porque cada uno de los cubos separados tiene un área total pintada menor que el área total pintada del bloque de tres cubos.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Aunque cada cubo separado tiene menos área pintada que el bloque, eso no responde lo que se pregunta. Si el área de una cara es la misma en todos los cubos, cada cubo separado tiene 6 caras pintadas y el bloque tiene 14 caras pintadas. Pero la comparación pedida es entre el bloque y la suma de los tres cubos separados: 14 frente a 18. La razón de que 14 sea menor que 18 es que 4 caras pintadas quedan ocultas al unir los cubos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Porque las caras cuadradas que quedan entre los cubos al pegarlos dejan de estar a la vista y su área ya no cuenta en la superficie pintada del bloque.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Tres cubos separados tienen 18 caras pintadas visibles en total. Al pegar tres cubos en fila, hay 2 uniones entre cubos, y en cada unión quedan ocultas 2 caras pintadas. Entonces dejan de verse 4 caras pintadas, por lo que el bloque queda con 14 caras pintadas visibles. Por eso el área pintada del bloque es menor que la suma de las áreas pintadas de los tres cubos por separado.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Contar las caras pintadas de los 3 cubos por separado</strong></p>
+            <p>Cada cubo tiene 6 caras pintadas. Entonces, entre los 3 cubos separados hay:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>3</mn>
+                  <mo>×</mo>
+                  <mn>6</mn>
+                  <mo>=</mo>
+                  <mn>18</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>En total, hay 18 caras cuadradas pintadas visibles.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar qué ocurre al pegarlos en fila</strong></p>
+            <p>Al formar un bloque recto de 3 cubos, aparecen 2 zonas de contacto: una entre el primer y el segundo cubo, y otra entre el segundo y el tercero.</p>
+            <p>En cada zona de contacto, 2 caras pintadas quedan enfrentadas y dejan de estar a la vista.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Contar cuántas caras pintadas dejan de verse</strong></p>
+            <p>Como hay 2 contactos y en cada contacto se ocultan 2 caras, se ocultan:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2</mn>
+                  <mo>×</mo>
+                  <mn>2</mn>
+                  <mo>=</mo>
+                  <mn>4</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>caras pintadas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Calcular las caras pintadas visibles del bloque</strong></p>
+            <p>De las 18 caras pintadas iniciales, 4 quedan ocultas. Entonces quedan visibles:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>18</mn>
+                  <mo>−</mo>
+                  <mn>4</mn>
+                  <mo>=</mo>
+                  <mn>14</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>caras pintadas.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Justificar la alternativa correcta</strong></p>
+            <p>La suma de las áreas pintadas de los 3 cubos por separado corresponde a 18 caras cuadradas pintadas, mientras que el bloque formado corresponde a 14 caras cuadradas pintadas.</p>
+            <p>Por eso, el área total pintada del bloque es menor, y la razón correcta es que las caras que quedan entre los cubos al pegarlos dejan de estar a la vista.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

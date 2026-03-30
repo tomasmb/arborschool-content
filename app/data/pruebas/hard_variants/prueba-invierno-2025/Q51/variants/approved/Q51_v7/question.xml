@@ -1,0 +1,120 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v7" title="Q51_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un parque con senderos rectos que forman una cuadrícula, la entrada principal se toma como punto de referencia.</p>
+    <p>Un kiosco se encontraba, inicialmente, 4 tramos hacia el sur y 10 tramos hacia el este desde la entrada. Luego fue trasladado dos veces: primero, 6 tramos hacia el norte y 3 tramos hacia el este, y después, 2 tramos hacia el sur y 5 tramos hacia el oeste. Los senderos solo permiten moverse en direcciones norte-sur y este-oeste.</p>
+    <p>Si una persona entra al parque por la entrada principal, ¿qué indicación única se le puede dar para llegar al kiosco actual?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Seleccione la indicación correcta.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Avance cuatro tramos hacia el norte y ocho tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La posición final se obtiene así: 4 tramos al sur y 10 al este; luego 6 al norte y 3 al este dejan 2 al norte y 13 al este; después 2 al sur y 5 al oeste dejan 0 en dirección norte-sur y 8 al este. Por lo tanto, no corresponde avanzar 4 tramos hacia el norte, sino 0, y sí 8 tramos hacia el este.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">No avance hacia el norte ni hacia el sur y avance ocho tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Partiendo de 4 tramos al sur y 10 al este, al mover el kiosco 6 tramos al norte y 3 al este queda 2 tramos al norte y 13 al este. Luego, al moverlo 2 tramos al sur y 5 al oeste, queda en 0 tramos hacia el norte o sur y 8 tramos hacia el este. Por eso la indicación única correcta es avanzar solo 8 tramos hacia el este.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">No avance hacia el norte ni hacia el sur y avance trece tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Después del primer traslado, el kiosco queda en 2 tramos al norte y 13 al este. Pero todavía falta aplicar el segundo traslado: 2 tramos al sur y 5 al oeste. Eso cambia la posición a 0 en dirección norte-sur y 8 al este. Por lo tanto, 13 tramos hacia el este no es la ubicación final.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Avance cuatro tramos hacia el norte y trece tramos hacia el este.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La ubicación final no es 4 tramos al norte y 13 al este. Calculando paso a paso: desde 4 al sur y 10 al este, al mover 6 al norte y 3 al este se llega a 2 al norte y 13 al este; luego, al mover 2 al sur y 5 al oeste, se llega a 0 en dirección norte-sur y 8 al este. Esa opción no coincide con la posición final.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Representar la posición inicial del kiosco</strong></p>
+            <p>Desde la entrada, el kiosco estaba inicialmente a 4 tramos hacia el sur y 10 tramos hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar el primer traslado</strong></p>
+            <p>Se mueve 6 tramos hacia el norte y 3 tramos hacia el este.</p>
+            <p>En dirección norte-sur, partir 4 tramos al sur y avanzar 6 tramos al norte equivale a quedar 2 tramos al norte.</p>
+            <p>En dirección este-oeste, partir 10 tramos al este y avanzar 3 tramos más al este equivale a quedar 13 tramos al este.</p>
+            <p>Entonces, después del primer traslado, el kiosco queda a 2 tramos hacia el norte y 13 tramos hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar el segundo traslado</strong></p>
+            <p>Ahora se mueve 2 tramos hacia el sur y 5 tramos hacia el oeste.</p>
+            <p>En dirección norte-sur, partir 2 tramos al norte y avanzar 2 tramos al sur equivale a quedar en 0.</p>
+            <p>En dirección este-oeste, partir 13 tramos al este y avanzar 5 tramos al oeste equivale a quedar 8 tramos al este.</p>
+            <p>Entonces, la posición final del kiosco es 0 tramos hacia el norte o sur y 8 tramos hacia el este.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La única opción que indica no avanzar hacia el norte ni hacia el sur y avanzar 8 tramos hacia el este es la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es: No avance hacia el norte ni hacia el sur y avance ocho tramos hacia el este.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

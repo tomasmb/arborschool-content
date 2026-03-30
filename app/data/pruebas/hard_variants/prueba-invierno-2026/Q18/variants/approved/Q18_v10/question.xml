@@ -1,0 +1,285 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q18_v10" title="Q18_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un tablero de ajedrez se coloca 1 grano de trigo en la primera casilla y en cada casilla siguiente se duplica la cantidad de granos de la casilla anterior. Se afirma que la cantidad de granos en la casilla 64 puede representarse como 
+      <m:math>
+        <m:msup>
+          <m:mn>2</m:mn>
+          <m:mn>63</m:mn>
+        </m:msup>
+      </m:math>.
+      
+      
+      
+      
+      
+      
+      ¿Cuál de las siguientes explicaciones NO justifica correctamente esa expresión?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Se comienza en la casilla 1 con 1 grano, que se puede escribir como 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>0</m:mn>
+          </m:msup>
+        </m:math>, y luego, para llegar a la casilla 64, se duplica la cantidad 63 veces, por lo que la cantidad se representa con 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>63</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación sí justifica correctamente la expresión. La casilla 1 tiene <m:math><m:msup><m:mn>2</m:mn><m:mn>0</m:mn></m:msup></m:math> grano, y desde la casilla 1 hasta la casilla 64 hay 63 pasos. Al duplicar 63 veces, se obtiene <m:math><m:msup><m:mn>2</m:mn><m:mn>63</m:mn></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Como es la casilla 64, el exponente debe coincidir con el número de la casilla; por eso la cantidad se debería escribir como 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>64</m:mn>
+          </m:msup>
+        </m:math> y no como 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>63</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Esta explicación NO justifica correctamente la expresión. Un contraejemplo concreto es revisar las primeras casillas: casilla 1 → <m:math><m:msup><m:mn>2</m:mn><m:mn>0</m:mn></m:msup></m:math>, casilla 2 → <m:math><m:msup><m:mn>2</m:mn><m:mn>1</m:mn></m:msup></m:math>, casilla 3 → <m:math><m:msup><m:mn>2</m:mn><m:mn>2</m:mn></m:msup></m:math>. El exponente no coincide con el número de la casilla, sino que es 1 menos. Por eso, en la casilla 64 corresponde <m:math><m:msup><m:mn>2</m:mn><m:mn>63</m:mn></m:msup></m:math> y no <m:math><m:msup><m:mn>2</m:mn><m:mn>64</m:mn></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Cada casilla tiene el doble de granos que la anterior, de modo que entre la casilla 1 y la casilla 64 se multiplica por 2 la cantidad de granos 63 veces. La expresión 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>63</m:mn>
+          </m:msup>
+        </m:math> indica precisamente 63 multiplicaciones sucesivas por 2 a partir de 1 grano.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación sí justifica correctamente la expresión. Desde la casilla 1 hasta la 64 hay 63 duplicaciones, es decir, <m:math><m:mrow><m:mn>1</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>×</m:mo><m:mn>2</m:mn><m:mo>×</m:mo><m:mtext>…</m:mtext><m:mo>×</m:mo><m:mn>2</m:mn></m:mrow></m:math> con 63 factores 2, lo que se escribe como <m:math><m:msup><m:mn>2</m:mn><m:mn>63</m:mn></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Si se numeran las casillas desde 0 en lugar de desde 1, la primera casilla tiene 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>0</m:mn>
+          </m:msup>
+        </m:math> = 1 grano y la casilla 64 corresponde al número 63; por eso la cantidad de granos en esa casilla se puede escribir como 
+        <m:math>
+          <m:msup>
+            <m:mn>2</m:mn>
+            <m:mn>63</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación también justifica correctamente la expresión. Si la primera casilla se asocia al exponente 0, entonces la segunda se asocia al 1 y, en general, la casilla 64 se asocia al 63. Así, la cantidad de granos en la casilla 64 se representa por <m:math><m:msup><m:mn>2</m:mn><m:mn>63</m:mn></m:msup></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el patrón</strong></p>
+            <p>La primera casilla tiene 1 grano. Cada casilla siguiente duplica la cantidad de la anterior.</p>
+            <p>Entonces, las primeras casillas quedan así:</p>
+            <p>Casilla 1:
+              <m:math>
+                <m:mn>1</m:mn>
+              </m:math>
+              =
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>0</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Casilla 2:
+              <m:math>
+                <m:mn>2</m:mn>
+              </m:math>
+              =
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>1</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Casilla 3:
+              <m:math>
+                <m:mn>4</m:mn>
+              </m:math>
+              =
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+            <p>Casilla 4:
+              <m:math>
+                <m:mn>8</m:mn>
+              </m:math>
+              =
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Relacionar número de casilla y exponente</strong></p>
+            <p>Se observa que en la casilla 1 el exponente es 0, en la casilla 2 el exponente es 1, en la casilla 3 el exponente es 2.</p>
+            <p>Por lo tanto, en general, la casilla <m:math><m:mi>n</m:mi></m:math> tiene
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mrow>
+                    <m:mi>n</m:mi>
+                    <m:mo>−</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+              </m:math>
+              granos.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar a la casilla 64</strong></p>
+            <p>Para <m:math><m:mi>n</m:mi><m:mo>=</m:mo><m:mn>64</m:mn></m:math>, la cantidad de granos es:</p>
+            <p>
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mrow>
+                    <m:mn>64</m:mn>
+                    <m:mo>−</m:mo>
+                    <m:mn>1</m:mn>
+                  </m:mrow>
+                </m:msup>
+              </m:math>
+              =
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>63</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Evaluar las explicaciones</strong></p>
+            <p>La opción A es correcta porque parte con
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>0</m:mn>
+                </m:msup>
+              </m:math>
+              en la primera casilla y considera 63 duplicaciones.
+            </p>
+            <p>La opción C es correcta porque entre la casilla 1 y la 64 se multiplica por 2 exactamente 63 veces.</p>
+            <p>La opción D es correcta porque, al asociar la primera casilla al exponente 0, la casilla 64 queda asociada al exponente 63.</p>
+            <p>La opción B es la única que no justifica correctamente, porque afirma que el exponente debe coincidir con el número de la casilla. Eso no ocurre: por ejemplo, en la casilla 1 hay
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>0</m:mn>
+                </m:msup>
+              </m:math>
+              y no
+              <m:math>
+                <m:msup>
+                  <m:mn>2</m:mn>
+                  <m:mn>1</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La explicación que NO justifica correctamente la expresión es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

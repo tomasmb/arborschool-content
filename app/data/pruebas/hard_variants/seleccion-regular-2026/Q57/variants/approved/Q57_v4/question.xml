@@ -1,0 +1,163 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q57_v4" title="Q57_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      Se modela la cantidad de agua que queda en un estanque (en litros), luego de abrir una llave de desagüe, mediante la función
+      <m:math>
+        <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>-</m:mo><m:mn>5</m:mn><m:mi>x</m:mi>
+      </m:math>,
+      donde A(x) representa la cantidad de agua en el estanque y x el número de minutos transcurridos desde que se abre la llave.
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>
+        Según este modelo, ¿cuál de las siguientes afirmaciones describe correctamente lo que ocurre con el agua del estanque mientras la llave permanece abierta?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        El estanque comienza con 900 litros de agua y, mientras la llave está abierta, el volumen aumenta de manera constante en 5 litros por cada minuto.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el modelo A(x) = 900 − 5x, al aumentar x en 1 minuto, la cantidad de agua cambia de 900 − 5x a 900 − 5(x + 1) = 895 − 5x, es decir, disminuye en 5 litros. Por ejemplo, A(0) = 900 y A(1) = 895, así que no aumenta.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        El estanque comienza con 900 litros de agua y, mientras la llave está abierta, el volumen disminuye de manera constante en 5 litros por cada minuto; por ejemplo, tras 10 minutos habrá 50 litros menos que al inicio.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En A(x) = 900 − 5x, se tiene A(0) = 900, por lo que al inicio hay 900 litros. Además, el término −5x indica que cada minuto la cantidad baja en 5 litros. Verificación del ejemplo: A(10) = 900 − 5·10 = 900 − 50 = 850, por lo tanto después de 10 minutos hay 50 litros menos que al inicio.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Al abrir la llave, el estanque pierde 900 litros de agua cada 5 minutos, de modo que al inicio solo contiene 5 litros y se vacía casi de inmediato.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El modelo da A(0) = 900, así que al inicio el estanque contiene 900 litros, no 5 litros. Además, en 5 minutos se obtiene A(5) = 900 − 25 = 875, por lo que en esos 5 minutos pierde 25 litros, no 900 litros.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        El estanque parte con 900 litros y tarda 5 minutos en perder 1 litro de agua, ya que el número 5 del modelo indica los minutos que pasan entre cada litro que se vacía.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En A(x) = 900 − 5x, el número 5 multiplica a los minutos x y representa 5 litros por minuto. Por ejemplo, A(0) = 900 y A(1) = 895, así que en 1 minuto se pierden 5 litros. También, de A(0) = 900 a A(5) = 875, en 5 minutos se pierden 25 litros, no 1 litro.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Interpretación de una función lineal en contexto</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el valor inicial</strong></p>
+            <p>La función es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mi>x</m:mi><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>−</m:mo><m:mn>5</m:mn><m:mi>x</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>Para saber cuánta agua hay al inicio, se evalúa en <strong>x = 0</strong>:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mn>0</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>−</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>0</m:mn><m:mo>=</m:mo><m:mn>900</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Entonces, el estanque comienza con 900 litros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Interpretar la tasa de cambio</strong></p>
+            <p>El término <strong>−5x</strong> indica que por cada minuto que pasa, la cantidad de agua disminuye en 5 litros.</p>
+            <p>El signo negativo muestra que el agua baja, no sube.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Verificar con un valor concreto</strong></p>
+            <p>Si han pasado 10 minutos, entonces:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>A</m:mi><m:mo>(</m:mo><m:mn>10</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>−</m:mo><m:mn>5</m:mn><m:mo>·</m:mo><m:mn>10</m:mn><m:mo>=</m:mo><m:mn>900</m:mn><m:mo>−</m:mo><m:mn>50</m:mn><m:mo>=</m:mo><m:mn>850</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Como al inicio había 900 litros y después de 10 minutos hay 850 litros, la diferencia es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>900</m:mn><m:mo>−</m:mo><m:mn>850</m:mn><m:mo>=</m:mo><m:mn>50</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Por lo tanto, después de 10 minutos hay 50 litros menos que al inicio.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>La afirmación correcta debe decir dos cosas: que el estanque parte con 900 litros y que el volumen disminuye 5 litros por minuto.</p>
+            <p>Además, el ejemplo con 10 minutos debe coincidir con el cálculo anterior.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>, porque describe exactamente que el estanque comienza con 900 litros y que el agua disminuye de manera constante en 5 litros por minuto.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

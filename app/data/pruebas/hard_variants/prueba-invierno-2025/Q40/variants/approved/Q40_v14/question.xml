@@ -1,0 +1,222 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q40_v14" title="Q40_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos empresas de suministro de agua cobran en función del volumen v de agua consumido, medido en metros cúbicos (m³).</p>
+    <p>Para calcular el cobro en pesos, se utilizan las siguientes funciones de costo, donde v representa los metros cúbicos consumidos:</p>
+    <p>Servicio Azul:
+      <m:math>
+        <m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub>
+        <m:mo>(</m:mo><m:mi>v</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mi>a</m:mi>
+        <m:mo>+</m:mo>
+        <m:mn>40</m:mn><m:mi>v</m:mi>
+      </m:math>
+      <br />Servicio Verde:
+      <m:math>
+        <m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub>
+        <m:mo>(</m:mo><m:mi>v</m:mi><m:mo>)</m:mo>
+        <m:mo>=</m:mo>
+        <m:mn>1600</m:mn>
+        <m:mo>+</m:mo>
+        <m:mn>30</m:mn><m:mi>v</m:mi>
+      </m:math>
+    </p>
+    <p>Se sabe que, por un consumo de 20 m³ de agua, ambas empresas cobran lo mismo, es decir, cuando
+      <m:math>
+        <m:mi>v</m:mi><m:mo>=</m:mo><m:mn>20</m:mn>
+      </m:math>
+      , los montos totales de cobro son iguales.</p>
+    <p>El término a representa el cargo fijo del Servicio Azul, en pesos.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál debe ser el valor del cargo fijo
+        <m:math>
+          <m:mi>a</m:mi>
+        </m:math>
+        del Servicio Azul para que, por un consumo de 20 m³, ambas empresas cobren lo mismo?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">2200<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>, entonces el Servicio Azul cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2200</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn><m:mo>+</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>3000</m:mn></m:math>. En cambio, el Servicio Verde cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>30</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>600</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>. Como <m:math><m:mn>3000</m:mn><m:mo>≠</m:mo><m:mn>2200</m:mn></m:math>, esta opción no cumple la condición.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">1400<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Para <m:math><m:mi>v</m:mi><m:mo>=</m:mo><m:mn>20</m:mn></m:math>, el Servicio Verde cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>30</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>600</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>. Entonces el Servicio Azul debe satisfacer <m:math><m:mi>a</m:mi><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>, es decir, <m:math><m:mi>a</m:mi><m:mo>+</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>. De ahí se obtiene <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>1400</m:mn></m:math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">1600<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>1600</m:mn></m:math>, entonces el Servicio Azul cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>2400</m:mn></m:math>. El Servicio Verde cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>1600</m:mn><m:mo>+</m:mo><m:mn>30</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>. Como <m:math><m:mn>2400</m:mn><m:mo>≠</m:mo><m:mn>2200</m:mn></m:math>, esta opción no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">3000<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si <m:math><m:mi>a</m:mi><m:mo>=</m:mo><m:mn>3000</m:mn></m:math>, entonces el Servicio Azul cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>3000</m:mn><m:mo>+</m:mo><m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>3000</m:mn><m:mo>+</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>3800</m:mn></m:math>. El Servicio Verde cobra <m:math><m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub><m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo><m:mo>=</m:mo><m:mn>2200</m:mn></m:math>. Como <m:math><m:mn>3800</m:mn><m:mo>≠</m:mo><m:mn>2200</m:mn></m:math>, esta opción no cumple la igualdad pedida.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Evaluar el costo del Servicio Verde para 20 m³</strong></p>
+            <p>La función es
+              <m:math>
+                <m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub>
+                <m:mo>(</m:mo><m:mi>v</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1600</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>30</m:mn><m:mi>v</m:mi>
+              </m:math>.
+            </p>
+            <p>Reemplazando
+              <m:math>
+                <m:mi>v</m:mi><m:mo>=</m:mo><m:mn>20</m:mn>
+              </m:math>:
+              <m:math>
+                <m:msub><m:mi>C</m:mi><m:mi>V</m:mi></m:msub>
+                <m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>1600</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>30</m:mn><m:mo>×</m:mo><m:mn>20</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>1600</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>600</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>2200</m:mn>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Igualar el costo del Servicio Azul a 2200 pesos</strong></p>
+            <p>La función del Servicio Azul es
+              <m:math>
+                <m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub>
+                <m:mo>(</m:mo><m:mi>v</m:mi><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mi>a</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>40</m:mn><m:mi>v</m:mi>
+              </m:math>.
+            </p>
+            <p>Como ambas empresas cobran lo mismo para
+              <m:math>
+                <m:mi>v</m:mi><m:mo>=</m:mo><m:mn>20</m:mn>
+              </m:math>, debe cumplirse:
+              <m:math>
+                <m:msub><m:mi>C</m:mi><m:mi>A</m:mi></m:msub>
+                <m:mo>(</m:mo><m:mn>20</m:mn><m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>2200</m:mn>
+              </m:math>.
+            </p>
+            <p>Entonces:
+              <m:math>
+                <m:mi>a</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>2200</m:mn>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver la ecuación</strong></p>
+            <p>Primero calculamos:
+              <m:math>
+                <m:mn>40</m:mn><m:mo>×</m:mo><m:mn>20</m:mn><m:mo>=</m:mo><m:mn>800</m:mn>
+              </m:math>.
+            </p>
+            <p>Queda:
+              <m:math>
+                <m:mi>a</m:mi><m:mo>+</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>2200</m:mn>
+              </m:math>.
+            </p>
+            <p>Restando
+              <m:math>
+                <m:mn>800</m:mn>
+              </m:math>
+              en ambos lados:
+              <m:math>
+                <m:mi>a</m:mi><m:mo>=</m:mo><m:mn>2200</m:mn><m:mo>−</m:mo><m:mn>800</m:mn><m:mo>=</m:mo><m:mn>1400</m:mn>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El cargo fijo del Servicio Azul debe ser
+              <m:math>
+                <m:mn>1400</m:mn>
+              </m:math>
+              pesos. La alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,116 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q55_v5" title="Q55_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una persona está practicando cinco idiomas y su dominio en cada uno se representa con un puntaje de 0 a 100.</p>
+    <p>En el siguiente gráfico se muestran estos puntajes mediante cinco "termómetros" verticales, cada uno con una escala de 0 a 100 y un nivel de relleno que indica el dominio en cada idioma.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="Cinco termómetros verticales alineados, cada uno con escala de 0 a 100 marcada en el costado. Debajo de cada termómetro hay una etiqueta con el nombre del idioma: de izquierda a derecha, 'Español', 'Inglés', 'Francés', 'Alemán' e 'Italiano'. El termómetro de 'Español' está relleno hasta aproximadamente 90, el de 'Inglés' hasta aproximadamente 75, el de 'Francés' hasta aproximadamente 60, el de 'Alemán' hasta aproximadamente 30 y el de 'Italiano' hasta aproximadamente 70. El termómetro de 'Alemán' es claramente el que tiene el nivel de relleno más bajo de los cinco." />
+      <br />Los niveles aproximados de dominio son: Español 90 puntos, Inglés 75 puntos, Francés 60 puntos, Alemán 30 puntos e Italiano 70 puntos.</p>
+    <p>Según la información del gráfico, ¿en qué idioma muestra menor dominio esta persona?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">Español<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Español tiene aproximadamente 90 puntos. En el gráfico hay un idioma con un puntaje menor: Alemán tiene aproximadamente 30 puntos, y 30 es menor que 90.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Alemán<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Alemán tiene aproximadamente 30 puntos. Al comparar los cinco valores del gráfico, 30, 60, 70, 75 y 90, el menor es 30. Por eso, el idioma con menor dominio es Alemán.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Francés<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Francés tiene aproximadamente 60 puntos. En el gráfico aparece un valor menor: Alemán tiene aproximadamente 30 puntos, y 30 es menor que 60.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Inglés<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Inglés tiene aproximadamente 75 puntos. En el gráfico aparece un valor menor: Alemán tiene aproximadamente 30 puntos, y 30 es menor que 75.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Leer los puntajes del gráfico</strong></p>
+            <p>Según la información entregada, los niveles aproximados son: Español 90, Inglés 75, Francés 60, Alemán 30 e Italiano 70.</p>
+          </li>
+          <li>
+            <p><strong>Identificar qué pide la pregunta</strong></p>
+            <p>La pregunta pide el idioma en que la persona muestra <strong>menor dominio</strong>. Eso significa que debemos buscar el puntaje más pequeño.</p>
+          </li>
+          <li>
+            <p><strong>Comparar los cinco valores</strong></p>
+            <p>Los puntajes son 90, 75, 60, 30 y 70. Al ordenarlos de menor a mayor quedan: 30, 60, 70, 75 y 90.</p>
+          </li>
+          <li>
+            <p><strong>Determinar el menor puntaje</strong></p>
+            <p>El menor valor es 30 puntos, y ese puntaje corresponde a Alemán.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La persona muestra menor dominio en <strong>Alemán</strong>, por lo tanto la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

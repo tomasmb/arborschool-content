@@ -1,0 +1,341 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q4_v11" title="Q4_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una cuenta bancaria se aplica la siguiente regla para actualizar el saldo de una persona: se toma el doble negativo de un monto que corresponde al producto de dos cargos, y luego se resta una fracción cuyo numerador es la diferencia entre un abono fijo y el producto de otros dos cargos, dividida por un número fijo. Para un caso particular, esta regla se representa mediante la expresión
+      <m:math>
+        <m:mrow>
+          <m:mo>-</m:mo>
+          <m:mn>2</m:mn>
+          <m:mo>(</m:mo>
+          <m:mn>7</m:mn>
+          <m:mo>·</m:mo>
+          <m:mn>3</m:mn>
+          <m:mo>)</m:mo>
+          <m:mo>-</m:mo>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>50</m:mn>
+              <m:mo>-</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>·</m:mo>
+              <m:mn>5</m:mn>
+            </m:mrow>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+        </m:mrow>
+      </m:math>.
+      Para calcular el valor de esta expresión, se realizan los siguientes pasos, cometiéndose un error.</p>
+    <p>Paso 1: se calcula el producto -2(7·3), obteniéndose
+      <m:math>
+        <m:mrow>
+          <m:mo>(</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>42</m:mn>
+          <m:mo>-</m:mo>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>50</m:mn>
+              <m:mo>-</m:mo>
+              <m:mn>4</m:mn>
+              <m:mo>·</m:mo>
+              <m:mn>5</m:mn>
+            </m:mrow>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+          <m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>.
+    </p>
+    <p>Paso 2: se resuelve el paréntesis (50-4·5), obteniéndose
+      <m:math>
+        <m:mrow>
+          <m:mo>(</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>42</m:mn>
+          <m:mo>-</m:mo>
+          <m:mfrac>
+            <m:mrow>
+              <m:mn>230</m:mn>
+            </m:mrow>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+          <m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>.
+    </p>
+    <p>Paso 3: se calcula la fracción del paso anterior, obteniéndose
+      <m:math>
+        <m:mrow>
+          <m:mo>(</m:mo>
+          <m:mo>-</m:mo>
+          <m:mn>42</m:mn>
+          <m:mo>-</m:mo>
+          <m:mn>23</m:mn>
+          <m:mo>)</m:mo>
+        </m:mrow>
+      </m:math>.
+    </p>
+    <p>Paso 4: se resuelve la resta final, obteniéndose
+      <m:math>
+        <m:mrow>
+          <m:mo>-</m:mo>
+          <m:mn>65</m:mn>
+        </m:mrow>
+      </m:math>.
+    </p>
+    <p>¿En cuál de los pasos se cometió el error?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">En el Paso 1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el Paso 1 sí se calculó bien: 7·3 = 21 y luego -2·21 = -42. Ese resultado coincide con la expresión escrita después del Paso 1, por lo tanto allí no está el error.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En el Paso 2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En el Paso 2 se evaluó mal el numerador: primero 4·5 = 20 y luego 50 - 20 = 30, no 230. Por eso el error aparece en ese paso.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En el Paso 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si se toma lo escrito en el Paso 2, 230/10 = 23, así que el Paso 3 es coherente con el resultado anterior. El problema viene desde antes, porque el numerador correcto debía ser 30 y no 230.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">En el Paso 4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si se usa lo obtenido en el Paso 3, entonces -42 - 23 = -65, así que esa resta está bien hecha. El error ocurrió antes, cuando se calculó mal 50 - 4·5.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show"
+        outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Calcular el primer producto</strong></p>
+            <p>En la expresión
+              <m:math>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>(</m:mo>
+                  <m:mn>7</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>)</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mfrac>
+                    <m:mrow>
+                      <m:mn>50</m:mn>
+                      <m:mo>-</m:mo>
+                      <m:mn>4</m:mn>
+                      <m:mo>·</m:mo>
+                      <m:mn>5</m:mn>
+                    </m:mrow>
+                    <m:mn>10</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>,
+              primero se obtiene
+              <m:math>
+                <m:mrow>
+                  <m:mn>7</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>21</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Luego,
+              <m:math>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>2</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>21</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mn>42</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Entonces el Paso 1 está correcto.</p>
+          </li>
+          <li>
+            <p><strong>Resolver correctamente el numerador de la fracción</strong></p>
+            <p>En el numerador aparece
+              <m:math>
+                <m:mrow>
+                  <m:mn>50</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>5</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Por prioridad de operaciones, primero se multiplica:
+              <m:math>
+                <m:mrow>
+                  <m:mn>4</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>5</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>20</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Después se resta:
+              <m:math>
+                <m:mrow>
+                  <m:mn>50</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>20</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>30</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Por lo tanto, escribir
+              <m:math>
+                <m:mrow>
+                  <m:mn>230</m:mn>
+                </m:mrow>
+              </m:math>
+              en el numerador es incorrecto. Aquí se comete el error, es decir, en el <strong>Paso 2</strong>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Continuar el cálculo correcto</strong></p>
+            <p>La fracción correcta es
+              <m:math>
+                <m:mfrac>
+                  <m:mn>30</m:mn>
+                  <m:mn>10</m:mn>
+                </m:mfrac>
+              </m:math>,
+              y entonces
+              <m:math>
+                <m:mrow>
+                  <m:mfrac>
+                    <m:mn>30</m:mn>
+                    <m:mn>10</m:mn>
+                  </m:mfrac>
+                  <m:mo>=</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Obtener el valor correcto de la expresión</strong></p>
+            <p>La expresión queda:
+              <m:math>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>42</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>3</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+            <p>Finalmente,
+              <m:math>
+                <m:mrow>
+                  <m:mo>-</m:mo>
+                  <m:mn>42</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo>
+                  <m:mn>45</m:mn>
+                </m:mrow>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El procedimiento dado se equivoca en el <strong>Paso 2</strong>, porque
+              <m:math>
+                <m:mrow>
+                  <m:mn>50</m:mn>
+                  <m:mo>-</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>5</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>30</m:mn>
+                </m:mrow>
+              </m:math>
+              y no
+              <m:math>
+                <m:mrow>
+                  <m:mn>230</m:mn>
+                </m:mrow>
+              </m:math>.
+              La alternativa correcta es la <strong>B</strong>.
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

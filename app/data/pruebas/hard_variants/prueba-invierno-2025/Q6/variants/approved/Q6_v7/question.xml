@@ -1,0 +1,161 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q6_v7" title="Q6_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego de tiro con arco, cada zona de la diana otorga un puntaje distinto según el siguiente registro:</p>
+    <p>Zona A: 2 puntos; Zona B: 5 puntos; Zona C: 8 puntos.</p>
+    <p>Una persona dispara cinco flechas. Cuando una flecha no da en alguna de las tres zonas, se repite el disparo. El juego finaliza cuando las cinco flechas han dado en alguna de las zonas A, B o C, y el puntaje final es la suma de los puntajes de las zonas donde cayeron las flechas. Se sabe que, durante el juego, la persona acertó al menos una vez en cada una de las tres zonas.</p>
+    <p>¿Cuál de los siguientes puntajes corresponde al máximo puntaje que pudo haber obtenido la persona al finalizar el juego?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">15<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Como acertó al menos una vez en cada zona, tres flechas deben aportar 2, 5 y 8 puntos, respectivamente. Eso suma 15, pero todavía faltan dos flechas válidas por considerar. Por lo tanto, 15 no puede ser el puntaje final máximo. Para maximizar, las dos flechas restantes deben caer en la zona C, de 8 puntos cada una, obteniéndose 31.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">22<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El puntaje 22 sí puede lograrse, por ejemplo, con 2 + 2 + 5 + 5 + 8 = 22, pero no es el máximo. Para maximizar, después de asegurar al menos una flecha en cada zona, conviene poner las dos flechas restantes en la zona C, que vale 8 puntos. Así se obtiene 2 + 5 + 8 + 8 + 8 = 31, y 31 es mayor que 22.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">31<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Como debe haber al menos una flecha en cada zona, primero se asegura 2 + 5 + 8 = 15. Quedan dos flechas, y para maximizar el puntaje ambas deben caer en la zona C, que vale 8 puntos cada una. Entonces el máximo es 15 + 8 + 8 = 31.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">40<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El puntaje 40 sería 8 + 8 + 8 + 8 + 8 = 40, es decir, las cinco flechas en la zona C. Eso no cumple la condición de haber acertado al menos una vez en cada una de las tres zonas A, B y C. Por lo tanto, 40 no pudo ser el puntaje final.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los puntajes de cada zona</strong></p>
+            <p>Según el enunciado, los puntajes son: zona A = 2 puntos, zona B = 5 puntos y zona C = 8 puntos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Usar la condición “al menos una vez en cada zona”</strong></p>
+            <p>Como la persona acertó al menos una vez en A, en B y en C, necesariamente tres de las cinco flechas aportan:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>15</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Después de eso, todavía faltan dos flechas válidas por contar.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Maximizar el puntaje de las dos flechas restantes</strong></p>
+            <p>Para obtener el mayor puntaje posible, las dos flechas restantes deben caer en la zona de mayor valor.</p>
+            <p>La zona de mayor valor es la zona C, con 8 puntos.</p>
+            <p>Entonces esas dos flechas aportan:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>8</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>16</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sumar el puntaje total máximo</strong></p>
+            <p>El total máximo es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>15</mn><mo>+</mo><mn>16</mn><mo>=</mo><mn>31</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Equivalentemente, se puede escribir como:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2</mn><mo>+</mo><mn>5</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>31</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La alternativa 31 coincide exactamente con el máximo puntaje posible.</p>
+            <p>Además, 40 no puede ser correcto porque implicaría:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>8</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>40</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Eso pondría las cinco flechas en la zona C y no cumpliría la condición de acertar al menos una vez en cada zona.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El máximo puntaje que pudo haber obtenido la persona es <strong>31 puntos</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

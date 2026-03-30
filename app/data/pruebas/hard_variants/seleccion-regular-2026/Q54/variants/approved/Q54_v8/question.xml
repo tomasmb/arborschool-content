@@ -1,0 +1,143 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v8" title="Q54_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>El encargado de recursos humanos de una fábrica registra los años de servicio de cada trabajador y los resume en la siguiente tabla:</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Años de servicio</th>
+          <th>Cantidad de trabajadores</th>
+        </tr>
+        <tr>
+          <td>0 – 4</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>5 – 9</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>10 – 14</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>15 – 19</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>20 o más</td>
+          <td>6</td>
+        </tr>
+      </table>
+    </div>
+    <p>La empresa entregará un bono especial, según la información de la tabla, a los trabajadores que tengan al menos 15 años de servicio en la fábrica. ¿Cuál es la mayor cantidad de trabajadores que podría recibir ese bono?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Selecciona una alternativa.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">6<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los trabajadores con 20 o más años son 6, pero también deben incluirse los que tienen entre 15 y 19 años, porque “al menos 15 años” significa 15 o más. Entonces la cantidad máxima es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>14</mn></mrow></math>, no 6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">14<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! “Al menos 15 años” incluye a los trabajadores de los tramos 15–19 y 20 o más. En la tabla aparecen 8 y 6 trabajadores en esos grupos, respectivamente. Por lo tanto, la mayor cantidad posible es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>14</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">17<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Para recibir el bono se necesita tener al menos 15 años de servicio, así que no se pueden incluir los 9 trabajadores del tramo 10–14. Solo cuentan los 8 del tramo 15–19 y los 6 del tramo 20 o más. Entonces la cantidad máxima es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>14</mn></mrow></math>, no 17.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">23<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El número 23 se obtiene al sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn><mo>+</mo><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>23</mn></mrow></math>, pero ese cálculo incluye a los 9 trabajadores del tramo 10–14, que no cumplen la condición de tener al menos 15 años de servicio. Solo se consideran los grupos 15–19 y 20 o más, así que la cantidad máxima es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>14</mn></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la condición del bono</strong></p>
+            <p>El bono es para los trabajadores que tengan <strong>al menos 15 años</strong> de servicio. Eso significa 15 años o más.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Buscar en la tabla los grupos que cumplen</strong></p>
+            <p>Los tramos que cumplen esa condición son:</p>
+            <p>15 – 19 años: 8 trabajadores.</p>
+            <p>20 o más años: 6 trabajadores.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar las cantidades de esos grupos</strong></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>14</mn></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Interpretar “la mayor cantidad”</strong></p>
+            <p>Con la información de la tabla, todos los trabajadores de esos dos tramos podrían recibir el bono, por lo que la mayor cantidad posible es 14.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>14</strong>, alternativa <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

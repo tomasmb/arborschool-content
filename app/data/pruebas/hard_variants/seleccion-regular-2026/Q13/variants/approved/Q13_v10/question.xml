@@ -1,0 +1,190 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v10" title="Q13_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Algunas calculadoras tienen botones que permiten marcar dos ceros o tres ceros a la vez, tal como la que se representa en la imagen adjunta.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujar un teclado de calculadora con los botones numéricos estándar del 0 al 9 dispuestos en una cuadrícula, e incluir claramente dos botones especiales adicionales etiquetados como '00' y '000' en la última fila o al costado derecho, similares en tamaño a los demás. No mostrar ninguna pantalla ni resultado, solo el teclado con todos los botones visibles y legibles." />
+    </p>
+    <p>Un estudiante ya presionó la tecla [1] y luego dos veces la tecla [000]. La secuencia de teclas presionadas se muestra en la siguiente imagen:</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Mostrar, en una fila horizontal, tres íconos de botones de calculadora: primero un botón con el número '1', luego un botón con la etiqueta '000' y a continuación otro botón con la etiqueta '000'. Debajo o al lado de la fila, indicar en texto que esto produce en la pantalla el número 1 000 000 (un 1 seguido de 6 ceros)." />
+    </p>
+    <p>En la pantalla aparece el número 1 000 000, es decir, un 1 seguido de 6 ceros, lo que corresponde a
+      <m:math>
+        <m:msup>
+          <m:mn>10</m:mn>
+          <m:mn>6</m:mn>
+        </m:msup>
+      </m:math>.
+    </p>
+    <p>Sin borrar nada, el estudiante quiere llegar al número
+      <m:math>
+        <m:msup>
+          <m:mn>10</m:mn>
+          <m:mn>10</m:mn>
+        </m:msup>
+      </m:math>, es decir, un 1 seguido de 10 ceros, usando solo las teclas [00] y [000].</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes acciones de continuación permite que el número final en pantalla sea
+        <m:math>
+          <m:msup>
+            <m:mn>10</m:mn>
+            <m:mn>10</m:mn>
+          </m:msup>
+        </m:math>?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Presionar una vez [000] y luego una vez [00].<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Se parte en 1 000 000, que tiene 6 ceros. Al presionar [000] se agregan 3 ceros y se obtiene 1 000 000 000, con 9 ceros. Luego, al presionar [00], se agregan 2 ceros más y se obtiene 100 000 000 000, con 11 ceros. El número final es 10 elevado a 11, no 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Presionar dos veces [00].<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Se parte en 1 000 000, que tiene 6 ceros. Cada tecla [00] agrega 2 ceros. Al presionarla dos veces, se agregan 4 ceros en total: 6 + 4 = 10 ceros. Así se obtiene 10 000 000 000, que corresponde a 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Presionar dos veces [000].<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Se parte en 1 000 000, que tiene 6 ceros. Cada tecla [000] agrega 3 ceros. Al presionarla dos veces, se agregan 6 ceros en total: 6 + 3 + 3 = 12 ceros. El número final es 1 000 000 000 000, que corresponde a 10 elevado a 12, no a 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Presionar una vez [00] y luego dos veces [000].<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Se parte en 1 000 000, que tiene 6 ceros. Al presionar [00], se agregan 2 ceros y queda con 8 ceros. Luego, al presionar dos veces [000], se agregan 3 + 3 = 6 ceros más. En total quedan 6 + 2 + 6 = 14 ceros. El número final es 100 000 000 000 000, que corresponde a 10 elevado a 14, no a 10 elevado a 10.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el número inicial</strong></p>
+            <p>Después de presionar [1], [000] y [000], aparece 1 000 000.</p>
+            <p>Ese número tiene un 1 seguido de 6 ceros, por lo tanto corresponde a
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>6</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Determinar la meta</strong></p>
+            <p>Se quiere llegar a
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>,
+              que es un 1 seguido de 10 ceros.</p>
+            <p>Como ya hay 6 ceros, faltan 4 ceros más.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Interpretar qué hace cada tecla</strong></p>
+            <p>La tecla [00] agrega exactamente 2 ceros.</p>
+            <p>La tecla [000] agrega exactamente 3 ceros.</p>
+            <p>Entonces necesitamos una continuación que agregue en total 4 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar cada alternativa</strong></p>
+            <p><em>Opción A:</em> [000] y luego [00]. Agrega 3 + 2 = 5 ceros. Se pasa de 6 a 11 ceros. Da
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>11</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+            <p><em>Opción B:</em> [00] y [00]. Agrega 2 + 2 = 4 ceros. Se pasa de 6 a 10 ceros. Da
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>10</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+            <p><em>Opción C:</em> [000] y [000]. Agrega 3 + 3 = 6 ceros. Se pasa de 6 a 12 ceros. Da
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>12</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+            <p><em>Opción D:</em> [00] y luego [000] y [000]. Agrega 2 + 3 + 3 = 8 ceros. Se pasa de 6 a 14 ceros. Da
+              <m:math>
+                <m:msup>
+                  <m:mn>10</m:mn>
+                  <m:mn>14</m:mn>
+                </m:msup>
+              </m:math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única continuación que agrega exactamente 4 ceros es presionar dos veces la tecla [00].</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

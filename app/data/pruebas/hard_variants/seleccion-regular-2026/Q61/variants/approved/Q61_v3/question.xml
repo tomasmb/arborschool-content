@@ -1,0 +1,134 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q61_v3" title="Q61_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente gráfico se representa la distribución de la cantidad de ensayos corregidos por 86 profesores en una semana.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales de una sola serie. Eje horizontal: 'Cantidad de ensayos corregidos en la semana' con categorías 0, 1, 2, 3, 4 y 5. Eje vertical: 'Número de profesores', con marcas en 0, 5, 10, 15, 20, 25 y 30. Las barras tienen alturas: 0 ensayos: 6 profesores; 1 ensayo: 12 profesores; 2 ensayos: 20 profesores; 3 ensayos: 28 profesores (la más alta); 4 ensayos: 16 profesores; 5 ensayos: 4 profesores." />
+    </p>
+    <p>Por cada ensayo corregido la universidad paga $2 500 al profesor. ¿Cuál fue el monto que la universidad pagó con mayor frecuencia por corrección de ensayos esa semana?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">$2 500<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. $2 500 corresponde a corregir 1 ensayo, y en el gráfico 1 ensayo aparece en 12 profesores. Como 12 es menor que 28, este no fue el monto pagado con mayor frecuencia.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">$5 000<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. $5 000 corresponde a corregir 2 ensayos, y en el gráfico 2 ensayos aparece en 20 profesores. Como 20 es menor que 28, este no fue el monto pagado con mayor frecuencia.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">$7 500<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! $7 500 corresponde a corregir 3 ensayos, porque 3 × $2 500 = $7 500. En el gráfico, 3 ensayos es la categoría con mayor frecuencia: 28 profesores. Por eso, $7 500 fue el monto pagado con mayor frecuencia.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">$10 000<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. $10 000 corresponde a corregir 4 ensayos, y en el gráfico 4 ensayos aparece en 16 profesores. Como 16 es menor que 28, este no fue el monto pagado con mayor frecuencia.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta. Para resolver la pregunta, identifica en el gráfico la categoría con mayor frecuencia y luego calcula el pago correspondiente multiplicando esa cantidad de ensayos por $2 500.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Leer la mayor frecuencia en el gráfico</strong></p>
+            <p>La barra más alta corresponde a 3 ensayos corregidos y representa a 28 profesores.</p>
+            <p>Por lo tanto, la cantidad de ensayos corregidos con mayor frecuencia fue 3.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el pago asociado a 3 ensayos</strong></p>
+            <p>Si por cada ensayo se pagan $2 500, entonces por 3 ensayos se paga:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>3</mn>
+                  <mo>×</mo>
+                  <mn>2&#160;500</mn>
+                  <mo>=</mo>
+                  <mn>7&#160;500</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar con las alternativas</strong></p>
+            <p>$2 500 corresponde a 1 ensayo, con 12 profesores.</p>
+            <p>$5 000 corresponde a 2 ensayos, con 20 profesores.</p>
+            <p>$7 500 corresponde a 3 ensayos, con 28 profesores.</p>
+            <p>$10 000 corresponde a 4 ensayos, con 16 profesores.</p>
+            <p>La mayor frecuencia es 28, así que el monto más frecuente es $7 500.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La universidad pagó con mayor frecuencia <strong>$7 500</strong> por corrección de ensayos esa semana.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

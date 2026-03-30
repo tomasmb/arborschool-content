@@ -1,0 +1,112 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q38_v5" title="Q38_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Un estudiante comienza la semana con 220 páginas por leer de un libro.</p>
+    <p>El siguiente gráfico muestra la cantidad de páginas que le quedan por leer al final de cada día, desde el lunes hasta el viernes.<br />
+      <img src="requiere_nueva_imagen.png" alt="Gráfico de línea escalonado. Eje horizontal: días de la semana con las etiquetas 'Lun', 'Mar', 'Mié', 'Jue', 'Vie'. Eje vertical: 'Páginas por leer'. La línea representa una sola serie. Comienza sobre el día 'Lun' en aproximadamente 220 páginas y desciende ligeramente hasta el día 'Mar' en aproximadamente 200 páginas (tramo descendente entre Lun y Mar). Desde 'Mar' hasta 'Mié' la línea se mantiene completamente horizontal en el mismo nivel de 200 páginas (no hay cambio entre Mar y Mié). Luego, entre 'Mié' y 'Jue' la línea desciende de forma más pronunciada hasta cerca de 120 páginas (tramo claramente descendente entre Mié y Jue). Desde 'Jue' hasta 'Vie' la línea vuelve a mantenerse horizontal en el mismo nivel de 120 páginas (no hay cambio entre Jue y Vie). Así, se observan exactamente dos tramos horizontales largos: uno entre Mar y Mié y otro entre Jue y Vie." /><br />
+      Según el gráfico, ¿en qué días de la semana el estudiante no leyó ninguna página?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">No leyó el martes ni el jueves.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Del lunes al martes las páginas por leer bajan de 220 a 200, así que el martes sí leyó 20 páginas. Del miércoles al jueves bajan de 200 a 120, así que el jueves sí leyó 80 páginas. Por lo tanto, martes y jueves no son días en que no leyó.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">No leyó el miércoles ni el viernes.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Entre martes y miércoles la cantidad de páginas por leer se mantiene en 200, así que el miércoles leyó 0 páginas. Entre jueves y viernes se mantiene en 120, así que el viernes también leyó 0 páginas. Por eso, los días en que no leyó ninguna página fueron miércoles y viernes.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Solo leyó el miércoles y el viernes.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Entre martes y miércoles la cantidad de páginas por leer sigue en 200, así que el miércoles leyó 0 páginas. Entre jueves y viernes sigue en 120, así que el viernes también leyó 0 páginas. En cambio, sí hubo lectura el martes, porque baja de 220 a 200, y el jueves, porque baja de 200 a 120.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Leyó todos los días de lunes a viernes.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Hay dos tramos horizontales en el gráfico: de martes a miércoles la cantidad queda en 200, y de jueves a viernes queda en 120. Cuando la cantidad por leer no cambia entre dos días consecutivos, eso significa que ese segundo día leyó 0 páginas. Entonces no leyó todos los días.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer cuántas páginas quedan al final de cada día</strong></p>
+            <p>Según el gráfico, al final del lunes quedan 220 páginas, al final del martes quedan 200, al final del miércoles siguen quedando 200, al final del jueves quedan 120 y al final del viernes siguen quedando 120.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar días consecutivos</strong></p>
+            <p>Si la cantidad de páginas por leer disminuye, el estudiante sí leyó ese día. Si la cantidad se mantiene igual, ese día no leyó ninguna página.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Identificar los cambios</strong></p>
+            <p>Del lunes al martes: pasa de 220 a 200, por lo tanto leyó 20 páginas.</p>
+            <p>Del martes al miércoles: pasa de 200 a 200, por lo tanto leyó 0 páginas.</p>
+            <p>Del miércoles al jueves: pasa de 200 a 120, por lo tanto leyó 80 páginas.</p>
+            <p>Del jueves al viernes: pasa de 120 a 120, por lo tanto leyó 0 páginas.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Los días en que el estudiante no leyó ninguna página fueron el miércoles y el viernes. La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+<qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing></qti-assessment-item>

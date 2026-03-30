@@ -1,0 +1,132 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v10" title="Q54_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el siguiente gráfico se representa la cantidad de inscripciones nuevas en el gimnasio que logró cada monitor, en cada día de una semana de trabajo.</p>
+    <p><img src="requiere_nueva_imagen.png" alt="Gráfico de barras verticales agrupadas que muestra, en el eje horizontal, los días miércoles, viernes, lunes, jueves y martes (en ese orden, que no es cronológico). En el eje vertical se indica 'Cantidad de inscripciones nuevas en el gimnasio', de 0 a 10. Para cada día hay cuatro barras, una por monitor: Ana (barras negras), Bruno (barras gris oscuro), Carla (barras gris claro) y Diego (barras blancas). Las alturas aproximadas de las barras son: el miércoles, Ana 3, Bruno 5, Carla 7 y Diego 4 inscripciones; el viernes, Ana 2, Bruno 5, Carla 5 y Diego 4 inscripciones; el lunes, Ana 4, Bruno 5, Carla 6 y Diego 2 inscripciones; el jueves, Ana 6, Bruno 3, Carla 8 y Diego 5 inscripciones; y el martes, Ana 5, Bruno 4, Carla 5 y Diego 3 inscripciones." /></p>
+    <p>La meta diaria del gimnasio es que cada monitor logre al menos 5 inscripciones nuevas en un día de trabajo.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Se considera que un monitor tuvo una semana destacada si alcanzó o superó la meta diaria en al menos 4 días de la semana. Según el gráfico, ¿qué monitor tuvo una semana destacada?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Ana<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ana alcanza la meta de 5 inscripciones solo 2 días: el jueves con 6 y el martes con 5. En cambio, el miércoles tiene 3, el viernes 2 y el lunes 4, que son menores que 5. Como 2 &lt; 4, Ana no tuvo una semana destacada.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">Bruno<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Bruno alcanza la meta de 5 inscripciones en 3 días: miércoles 5, viernes 5 y lunes 5. Pero el jueves tiene 3 y el martes 4, que son menores que 5. Como 3 &lt; 4, Bruno no tuvo una semana destacada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Carla<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Carla alcanza o supera la meta todos los días: miércoles 7, viernes 5, lunes 6, jueves 8 y martes 5. Eso significa 5 días cumpliendo la condición. Como 5 ≥ 4, Carla tuvo una semana destacada.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Diego<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Diego alcanza la meta de 5 inscripciones solo 1 día: el jueves con 5. Los otros días tiene miércoles 4, viernes 4, lunes 2 y martes 3, todos menores que 5. Como 1 &lt; 4, Diego no tuvo una semana destacada.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la condición de semana destacada</strong></p>
+            <p>Un monitor tiene una semana destacada si logra al menos 5 inscripciones en al menos 4 días de la semana.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar a Ana</strong></p>
+            <p>Ana tiene: miércoles 3, viernes 2, lunes 4, jueves 6 y martes 5.</p>
+            <p>Cumple la meta en jueves y martes.</p>
+            <p>Entonces, Ana cumple en 2 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar a Bruno</strong></p>
+            <p>Bruno tiene: miércoles 5, viernes 5, lunes 5, jueves 3 y martes 4.</p>
+            <p>Cumple la meta en miércoles, viernes y lunes.</p>
+            <p>Entonces, Bruno cumple en 3 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar a Carla</strong></p>
+            <p>Carla tiene: miércoles 7, viernes 5, lunes 6, jueves 8 y martes 5.</p>
+            <p>En los 5 días su cantidad es mayor o igual que 5.</p>
+            <p>Entonces, Carla cumple en 5 días.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar a Diego</strong></p>
+            <p>Diego tiene: miércoles 4, viernes 4, lunes 2, jueves 5 y martes 3.</p>
+            <p>Solo cumple la meta en jueves.</p>
+            <p>Entonces, Diego cumple en 1 día.</p>
+          </li>
+          <li>
+            <p><strong>Paso 6: Comparar con la condición pedida</strong></p>
+            <p>Se necesita cumplir en al menos 4 días.</p>
+            <p>Ana: 2 días. Bruno: 3 días. Carla: 5 días. Diego: 1 día.</p>
+            <p>La única monitora que cumple al menos 4 días es Carla.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>Carla</strong>, alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

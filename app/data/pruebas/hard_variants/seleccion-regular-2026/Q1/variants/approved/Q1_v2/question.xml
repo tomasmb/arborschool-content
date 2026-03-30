@@ -1,0 +1,194 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q1_v2" title="Q1_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego hay dos tipos de cartas: unas tienen una estrella y otras tienen un corazón, todas con un número.</p>
+    <p>El puntaje de cada jugador se calcula de la siguiente forma:</p>
+    <ul>
+      <li>Primero se extrae una carta al azar (carta inicial) y su valor se considera como puntaje inicial.</li>
+      <li>Luego, se extrae otra carta: si tiene una estrella, se debe restar su valor al puntaje; si tiene un corazón, se debe sumar su valor al puntaje.</li>
+      <li>El puntaje final se obtiene al repetir este procedimiento hasta tener diez cartas.</li>
+    </ul>
+    <p>Un jugador extrae las siguientes cartas, en este orden:</p>
+    <p>Carta 1 (inicial): 7 corazón; Carta 2: 2 corazón; Carta 3: 4 estrella; Carta 4: 9 corazón; Carta 5: 3 estrella; Carta 6: 8 corazón; Carta 7: 5 estrella; Carta 8: 6 corazón; Carta 9: 2 corazón; Carta 10: 7 estrella.</p>
+    <p>Ana, Bruno, Carla y Diego aplican estas reglas y afirman haber obtenido los siguientes puntajes finales, respectivamente: Ana: 1 punto; Bruno: 15 puntos; Carla: 18 puntos; Diego: 53 puntos. ¿Cuál de estos puntajes es consistente con las reglas del juego y la secuencia de cartas dada?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Aplicando las reglas con las diez cartas se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>8</mn><mo>−</mo><mn>5</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>15</mn></mrow></math>, no 1.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">15<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El puntaje final es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>8</mn><mo>−</mo><mn>5</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>15</mn></mrow></math>, por lo tanto 15 puntos sí es consistente con las reglas del juego y la secuencia dada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">18<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Al seguir exactamente la secuencia de cartas resulta <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>8</mn><mo>−</mo><mn>5</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>15</mn></mrow></math>, por lo que 18 no coincide con el puntaje final.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">53<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Con las reglas del juego, las cartas con estrella se restan y las de corazón se suman. Entonces el cálculo correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>4</mn><mo>+</mo><mn>9</mn><mo>−</mo><mn>3</mn><mo>+</mo><mn>8</mn><mo>−</mo><mn>5</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>2</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>15</mn></mrow></math>, no 53.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del puntaje final</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Tomar la carta inicial como puntaje de partida</strong></p>
+            <p>La carta 1 es 7 corazón, y el enunciado dice que su valor se considera como puntaje inicial.</p>
+            <p>Puntaje inicial:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>7</mn>
+            </math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Aplicar la regla a cada carta siguiente</strong></p>
+            <p>Si la carta tiene corazón, se suma. Si la carta tiene estrella, se resta.</p>
+            <p>Con las cartas dadas, el puntaje se calcula así:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>7</mn>
+                  <mo>+</mo><mn>2</mn>
+                  <mo>−</mo><mn>4</mn>
+                  <mo>+</mo><mn>9</mn>
+                  <mo>−</mo><mn>3</mn>
+                  <mo>+</mo><mn>8</mn>
+                  <mo>−</mo><mn>5</mn>
+                  <mo>+</mo><mn>6</mn>
+                  <mo>+</mo><mn>2</mn>
+                  <mo>−</mo><mn>7</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular en orden</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>7</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>9</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>9</mn><mo>−</mo><mn>4</mn><mo>=</mo><mn>5</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>5</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>14</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>14</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>11</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>11</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>19</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>19</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>14</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>14</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>20</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>20</mn><mo>+</mo><mn>2</mn><mo>=</mo><mn>22</mn></mrow>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow><mn>22</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>15</mn></mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con las alternativas</strong></p>
+            <p>Los puntajes propuestos son 1, 15, 18 y 53.</p>
+            <p>El cálculo completo da:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>15</mn>
+              </math>
+            </p>
+            <p>La única alternativa consistente con las reglas del juego y la secuencia de cartas es 15.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>15 puntos</strong>, correspondiente a la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

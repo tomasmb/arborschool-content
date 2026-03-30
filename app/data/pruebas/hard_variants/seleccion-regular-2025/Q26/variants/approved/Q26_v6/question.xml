@@ -1,0 +1,69 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q26_v6" title="Q26_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se considera el siguiente modelo algebraico para representar cierto gasto en transporte de una persona:
+      <m:math>
+        <m:mrow>
+          <m:mo>(</m:mo>
+          <m:mfrac>
+            <m:mn>60000</m:mn>
+            <m:mn>10</m:mn>
+          </m:mfrac>
+          <m:mo>+</m:mo>
+          <m:mfrac>
+            <m:mn>48000</m:mn>
+            <m:mn>16</m:mn>
+          </m:mfrac>
+          <m:mo>)</m:mo>
+          <m:mo>⋅</m:mo>
+          <m:mi>x</m:mi>
+        </m:mrow>
+      </m:math>
+    </p>
+    <p>¿Cuál de las siguientes situaciones describe correctamente este modelo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Una persona gasta $60 000 en 10 pasajes de metro y $48 000 en 16 pasajes de bus en un mes. Para el mes siguiente planea usar en total x pasajes entre metro y bus, y supone que el costo de esos x pasajes se obtiene sumando el precio por pasaje de metro y de bus y multiplicando ese resultado por x.
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Una persona gasta $60 000 en 10 pasajes de metro y $48 000 en 16 pasajes de bus. Luego decide comprar x pasajes más de metro y x pasajes más de bus, a los mismos precios que antes. El costo de estos nuevos pasajes se calcula sumando el precio por pasaje de metro y el precio por pasaje de bus y multiplicando ese resultado por x.
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Una persona gasta $60 000 en pasajes de metro durante 10 días y $48 000 en pasajes de bus durante 16 días. Quiere saber cuánto gastará en total si usa solo uno de los dos medios de transporte durante x días adicionales, manteniendo el mismo gasto diario promedio que antes.
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        En una promoción, cada pasaje de metro cuesta $60 000 y cada pasaje de bus cuesta $48 000. Una persona compra 10 pasajes de metro y 16 pasajes de bus y luego planea comprar x pasajes más en total, sin importar el tipo; para modelar el costo de esos pasajes adicionales divide cada precio por la cantidad de pasajes anteriores y multiplica el resultado por x.
+      </qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+  <qti-response-processing>
+    <responseCondition>
+      <responseIf>
+        <match>
+          <variable identifier="RESPONSE" />
+          <baseValue base-type="identifier">ChoiceB</baseValue>
+        </match>
+        <setOutcomeValue identifier="SCORE">
+          <baseValue base-type="float">1</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+      <responseElse>
+        <setOutcomeValue identifier="SCORE">
+          <baseValue base-type="float">0</baseValue>
+        </setOutcomeValue>
+      </responseElse>
+    </responseCondition>
+  </qti-response-processing>
+</qti-assessment-item>

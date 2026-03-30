@@ -1,0 +1,141 @@
+{
+  "source_question_id": "Q61",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q61_v1",
+      "scenario_description": "Se presenta una tabla con dos filas (Sucursal A y Sucursal B) y dos columnas: cantidad de trabajadores y salario promedio. Por ejemplo: Sucursal A: 12 trabajadores, promedio $550 000; Sucursal B: 24 trabajadores, promedio $450 000. La pregunta pide: «¿Cuál de las siguientes afirmaciones es SIEMPRE verdadera acerca del salario promedio de TODOS los trabajadores de la empresa?». La afirmación correcta deja de ser una comparación entre sumas y ‘el doble’ (como en la fuente) y pasa a ser un enunciado sobre cercanía del promedio global a uno de los promedios parciales: por ejemplo, «El salario promedio de todos los trabajadores de la empresa está más cerca de $450 000 que de $550 000». Los distractores mantienen los arquetipos de error de la fuente: (i) una afirmación que compara sumas totales basándose sólo en los promedios («La suma de los salarios en la Sucursal A es mayor que en la Sucursal B»), (ii) una que extrapola propiedades de individuos a partir del promedio («Hay al menos un trabajador en A que gana más que cualquier trabajador de B»), y (iii) una que afirma que el promedio global es el promedio simple entre $550 000 y $450 000, ignorando el distinto número de trabajadores. Así se implementa la shape ‘claim_archetype_switch’: se cambia el arquetipo central de la afirmación correcta a una propiedad de promedio ponderado, manteniendo distractores conceptuales análogos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe entender cómo el tamaño de cada sucursal influye en el promedio global (promedio ponderado) y justificar por qué éste queda más cerca del promedio de la sucursal con más trabajadores, sin apoyarse en un cálculo mecánico detallado de promedios.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_1"
+    },
+    {
+      "variant_id": "Q61_v2",
+      "scenario_description": "Se mantiene un contexto salarial similar, pero ahora la información se entrega como viñetas de texto: • En la Sucursal Norte, el salario promedio es $550 000. • En la Sucursal Sur, el salario promedio es $450 000. • En la Sucursal Sur trabajan exactamente el doble de personas que en la Sucursal Norte. La pregunta cambia a: «¿Cuál de las siguientes afirmaciones es necesariamente FALSA según la información entregada?». Se reescriben todas las opciones. La opción marcada como correcta es ahora una afirmación imposible sobre el promedio global, por ejemplo: «El salario promedio de todos los trabajadores de la empresa es exactamente $500 000». Dado que los grupos tienen tamaños distintos, esa igualdad con el promedio simple es incompatible con el dato del doble de trabajadores. Los demás distractores siguen arquetipos de la fuente, pero formulados como afirmaciones que podrían ser verdaderas: (i) una comparación cualitativa de sumas totales compatible con los datos, (ii) una afirmación de existencia de trabajadores con sueldos extremos que no contradice los promedios, y (iii) una desigualdad correcta entre el promedio global y $550 000 o $450 000. Así se implementa la shape ‘false_claim_hunt’: se invierte la polaridad local de la tarea (buscar la incorrecta) y se reescriben por completo las opciones, preservando el tipo de razonamientos que inducen error.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante",
+        "orden_dependencia_pasos"
+      ],
+      "required_reasoning": "Se exige razonar por qué un promedio global con tamaños desiguales no puede coincidir con el promedio simple, evaluando compatibilidad lógica entre el conjunto de datos y cada enunciado, en lugar de aplicar una receta de cálculo puntual.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_1"
+    },
+    {
+      "variant_id": "Q61_v3",
+      "scenario_description": "El contexto cambia a dos plantas de producción. Se muestra una pequeña tabla con tres columnas: Planta, número de trabajadores, salario promedio. Por ejemplo: Planta 1: 10 trabajadores, promedio $800 000; Planta 2: 30 trabajadores, promedio $500 000. La pregunta sigue siendo: «¿Cuál de las siguientes afirmaciones es SIEMPRE verdadera?». El arquetipo de afirmación correcta cambia respecto de la fuente: ahora la afirmación verdadera es que la suma total pagada en salarios en la Planta 2 es mayor que la de la Planta 1 («La suma total de salarios en la Planta 2 es mayor que la suma total en la Planta 1»). Esto obliga a integrar promedio y cantidad de trabajadores para comparar masas salariales totales. Los distractores retoman los arquetipos originales: (i) una afirmación equivocada que invierte esa comparación de sumas totales, apoyada solo en que el promedio de la Planta 1 es mayor, (ii) una afirmación sobre la existencia de un trabajador de una planta que gana más que cualquiera de la otra, que no está garantizada por los datos, y (iii) una afirmación sobre el promedio global construido como promedio simple de $800 000 y $500 000, ignorando los tamaños distintos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que el total de salarios es el producto entre el promedio y la cantidad de trabajadores, y que un promedio menor puede corresponder a una suma total mayor si hay muchos más trabajadores; no basta con comparar promedios de forma ingenua.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_2"
+    },
+    {
+      "variant_id": "Q61_v4",
+      "scenario_description": "Se conserva un contexto de dos sucursales con promedios $550 000 y $450 000 respectivamente, y se indica por texto corrido que en la Sucursal 2 trabajan el doble de personas que en la Sucursal 1. La pregunta pasa a ser: «¿Cuál de las siguientes afirmaciones NO puede ser correcta según la información?». Todas las opciones se formulan de nuevo. La afirmación seleccionada como correcta es una desigualdad imposible entre las sumas totales, por ejemplo: «La suma de los salarios en la Sucursal 2 es menor que la suma de los salarios en la Sucursal 1». Dado el promedio y que la Sucursal 2 tiene el doble de trabajadores, esto contradice necesariamente los datos. Las otras alternativas describen situaciones que son compatibles con la información: una desigualdad correcta del tipo ‘la suma en la Sucursal 2 es menor que el doble de la suma en la Sucursal 1’, una descripción válida del rango posible para el salario promedio global, y una afirmación sobre la posible existencia de trabajadores que ganen más o menos que el promedio, que no entra en conflicto con los promedios dados.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se requiere analizar si cada afirmación puede coexistir con las restricciones numéricas dadas, identificando la que entra en contradicción con la combinación de promedio y tamaño de cada sucursal; no se resuelve con un cálculo directo sino con argumentación sobre relaciones de mayor/menor.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_2"
+    },
+    {
+      "variant_id": "Q61_v5",
+      "scenario_description": "El contexto cambia a dos cursos escolares. En texto se indica: «En el Curso A, la nota promedio es 5,5; en el Curso B, la nota promedio es 4,5; el Curso B tiene el doble de estudiantes que el Curso A». La pregunta pregunta: «¿Cuál de las siguientes afirmaciones es siempre verdadera acerca de la nota promedio de TODOS los estudiantes de ambos cursos?». El arquetipo de la afirmación correcta ahora es una propiedad general de promedios ponderados: por ejemplo, «La nota promedio de todos los estudiantes está entre 4,5 y 5,5 y es menor que 5,5». De este modo se desplaza el foco desde una comparación entre sumas y ‘el doble’ hacia una caracterización del rango obligatorio del promedio global. Los distractores mantienen los arquetipos: (i) una comparación errada de sumas totales basada solo en los promedios, (ii) una afirmación de existencia de un estudiante del Curso A con nota mayor que cualquier del B, que no está garantizada por los datos, y (iii) la afirmación incorrecta de que el promedio global es (5,5 + 4,5)/2, ignorando que el Curso B es más numeroso.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe razonar que el promedio global debe ubicarse estrictamente entre los promedios de los cursos y que, al haber más alumnos en el curso de menor promedio, el promedio global queda forzosamente por debajo del promedio más alto, sin necesidad de cálculo numérico detallado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_3"
+    },
+    {
+      "variant_id": "Q61_v6",
+      "scenario_description": "Se presenta una tabla con dos cursos y sus promedios: Curso X: 20 estudiantes, promedio 6,0; Curso Y: 40 estudiantes, promedio 4,0. No se pide calcular nada explícitamente. La consigna dice: «¿Cuál de las siguientes afirmaciones es incompatible con la información entregada?». Las opciones se reescriben por completo. La opción correcta es una afirmación extrema sobre todos los individuos que contradice el promedio, por ejemplo: «Todos los estudiantes del Curso X tienen nota al menos 6,5». Dado que, si todas las notas fueran ≥ 6,5, el promedio no podría ser 6,0, esta afirmación es necesariamente falsa. Otros distractores capturan los mismos arquetipos de error que el ítem fuente, pero ahora como afirmaciones que podrían ser verdaderas: (i) afirmar una comparación cualitativa de sumas totales apoyada en combinar número de estudiantes y promedio, (ii) una declaración sobre la posible existencia de un estudiante de X con nota superior a todos los de Y (lo cual puede ser o no cierto, pero no contradice los promedios), y (iii) una descripción errónea pero no necesariamente imposible del promedio global (por ejemplo, igual al promedio simple), que no puede marcarse como ‘incompatible’ sin más datos.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "orden_dependencia_pasos"
+      ],
+      "required_reasoning": "Se debe entender cómo un promedio limita las posibles distribuciones de valores individuales, identificando qué afirmaciones sobre ‘todos’ los integrantes chocan obligatoriamente con el promedio dado; esto va más allá de un cálculo y requiere argumentar sobre la estructura de los datos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_3"
+    },
+    {
+      "variant_id": "Q61_v7",
+      "scenario_description": "La información ahora se entrega en términos de sumas totales y cantidades de trabajadores, sin mencionar explícitamente el promedio. Por ejemplo: «En la Sucursal A trabajan 5 personas y la suma de sus salarios es $2 750 000. En la Sucursal B trabajan 10 personas y la suma de sus salarios es $4 500 000». Estos datos son equivalentes a promedios de $550 000 y $450 000, con el doble de trabajadores en B, pero el estudiante debe reconocer esa estructura. La pregunta es: «¿Cuál de las siguientes afirmaciones es siempre verdadera acerca del salario promedio de TODOS los trabajadores de la empresa?». El arquetipo de la afirmación correcta cambia para centrarse en el promedio global respecto al promedio más alto, por ejemplo: «El salario promedio de todos los trabajadores de la empresa es menor que el salario promedio de la Sucursal A». Los distractores reproducen los arquetipos de error previos, pero ahora teniendo que inferir mentalmente los promedios: (i) una comparación errónea de sumas totales entre las sucursales, (ii) una afirmación injustificada sobre la existencia de un trabajador con salario extremo en una sucursal, y (iii) una afirmación que trata el promedio global como promedio simple entre los promedios implícitos de cada sucursal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_dependencia_pasos"
+      ],
+      "required_reasoning": "El estudiante debe primero interpretar que a partir de sumas y cantidades se está describiendo un contexto de promedios y, luego, razonar sobre cómo se ubica el promedio global entre los promedios de cada sucursal, sin recurrir a una secuencia algorítmica explícita de divisiones.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_4"
+    },
+    {
+      "variant_id": "Q61_v8",
+      "scenario_description": "Se retoma la representación de sumas totales y cantidades en dos sucursales (por ejemplo, 5 trabajadores y $2 750 000 en A; 10 trabajadores y $4 500 000 en B). La pregunta plantea: «¿Cuál de las siguientes afirmaciones es necesariamente incorrecta según los datos entregados?». Se reescriben todas las opciones. La afirmación que debe seleccionarse como incorrecta es algo del tipo: «Las dos sucursales tienen el mismo salario promedio». Esta aseveración es incompatible con las sumas y cantidades dadas (pues implicaría promedios iguales pese a cocientes distintos). Los restantes distractores se construyen con los mismos arquetipos conceptuales: (i) comparaciones de sumas totales que sí se desprenden de los datos, (ii) posibles afirmaciones sobre extremos individuales que no contradicen los totales ni las cantidades, y (iii) descripciones del promedio global que, aunque no necesariamente correctas, no pueden descartarse como falsas sin información adicional.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Se requiere vincular sumas y cantidades con la noción de promedio para decidir qué relaciones entre promedios son imposibles, evaluando la coherencia matemática de cada enunciado y no solo efectuando una operación aislada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_4"
+    },
+    {
+      "variant_id": "Q61_v9",
+      "scenario_description": "Se mantiene la estructura numérica original (dos sucursales, promedios $550 000 y $450 000, y la segunda con el doble de trabajadores), pero se introduce una transformación uniforme de los datos en el contexto: «Suponga ahora que todos los trabajadores de ambas sucursales reciben un aumento de $50 000». La pregunta es: «¿Cuál de las siguientes afirmaciones es siempre verdadera después del aumento?». El arquetipo de la afirmación correcta se centra ahora en una propiedad de invariancia del promedio frente a traslaciones: por ejemplo, «La diferencia entre los salarios promedio de ambas sucursales sigue siendo de $100 000». Los distractores preservan los arquetipos: (i) una comparación errónea de sumas totales tras el aumento, apoyada en intuiciones incorrectas sobre cómo cambian las sumas al agregar la misma cantidad a todos, (ii) una afirmación sobre extremos individuales tras el aumento que no se puede garantizar, y (iii) una afirmación sobre el nuevo promedio global que lo toma como promedio simple o lo hace variar en forma no coherente con la traslación uniforme.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_dependencia_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender conceptualmente que sumar la misma cantidad a todos los salarios desplaza todos los promedios por igual, conservando sus diferencias, y usar esa idea para evaluar las afirmaciones, en lugar de intentar cálculos numéricos exhaustivos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "claim_archetype_switch_5"
+    },
+    {
+      "variant_id": "Q61_v10",
+      "scenario_description": "Se utiliza de nuevo un contexto de aumento uniforme, pero con horas de estudio en vez de salarios para cambiar de dominio sin tocar la estructura. Se indica: «En el Grupo A, las horas de estudio semanales promedio son 11; en el Grupo B, son 7; en el Grupo B hay el doble de estudiantes que en el Grupo A. Luego, todos los estudiantes de ambos grupos aumentan en 2 sus horas de estudio semanales». La pregunta plantea: «¿Cuál de las siguientes afirmaciones es necesariamente falsa después del cambio?». Se reescriben todas las opciones. La afirmación marcada como correcta contradice la invariancia de diferencias o el comportamiento del promedio global; por ejemplo, «Después del aumento, la diferencia entre los promedios de horas de estudio de ambos grupos es menor que antes». Esto es imposible porque al sumar la misma cantidad a todos los estudiantes de cada grupo, la diferencia de promedios se mantiene. Los distractores siguen los arquetipos del ítem fuente: (i) una comparación posible entre sumas totales de horas de estudio de los grupos, (ii) una afirmación sobre la posible existencia de un estudiante que estudie más que los de otro grupo, compatible con los promedios, y (iii) una descripción errónea pero no lógicamente imposible del promedio global tras el aumento (por ejemplo, tratarlo como promedio simple).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se debe razonar sobre cómo afecta una traslación uniforme a los promedios de cada grupo y al promedio global, identificando qué enunciado entra en contradicción con esa estructura; así se evalúa comprensión conceptual de promedios, no solo manipulación numérica.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "false_claim_hunt_5"
+    }
+  ]
+}

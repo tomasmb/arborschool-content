@@ -1,0 +1,128 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v7" title="Q64_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente mapa simplificado de un parque se muestra una cuadrícula de 8×8 con filas numeradas del 1 al 8 y columnas rotuladas de la A a la H.</p>
+    <p>El guardia parte desde la casilla G2 (marcada como «Inicio») y debe llegar a la casilla C6 (marcada como «Caseta»).</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujar una cuadrícula de 8×8. Las columnas se etiquetan de izquierda a derecha con las letras A, B, C, D, E, F, G y H; las filas se etiquetan de abajo hacia arriba con los números 1 a 8. Marcar la casilla G2 con un símbolo de &quot;Inicio&quot; (por ejemplo, un punto o un ícono de guardia) y la casilla C6 con un símbolo de &quot;Caseta&quot; o destino. Asegurarse de que se vean claramente las coordenadas de filas y columnas en los bordes de la cuadrícula." />
+    </p>
+    <p>El guardia puede moverse solo en las siguientes direcciones, una casilla a la vez: diagonales hacia adelante ↗ y ↖, y pasos laterales ← y →. Cada flecha indica la dirección de un movimiento sobre la cuadrícula.</p>
+    <p>¿Cuál de las siguientes secuencias de movimientos permite que el guardia quede ubicado exactamente en la casilla C6, partiendo desde G2?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">↖ ← ↗ → ↖ ← ↗ →<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo la secuencia desde G2 se obtiene: G2 → F3 → E3 → F4 → G4 → F5 → E5 → F6 → G6. La posición final es G6, no C6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">↖ ↖ ↗ ↖ ← ← ← →<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Siguiendo la secuencia desde G2 se obtiene: G2 → F3 → E4 → F5 → E6 → D6 → C6 → B6 → C6. La posición final es exactamente C6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">↖ ← ← → ↖ ← ← →<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo la secuencia desde G2 se obtiene: G2 → F3 → E3 → D3 → E3 → D4 → C4 → B4 → C4. La posición final es C4, no C6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">↖ ← ↖ ← ↖ ← → ↖<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Siguiendo la secuencia desde G2 se obtiene: G2 → F3 → E3 → D4 → C4 → B5 → A5 → B5 → A6. La posición final es A6, no C6.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el punto de partida y el destino</strong></p>
+            <p>El guardia parte en G2 y debe llegar a C6.</p>
+          </li>
+          <li>
+            <p><strong>Comparar el cambio en columnas y filas</strong></p>
+            <p>De G a C se avanza 4 columnas hacia la izquierda.</p>
+            <p>De 2 a 6 se sube 4 filas.</p>
+            <p>Por lo tanto, la secuencia correcta debe terminar 4 columnas a la izquierda y 4 filas más arriba que el punto inicial.</p>
+          </li>
+          <li>
+            <p><strong>Usar las reglas de movimiento</strong></p>
+            <p>Cada movimiento ↖ sube 1 fila y avanza 1 columna a la izquierda.</p>
+            <p>Cada movimiento ↗ sube 1 fila y avanza 1 columna a la derecha.</p>
+            <p>Cada movimiento ← avanza 1 columna a la izquierda sin subir.</p>
+            <p>Cada movimiento → avanza 1 columna a la derecha sin subir.</p>
+            <p>Como se necesita subir desde la fila 2 hasta la fila 6, necesariamente deben aparecer 4 movimientos diagonales, porque solo las diagonales hacen subir.</p>
+          </li>
+          <li>
+            <p><strong>Revisar cada alternativa</strong></p>
+            <p><em>Opción A:</em> G2 → F3 → E3 → F4 → G4 → F5 → E5 → F6 → G6. Termina en G6.</p>
+            <p><em>Opción B:</em> G2 → F3 → E4 → F5 → E6 → D6 → C6 → B6 → C6. Termina en C6.</p>
+            <p><em>Opción C:</em> G2 → F3 → E3 → D3 → E3 → D4 → C4 → B4 → C4. Termina en C4.</p>
+            <p><em>Opción D:</em> G2 → F3 → E3 → D4 → C4 → B5 → A5 → B5 → A6. Termina en A6.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única secuencia que deja al guardia exactamente en la casilla C6 es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

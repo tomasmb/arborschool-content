@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q64",
+  "source_test_id": "seleccion-regular-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q64_v1",
+      "scenario_description": "En lugar de un tablero de ajedrez, se muestra el plano esquemático de una bodega formado por una cuadrícula de 8×8 casillas. Las columnas están rotuladas con letras de la A a la H y las filas con números del 1 al 8, similar a un plano de pasillos. Un robot parte desde la casilla D3 y debe llegar a la casilla B8. Cada botón de su control remoto corresponde a una flecha (↑, ↓, →, ←, ↗, ↖, ↘, ↙) que desplaza al robot una casilla en esa dirección. Se entregan cuatro secuencias de flechas como programas posibles para el robot (todas de longitud similar a la de la pregunta fuente). Se pregunta: \"¿Cuál de los siguientes programas de flechas hace que el robot llegue exactamente a la casilla B8, partiendo desde D3?\". Las alternativas incluyen: una secuencia correcta; una que llega a la fila correcta pero a la columna equivocada; otra que pasa por B8 pero luego se aleja; y otra que intercambia el uso de una diagonal (por ejemplo, usa ↗ en lugar de ↖).",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe abstraer que cada flecha representa un mismo vector de traslación en la cuadrícula y componer mentalmente esos vectores para obtener el desplazamiento total desde D3. No basta con 'contar flechas'; tiene que entender cómo cada movimiento afecta coordenadas (letra y número) para verificar tanto la fila como la columna finales y notar, por ejemplo, que una secuencia puede pasar por la casilla objetivo y luego alejarse.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano de bodega como cuadrícula 8×8, con letras A–H horizontal y números 1–8 vertical, un robot marcado en D3 y la casilla B8 destacada.",
+      "selected_shape_id": "transformation_identification"
+    },
+    {
+      "variant_id": "Q64_v2",
+      "scenario_description": "Se muestra una cuadrícula 8×8 tipo videojuego con un personaje que parte en la casilla E2 y termina en la casilla C7 (ambas marcadas). El mando del juego tiene solo tres botones: A, B y C. Se sabe que el jugador presionó la secuencia A A A B B C C C (8 movimientos en total), y que cada botón corresponde a un mismo movimiento de una casilla en alguna dirección fija (horizontal, vertical o diagonal). No se indica de entrada qué hace cada botón. Las alternativas proponen distintas interpretaciones para A, B y C, por ejemplo: (i) A = ↗, B = ↖, C = ←; (ii) A = ↑, B = ↖, C = ←; etc. Se pregunta: \"¿Cuál de las siguientes asignaciones de movimientos a los botones A, B y C es compatible con que el personaje pase de E2 a C7 usando la secuencia A A A B B C C C?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que cada opción define un vector fijo para A, otro para B y otro para C, y que la secuencia dada compone esos vectores en un vector total. Debe verificar qué combinación (3A + 2B + 3C) produce exactamente el desplazamiento de E2 a C7. No puede seguir una receta de 'simular flechas' ya dibujadas; tiene que entender la idea de sumar desplazamientos en dos direcciones y descartar opciones que, por ejemplo, corrigen bien la componente vertical pero no la horizontal, o que invierten el sentido de una diagonal.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuadrícula tipo tablero 8×8 rotulada con letras y números, con la casilla E2 marcada como inicio y C7 como final, sin mostrar el recorrido.",
+      "selected_shape_id": "vector_or_axis_consistency"
+    },
+    {
+      "variant_id": "Q64_v3",
+      "scenario_description": "Se trabaja en un plano cuadriculado con coordenadas enteras. Se indica el punto inicial P(2, 1) y se desea llegar al punto Q(−1, 5). Cada movimiento permitido es un desplazamiento de 1 unidad en las direcciones cardinales o diagonales, representados como vectores: ↑ = (0, 1), ↓ = (0, −1), → = (1, 0), ← = (−1, 0), ↗ = (1, 1), ↖ = (−1, 1), ↘ = (1, −1), ↙ = (−1, −1). Se entregan cuatro secuencias de vectores (escritos, por ejemplo, como ↗, ↗, ↑, ←, ↖, etc.) y se pregunta: \"¿Cuál de las siguientes secuencias de movimientos lleva al punto Q(−1, 5) si se comienza en P(2, 1)?\". Algunas alternativas tienen la misma cantidad de pasos pero difieren en la dirección de una diagonal, o cambian un movimiento vertical por uno horizontal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender que componer traslaciones equivale a sumar sus vectores componentes y que el orden de los pasos no altera el resultado final. Para decidir, puede agrupar mentalmente horizontales y verticales de cada secuencia y compararlos con el vector total que va de (2,1) a (−1,5). Secuencias con el mismo número de pasos pero distinta combinación de horizontales/verticales/diagonales obligan a razonar en términos de componentes y no solo a 'contar flechas' de manera superficial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "transformation_identification"
+    },
+    {
+      "variant_id": "Q64_v4",
+      "scenario_description": "Se dibuja un plano cuadriculado con un punto A y su imagen A′, claramente marcados. Se indica que A se trasladó mediante una secuencia de 8 movimientos: primero 3 veces un mismo movimiento diagonal D, luego 2 veces un movimiento diagonal E (opuesto a D), y finalmente 3 veces un movimiento horizontal H hacia la izquierda o la derecha. No se precisa de entrada la orientación de D, E y H. Las alternativas proponen combinaciones posibles, por ejemplo: (i) D = ↗, E = ↙, H = ←; (ii) D = ↖, E = ↘, H = →; etc. Se pregunta: \"¿Cuál de las siguientes definiciones de los movimientos D, E y H es compatible con la posición inicial de A y la posición final de A′ mostradas en la figura?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe determinar el vector de traslación neto desde A hasta A′ observando la cuadrícula (diferencia en columnas y filas) y luego relacionarlo con la combinación 3D + 2E + 3H que describen las instrucciones. Debe reconocer que D y E son diagonales opuestas que en parte se anulan, y deducir qué elección de diagonales y de sentido horizontal hace que el vector total coincida con el desplazamiento observado. Esto requiere una comprensión estructural de la suma de desplazamientos, no solo seguir una secuencia dada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano cuadriculado con un punto A y un punto A′ separados tanto horizontal como verticalmente, suficientes casillas visibles para contar el desplazamiento entre ellos.",
+      "selected_shape_id": "vector_or_axis_consistency"
+    },
+    {
+      "variant_id": "Q64_v5",
+      "scenario_description": "Se presenta el plano de una plaza visto desde arriba como una cuadrícula 7×7. Un dron despega desde una plataforma marcada en la casilla central (D4) y debe llegar a una casilla marcada con una X en la posición B7. El dron se controla con comandos de una casilla: N (norte), S (sur), E (este), O (oeste), NE, NO, SE, SO. Se muestra una tabla con cuatro rutas posibles (cada fila es una secuencia como NE, NE, NE, NO, NO, O, O, O). Se pregunta: \"¿Cuál de las siguientes rutas lleva al dron desde la plataforma D4 hasta la casilla marcada con X?\". En las rutas distractoras se incluyen: una con la misma secuencia que la correcta pero con el último movimiento invertido (O en lugar de E, por ejemplo), otra que llega correcto en vertical pero desfasado en horizontal, y otra que se detiene en la casilla correcta en la mitad de la secuencia pero luego se aleja.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar cada comando cardinal o diagonal como una traslación fija y combinar los desplazamientos para obtener la posición final. Debe controlar explícitamente la suma de movimientos horizontales y verticales, entendiendo que una diagonal afecta ambas componentes. Además, tiene que vigilar que el último movimiento también sea coherente, evitando caer en la trampa de rutas que pasan por la casilla objetivo pero no terminan en ella.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuadrícula de 7×7 con la casilla central D4 marcada como punto de partida y la casilla B7 marcada con una X como destino.",
+      "selected_shape_id": "transformation_identification"
+    },
+    {
+      "variant_id": "Q64_v6",
+      "scenario_description": "En un plano cuadriculado se muestra un punto inicial P y cuatro flechas diferentes que parten de P y terminan en distintos puntos (cuatro posibles desplazamientos netos). En el enunciado se describe una caminata: \"Partiendo desde P, Camila se mueve 2 pasos hacia arriba, 1 paso en diagonal hacia arriba y la izquierda, luego 3 pasos hacia la derecha y, finalmente, 2 pasos en diagonal hacia abajo y la derecha\". Se pregunta: \"¿Cuál de las flechas dibujadas representa el desplazamiento total de Camila después de realizar toda la caminata?\". Cada flecha candidata es un vector distinto desde P, algunos corrigen bien la componente vertical pero no la horizontal o viceversa, y otra corresponde a invertir una de las diagonales.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir la descripción verbal en una suma de vectores elementales (verticales, horizontales y diagonales) y obtener el vector total. Luego, debe identificar entre las flechas dibujadas cuál coincide con ese desplazamiento neto. No hay secuencia de casillas explícita que pueda seguir paso a paso sobre un tablero; tiene que comprender la composición de movimientos y su efecto combinado antes de comparar con las opciones gráficas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano cuadriculado con un punto P y cuatro flechas distintas que parten de P hacia diferentes puntos finales.",
+      "selected_shape_id": "vector_or_axis_consistency"
+    },
+    {
+      "variant_id": "Q64_v7",
+      "scenario_description": "Se muestra el mapa simplificado de un parque representado por una cuadrícula 8×8. Un guardia parte desde un puesto de control en la casilla G2 y debe llegar a una caseta en la casilla C6. Tiene una linterna que solo ilumina casillas diagonales hacia adelante (↗ y ↖) y pasos laterales (← y →); se indica que sus movimientos posibles son únicamente ↗, ↖, ← y →, siempre de una casilla. Se entregan cuatro secuencias de estos movimientos, todas con la misma cantidad de pasos totales. Se pregunta: \"¿Cuál de las siguientes secuencias permite al guardia llegar exactamente desde G2 hasta la caseta C6, usando solo los movimientos permitidos?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe ver que el desplazamiento total desde G2 hasta C6 se puede descomponer en una combinación de diagonales hacia arriba y desplazamientos horizontales. Las secuencias alternativas mezclan el orden y la cantidad de cada tipo de paso, por lo que debe razonar en términos de cuántas veces cada movimiento aparece y cómo afecta las columnas y filas, no simplemente seguir el orden ciegamente. Algunas opciones producen el mismo número de pasos pero, por ejemplo, más desplazamiento horizontal que vertical, lo que obliga a controlar ambas componentes.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuadrícula 8×8 con rótulos tipo letras y números, con la casilla G2 marcada como inicio y C6 como destino.",
+      "selected_shape_id": "transformation_identification"
+    },
+    {
+      "variant_id": "Q64_v8",
+      "scenario_description": "En un tablero cuadriculado se muestran dos puntos, M y N. Se sabe que un personaje se desplazó desde M hasta N usando una combinación de dos movimientos básicos: un movimiento diagonal F y un movimiento vertical V. En el texto se indica que la secuencia fue: F, F, F, V, V, V, V, V (3 diagonales y 5 verticales, en ese orden). Las alternativas describen distintas definiciones para F y V, por ejemplo: (i) F = ↗, V = ↑; (ii) F = ↖, V = ↑; (iii) F = ↗, V = ↓; (iv) F = ↖, V = ↓. Se pregunta: \"¿Cuál de estas combinaciones de movimientos F y V es coherente con el desplazamiento observado entre M y N en la cuadrícula?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe determinar el vector total desde M a N en la cuadrícula y relacionarlo con 3F + 5V. Debe reconocer el efecto de elegir la diagonal hacia la derecha o hacia la izquierda y el sentido vertical (arriba o abajo), y ver cómo ciertas combinaciones producirían un desplazamiento vertical en sentido contrario o un exceso de desplazamiento horizontal. Esto requiere razonar con la suma de los vectores básicos y no solo con el número de pasos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano cuadriculado con los puntos M y N marcados, con separación evidente tanto vertical como horizontal.",
+      "selected_shape_id": "vector_or_axis_consistency"
+    },
+    {
+      "variant_id": "Q64_v9",
+      "scenario_description": "Se propone un minijuego de \"tesoro\" en una cuadrícula 8×8 sin letras ni números visibles, solo una rejilla. El cofre del tesoro está marcado en una casilla fija y la posición inicial de la ficha del jugador está marcada en otra. Junto al dibujo se muestra una leyenda textual que indica que los movimientos posibles son: U (una casilla hacia arriba), D (una hacia abajo), R (una a la derecha), L (una a la izquierda), y X (una casilla en diagonal hacia arriba y la derecha). Se entregan cuatro rutas posibles, por ejemplo: U, U, X, X, L, L, U, L, etc. Solo una de estas rutas lleva exactamente desde la posición inicial al cofre. Otras rutas: una llega a la fila correcta pero se queda una columna antes; otra se queda una fila abajo pero columna correcta; otra pasa por la casilla del tesoro a mitad del recorrido pero luego se aleja. Se pregunta qué ruta permite alcanzar el tesoro.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe interpretar la rejilla como un sistema de casillas equivalentes a coordenadas implícitas y entender que cada comando es una traslación de 1 unidad en una dirección fija (horizontal, vertical o diagonal). Debe componer estos movimientos para ver el desplazamiento global y compararlo con la separación entre inicio y tesoro. Las trampas de rutas que casi coinciden o que pasan por el tesoro pero no terminan allí obligan a un control detallado del efecto de cada paso, no a un conteo parcial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Cuadrícula 8×8 genérica con una casilla marcada como inicio y otra como tesoro, sin rotulación de filas/columnas.",
+      "selected_shape_id": "transformation_identification"
+    },
+    {
+      "variant_id": "Q64_v10",
+      "scenario_description": "En una pantalla se muestra una nave espacial en un mapa cuadriculado de sector espacial, en el punto S, y el punto objetivo T. El panel de control tiene una tecla de movimiento corto C y otra de movimiento diagonal largo D. El piloto afirma: \"Desde S presioné 4 veces la tecla D y 2 veces la tecla C, en algún orden, y llegué exactamente a T\". Se sabe que: cada C mueve la nave una casilla hacia arriba; cada D mueve la nave una casilla en diagonal hacia arriba y ya sea a la derecha o a la izquierda (no se indica de entrada cuál). Las alternativas ofrecen distintas interpretaciones del sentido de D (↗ o ↖) y del sentido de C (↑ o ↓), por ejemplo combinaciones del tipo: (i) C = ↑, D = ↗; (ii) C = ↑, D = ↖; (iii) C = ↓, D = ↗; (iv) C = ↓, D = ↖. Se pregunta: \"¿Cuál de estas interpretaciones de las teclas C y D es compatible con que la nave pase de S a T usando exactamente 4 movimientos diagonales y 2 verticales en algún orden?\".",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe deducir el vector neto entre S y T en la cuadrícula y luego compararlo con el vector 4D + 2C para cada opción, razonando sobre el efecto conjunto de diagonales y verticales en el desplazamiento vertical y horizontal. Debe descartar interpretaciones en que el movimiento vertical resultante iría en la dirección opuesta o el desplazamiento horizontal sería insuficiente o excesivo, aplicando la idea de composición de traslaciones en vez de simular una ruta dada paso a paso.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Mapa cuadriculado con un punto S (nave) y un punto T (objetivo), separados más en vertical que en horizontal, suficiente para que 4 diagonales y 2 verticales puedan conectar S y T.",
+      "selected_shape_id": "vector_or_axis_consistency"
+    }
+  ]
+}

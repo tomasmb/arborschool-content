@@ -1,0 +1,293 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q60_v6" title="Q60_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>1</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se muestra una base metálica formada por dos cilindros sólidos de metal, de la misma altura, fijados sobre una misma placa y dispuestos uno al lado del otro. El cilindro de la izquierda tiene un diámetro de 8 cm y el de la derecha tiene un diámetro de 12 cm. Ambos cilindros tienen altura de 6 cm.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Vista frontal de una placa metálica horizontal. Sobre ella se apoyan dos cilindros sólidos de metal, uno a la izquierda y otro a la derecha, de igual altura 6 cm. A un costado se indica con una flecha vertical la altura común rotulada '6 cm'. En cada cilindro se dibuja una flecha horizontal sobre la base indicando el diámetro: en el cilindro izquierdo se marca '8 cm' y en el cilindro derecho se marca '12 cm'." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>De acuerdo con la figura, ¿cuál de las siguientes afirmaciones sobre el volumen total de metal de los dos soportes cilíndricos es correcta?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        El volumen total de metal de los dos soportes es 
+        <m:math>
+          <m:mn>600</m:mn>
+          <m:mi>π</m:mi>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>cm</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El volumen del cilindro de diámetro 8 cm es 96π cm³, porque su radio es 4 cm y  π × 4² × 6 = π × 16 × 6 = 96π. El volumen del cilindro de diámetro 12 cm es 216π cm³, porque su radio es 6 cm y π × 6² × 6 = π × 36 × 6 = 216π. Entonces el volumen total es 96π + 216π = 312π cm³, no 600π cm³.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        El volumen total de metal de los dos soportes es 
+        <m:math>
+          <m:mn>312</m:mn>
+          <m:mi>π</m:mi>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>cm</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El primer cilindro tiene radio 4 cm, así que su volumen es π × 4² × 6 = π × 16 × 6 = 96π cm³. El segundo tiene radio 6 cm, así que su volumen es π × 6² × 6 = π × 36 × 6 = 216π cm³. Al sumar, 96π + 216π = 312π cm³.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        El volumen total de metal de los dos soportes es 
+        <m:math>
+          <m:mn>1248</m:mn>
+          <m:mi>π</m:mi>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>cm</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Usando la fórmula del volumen de un cilindro, V = πr²h, se obtiene 96π cm³ para el cilindro de diámetro 8 cm y 216π cm³ para el de diámetro 12 cm. La suma correcta es 96π + 216π = 312π cm³. Como 1248π cm³ es distinto de 312π cm³, esa afirmación no es correcta.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        El volumen total de metal de los dos soportes es 
+        <m:math>
+          <m:mn>60</m:mn>
+          <m:mi>π</m:mi>
+          <m:mo> </m:mo>
+          <m:msup>
+            <m:mi>cm</m:mi>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math>.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Solo el cilindro de diámetro 8 cm ya tiene volumen 96π cm³, porque π × 4² × 6 = 96π. Como el volumen total debe ser la suma de dos volúmenes positivos, necesariamente es mayor que 96π cm³. En efecto, el total correcto es 96π + 216π = 312π cm³, no 60π cm³.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del volumen total</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Recordar la fórmula del volumen de un cilindro</strong></p>
+            <p>El volumen de un cilindro es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mi>r</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mi>h</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>donde <strong>r</strong> es el radio y <strong>h</strong> es la altura.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el volumen del cilindro izquierdo</strong></p>
+            <p>Su diámetro es 8 cm, entonces su radio es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>r</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>8</m:mn>
+                <m:mo>÷</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>4</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Como la altura es 6 cm, su volumen es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mn>4</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>×</m:mo>
+                <m:mn>6</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>π</m:mi>
+                <m:mo>×</m:mo>
+                <m:mn>16</m:mn>
+                <m:mo>×</m:mo>
+                <m:mn>6</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>96</m:mn>
+                <m:mi>π</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>Entonces, el volumen del cilindro izquierdo es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>96</m:mn>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mi>cm</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el volumen del cilindro derecho</strong></p>
+            <p>Su diámetro es 12 cm, entonces su radio es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>r</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>12</m:mn>
+                <m:mo>÷</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>6</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Como la altura es 6 cm, su volumen es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mn>6</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>×</m:mo>
+                <m:mn>6</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>π</m:mi>
+                <m:mo>×</m:mo>
+                <m:mn>36</m:mn>
+                <m:mo>×</m:mo>
+                <m:mn>6</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>216</m:mn>
+                <m:mi>π</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>Entonces, el volumen del cilindro derecho es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>216</m:mn>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mi>cm</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Sumar los dos volúmenes</strong></p>
+            <m:math>
+              <m:mrow>
+                <m:mn>96</m:mn>
+                <m:mi>π</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>216</m:mn>
+                <m:mi>π</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>312</m:mn>
+                <m:mi>π</m:mi>
+              </m:mrow>
+            </m:math>
+            <p>Por lo tanto, el volumen total de metal es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>312</m:mn>
+                <m:mi>π</m:mi>
+                <m:msup>
+                  <m:mi>cm</m:mi>
+                  <m:mn>3</m:mn>
+                </m:msup>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación correcta es la <strong>opción B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

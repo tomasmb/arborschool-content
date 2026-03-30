@@ -1,0 +1,216 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q36_v14" title="Q36_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En el resumen de ventas de una ilustradora digital se indica lo siguiente:<br />- Encargos de paquetes de iconos ya entregados: 12<br />- Precio cobrado por cada uno de esos encargos: $15 000.</p>
+    <p>Para los encargos que reciba desde ahora, planea cobrar $19 000 por cada nuevo paquete de iconos. Su objetivo es conseguir al menos $350 000 en total ese mes.</p>
+    <p>¿Cuál de las siguientes inecuaciones permite calcular la cantidad x de nuevos encargos que debe recibir a ese nuevo precio para alcanzar su objetivo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mn>12</m:mn><m:mo>·</m:mo><m:mn>15&#160;000</m:mn><m:mi>x</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>19&#160;000</m:mn>
+            <m:mo>≤</m:mo>
+            <m:mn>350&#160;000</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta inecuación multiplica 12 · 15 000 por x y deja 19 000 como valor fijo, pero los 12 encargos ya realizados valen exactamente 12 · 15 000 = 180 000, sin depender de x. Además, el objetivo es conseguir al menos 350 000, por lo que la comparación debe ser con ≥, no con ≤.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mrow>
+            <m:mn>12</m:mn><m:mo>·</m:mo><m:mn>15&#160;000</m:mn><m:mi>x</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>19&#160;000</m:mn>
+            <m:mo>≥</m:mo>
+            <m:mn>350&#160;000</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Aunque usa el signo ≥, esta expresión sigue asignando mal el valor de x. Los 12 encargos anteriores aportan un monto fijo de 12 · 15 000 = 180 000, mientras que los nuevos encargos son los que dependen de x y aportan 19 000x. Por eso no corresponde escribir 12 · 15 000x + 19 000.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mn>12</m:mn><m:mo>·</m:mo><m:mn>15&#160;000</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>19&#160;000</m:mn><m:mi>x</m:mi>
+            <m:mo>≤</m:mo>
+            <m:mn>350&#160;000</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Aquí la suma de dinero está bien representada como 12 · 15 000 + 19 000x, porque 12 · 15 000 = 180 000 es lo ya ganado y 19 000x es lo que aportan los nuevos encargos. Sin embargo, “al menos 350 000” significa 350 000 o más, es decir, se debe usar ≥ y no ≤.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mn>12</m:mn><m:mo>·</m:mo><m:mn>15&#160;000</m:mn>
+            <m:mo>+</m:mo>
+            <m:mn>19&#160;000</m:mn><m:mi>x</m:mi>
+            <m:mo>≥</m:mo>
+            <m:mn>350&#160;000</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! Los 12 encargos ya entregados aportan 12 · 15 000 = 180 000. Si x es la cantidad de nuevos encargos a 19 000 cada uno, entonces esos nuevos ingresos son 19 000x. Como quiere reunir al menos 350 000 en total, la inecuación correcta es 180 000 + 19 000x ≥ 350 000.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el dinero ya obtenido</strong></p>
+            <p>La ilustradora ya entregó 12 encargos, y cada uno fue cobrado a $15 000.</p>
+            <p>Entonces, el dinero ya ganado es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>15&#160;000</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>180&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Expresar el dinero de los nuevos encargos</strong></p>
+            <p>Desde ahora cobrará $19 000 por cada nuevo paquete de iconos.</p>
+            <p>Si recibe <strong>x</strong> nuevos encargos, el dinero correspondiente a esos nuevos trabajos es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>19&#160;000</m:mn>
+                  <m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Plantear el total de dinero del mes</strong></p>
+            <p>El total será la suma entre lo ya ganado y lo que ganará con los nuevos encargos:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>15&#160;000</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>19&#160;000</m:mn>
+                  <m:mi>x</m:mi>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Interpretar “al menos”</strong></p>
+            <p>La expresión “al menos $350 000” significa que el total debe ser mayor o igual que $350 000.</p>
+            <p>Por eso se usa el signo:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>≥</m:mo>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Escribir la inecuación</strong></p>
+            <p>La inecuación que modela la situación es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>·</m:mo>
+                  <m:mn>15&#160;000</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>19&#160;000</m:mn>
+                  <m:mi>x</m:mi>
+                  <m:mo>≥</m:mo>
+                  <m:mn>350&#160;000</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

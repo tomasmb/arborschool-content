@@ -1,0 +1,134 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q13_v3" title="Q13_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Algunas calculadoras tienen teclas que permiten escribir varios ceros de una vez, como las teclas [1], [0] y [000] mostradas en el siguiente teclado.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Teclado de calculadora que incluye las teclas numéricas estándar y resalta en color las teclas 1, 0 y un botón especial 000, que escribe tres ceros a la vez."/>
+    </p>
+    <p>Por ejemplo, para escribir el número 1000, basta con presionar primero la tecla [1] y luego la tecla [000], como se muestra a continuación.</p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Secuencia de pulsaciones de teclas de una calculadora: primero se muestra la tecla 1 y a continuación la tecla 000, indicando que al presionarlas en ese orden se obtiene el número 1000 en la pantalla."/>
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes secuencias de pulsaciones permite escribir el número <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math> en esta calculadora?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Presionar [1], luego [000], luego nuevamente [000] y finalmente [0].<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! La secuencia escribe 1 seguido de 3 + 3 + 1 = 7 ceros. Eso forma <m:math><m:mn>10&#160;000&#160;000</m:mn></m:math>, que es exactamente <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Presionar [1], luego [000] y después tres veces [0].<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Esta secuencia escribe 1 seguido de 3 + 1 + 1 + 1 = 6 ceros. El número obtenido es <m:math><m:mn>1&#160;000&#160;000</m:mn></m:math>, que corresponde a <m:math><m:msup><m:mn>10</m:mn><m:mn>6</m:mn></m:msup></m:math>, no a <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Presionar [1] y luego tres veces [000].<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Cada tecla [000] agrega 3 ceros. Al presionarla tres veces, se escriben 3 + 3 + 3 = 9 ceros después del 1. El número obtenido es <m:math><m:mn>1&#160;000&#160;000&#160;000</m:mn></m:math>, que corresponde a <m:math><m:msup><m:mn>10</m:mn><m:mn>9</m:mn></m:msup></m:math>, no a <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Presionar [1], luego [000], nuevamente [000] y finalmente dos veces [0].<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta secuencia escribe 1 seguido de 3 + 3 + 1 + 1 = 8 ceros. El número obtenido es <m:math><m:mn>100&#160;000&#160;000</m:mn></m:math>, que corresponde a <m:math><m:msup><m:mn>10</m:mn><m:mn>8</m:mn></m:msup></m:math>, no a <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar el número pedido</strong></p>
+            <p>El número <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math> es un 1 seguido de 7 ceros, es decir, <m:math><m:mn>10&#160;000&#160;000</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Recordar qué escribe cada tecla</strong></p>
+            <p>La tecla [1] escribe el dígito 1.</p>
+            <p>La tecla [0] agrega 1 cero.</p>
+            <p>La tecla [000] agrega 3 ceros.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada alternativa contando ceros</strong></p>
+            <p><em>Opción A:</em> [1], [000], [000], [0]</p>
+            <p>Ceros agregados: <m:math><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>7</m:mn></m:math>.</p>
+            <p>Se obtiene <m:math><m:mn>10&#160;000&#160;000</m:mn></m:math>.</p>
+            <p><em>Opción B:</em> [1], [000], [0], [0], [0]</p>
+            <p>Ceros agregados: <m:math><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>6</m:mn></m:math>.</p>
+            <p>Se obtiene <m:math><m:mn>1&#160;000&#160;000</m:mn></m:math>.</p>
+            <p><em>Opción C:</em> [1], [000], [000], [000]</p>
+            <p>Ceros agregados: <m:math><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>9</m:mn></m:math>.</p>
+            <p>Se obtiene <m:math><m:mn>1&#160;000&#160;000&#160;000</m:mn></m:math>.</p>
+            <p><em>Opción D:</em> [1], [000], [000], [0], [0]</p>
+            <p>Ceros agregados: <m:math><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:math>.</p>
+            <p>Se obtiene <m:math><m:mn>100&#160;000&#160;000</m:mn></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar con el número pedido</strong></p>
+            <p>Solo la opción A produce un 1 seguido de 7 ceros, que es exactamente <m:math><m:msup><m:mn>10</m:mn><m:mn>7</m:mn></m:msup></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La secuencia correcta es presionar [1], luego [000], luego nuevamente [000] y finalmente [0].</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

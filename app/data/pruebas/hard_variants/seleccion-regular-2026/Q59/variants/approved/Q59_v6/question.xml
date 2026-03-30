@@ -1,0 +1,383 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q59_v6" title="Q59_v6" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un centro de eventos se quiere diseñar un salón rectangular. Se sabe que el salón debe tener un área de 
+      <m:math>
+        <m:mn>252</m:mn>
+        <m:msup>
+          <m:mi>m</m:mi>
+          <m:mn>2</m:mn>
+        </m:msup>
+      </m:math>
+      y que, por diseño, su ancho mide 
+      <m:math>
+        <m:mn>4</m:mn>
+        <m:mi>m</m:mi>
+      </m:math>
+      menos que su largo. Un asistente sugiere que el largo sea 
+      <m:math>
+        <m:msqrt>
+          <m:mn>252</m:mn>
+        </m:msqrt>
+        <m:mi>m</m:mi>
+      </m:math>, otro propone que sea 
+      <m:math>
+        <m:mn>2</m:mn>
+        <m:mo>+</m:mo>
+        <m:msqrt>
+          <m:mn>256</m:mn>
+        </m:msqrt>
+        <m:mi>m</m:mi>
+      </m:math>, y en las alternativas se consideran estas y otras propuestas.
+      
+      ¿Cuál de las siguientes propuestas de largo es compatible con los datos del salón (área y relación entre largo y ancho)?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:msqrt>
+            <m:mn>252</m:mn>
+          </m:msqrt>
+          <m:mi>m</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si el largo fuera √252 m, entonces el ancho sería √252 − 4 m. El área resultaría (√252)(√252 − 4) = 252 − 4√252, que es menor que 252, por lo tanto no cumple los datos del salón.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>2</m:mn>
+          <m:mo>+</m:mo>
+          <m:msqrt>
+            <m:mn>256</m:mn>
+          </m:msqrt>
+          <m:mi>m</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Como √256 = 16, se obtiene 2 + √256 = 18. Entonces el ancho es 18 − 4 = 14 y el área es 18 × 14 = 252, así que esta propuesta sí satisface simultáneamente el área y la relación entre largo y ancho.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mn>16</m:mn>
+          <m:mi>m</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el largo fuera 16 m, entonces el ancho sería 12 m, porque debe medir 4 m menos. El área sería 16 × 12 = 192, y 192 es distinto de 252, por lo tanto esta propuesta no sirve.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mn>4</m:mn>
+          <m:mo>+</m:mo>
+          <m:msqrt>
+            <m:mn>252</m:mn>
+          </m:msqrt>
+          <m:mi>m</m:mi>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el largo fuera 4 + √252 m, entonces el ancho sería √252 m. El área resultaría (4 + √252)(√252) = 4√252 + 252, que es mayor que 252, por lo tanto no cumple los datos del salón.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Definir las dimensiones</strong></p>
+            <p>Sea el largo del salón</p>
+            <m:math>
+              <m:mi>L</m:mi>
+            </m:math>
+            <p>y, como el ancho mide 4 m menos, el ancho es</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>4</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Ambas medidas están en metros.</p>
+          </li>
+          <li>
+            <p><strong>Usar la condición del área</strong></p>
+            <p>El área de un rectángulo es largo por ancho, así que:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>(</m:mo>
+                <m:mi>L</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>4</m:mn>
+                <m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>252</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Formar la ecuación cuadrática</strong></p>
+            <m:math>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>L</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>−</m:mo>
+                <m:mn>4</m:mn>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>252</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Pasando todo al mismo lado:</p>
+            <m:math>
+              <m:mrow>
+                <m:msup>
+                  <m:mi>L</m:mi>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>−</m:mo>
+                <m:mn>4</m:mn>
+                <m:mi>L</m:mi>
+                <m:mo>−</m:mo>
+                <m:mn>252</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>0</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Resolver la ecuación</strong></p>
+            <p>Aplicando la fórmula cuadrática:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>4</m:mn>
+                    <m:mo>±</m:mo>
+                    <m:msqrt>
+                      <m:mrow>
+                        <m:msup>
+                          <m:mn>4</m:mn>
+                          <m:mn>2</m:mn>
+                        </m:msup>
+                        <m:mo>−</m:mo>
+                        <m:mn>4</m:mn>
+                        <m:mo>(</m:mo>
+                        <m:mn>1</m:mn>
+                        <m:mo>)</m:mo>
+                        <m:mo>(</m:mo>
+                        <m:mn>−252</m:mn>
+                        <m:mo>)</m:mo>
+                      </m:mrow>
+                    </m:msqrt>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+            <p>Calculando el discriminante:</p>
+            <m:math>
+              <m:mrow>
+                <m:msup>
+                  <m:mn>4</m:mn>
+                  <m:mn>2</m:mn>
+                </m:msup>
+                <m:mo>−</m:mo>
+                <m:mn>4</m:mn>
+                <m:mo>(</m:mo>
+                <m:mn>1</m:mn>
+                <m:mo>)</m:mo>
+                <m:mo>(</m:mo>
+                <m:mn>−252</m:mn>
+                <m:mo>)</m:mo>
+                <m:mo>=</m:mo>
+                <m:mn>16</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>1008</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>1024</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Y como</p>
+            <m:math>
+              <m:mrow>
+                <m:msqrt>
+                  <m:mn>1024</m:mn>
+                </m:msqrt>
+                <m:mo>=</m:mo>
+                <m:mn>32</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>se obtiene:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>4</m:mn>
+                    <m:mo>±</m:mo>
+                    <m:mn>32</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+            <p>Entonces las soluciones son:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>36</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>18</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>o bien</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>−28</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>−14</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Escoger la solución válida</strong></p>
+            <p>Una longitud no puede ser negativa, por eso se descarta</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>−14</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>y queda:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>L</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>18</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La alternativa B propone</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:msqrt>
+                  <m:mn>256</m:mn>
+                </m:msqrt>
+                <m:mo>=</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>16</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>18</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Por lo tanto, coincide exactamente con el largo correcto.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La propuesta compatible con el área y con la relación entre largo y ancho es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

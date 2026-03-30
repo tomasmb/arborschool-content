@@ -1,0 +1,220 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q52_v7" title="Q52_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta el número de estudiantes que prefieren estudiar una de las cinco carreras propuestas. Cada estudiante eligió solo una carrera.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Carrera</th>
+            <th>Frecuencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Matemática</td>
+            <td>150</td>
+          </tr>
+          <tr>
+            <td>Física</td>
+            <td>130</td>
+          </tr>
+          <tr>
+            <td>Ingeniería</td>
+            <td>220</td>
+          </tr>
+          <tr>
+            <td>Historia</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Arte</td>
+            <td>80</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Se considera que las carreras del área STEM son Matemática, Física e Ingeniería. Si se elige al azar a uno de estos estudiantes, ¿cuál de las siguientes expresiones permite determinar la probabilidad de que prefiera una carrera del área STEM?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Seleccione una alternativa.</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math><m:mfrac><m:mrow><m:mtext>Frecuencia Matemática</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Física</m:mtext></m:mrow><m:mrow><m:mtext>Total de estudiantes</m:mtext></m:mrow></m:mfrac></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión solo suma Matemática y Física. Con los datos de la tabla, <m:math><m:mrow><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>130</m:mn><m:mo>=</m:mo><m:mn>280</m:mn></m:mrow></m:math>, pero STEM incluye también Ingeniería, cuya frecuencia es 220. Por eso faltan estudiantes del área STEM en el numerador.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math><m:mfrac><m:mrow><m:mtext>Frecuencia Matemática</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Física</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Ingeniería</m:mtext></m:mrow><m:mrow><m:mtext>Total de estudiantes</m:mtext></m:mrow></m:mfrac></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La probabilidad de preferir una carrera STEM se calcula como casos favorables sobre total de estudiantes. Los casos favorables son Matemática, Física e Ingeniería: <m:math><m:mrow><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>130</m:mn><m:mo>+</m:mo><m:mn>220</m:mn><m:mo>=</m:mo><m:mn>500</m:mn></m:mrow></m:math>. El total es <m:math><m:mrow><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>130</m:mn><m:mo>+</m:mo><m:mn>220</m:mn><m:mo>+</m:mo><m:mn>100</m:mn><m:mo>+</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>680</m:mn></m:mrow></m:math>. Por eso la expresión correcta es <m:math><m:mfrac><m:mrow><m:mn>500</m:mn></m:mrow><m:mrow><m:mn>680</m:mn></m:mrow></m:mfrac></m:math>, equivalente a sumar las tres frecuencias STEM y dividir por el total.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math><m:mfrac><m:mrow><m:mtext>Frecuencia Matemática</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Física</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Ingeniería</m:mtext></m:mrow><m:mrow><m:mtext>Frecuencia Historia</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Arte</m:mtext></m:mrow></m:mfrac></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El numerador sí considera las carreras STEM, pero el denominador debe ser el total de estudiantes, no solo Historia y Arte. Con los datos, el denominador de esta opción sería <m:math><m:mrow><m:mn>100</m:mn><m:mo>+</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>180</m:mn></m:mrow></m:math>, mientras que el total correcto es <m:math><m:mrow><m:mn>150</m:mn><m:mo>+</m:mo><m:mn>130</m:mn><m:mo>+</m:mo><m:mn>220</m:mn><m:mo>+</m:mo><m:mn>100</m:mn><m:mo>+</m:mo><m:mn>80</m:mn><m:mo>=</m:mo><m:mn>680</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math><m:mrow><m:mn>1</m:mn><m:mo>-</m:mo><m:mfrac><m:mrow><m:mtext>Frecuencia Matemática</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Física</m:mtext><m:mo>+</m:mo><m:mtext>Frecuencia Ingeniería</m:mtext></m:mrow><m:mrow><m:mtext>Total de estudiantes</m:mtext></m:mrow></m:mfrac></m:mrow></m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta expresión calcula el complemento de preferir una carrera STEM, es decir, la probabilidad de no preferir STEM. Con los datos, STEM es <m:math><m:mfrac><m:mrow><m:mn>500</m:mn></m:mrow><m:mrow><m:mn>680</m:mn></m:mrow></m:mfrac></m:math>, entonces esta opción da <m:math><m:mrow><m:mn>1</m:mn><m:mo>-</m:mo><m:mfrac><m:mrow><m:mn>500</m:mn></m:mrow><m:mrow><m:mn>680</m:mn></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mrow><m:mn>180</m:mn></m:mrow><m:mrow><m:mn>680</m:mn></m:mrow></m:mfrac></m:mrow></m:math>, que corresponde a Historia y Arte, no a STEM.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los casos favorables</strong></p>
+            <p>El enunciado dice que las carreras del área STEM son Matemática, Física e Ingeniería.</p>
+            <p>Entonces, los casos favorables son los estudiantes que prefieren una de esas tres carreras.</p>
+          </li>
+          <li>
+            <p><strong>Sumar las frecuencias de las carreras STEM</strong></p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>150</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>130</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>220</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>500</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Por lo tanto, hay 500 estudiantes que prefieren carreras STEM.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el total de estudiantes</strong></p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>150</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>130</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>220</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>100</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>80</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>680</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>El total de estudiantes es 680.</p>
+          </li>
+          <li>
+            <p><strong>Aplicar la definición de probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mtext>casos favorables</m:mtext>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mtext>casos posibles</m:mtext>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>En este problema:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mrow>
+                    <m:mn>500</m:mn>
+                  </m:mrow>
+                  <m:mrow>
+                    <m:mn>680</m:mn>
+                  </m:mrow>
+                </m:mfrac>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La expresión correcta debe tener en el numerador la suma de Matemática, Física e Ingeniería, y en el denominador el total de estudiantes.</p>
+            <p>Esa descripción corresponde a la alternativa B.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>, porque representa la probabilidad de preferir una carrera del área STEM.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

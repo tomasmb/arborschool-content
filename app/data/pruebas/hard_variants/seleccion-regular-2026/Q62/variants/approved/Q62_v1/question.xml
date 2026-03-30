@@ -1,0 +1,149 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v1" title="Q62_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Una persona realiza un experimento para estimar su tiempo de reacción usando una regla. Primero hace un <strong>ensayo de prueba</strong>, que no se considera válido, y luego realiza 5 intentos válidos.</p>
+    <p>En total anotó 6 distancias recorridas por la regla, en centímetros, en este orden:</p>
+    <p><strong>Ensayo de prueba</strong>: 17 cm<br />Intentos válidos: 9 cm, 10 cm, 11 cm, 12 cm y 13 cm.</p>
+    <p>Para obtener el tiempo de reacción, se debe calcular el promedio de las <strong>5 distancias válidas</strong> (ignorando el ensayo de prueba) y luego usar la siguiente tabla de conversión de distancia (cm) a tiempo (s):</p>
+    <div>
+      <table border="1" cellpadding="4" cellspacing="0">
+        <thead>
+          <tr>
+            <th>Distancia (cm)</th>
+            <th>Tiempo (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>5</td><td>0,10</td></tr>
+          <tr><td>6</td><td>0,11</td></tr>
+          <tr><td>7</td><td>0,12</td></tr>
+          <tr><td>8</td><td>0,13</td></tr>
+          <tr><td>9</td><td>0,14</td></tr>
+          <tr><td>10</td><td>0,14</td></tr>
+          <tr><td>11</td><td>0,15</td></tr>
+          <tr><td>12</td><td>0,16</td></tr>
+          <tr><td>13</td><td>0,16</td></tr>
+          <tr><td>14</td><td>0,17</td></tr>
+          <tr><td>15</td><td>0,17</td></tr>
+          <tr><td>16</td><td>0,18</td></tr>
+          <tr><td>17</td><td>0,19</td></tr>
+          <tr><td>18</td><td>0,19</td></tr>
+          <tr><td>19</td><td>0,20</td></tr>
+          <tr><td>20</td><td>0,20</td></tr>
+          <tr><td>25</td><td>0,23</td></tr>
+          <tr><td>30</td><td>0,25</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál es el tiempo de reacción de la persona, en segundos, considerando solo los 5 intentos válidos?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">0,14 s<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Se deben usar solo los 5 intentos válidos: 9, 10, 11, 12 y 13. Su promedio es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>9</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>11</mn><mo>+</mo><mn>12</mn><mo>+</mo><mn>13</mn></mrow><mn>5</mn></mfrac><mo>=</mo><mfrac><mn>55</mn><mn>5</mn></mfrac><mo>=</mo><mn>11</mn></mrow></math> cm. En la tabla, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>11</mn><mtext> cm</mtext><mo>→</mo><mn>0,15</mn><mtext> s</mtext></mrow></math>, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,14</mn><mtext> s</mtext></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">0,15 s<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Se ignora el ensayo de prueba de 17 cm y se promedian solo las 5 distancias válidas: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>11</mn><mo>+</mo><mn>12</mn><mo>+</mo><mn>13</mn><mo>=</mo><mn>55</mn></mrow></math>. Luego, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mn>55</mn><mn>5</mn></mfrac><mo>=</mo><mn>11</mn></mrow></math> cm. En la tabla, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>11</mn><mtext> cm</mtext><mo>→</mo><mn>0,15</mn><mtext> s</mtext></mrow></math>. Por eso, el tiempo de reacción es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,15</mn><mtext> s</mtext></mrow></math>.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">0,16 s<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El promedio de las 5 distancias válidas es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>9</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>11</mn><mo>+</mo><mn>12</mn><mo>+</mo><mn>13</mn></mrow><mn>5</mn></mfrac><mo>=</mo><mn>11</mn></mrow></math> cm. En la tabla, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>11</mn><mtext> cm</mtext><mo>→</mo><mn>0,15</mn><mtext> s</mtext></mrow></math>. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,16</mn><mtext> s</mtext></mrow></math> corresponde a 12 cm o 13 cm, no a 11 cm.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">0,19 s<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El ensayo de prueba de 17 cm no se considera válido. Usando solo 9, 10, 11, 12 y 13, el promedio es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mn>55</mn><mn>5</mn></mfrac><mo>=</mo><mn>11</mn></mrow></math> cm. En la tabla, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>17</mn><mtext> cm</mtext><mo>→</mo><mn>0,19</mn><mtext> s</mtext></mrow></math>, pero <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>11</mn><mtext> cm</mtext><mo>→</mo><mn>0,15</mn><mtext> s</mtext></mrow></math>. Por eso, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>0,19</mn><mtext> s</mtext></mrow></math> no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué datos se deben usar</strong></p>
+            <p>El enunciado dice que el ensayo de prueba no se considera válido. Por lo tanto, no se usa 17 cm.</p>
+            <p>Las 5 distancias válidas son: 9 cm, 10 cm, 11 cm, 12 cm y 13 cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el promedio de las 5 distancias válidas</strong></p>
+            <p>Sumamos las 5 distancias:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn><mo>+</mo><mn>10</mn><mo>+</mo><mn>11</mn><mo>+</mo><mn>12</mn><mo>+</mo><mn>13</mn><mo>=</mo><mn>55</mn></mrow></math></p>
+            <p>Ahora dividimos por 5, porque son 5 intentos válidos:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mn>55</mn><mn>5</mn></mfrac><mo>=</mo><mn>11</mn></mrow></math></p>
+            <p>El promedio es 11 cm.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Usar la tabla de conversión</strong></p>
+            <p>Buscamos 11 cm en la tabla.</p>
+            <p>La tabla indica:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>11</mn><mtext> cm</mtext><mo>→</mo><mn>0,15</mn><mtext> s</mtext></mrow></math></p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El tiempo de reacción de la persona, considerando solo los 5 intentos válidos, es <strong>0,15 s</strong>.</p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

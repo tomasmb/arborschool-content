@@ -1,0 +1,166 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v7" title="Q54_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una compañía de telefonía móvil registra el consumo mensual de datos de sus clientes y resume la información en la siguiente tabla.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Consumo mensual de datos (GB)</th>
+            <th>Cantidad de clientes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0–9</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>10–19</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>20–29</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>30–39</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>40 o más</td>
+            <td>4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La compañía ofrece un descuento especial a todos los clientes cuyo consumo mensual de datos no exceda los 29 GB, según la información de la tabla. ¿Cuál es la mayor cantidad de clientes que podría recibir ese descuento?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">7<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los 7 clientes del tramo 20–29 GB sí pueden recibir el descuento, pero también pueden recibirlo los 6 clientes del tramo 0–9 GB y los 5 clientes del tramo 10–19 GB, porque todos esos consumos no exceden 29 GB. Entonces la cantidad máxima es 6 + 5 + 7 = 18, no 7.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">11<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Los 11 clientes se obtienen al sumar 6 + 5, es decir, los tramos 0–9 GB y 10–19 GB. Pero también deben incluirse los 7 clientes del tramo 20–29 GB, porque 29 GB todavía no excede 29 GB. Entonces la cantidad máxima es 6 + 5 + 7 = 18, no 11.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">18<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Los clientes que no exceden 29 GB están en los tramos 0–9, 10–19 y 20–29. Al sumar sus cantidades se obtiene 6 + 5 + 7 = 18. No se incluyen los 8 clientes del tramo 30–39 ni los 4 de 40 o más, porque esos consumos superan 29 GB.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">26<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El número 26 se obtiene al sumar 6 + 5 + 7 + 8. Sin embargo, el tramo 30–39 GB no debe incluirse, porque todos los consumos de ese tramo son mayores que 29 GB. Según la tabla, solo los tramos 0–9, 10–19 y 20–29 garantizan consumos que no exceden 29 GB. Por eso la cantidad máxima es 18.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="FB_NoResponse" outcome-identifier="FEEDBACK" show-hide="show">
+      <qti-content-body>
+        <p>No se registró una respuesta válida. Para resolver la pregunta, hay que identificar los tramos cuyo consumo no excede 29 GB, es decir, los intervalos 0–9, 10–19 y 20–29. Luego se suman sus cantidades de clientes: 6 + 5 + 7 = 18.</p>
+      </qti-content-body>
+    </qti-feedback-block>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar qué significa “no exceda los 29 GB”</strong></p>
+            <p>“No exceda 29 GB” significa que el consumo debe ser menor o igual que 29 GB.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar qué intervalos cumplen esa condición</strong></p>
+            <p>Los intervalos completamente incluidos hasta 29 GB son:</p>
+            <ul>
+              <li>0–9, con 6 clientes.</li>
+              <li>10–19, con 5 clientes.</li>
+              <li>20–29, con 7 clientes.</li>
+            </ul>
+            <p>El intervalo 30–39 no cumple la condición, porque todos sus valores son mayores que 29. Tampoco cumple 40 o más.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Sumar los clientes de los intervalos que sí cumplen</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>6</mn>
+                  <mo>+</mo>
+                  <mn>5</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>=</mo>
+                  <mn>18</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Concluir</strong></p>
+            <p>La mayor cantidad de clientes que podría recibir el descuento es 18.</p>
+            <p>La alternativa correcta es la C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_NoResponse</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

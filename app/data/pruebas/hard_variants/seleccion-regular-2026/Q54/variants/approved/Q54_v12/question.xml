@@ -1,0 +1,149 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v12" title="Q54_v12" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un profesor resume en la siguiente tabla la distribución de puntajes obtenidos por un curso en una prueba:</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Puntaje en la prueba</th>
+            <th>Cantidad de estudiantes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Puntaje &lt; 40</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>40 ≤ puntaje &lt; 60</td>
+            <td>9</td>
+          </tr>
+          <tr>
+            <td>60 ≤ puntaje &lt; 80</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>80 ≤ puntaje</td>
+            <td>7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Según la información de la tabla, recibirán un reconocimiento quienes obtuvieron un puntaje mayor o igual que 60.</p>
+    <p>¿Cuál es la mayor cantidad de estudiantes que podrían recibir ese reconocimiento?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">6<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. También reciben reconocimiento quienes están en el grupo <strong>80 ≤ puntaje</strong>. Entonces la cantidad de estudiantes con puntaje mayor o igual que 60 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn></math>, no 6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">13<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Los estudiantes con puntaje mayor o igual que 60 están en los intervalos <strong>60 ≤ puntaje &lt; 80</strong> y <strong>80 ≤ puntaje</strong>. Por lo tanto, la cantidad es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn></math>.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">15<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la tabla, solo los grupos <strong>60 ≤ puntaje &lt; 80</strong> y <strong>80 ≤ puntaje</strong> cumplen la condición <strong>puntaje mayor o igual que 60</strong>. Esos grupos suman <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn></math>. Los 9 estudiantes del grupo <strong>40 ≤ puntaje &lt; 60</strong> no pueden agregarse, porque todos tienen puntaje menor que 60.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">22<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El número <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22</mn></math> se obtiene al sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn><mo>+</mo><mn>6</mn><mo>+</mo><mn>7</mn></math>, pero los 9 estudiantes del intervalo <strong>40 ≤ puntaje &lt; 60</strong> no reciben reconocimiento, porque ese intervalo cumple <strong>puntaje &lt; 60</strong>. Solo cuentan <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué estudiantes reciben reconocimiento</strong></p>
+            <p>El enunciado dice que reciben reconocimiento quienes obtuvieron un puntaje mayor o igual que 60.</p>
+            <p>Eso significa considerar solo los intervalos de la tabla que cumplen <strong>puntaje ≥ 60</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Revisar cada fila de la tabla</strong></p>
+            <p><strong>Puntaje &lt; 40</strong>: no cumple <strong>puntaje ≥ 60</strong>, así que esos 5 estudiantes no cuentan.</p>
+            <p><strong>40 ≤ puntaje &lt; 60</strong>: tampoco cumple <strong>puntaje ≥ 60</strong>, porque todos esos puntajes son menores que 60. Esos 9 estudiantes no cuentan.</p>
+            <p><strong>60 ≤ puntaje &lt; 80</strong>: sí cumple <strong>puntaje ≥ 60</strong>. Aquí hay 6 estudiantes.</p>
+            <p><strong>80 ≤ puntaje</strong>: también cumple <strong>puntaje ≥ 60</strong>. Aquí hay 7 estudiantes.</p>
+          </li>
+          <li>
+            <p><strong>Sumar los estudiantes que sí cumplen la condición</strong></p>
+            <p>Se suman los 6 estudiantes del intervalo <strong>60 ≤ puntaje &lt; 80</strong> y los 7 estudiantes del intervalo <strong>80 ≤ puntaje</strong>.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>6</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>13</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La mayor cantidad de estudiantes que podrían recibir el reconocimiento es <strong>13</strong>.</p>
+            <p>La alternativa correcta es <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

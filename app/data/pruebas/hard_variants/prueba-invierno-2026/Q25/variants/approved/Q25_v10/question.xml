@@ -1,0 +1,180 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q25_v10" title="Q25_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>
+        En una libreta de ahorros se utiliza la expresión 
+        <m:math>
+          <m:mi>S</m:mi>
+          <m:mo>-</m:mo>
+          <m:mrow>
+            <m:mo>(</m:mo>
+            <m:mi>n</m:mi>
+            <m:mo>-</m:mo>
+            <m:mn>3</m:mn>
+            <m:mo>)</m:mo>
+          </m:mrow>
+        </m:math>
+        para representar el monto de dinero que queda en la cuenta, donde 
+        <m:math><m:mi>S</m:mi></m:math> es el ahorro actual y 
+        <m:math><m:mi>n</m:mi></m:math> la cantidad de pesos que se había planeado retirar. ¿Cuál de las siguientes situaciones describe correctamente esta expresión?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Del ahorro actual S, Pedro retira n pesos y, además, retira 3 pesos más; el monto que queda en la cuenta es el ahorro actual menos n y menos 3 pesos.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta situación se representa como S − n − 3, que es distinto de S − (n − 3). Por ejemplo, si S = 20 y n = 10, entonces la expresión dada vale 20 − (10 − 3) = 20 − 7 = 13, mientras que esta opción da 20 − 10 − 3 = 7. Como 7 ≠ 13, esta descripción no corresponde a la expresión.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        Del ahorro actual S, Pedro retira n pesos, pero luego recibe un depósito de 3 pesos; el monto final es el ahorro actual menos n pesos y luego aumentado en 3 pesos.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Aunque el monto final puede escribirse como S − n + 3 y coincide numéricamente con S − (n − 3), esta opción describe dos acciones distintas: primero retirar n y después recibir un depósito de 3. En cambio, la expresión S − (n − 3) representa restar directamente una sola cantidad, n − 3. Por ejemplo, si S = 20 y n = 10, la expresión significa retirar 7 y quedar con 13; esta opción describe retirar 10 y luego depositar 3 para llegar también a 13. Como la situación incluye un depósito posterior que no aparece en la expresión, no la describe correctamente.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        Antes de retirar dinero, Pedro decide disminuir en 3 pesos la cantidad n que pensaba retirar; luego saca de su ahorro S solo esa cantidad reducida. El monto final se obtiene restando a S una cantidad que resulta de disminuir en 3 pesos la retirada planificada de n.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La expresión S − (n − 3) indica que primero se calcula la nueva cantidad a retirar, n − 3, y después esa cantidad se resta del ahorro S. Por ejemplo, si S = 20 y n = 10, entonces queda 20 − (10 − 3) = 20 − 7 = 13. Esto corresponde exactamente a retirar 3 pesos menos de lo planificado.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        En lugar de retirar dinero, Pedro agrega a su ahorro S una cantidad de pesos que es 3 menor que n; el nuevo monto es el ahorro actual más una cantidad igual a n menos 3 pesos.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta situación se representa como S + (n − 3), porque se agrega dinero al ahorro. La expresión dada es S − (n − 3), que indica una resta. Por ejemplo, si S = 20 y n = 10, la expresión dada vale 20 − 7 = 13, mientras que esta opción da 20 + 7 = 27. Como 27 ≠ 13, esta descripción no corresponde.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Leer la estructura de la expresión</strong></p>
+            <p>La expresión dada es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>S</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>3</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Los paréntesis indican que primero se calcula la cantidad <m:math><m:mrow><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Interpretar qué significa <m:math><m:mrow><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math></strong></p>
+            <p>Como <m:math><m:mi>n</m:mi></m:math> es la cantidad de pesos que se había planeado retirar, entonces <m:math><m:mrow><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math> significa retirar 3 pesos menos que lo planificado.</p>
+            <p>En el contexto de dinero, si se habla de retirar una cantidad, se asume que esa cantidad no es negativa; por eso, para esta interpretación concreta, se considera <m:math><m:mrow><m:mi>n</m:mi><m:mo>≥</m:mo><m:mn>3</m:mn></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Interpretar la resta completa</strong></p>
+            <p>Después de calcular la nueva retirada, esa cantidad se resta del ahorro actual <m:math><m:mi>S</m:mi></m:math>. Por eso, el monto final es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mi>S</m:mi>
+                  <m:mo>-</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo>
+                    <m:mi>n</m:mi>
+                    <m:mo>-</m:mo>
+                    <m:mn>3</m:mn>
+                    <m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Es decir: al ahorro actual se le descuenta una cantidad que es 3 pesos menor que la retirada planificada.</p>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p><strong>Opción A:</strong> describe retirar <m:math><m:mrow><m:mi>n</m:mi><m:mo>+</m:mo><m:mn>3</m:mn></m:mrow></m:math>, lo que deja <m:math><m:mrow><m:mi>S</m:mi><m:mo>-</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math>. No coincide.</p>
+            <p><strong>Opción B:</strong> describe retirar <m:math><m:mi>n</m:mi></m:math> y luego recibir un depósito de 3. Aunque el valor final puede coincidir, la situación no representa una sola retirada reducida, sino dos acciones distintas.</p>
+            <p><strong>Opción C:</strong> describe exactamente disminuir en 3 pesos la cantidad planeada para retirar y luego restarla a <m:math><m:mi>S</m:mi></m:math>.</p>
+            <p><strong>Opción D:</strong> describe sumar <m:math><m:mrow><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math> al ahorro, es decir, <m:math><m:mrow><m:mi>S</m:mi><m:mo>+</m:mo><m:mrow><m:mo>(</m:mo><m:mi>n</m:mi><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow></m:mrow></m:math>. No coincide.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La situación que describe correctamente la expresión es la alternativa <strong>C</strong>, porque primero reduce en 3 pesos la retirada planificada y luego resta esa nueva cantidad del ahorro actual.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

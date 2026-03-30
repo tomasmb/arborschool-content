@@ -1,0 +1,142 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q15_v5" title="Q15_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un estanque se midió el volumen de agua que contenía en dos momentos del mismo día.
+    </p>
+    <p>
+      A las 8:00, el estanque tenía 12,4 m³ de agua, y a las 18:00 tenía 15,78 m³ de agua. ¿En cuántos metros cúbicos aumentó el volumen de agua en el estanque entre las 8:00 y las 18:00?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">28,18<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El aumento se obtiene restando el volumen inicial al volumen final: 15,78 − 12,4 = 3,38. La opción 28,18 corresponde a una suma, porque 15,78 + 12,4 = 28,18, y no al aumento pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3,38<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El aumento del volumen es la diferencia entre el volumen final y el inicial: 15,78 − 12,4 = 3,38. Por lo tanto, el estanque aumentó en 3,38 m³.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3,34<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El cálculo correcto del aumento es 15,78 − 12,4 = 3,38. Además, si el aumento fuera 3,34, entonces 12,4 + 3,34 = 15,74, que no coincide con los 15,78 m³ del enunciado.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">3,74<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El aumento debe cumplir que volumen inicial + aumento = volumen final. Con esta opción, 12,4 + 3,74 = 16,14, y 16,14 no es igual a 15,78. La diferencia correcta es 15,78 − 12,4 = 3,38.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar los datos</strong></p>
+            <p>A las 8:00, el volumen era 12,4 m³.</p>
+            <p>A las 18:00, el volumen era 15,78 m³.</p>
+          </li>
+          <li>
+            <p><strong>Reconocer qué significa “aumentó”</strong></p>
+            <p>Para saber en cuánto aumentó el volumen, se calcula la diferencia entre el valor final y el valor inicial.</p>
+          </li>
+          <li>
+            <p><strong>Restar el volumen inicial al volumen final</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>15,78</mn>
+                  <mo>−</mo>
+                  <mn>12,4</mn>
+                  <mo>=</mo>
+                  <mn>3,38</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar el resultado</strong></p>
+            <p>Si el aumento es 3,38 m³, entonces al sumar ese aumento al volumen inicial se debe obtener el volumen final.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>12,4</mn>
+                  <mo>+</mo>
+                  <mn>3,38</mn>
+                  <mo>=</mo>
+                  <mn>15,78</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>La verificación coincide con el dato del problema.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El volumen de agua en el estanque aumentó en 3,38 m³.</p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

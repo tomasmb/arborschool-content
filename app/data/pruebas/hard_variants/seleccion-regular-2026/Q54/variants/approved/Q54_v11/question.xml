@@ -1,0 +1,196 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q54_v11" title="Q54_v11" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una organización registra el ingreso mensual de un grupo de trabajadoras y resume la información en la siguiente tabla.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Ingreso mensual (en pesos)</th>
+          <th>Cantidad de trabajadoras</th>
+        </tr>
+        <tr>
+          <td>800 mil o más</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>600–799 mil</td>
+          <td>7</td>
+        </tr>
+        <tr>
+          <td>400–599 mil</td>
+          <td>6</td>
+        </tr>
+        <tr>
+          <td>200–399 mil</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>menos de 200 mil</td>
+          <td>4</td>
+        </tr>
+      </table>
+    </div>
+    <p>Un banco ofrece un crédito solo a quienes ganan por lo menos 400 mil pesos al mes. Según la tabla, ¿cuál es la mayor cantidad de trabajadoras que podría cumplir este requisito?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">6<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las 6 trabajadoras del tramo 400–599 mil sí cumplen, pero también cumplen las 7 del tramo 600–799 mil y las 5 del tramo 800 mil o más. Entonces la cantidad que puede cumplir es 6 + 7 + 5 = 18, no 6.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">12<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Sumando 5 + 7 se obtiene 12, pero eso considera solo a quienes ganan 600 mil o más. El requisito es ganar por lo menos 400 mil, así que también se deben incluir las 6 trabajadoras del tramo 400–599 mil. Por eso 5 + 7 + 6 = 18, no 12.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">18<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! Cumplen el requisito todas las trabajadoras de los tramos 400–599 mil, 600–799 mil y 800 mil o más. La suma es 6 + 7 + 5 = 18.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">30<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. 30 es el total de trabajadoras: 5 + 7 + 6 + 8 + 4 = 30. Pero no todas ganan por lo menos 400 mil. Por ejemplo, una trabajadora que gana 300 mil pertenece al tramo 200–399 mil y no cumple el requisito; una que gana 150 mil pertenece al tramo menos de 200 mil y tampoco cumple. Por eso no pueden ser 30.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar el requisito del banco</strong></p>
+            <p>El banco presta solo a quienes ganan por lo menos 400 mil pesos al mes. Eso significa ingreso mayor o igual que 400 mil.</p>
+          </li>
+          <li>
+            <p><strong>Revisar qué tramos cumplen</strong></p>
+            <p>Sí cumplen:</p>
+            <ul>
+              <li>400–599 mil: 6 trabajadoras.</li>
+              <li>600–799 mil: 7 trabajadoras.</li>
+              <li>800 mil o más: 5 trabajadoras.</li>
+            </ul>
+            <p>No cumplen necesariamente:</p>
+            <ul>
+              <li>200–399 mil: 8 trabajadoras.</li>
+              <li>menos de 200 mil: 4 trabajadoras.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Sumar las trabajadoras que sí pueden cumplir</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>6</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>+</mo>
+                  <mn>5</mn>
+                  <mo>=</mo>
+                  <mn>18</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Verificar las otras alternativas</strong></p>
+            <p>La opción 6 cuenta solo un tramo y deja fuera otros que sí cumplen.</p>
+            <p>La opción 12 corresponde a</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>=</mo>
+                  <mn>12</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>pero omite a las 6 trabajadoras del tramo 400–599 mil, que también cumplen.</p>
+            <p>La opción 30 corresponde al total:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>5</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>+</mo>
+                  <mn>6</mn>
+                  <mo>+</mo>
+                  <mn>8</mn>
+                  <mo>+</mo>
+                  <mn>4</mn>
+                  <mo>=</mo>
+                  <mn>30</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>pero allí se incluyen trabajadoras con menos de 400 mil pesos mensuales, que no cumplen el requisito.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La mayor cantidad de trabajadoras que podría cumplir el requisito es 18.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

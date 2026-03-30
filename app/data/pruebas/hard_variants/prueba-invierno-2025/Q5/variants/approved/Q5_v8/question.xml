@@ -1,0 +1,172 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v8" title="Q5_v8" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se presentan los niveles de combustible, en litros, de cuatro autos estacionados.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Auto</th>
+          <th>Combustible (L)</th>
+        </tr>
+        <tr>
+          <td>Auto Rojo</td>
+          <td>32,5</td>
+        </tr>
+        <tr>
+          <td>Auto Azul</td>
+          <td>32,45</td>
+        </tr>
+        <tr>
+          <td>Auto Verde</td>
+          <td>32,505</td>
+        </tr>
+        <tr>
+          <td>Auto Negro</td>
+          <td>32,49</td>
+        </tr>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes órdenes de los autos, de menor a mayor cantidad de combustible, es coherente con los datos de la tabla?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Auto Azul, Auto Rojo, Auto Negro, Auto Verde<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Para comparar, escribimos los valores con tres decimales: Auto Azul = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,450</mn></math>, Auto Rojo = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn></math>, Auto Negro = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,490</mn></math> y Auto Verde = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,505</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn><mo>&gt;</mo><mn>32,490</mn></math>, el Auto Rojo no puede ir antes que el Auto Negro. Por eso ese orden no es de menor a mayor.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Auto Azul, Auto Negro, Auto Rojo, Auto Verde<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al escribir todos los niveles con tres decimales se obtiene: Auto Azul = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,450</mn></math>, Auto Negro = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,490</mn></math>, Auto Rojo = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn></math> y Auto Verde = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,505</mn></math>. Entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,450</mn><mo>&lt;</mo><mn>32,490</mn><mo>&lt;</mo><mn>32,500</mn><mo>&lt;</mo><mn>32,505</mn></math>, por lo que el orden correcto es Auto Azul, Auto Negro, Auto Rojo, Auto Verde.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Auto Azul, Auto Negro, Auto Verde, Auto Rojo<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Es cierto que Auto Azul = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,450</mn></math> y Auto Negro = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,490</mn></math> van antes, pero luego propone Auto Verde = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,505</mn></math> antes que Auto Rojo = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,505</mn><mo>&gt;</mo><mn>32,500</mn></math>, el Auto Verde debe ir después del Auto Rojo, no antes.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Auto Rojo, Auto Azul, Auto Negro, Auto Verde<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El orden comienza con Auto Rojo = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn></math> antes de Auto Azul = <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,450</mn></math>. Pero <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>32,500</mn><mo>&gt;</mo><mn>32,450</mn></math>, así que el Auto Rojo no puede ser el menor. Por eso ese orden no es coherente con los datos de la tabla.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: comparación de números decimales</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Escribir todos los niveles con la misma cantidad de cifras decimales</strong></p>
+            <p>Para comparar mejor, expresamos cada cantidad con tres cifras decimales:</p>
+            <p>Auto Rojo:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32,5</mn><mo>=</mo><mn>32,500</mn>
+              </math>
+            </p>
+            <p>Auto Azul:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32,45</mn><mo>=</mo><mn>32,450</mn>
+              </math>
+            </p>
+            <p>Auto Verde:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32,505</mn>
+              </math>
+            </p>
+            <p>Auto Negro:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32,49</mn><mo>=</mo><mn>32,490</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar las partes decimales</strong></p>
+            <p>Todas las cantidades tienen la misma parte entera:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32</mn>
+              </math>.
+              Entonces comparamos solo las partes decimales:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>450</mn><mo>,</mo><mn>490</mn><mo>,</mo><mn>500</mn><mo>,</mo><mn>505</mn>
+              </math>.
+            </p>
+            <p>Se cumple que:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>450</mn><mo>&lt;</mo><mn>490</mn><mo>&lt;</mo><mn>500</mn><mo>&lt;</mo><mn>505</mn>
+              </math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Ordenar de menor a mayor</strong></p>
+            <p>Por lo tanto:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>32,450</mn><mo>&lt;</mo><mn>32,490</mn><mo>&lt;</mo><mn>32,500</mn><mo>&lt;</mo><mn>32,505</mn>
+              </math>.
+            </p>
+            <p>Esto corresponde a:</p>
+            <p>Auto Azul, Auto Negro, Auto Rojo, Auto Verde.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>: Auto Azul, Auto Negro, Auto Rojo, Auto Verde.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

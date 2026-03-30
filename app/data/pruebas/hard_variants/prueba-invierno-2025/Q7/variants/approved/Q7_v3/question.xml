@@ -1,0 +1,140 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q7_v3" title="Q7_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      En la siguiente imagen se muestra la temperatura en una ciudad a dos momentos del día.<br />
+      <img src="requiere_nueva_imagen.png" alt="Dibujo de un termómetro vertical con dos marcas señaladas. A la izquierda, cerca de la mitad superior del termómetro, aparece una etiqueta que dice 'Amanecer: 4 °C'. Más abajo, cerca de la parte inferior del termómetro, aparece otra etiqueta que dice 'Medianoche: −2 °C'. No se muestran otras horas ni datos adicionales." />
+    </p>
+    <p>
+      Considera que el cambio de temperatura se calcula como temperatura final menos temperatura inicial. Según la información de la imagen, ¿cuál fue el cambio de temperatura desde el amanecer hasta la medianoche, expresado como número entero con signo?
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>Selecciona una alternativa.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">-2 °C<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El cambio de temperatura se calcula como temperatura final menos temperatura inicial. Desde amanecer a medianoche, la temperatura pasa de 4 °C a −2 °C, por lo que el cambio es −2 − 4 = −6. Entonces, −2 °C no corresponde al cambio pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">-6 °C<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! La temperatura inicial es 4 °C y la final es −2 °C. Entonces, el cambio es temperatura final menos temperatura inicial: −2 − 4 = −6. Por eso, el cambio de temperatura fue −6 °C.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">2 °C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Usando la regla del enunciado, el cambio es temperatura final menos temperatura inicial. Con los datos de la imagen, eso da −2 − 4 = −6. Como el resultado correcto es −6 °C, la opción 2 °C no satisface el problema.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">6 °C<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El enunciado indica que el cambio se calcula como temperatura final menos temperatura inicial. Reemplazando los valores: −2 − 4 = −6. Entonces el signo debe ser negativo, por lo que 6 °C no es el cambio correcto.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: cambio de temperatura</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la temperatura inicial</strong></p>
+            <p>En el amanecer, la imagen muestra <strong>4 °C</strong>. Esa es la temperatura inicial.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar la temperatura final</strong></p>
+            <p>A la medianoche, la imagen muestra <strong>−2 °C</strong>. Esa es la temperatura final.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la regla dada en el enunciado</strong></p>
+            <p>El cambio de temperatura se calcula como <strong>temperatura final menos temperatura inicial</strong>.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mtext>cambio</mtext>
+                  <mo>=</mo>
+                  <mo>−</mo><mn>2</mn>
+                  <mo>−</mo>
+                  <mn>4</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Efectuar la resta</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mo>−</mo><mn>2</mn>
+                  <mo>−</mo>
+                  <mn>4</mn>
+                  <mo>=</mo>
+                  <mo>−</mo><mn>6</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El cambio de temperatura desde el amanecer hasta la medianoche fue <strong>−6 °C</strong>.</p>
+            <p>La alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

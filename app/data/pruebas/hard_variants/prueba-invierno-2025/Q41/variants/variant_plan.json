@@ -1,0 +1,139 @@
+{
+  "source_question_id": "Q41",
+  "source_test_id": "prueba-invierno-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q41_v4",
+      "scenario_description": "Se mantiene un contexto de dinero con dos tipos de monedas (por ejemplo, $100 y $500) y un total de monedas y de dinero conocidos. Una persona define las variables, plantea correctamente el sistema 2×2 y luego lo resuelve por reducción. En lugar de mostrar las ecuaciones en un bloque entre corchetes, el procedimiento se presenta como una secuencia lineal con flechas (\"De aquí se obtiene...\") e intercalado en texto. El error está en el paso donde multiplica una de las ecuaciones por un número y luego suma: al combinar términos comete un error de signo o de coeficientes. La pregunta no pide solo identificar \"Paso 1/2/3/4\", sino elegir cuál de varias descripciones del razonamiento (\"al plantear la ecuación del dinero\", \"al multiplicar la ecuación del número de monedas por -100\", etc.) corresponde al paso equivocado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Obliga a reconstruir mentalmente el método de reducción y a reconocer por qué la combinación lineal usada en ese paso no mantiene la equivalencia del sistema, diferenciando entre un planteamiento correcto del modelo y una manipulación algebraica incorrecta.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q41_v5",
+      "scenario_description": "Se usa un contexto distinto pero análogo (por ejemplo, entradas de adulto y de niño para un espectáculo, con total de entradas y total recaudado). La persona define x e y, plantea el sistema correcto y lo intenta resolver por reducción. Sin embargo, los pasos del procedimiento se presentan desordenados (etiquetados como A, B, C, D) y el estudiante debe entender qué paso iría en qué lugar para que el método tenga sentido. Uno de los pasos (el que pretende eliminar una variable tras multiplicar una ecuación) contiene un error en la multiplicación o en la suma de las ecuaciones. Las alternativas combinan la identificación del paso errado con su posición en el orden lógico (por ejemplo, \"El paso B es incorrecto y además no podría ir después del paso A si se aplicara bien la reducción\").",
+      "non_mechanizable_axes": [
+        "orden_pasos",
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Exige comprender la estructura del método de reducción (qué operaciones se pueden hacer y en qué orden) para detectar que el paso que intenta eliminar la variable no es compatible con un sistema equivalente, más allá de solo revisar aritmética local.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q41_v6",
+      "scenario_description": "Se mantiene el contexto de monedas, pero ahora el procedimiento del personaje incluye explícitamente la verificación de la solución al final: después de obtener ciertos valores para x e y, reemplaza en cada ecuación para comprobar. El sistema de partida está bien modelado y los pasos de reducción también, pero el error se comete al sumar las ecuaciones tras multiplicar una de ellas, lo que conduce a un valor incorrecto de una variable que luego arrastra toda la solución. Las alternativas describen distintas partes del procedimiento (modelación, multiplicación para eliminar, suma de ecuaciones, verificación) y el estudiante debe señalar en cuál se rompe la validez del razonamiento, no simplemente qué resultado final está mal.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe seguir el hilo lógico desde el modelado hasta la verificación y distinguir entre un error de cálculo en la combinación de ecuaciones y pasos que, aunque produzcan un resultado erróneo al final, son lógicamente correctos dados los valores previos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q41_v7",
+      "scenario_description": "Se presenta una situación de compra de dos tipos de productos (por ejemplo, cuadernos baratos y caros) con un total de unidades y de dinero. La persona define x e y, plantea un sistema correcto y lo resuelve por reducción sin errores en las operaciones: la suma de ecuaciones y los reemplazos son algebraicamente correctos. Sin embargo, en el último paso interpreta al revés las variables (atribuyendo la cantidad de cuadernos caros a x cuando x representaba los baratos, etc.), por lo que su conclusión contextual es falsa. La consigna pide identificar en qué parte del procedimiento deja de ser válido el razonamiento respecto de la situación descrita, enfatizando la relación entre variables y contexto.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Requiere comprender simultáneamente el modelo algebraico y su significado contextual: el estudiante debe reconocer que el sistema y la reducción son correctos, pero que el vínculo entre las soluciones (x, y) y las cantidades de cada producto está mal interpretado, distinguiendo así error algebraico de error de modelación/lectura.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q41_v8",
+      "scenario_description": "Se conserva un contexto de monedas pero con valores distintos (por ejemplo, monedas de $200 y $500), manteniendo un sistema 2×2 de complejidad similar. La persona define adecuadamente x e y y escribe las dos ecuaciones correctas. El error no es aritmético sino estratégico: al aplicar el método de reducción, elige un factor de multiplicación que no elimina ninguna variable (por ejemplo, multiplica por -1 en vez de por -200 o -500) y, aun así, procede a sumar las ecuaciones como si hubiera logrado la eliminación. Las opciones de respuesta describen distintos posibles fallos (planteo del sistema, elección del factor de reducción, suma de ecuaciones, reemplazo) y el estudiante debe localizar el momento en que el método deja de ser lógicamente adecuado.",
+      "non_mechanizable_axes": [
+        "distractor_dominante",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Obliga a entender el propósito del método de reducción (lograr coeficientes opuestos para una variable) y no solo repetir operaciones: el estudiante debe darse cuenta de que aunque los cálculos en sí sean correctos, el factor elegido hace que la combinación lineal no sirva para resolver el sistema.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q41_v9",
+      "scenario_description": "Se presenta un contexto análogo (por ejemplo, boletos de bus de dos tarifas) pero la persona, en el Paso 1, simplifica una de las ecuaciones dividiéndola completa por 100 antes de aplicar la reducción (por ejemplo, pasa de 100x + 500y = 12 000 a x + 5y = 120). Luego intenta eliminar una variable combinando esta ecuación simplificada con la otra. El error aparece en el paso donde reescala o combina ecuaciones: trata como equivalentes expresiones que no lo son, o confunde la ecuación original con la simplificada a la hora de sumar. La pregunta exige identificar el paso en el que se pierde la equivalencia del sistema, considerando tanto las transformaciones iniciales como la reducción.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comprender que multiplicar o dividir toda una ecuación por una constante mantiene el conjunto de soluciones, y distinguir esto de mezclar indebidamente ecuaciones en distintas escalas; para ubicar el error tiene que seguir la cadena de transformaciones y juzgar su validez algebraica, no limitarse a recomputar resultados sueltos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q41_v10",
+      "scenario_description": "Se utiliza un contexto de dos tipos de entradas (por ejemplo, palco y general) y se define y como número de entradas baratas y x como número de entradas caras, invirtiendo el orden típico. El sistema presentado en el Paso 1 refleja correctamente esa elección de variables. El procedimiento de resolución recurre al método de reducción, pero el error se comete al sustituir el valor hallado de una variable en alguna ecuación: se reemplaza en la ecuación equivocada o se altera indebidamente un signo, produciendo un valor inconsistente con el sistema original. La consigna plantea opciones que describen errores posibles en diferentes pasos (elección de variables, planteamiento de las ecuaciones, paso de reducción, paso de reemplazo), y se debe identificar cuál es efectivamente el que invalida la solución.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se requiere entender bien la correspondencia entre cada variable y el contexto, y seguir la lógica del método de reducción hasta el momento del reemplazo, para ver por qué sustituir el valor en la ecuación equivocada o con un signo incorrecto cambia el conjunto de soluciones y hace que la respuesta final no se ajuste a la situación.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q41_v11",
+      "scenario_description": "Se mantiene el contexto de monedas de dos valores, pero el procedimiento del personaje se describe casi íntegramente en lenguaje natural, con pocas fórmulas explícitas (por ejemplo: \"Sea x el número de monedas de $100 y y el de $500. Como el total de monedas es 36, escribe... Luego, para eliminar x, multiplica la segunda ecuación por -100 y suma\"). En una de estas descripciones verbales hay un desfase entre lo que dice que hace y lo que realmente permitiría el método de reducción (por ejemplo, declara que elimina x, pero el factor elegido solo cambia los coeficientes sin anular ninguno). Las alternativas reproducen frases concretas del procedimiento y el estudiante debe elegir cuál no se justifica correctamente según el sistema planteado.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Obliga a traducir entre lenguaje verbal y algebraico, verificando si la operación descrita realmente implementa la reducción adecuada; el estudiante debe saber por qué la elección del factor y la suma de ecuaciones funcionan (o no) para eliminar una variable, más allá de ver solo coeficientes numéricos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    },
+    {
+      "variant_id": "Q41_v12",
+      "scenario_description": "Se plantea un mismo problema de dos tipos de monedas, y se muestran lado a lado los procedimientos de dos estudiantes (Ana y Bruno) que usan el método de reducción con el mismo sistema inicial. Ambos describen sus pasos; en uno de los procedimientos, el error está en la combinación lineal de ecuaciones (por ejemplo, suma mal después de multiplicar) y en el otro todos los pasos son correctos. Las opciones de respuesta cruzan quién se equivoca y en qué parte del razonamiento (\"Solo Ana, al sumar las ecuaciones\", \"Solo Bruno, al plantear la ecuación del dinero\", \"Ambos\", \"Ninguno\").",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe comparar dos cadenas de razonamiento y decidir cuál respeta el método de reducción y cuál no, identificando el paso preciso en que un procedimiento deja de ser equivalente al sistema original; esto demanda entender la lógica del método en lugar de seguir una sola secuencia mecánicamente.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "context_to_model_match"
+    },
+    {
+      "variant_id": "Q41_v13",
+      "scenario_description": "Se propone un contexto levemente distinto donde una de las cantidades se interpreta como un descuento o deuda (por ejemplo, una persona compra boletos, pero uno de los valores representa un reembolso), lo que lleva a una ecuación con un término negativo en el sistema. La persona plantea bien el sistema con ese signo negativo y luego intenta resolver por reducción multiplicando una ecuación y sumando. El error aparece en el paso donde maneja los signos al sumar las ecuaciones: trata dos términos con signos opuestos como si tuvieran el mismo signo, alterando el resultado de la combinación lineal. La pregunta pide identificar cuál paso deja de ser válido considerando el significado de los signos en la situación y en las ecuaciones.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Exige comprender cómo los signos en las ecuaciones reflejan ganancias y pérdidas en el contexto y por qué al sumar ecuaciones deben respetarse esos signos; el estudiante debe reconocer que el método de reducción se basa en cancelar términos opuestos, no en ignorar los signos cuando conviene, lo que evita una revisión puramente calculadora.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "model_to_context_match"
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q64_v3" title="Q64_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la probabilidad de obtener cada cara de un dado cargado al lanzarlo.</p>
+    <table>
+      <tr>
+        <th>Número de la cara</th>
+        <th>Probabilidad</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>0,15</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>0,2</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>0,1</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>0,1</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>0,25</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>0,2</td>
+      </tr>
+    </table>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa correctamente la probabilidad de obtener un número mayor que 4 al lanzar este dado?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">0,25 × 0,2<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Obtener un número mayor que 4 significa obtener 5 o 6 en un solo lanzamiento. Esos casos se suman: 0,25 + 0,2 = 0,45. En cambio, 0,25 × 0,2 = 0,05, que no corresponde a la probabilidad pedida.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">0,25 + 0,2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Un número mayor que 4 puede ser 5 o 6. Según la tabla, P(5) = 0,25 y P(6) = 0,2. Entonces, P(mayor que 4) = 0,25 + 0,2 = 0,45.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">(0,25 + 0,2) / 2<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad de obtener un número mayor que 4 se calcula sumando las probabilidades de 5 y 6: 0,25 + 0,2 = 0,45. Esta opción da (0,25 + 0,2) / 2 = 0,45 / 2 = 0,225, que no es la probabilidad pedida.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">0,25 − 0,2<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad de obtener un número mayor que 4 incluye dos resultados: 5 y 6, por lo que se deben sumar sus probabilidades: 0,25 + 0,2 = 0,45. Esta opción da 0,25 − 0,2 = 0,05, que no representa la probabilidad solicitada.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar qué resultados cumplen la condición</strong></p>
+            <p>Se pide la probabilidad de obtener un número mayor que 4.</p>
+            <p>En un dado, los números mayores que 4 son 5 y 6.</p>
+          </li>
+          <li>
+            <p><strong>Buscar sus probabilidades en la tabla</strong></p>
+            <p>La probabilidad de obtener 5 es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>P</mi><mo>(</mo><mn>5</mn><mo>)</mo><mo>=</mo><mn>0,25</mn>
+              </mrow>
+            </math>
+            <p>La probabilidad de obtener 6 es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>P</mi><mo>(</mo><mn>6</mn><mo>)</mo><mo>=</mo><mn>0,2</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Sumar las probabilidades favorables</strong></p>
+            <p>Como en un solo lanzamiento no puede salir 5 y 6 al mismo tiempo, los casos favorables son excluyentes y se suman:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>P</mi><mo>(</mo><mtext>número mayor que 4</mtext><mo>)</mo>
+                <mo>=</mo>
+                <mi>P</mi><mo>(</mo><mn>5</mn><mo>)</mo>
+                <mo>+</mo>
+                <mi>P</mi><mo>(</mo><mn>6</mn><mo>)</mo>
+              </mrow>
+            </math>
+            <p>Reemplazando:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>P</mi><mo>(</mo><mtext>número mayor que 4</mtext><mo>)</mo>
+                <mo>=</mo>
+                <mn>0,25</mn>
+                <mo>+</mo>
+                <mn>0,2</mn>
+                <mo>=</mo>
+                <mn>0,45</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Comparar con las alternativas</strong></p>
+            <p>La expresión que representa correctamente ese cálculo es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>0,25</mn><mo>+</mo><mn>0,2</mn>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

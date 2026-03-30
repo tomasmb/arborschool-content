@@ -1,0 +1,219 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q37_v7" title="Q37_v7" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      Se presenta la siguiente resolución de un estudiante para la ecuación
+      <m:math>
+        <m:mrow>
+          <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>26</m:mn>
+        </m:mrow>
+      </m:math>:
+      <br />
+      Paso 1:
+      <m:math>
+        <m:mrow>
+          <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>26</m:mn>
+        </m:mrow>
+      </m:math>
+      <br />
+      Paso 2:
+      <m:math>
+        <m:mrow>
+          <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>26</m:mn><m:mo>+</m:mo><m:mn>5</m:mn>
+        </m:mrow>
+      </m:math>
+      <br />
+      Paso 3:
+      <m:math>
+        <m:mrow>
+          <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>31</m:mn>
+        </m:mrow>
+      </m:math>
+      <br />
+      Paso 4:
+      <m:math>
+        <m:mrow>
+          <m:mi>x</m:mi><m:mo>=</m:mo>
+          <m:mfrac>
+            <m:mn>31</m:mn>
+            <m:mn>3</m:mn>
+          </m:mfrac>
+        </m:mrow>
+      </m:math>
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿En qué paso se comete el primer error?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Paso 1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En el paso 1 solo se copia la ecuación original 3x + 5 = 26, por lo que todavía no hay error. El primer error aparece recién al pasar de 3x + 5 = 26 a 3x = 26 + 5, porque para despejar se debe restar 5 en ambos lados: 3x = 26 − 5 = 21.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Paso 2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El primer error está en el paso 2. Desde 3x + 5 = 26, al trasladar el 5 al otro lado se debe restar 5, no sumar 5. El procedimiento correcto es 3x = 26 − 5 = 21, no 3x = 26 + 5 = 31.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Paso 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si en el paso 2 se escribió 3x = 26 + 5, entonces el paso 3, 3x = 31, sí calcula correctamente 26 + 5 = 31. Por eso el primer error no está en el paso 3, sino antes, en el paso 2. El valor correcto debía ser 26 − 5 = 21.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Paso 4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si en el paso 3 se tiene 3x = 31, entonces dividir ambos lados por 3 da correctamente x = 31/3. Por eso el paso 4 es coherente con el paso anterior. El primer error ocurrió antes, cuando se pasó de 3x + 5 = 26 a 3x = 26 + 5 en vez de 3x = 26 − 5.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Revisión paso a paso de la resolución</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Revisar la ecuación inicial</strong></p>
+            <p>La ecuación dada es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>26</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>El paso 1 repite correctamente la ecuación original, así que aquí no hay error.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Despejar el término con x</strong></p>
+            <p>Para eliminar el <m:math><m:mrow><m:mn>5</m:mn></m:mrow></m:math> del lado izquierdo, se debe restar <m:math><m:mrow><m:mn>5</m:mn></m:mrow></m:math> en ambos lados de la ecuación:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>−</m:mo><m:mn>5</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>26</m:mn><m:mo>−</m:mo><m:mn>5</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Entonces:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>21</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>El estudiante escribió:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>26</m:mn><m:mo>+</m:mo><m:mn>5</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Eso es incorrecto, porque cambió el signo. Por lo tanto, el primer error está en el paso 2.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Continuar correctamente desde el paso 2 correcto</strong></p>
+            <p>Como ya vimos, la ecuación correcta es:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>3</m:mn><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>21</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Dividir ambos lados por 3</strong></p>
+            <p>Como <m:math><m:mrow><m:mn>3</m:mn><m:mo>≠</m:mo><m:mn>0</m:mn></m:mrow></m:math>, se puede dividir ambos lados por <m:math><m:mrow><m:mn>3</m:mn></m:mrow></m:math>:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>x</m:mi><m:mo>=</m:mo>
+                <m:mfrac>
+                  <m:mn>21</m:mn>
+                  <m:mn>3</m:mn>
+                </m:mfrac>
+              </m:mrow>
+            </m:math>
+            <p>Y como</p>
+            <m:math>
+              <m:mrow>
+                <m:mfrac>
+                  <m:mn>21</m:mn>
+                  <m:mn>3</m:mn>
+                </m:mfrac>
+                <m:mo>=</m:mo>
+                <m:mn>7</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>se obtiene:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>x</m:mi><m:mo>=</m:mo><m:mn>7</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El primer error se comete en el <strong>Paso 2</strong>, porque al trasladar el <m:math><m:mrow><m:mn>5</m:mn></m:mrow></m:math> al otro lado de la ecuación debía cambiar a resta:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>26</m:mn><m:mo>−</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>21</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

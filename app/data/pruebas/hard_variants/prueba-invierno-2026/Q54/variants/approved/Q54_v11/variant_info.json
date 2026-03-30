@@ -1,0 +1,121 @@
+{
+  "variant_id": "Q54_v11",
+  "source_question_id": "Q54",
+  "source_test_id": "prueba-invierno-2026",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q54_v11",
+    "scenario_description": "Se presenta un gráfico de barras VERTICALES donde el eje horizontal muestra a cuatro profesores (Profesor A, B, C y D). Para cada profesor se agrupan cinco barras más estrechas que representan la cantidad de tareas corregidas en cada día (lunes a viernes), con un código de colores para los días. El eje vertical va de 0 a 30 tareas. En el enunciado se indica que 'La meta diaria de corrección es de al menos 20 tareas por día'. No hay línea de meta dibujada, la referencia está solo en el texto. Se plantea: 'Se quiere reconocer al profesor que tuvo el MENOR número de días en que NO llegó a las 20 tareas diarias (es decir, el que más se acercó a cumplir siempre la meta). ¿Cuál profesor será reconocido?'. Los datos están construidos para que el profesor con menos días bajo 20 no sea necesariamente el que tenga la mayor suma total de tareas, generando posibles confusiones visuales.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "required_reasoning": "El estudiante debe leer el gráfico a dos niveles: por profesor, decidir en qué días la barra asociada a ese día queda bajo 20 y contar esos días 'fallidos'; luego comparar quién tiene el mínimo de fallas. No basta con identificar quién tiene barras más altas en general o mayor total semanal, porque el criterio es el mínimo número de días sin llegar a 20. Esto obliga a comprender la relación entre meta diaria, días cumplidos/no cumplidos y la selección basada en un extremo (el menor número de días de incumplimiento), evitando un uso mecánico de 'el que más barras altas tenga'.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": true,
+    "image_description": "Gráfico de barras verticales con el eje horizontal mostrando los profesores A, B, C, D. Encima de cada uno hay cinco barras pequeñas (una por día de lunes a viernes), con distintos colores. El eje vertical indica de 0 a 30 tareas corregidas por día. No hay línea de meta dibujada; la referencia de 20 tareas aparece en el texto.",
+    "selected_shape_id": "extremum_focus"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "forma_pregunta",
+      "distractor_dominante"
+    ],
+    "main_risk_checked": "Se mantuvo la interpretación del gráfico como evidencia primaria, cambiando solo la organización visual, el foco en el mínimo de días de incumplimiento y diseñando un profesor con mayor total semanal pero más días bajo la meta para evitar que el ítem se mecanice como 'el que más barras altas tiene'."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-PROB-01-18"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de afirmaciones basadas en datos"
+    ],
+    "family_id": "graph_interpretation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "single_series_visual_claim",
+        "description": "Mantener una representación primaria de una sola serie y pedir validar una afirmación breve sobre la lectura central del gráfico.",
+        "required_changes": [
+          "Afirmaciones nuevas",
+          "Valores o rótulos nuevos en la representación"
+        ],
+        "forbidden_changes": [
+          "Agregar series extra",
+          "Reemplazar la evidencia primaria por una lista que regale la respuesta"
+        ]
+      },
+      {
+        "shape_id": "extremum_focus",
+        "description": "Cambiar el foco puntual de lectura hacia identificar el máximo o mínimo relevante dentro de la misma representación primaria.",
+        "required_changes": [
+          "Nuevo foco de lectura",
+          "Distractores visuales plausibles"
+        ],
+        "forbidden_changes": [
+          "Cambiar la polaridad extrema",
+          "Eliminar la necesidad de interpretar la representación"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "high",
+    "main_skill": "REP",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.45,
+    "task_form": "representation_interpretation",
+    "operation_signature": "graph_interpretation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": true,
+    "visual_role": "data_bearing",
+    "representation_interpretation": true,
+    "claim_evaluation": false,
+    "cognitive_action": "interpret_representation",
+    "solution_structure": "representation_reading",
+    "auxiliary_transformations": 0,
+    "reference_relation_count": 0,
+    "data_burden_score": 0,
+    "formula_shape": "not_applicable",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "not_applicable",
+    "representation_series_count": "single_series",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "representation_primary",
+    "explicit_dataset_policy": "must_not_replace_representation",
+    "representation_must_remain_primary": true,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=representation_interpretation",
+      "operation_signature=graph_interpretation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_keep_representation_as_primary_evidence",
+      "must_remain_self_contained"
+    ]
+  },
+  "postprocess_summary": {}
+}

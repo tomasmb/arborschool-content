@@ -1,0 +1,234 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q53_v2" title="Q53_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se tienen cuatro cajas con canicas rojas y azules.</p>
+    <p>
+      Caja 1: 3 canicas rojas y 3 canicas azules (6 en total).<br />
+      Caja 2: 5 canicas rojas y 3 canicas azules (8 en total).<br />
+      Caja 3: 4 canicas rojas y 7 canicas azules (11 en total).<br />
+      Caja 4: 9 canicas rojas y 0 canicas azules (9 en total).
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>
+        Se quiere elegir una caja en que sea más probable sacar una canica roja que una azul, pero que no sea seguro que salga roja.
+        
+        ¿Cuál de las cajas cumple esta condición?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Caja 1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la Caja 1 hay 3 canicas rojas y 3 canicas azules. Como la cantidad de rojas y azules es la misma, sacar roja y sacar azul tienen la misma probabilidad. Por eso no se cumple que sea más probable sacar una roja que una azul.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Caja 2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En la Caja 2 hay 5 canicas rojas y 3 canicas azules. Como hay más rojas que azules, es más probable sacar una roja que una azul. Además, no es seguro que salga roja, porque también hay 3 canicas azules en la caja.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Caja 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la Caja 3 hay 4 canicas rojas y 7 canicas azules. Como hay menos rojas que azules, es menos probable sacar una roja que una azul. Por eso esta caja no cumple la condición pedida.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Caja 4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En la Caja 4 hay 9 canicas rojas y 0 canicas azules. Entonces siempre sale roja y nunca sale azul. Aunque roja es más probable que azul, aquí sí es seguro que salga roja, y el enunciado pide que no sea seguro.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la condición del problema</strong></p>
+            <p>La caja buscada debe cumplir dos condiciones al mismo tiempo:</p>
+            <p>1) que sacar una canica roja sea más probable que sacar una azul;</p>
+            <p>2) que no sea seguro sacar una roja.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar la Caja 1</strong></p>
+            <p>La Caja 1 tiene 3 rojas y 3 azules, con 6 canicas en total.</p>
+            <p>Probabilidad de roja:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>3</mn>
+                  <mn>6</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Probabilidad de azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>3</mn>
+                  <mn>6</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>Las probabilidades son iguales, así que no cumple que roja sea más probable que azul.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar la Caja 2</strong></p>
+            <p>La Caja 2 tiene 5 rojas y 3 azules, con 8 canicas en total.</p>
+            <p>Probabilidad de roja:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mfrac>
+                <mn>5</mn>
+                <mn>8</mn>
+              </mfrac>
+            </math>
+            <p>Probabilidad de azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mfrac>
+                <mn>3</mn>
+                <mn>8</mn>
+              </mfrac>
+            </math>
+            <p>Como</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>8</mn>
+                </mfrac>
+                <mo>&gt;</mo>
+                <mfrac>
+                  <mn>3</mn>
+                  <mn>8</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>sacar roja es más probable que sacar azul.</p>
+            <p>Además, no es seguro sacar roja porque hay 3 canicas azules, es decir, la probabilidad de roja no es 1.</p>
+            <p>Entonces la Caja 2 sí cumple ambas condiciones.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar la Caja 3</strong></p>
+            <p>La Caja 3 tiene 4 rojas y 7 azules, con 11 canicas en total.</p>
+            <p>Probabilidad de roja:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mfrac>
+                <mn>4</mn>
+                <mn>11</mn>
+              </mfrac>
+            </math>
+            <p>Probabilidad de azul:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mfrac>
+                <mn>7</mn>
+                <mn>11</mn>
+              </mfrac>
+            </math>
+            <p>Como</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>4</mn>
+                  <mn>11</mn>
+                </mfrac>
+                <mo>&lt;</mo>
+                <mfrac>
+                  <mn>7</mn>
+                  <mn>11</mn>
+                </mfrac>
+              </mrow>
+            </math>
+            <p>no es más probable sacar roja que azul.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Revisar la Caja 4</strong></p>
+            <p>La Caja 4 tiene 9 rojas y 0 azules, con 9 canicas en total.</p>
+            <p>Probabilidad de roja:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mfrac>
+                  <mn>9</mn>
+                  <mn>9</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>1</mn>
+              </mrow>
+            </math>
+            <p>Esto significa que es seguro sacar roja. Por lo tanto, no cumple la condición de que no sea seguro.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única caja en la que es más probable sacar una canica roja que una azul, pero sin que sea seguro que salga roja, es la <strong>Caja 2</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -37,6 +37,13 @@ _HTML_ENTITY_MAP: dict[str, str] = {
     "deg": "°", "sup2": "²", "sup3": "³", "frac12": "½", "frac14": "¼",
     "laquo": "«", "raquo": "»", "thinsp": "\u2009",
     "div": "÷", "leq": "≤", "ctdot": "⋯",
+    "middot": "·", "CenterDot": "·",
+    "ang": "∠", "prime": "′", "Prime": "″",
+    "micro": "μ", "permil": "‰",
+    "forall": "∀", "exist": "∃", "empty": "∅",
+    "nabla": "∇", "isin": "∈", "notin": "∉",
+    "sum": "∑", "prod": "∏", "radic": "√",
+    "prop": "∝", "part": "∂",
 }
 
 _ENTITY_RE = re.compile(r"&([a-zA-Z][a-zA-Z0-9]*);")

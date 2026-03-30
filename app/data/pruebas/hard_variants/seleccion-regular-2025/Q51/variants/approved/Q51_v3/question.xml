@@ -1,0 +1,211 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q51_v3" title="Q51_v3" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una encuesta, los estudiantes indicaron su deporte favorito, eligiendo solo una de las opciones: Fútbol, Básquetbol, Natación y Atletismo. En la siguiente tabla se muestran las frecuencias obtenidas para cada deporte. En esta encuesta participaron en total 20 estudiantes.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Deporte</th>
+            <th>Frecuencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fútbol</td>
+            <td>9</td>
+          </tr>
+          <tr>
+            <td>Básquetbol</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Natación</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>Atletismo</td>
+            <td>4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Si se elige al azar a uno de los estudiantes encuestados, ¿qué fracción representa la probabilidad de que prefiera el Fútbol?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mn>9</m:mn>
+            <m:mn>19</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad se calcula como casos favorables sobre total de estudiantes. Hay 9 estudiantes que prefieren Fútbol y participaron 20 estudiantes en total, por lo que la fracción correcta es 9 sobre 20. La fracción 9 sobre 19 no corresponde al total indicado en el enunciado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>9</m:mn>
+            <m:mn>9</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad se calcula como casos favorables sobre total de estudiantes. Hay 9 estudiantes que prefieren Fútbol, pero el total de estudiantes es 20. Por eso la fracción correcta es 9 sobre 20. La fracción 9 sobre 9 sería 1 y significaría que todos prefieren Fútbol, lo que contradice la tabla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mn>9</m:mn>
+            <m:mn>20</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">¡Correcto! La probabilidad de elegir a un estudiante que prefiera Fútbol es casos favorables sobre total. Según la tabla, 9 estudiantes prefieren Fútbol y participaron 20 estudiantes en total, así que la probabilidad es 9 sobre 20.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mn>9</m:mn>
+            <m:mn>13</m:mn>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. La probabilidad se calcula como casos favorables sobre total de estudiantes. Hay 9 estudiantes que prefieren Fútbol y el total encuestado es 20, así que la fracción correcta es 9 sobre 20. La fracción 9 sobre 13 no usa el total de la encuesta y por eso no representa la probabilidad pedida.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar los casos favorables</strong></p>
+            <p>Según la tabla, 9 estudiantes prefieren Fútbol.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar el total de casos posibles</strong></p>
+            <p>El enunciado indica que participaron 20 estudiantes en total.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Aplicar la fórmula de probabilidad</strong></p>
+            <p>La probabilidad de elegir al azar a un estudiante que prefiera Fútbol es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mtext>probabilidad</m:mtext>
+                  <m:mo>=</m:mo>
+                  <m:mfrac>
+                    <m:mn>9</m:mn>
+                    <m:mn>20</m:mn>
+                  </m:mfrac>
+                </m:mrow>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar con la suma de frecuencias</strong></p>
+            <p>Sumamos las frecuencias de todos los deportes:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>9</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>3</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>4</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>20</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>La suma coincide con el total de estudiantes, por lo que el cálculo es consistente.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La fracción que representa la probabilidad de que un estudiante elegido al azar prefiera el Fútbol es:</p>
+            <p>
+              <m:math>
+                <m:mfrac>
+                  <m:mn>9</m:mn>
+                  <m:mn>20</m:mn>
+                </m:mfrac>
+              </m:math>
+            </p>
+            <p>La alternativa correcta es la <strong>C</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

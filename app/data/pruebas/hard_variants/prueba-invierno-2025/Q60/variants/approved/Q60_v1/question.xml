@@ -1,0 +1,146 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q60_v1" title="Q60_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un grupo de datos, la desviación de un dato se calcula como 
+      <m:math>
+        <m:mi>x</m:mi>
+        <m:mo>−</m:mo>
+        <m:mi>p</m:mi>
+      </m:math>, donde x es el dato y p es el promedio de los datos del grupo.
+    </p>
+    <p>En un experimento se midió cinco veces la masa (en gramos) de una misma pieza metálica, obteniéndose los valores 9,9; 10,0; 10,1; 10,4 y 10,6, cuyo promedio es 10,2. Aunque hay mediciones tanto por encima como por debajo del promedio, se desea analizar las desviaciones de cada medición respecto de él.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>Si se calcula la desviación de cada una de estas cinco mediciones, ¿cuál es la mediana de estas cinco desviaciones?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">0,0<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Las desviaciones respecto de 10,2 son: 9,9 − 10,2 = −0,3; 10,0 − 10,2 = −0,2; 10,1 − 10,2 = −0,1; 10,4 − 10,2 = 0,2; 10,6 − 10,2 = 0,4. Ordenadas, quedan −0,3; −0,2; −0,1; 0,2; 0,4, y la mediana es el tercer valor, −0,1, no 0,0.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">-0,1<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Las desviaciones respecto de 10,2 son: 9,9 − 10,2 = −0,3; 10,0 − 10,2 = −0,2; 10,1 − 10,2 = −0,1; 10,4 − 10,2 = 0,2; 10,6 − 10,2 = 0,4. Al ordenarlas, se obtiene −0,3; −0,2; −0,1; 0,2; 0,4, y la mediana es el valor central, −0,1.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">0,2<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Las desviaciones son −0,3; −0,2; −0,1; 0,2; 0,4. Como hay cinco datos, la mediana es el tercer valor al ordenar, no el cuarto. El tercer valor es −0,1, mientras que 0,2 corresponde al cuarto valor.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">-0,2<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Al calcular las desviaciones se obtiene −0,3; −0,2; −0,1; 0,2; 0,4. Como son cinco valores, la mediana es el tercer valor de la lista ordenada. El tercer valor es −0,1, no −0,2, que corresponde al segundo valor.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular cada desviación</strong></p>
+            <p>La desviación se obtiene restando el promedio <m:math><m:mi>p</m:mi></m:math> al dato <m:math><m:mi>x</m:mi></m:math>, es decir, <m:math><m:mi>x</m:mi><m:mo>−</m:mo><m:mi>p</m:mi></m:math>. Aquí el promedio es 10,2.</p>
+            <p>Para 9,9:
+              <m:math><m:mn>9,9</m:mn><m:mo>−</m:mo><m:mn>10,2</m:mn><m:mo>=</m:mo><m:mn>−0,3</m:mn></m:math>
+            </p>
+            <p>Para 10,0:
+              <m:math><m:mn>10,0</m:mn><m:mo>−</m:mo><m:mn>10,2</m:mn><m:mo>=</m:mo><m:mn>−0,2</m:mn></m:math>
+            </p>
+            <p>Para 10,1:
+              <m:math><m:mn>10,1</m:mn><m:mo>−</m:mo><m:mn>10,2</m:mn><m:mo>=</m:mo><m:mn>−0,1</m:mn></m:math>
+            </p>
+            <p>Para 10,4:
+              <m:math><m:mn>10,4</m:mn><m:mo>−</m:mo><m:mn>10,2</m:mn><m:mo>=</m:mo><m:mn>0,2</m:mn></m:math>
+            </p>
+            <p>Para 10,6:
+              <m:math><m:mn>10,6</m:mn><m:mo>−</m:mo><m:mn>10,2</m:mn><m:mo>=</m:mo><m:mn>0,4</m:mn></m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Escribir las cinco desviaciones ordenadas</strong></p>
+            <p>Las desviaciones ya ordenadas de menor a mayor son:</p>
+            <p>
+              <m:math>
+                <m:mn>−0,3</m:mn>
+                <m:mo>;</m:mo>
+                <m:mn>−0,2</m:mn>
+                <m:mo>;</m:mo>
+                <m:mn>−0,1</m:mn>
+                <m:mo>;</m:mo>
+                <m:mn>0,2</m:mn>
+                <m:mo>;</m:mo>
+                <m:mn>0,4</m:mn>
+              </m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Identificar la mediana</strong></p>
+            <p>Como hay 5 datos, la mediana es el valor central, es decir, el tercer valor de la lista ordenada.</p>
+            <p>El tercer valor es:
+              <m:math><m:mn>−0,1</m:mn></m:math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La mediana de las cinco desviaciones es <m:math><m:mn>−0,1</m:mn></m:math>. Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

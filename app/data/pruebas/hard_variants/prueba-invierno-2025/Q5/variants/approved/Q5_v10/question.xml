@@ -1,0 +1,226 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q5_v10" title="Q5_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una balanza de precisión se pesan cuatro cajas y se registran sus masas.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Caja</th>
+          <th>Peso en kilogramos</th>
+        </tr>
+        <tr>
+          <td>W</td>
+          <td>4,08</td>
+        </tr>
+        <tr>
+          <td>X</td>
+          <td>4,8</td>
+        </tr>
+        <tr>
+          <td>Y</td>
+          <td>4,075</td>
+        </tr>
+        <tr>
+          <td>Z</td>
+          <td>4,805</td>
+        </tr>
+      </table>
+    </div>
+    <p>¿Cuál de las siguientes afirmaciones sobre el peso de las cajas es coherente con estas mediciones?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">La caja Y es la más liviana.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! Si se escriben todas las masas con tres decimales, quedan W = 4,080; X = 4,800; Y = 4,075; Z = 4,805. Como 4,075 es menor que 4,080, 4,800 y 4,805, la caja Y es la más liviana.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">La caja X pesa más que la caja Z.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Al comparar con tres decimales, X = 4,800 y Z = 4,805. Como 4,800 es menor que 4,805, la caja X pesa menos que la caja Z, no más.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Las cajas W y X pesan lo mismo.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. W = 4,08 equivale a 4,080 y X = 4,8 equivale a 4,800. Como 4,080 es distinto de 4,800, las cajas W y X no pesan lo mismo.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">La caja W pesa más que la caja X pero menos que la caja Z.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. W = 4,08 equivale a 4,080 y X = 4,8 equivale a 4,800. Como 4,080 es menor que 4,800, ya falla la primera parte de la afirmación: W no pesa más que X. Aunque 4,080 sí es menor que 4,805, la afirmación completa es falsa.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Escribir todos los pesos con la misma cantidad de decimales</strong></p>
+            <p>Para comparar mejor, expresamos todas las masas con tres cifras decimales:</p>
+            <p>W:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,08</mn>
+                  <mo>=</mo>
+                  <mn>4,080</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>X:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,8</mn>
+                  <mo>=</mo>
+                  <mn>4,800</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Y:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,075</mn>
+                  <mo>=</mo>
+                  <mn>4,075</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Z:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,805</mn>
+                  <mo>=</mo>
+                  <mn>4,805</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Ordenar las masas de menor a mayor</strong></p>
+            <p>Ahora comparamos los valores:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,075</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,080</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,800</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,805</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Por lo tanto, el orden es: Y, W, X, Z.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Revisar cada afirmación</strong></p>
+            <p><em>Opción A:</em> “La caja Y es la más liviana.” Sí, porque
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,075</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,080</mn>
+                  <mo>,</mo>
+                  <mn>4,800</mn>
+                  <mo>,</mo>
+                  <mn>4,805</mn>
+                </mrow>
+              </math>.
+            </p>
+            <p><em>Opción B:</em> “La caja X pesa más que la caja Z.” Es falsa, porque
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,800</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,805</mn>
+                </mrow>
+              </math>.
+            </p>
+            <p><em>Opción C:</em> “Las cajas W y X pesan lo mismo.” Es falsa, porque
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,080</mn>
+                  <mo>≠</mo>
+                  <mn>4,800</mn>
+                </mrow>
+              </math>.
+            </p>
+            <p><em>Opción D:</em> “La caja W pesa más que la caja X pero menos que la caja Z.” Es falsa, porque la primera comparación no se cumple:
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>4,080</mn>
+                  <mo>&lt;</mo>
+                  <mn>4,800</mn>
+                </mrow>
+              </math>.
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La afirmación coherente con las mediciones es la alternativa A: la caja Y es la más liviana.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

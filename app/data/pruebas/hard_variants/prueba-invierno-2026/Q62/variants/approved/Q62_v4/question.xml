@@ -1,0 +1,197 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v4" title="Q62_v4" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>En un colegio se ofrecen talleres extraprogramáticos de Teatro, Danza, Música y Pintura, en horario de mañana y de tarde. En la siguiente tabla se presenta el número de participantes en cada taller según el horario.</p>
+    <div>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Taller</th>
+            <th>Mañana</th>
+            <th>Tarde</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Teatro</td>
+            <td>5</td>
+            <td>6</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>Danza</td>
+            <td>4</td>
+            <td>8</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>Música</td>
+            <td>9</td>
+            <td>7</td>
+            <td>16</td>
+          </tr>
+          <tr>
+            <td>Pintura</td>
+            <td>3</td>
+            <td>5</td>
+            <td>8</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>21</td>
+            <td>26</td>
+            <td>47</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Si se elige al azar un participante de todos los inscritos en los talleres, ¿cuál es la probabilidad de que asista al taller de Pintura en horario de tarde?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>5</m:mn></m:mrow>
+            <m:mrow><m:mn>47</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! En Pintura en horario de tarde hay 5 participantes y el total de inscritos en todos los talleres es 47. Entonces la probabilidad pedida es <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>47</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>5</m:mn></m:mrow>
+            <m:mrow><m:mn>26</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El valor 26 corresponde al total de participantes de la tarde, pero el enunciado dice que se elige al azar un participante de todos los inscritos en los talleres, y ese total es 47. Como los casos favorables son 5, la probabilidad correcta es <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>47</m:mn></m:mrow></m:math>, no <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>26</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>5</m:mn></m:mrow>
+            <m:mrow><m:mn>8</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El valor 8 corresponde al total de participantes del taller de Pintura, pero el enunciado pide elegir a una persona de todos los inscritos en los talleres, es decir, de 47 personas. Como en Pintura en horario de tarde hay 5 participantes, la probabilidad correcta es <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>47</m:mn></m:mrow></m:math>, no <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>8</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mfrac>
+            <m:mrow><m:mn>8</m:mn></m:mrow>
+            <m:mrow><m:mn>47</m:mn></m:mrow>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. El valor 8 corresponde al total de participantes del taller de Pintura, sumando mañana y tarde, porque <m:math><m:mrow><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math>. Pero el problema pide solo Pintura en horario de tarde, que son 5 participantes. Como el total de inscritos es 47, la probabilidad correcta es <m:math><m:mrow><m:mn>5</m:mn><m:mo>/</m:mo><m:mn>47</m:mn></m:mrow></m:math>, no <m:math><m:mrow><m:mn>8</m:mn><m:mo>/</m:mo><m:mn>47</m:mn></m:mrow></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar el total de casos posibles</strong></p>
+            <p>El enunciado dice que se elige al azar un participante de todos los inscritos en los talleres.</p>
+            <p>Por lo tanto, el total de casos posibles es el total general de la tabla: 47.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar los casos favorables</strong></p>
+            <p>Se pide que el participante asista al taller de Pintura en horario de tarde.</p>
+            <p>En la tabla, en la fila Pintura y la columna Tarde, aparecen 5 participantes.</p>
+            <p>Entonces, los casos favorables son 5.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Formar la probabilidad</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p>casos favorables dividido por casos posibles.</p>
+            <p>Así, la probabilidad es <m:math><m:mfrac><m:mrow><m:mn>5</m:mn></m:mrow><m:mrow><m:mn>47</m:mn></m:mrow></m:mfrac></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar las alternativas</strong></p>
+            <p>La alternativa A muestra <m:math><m:mfrac><m:mrow><m:mn>5</m:mn></m:mrow><m:mrow><m:mn>47</m:mn></m:mrow></m:mfrac></m:math>, que coincide con el cálculo correcto.</p>
+            <p>La alternativa B usa 26 como total, pero 26 corresponde solo a los inscritos de la tarde.</p>
+            <p>La alternativa C usa 8 como total, pero 8 corresponde al total del taller de Pintura.</p>
+            <p>La alternativa D usa 8 como casos favorables, pero 8 corresponde a Pintura mañana y tarde juntas, ya que <m:math><m:mrow><m:mn>3</m:mn><m:mo>+</m:mo><m:mn>5</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La probabilidad de elegir al azar un participante que asista a Pintura en horario de tarde es <m:math><m:mfrac><m:mrow><m:mn>5</m:mn></m:mrow><m:mrow><m:mn>47</m:mn></m:mrow></m:mfrac></m:math>.</p>
+            <p>La respuesta correcta es la alternativa A.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

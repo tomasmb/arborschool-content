@@ -1,0 +1,231 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q58_v2" title="Q58_v2" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un supermercado se registró, para cuatro cajeros, la sucursal en la que trabajan, la cantidad de productos cobrados en un día y las horas trabajadas. Cada sucursal tiene dos cajeros.</p>
+    <div>
+      <table border="1">
+        <tr>
+          <th>Cajero</th>
+          <th>Sucursal</th>
+          <th>Productos cobrados en un día</th>
+          <th>Horas trabajadas en ese día</th>
+        </tr>
+        <tr>
+          <td>Cajero 1</td>
+          <td>Sucursal A</td>
+          <td>40</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Cajero 2</td>
+          <td>Sucursal A</td>
+          <td>720</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>Cajero 3</td>
+          <td>Sucursal B</td>
+          <td>450</td>
+          <td>9</td>
+        </tr>
+        <tr>
+          <td>Cajero 4</td>
+          <td>Sucursal B</td>
+          <td>90</td>
+          <td>1</td>
+        </tr>
+      </table>
+    </div>
+    <p>¿En cuál sucursal se cobró, en promedio, una mayor cantidad de productos por hora de trabajo, considerando a todos sus cajeros?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">En la Sucursal A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! En la sucursal A se cobraron en total 40 + 720 = 760 productos y se trabajaron 1 + 9 = 10 horas, por lo que el promedio es 760 ÷ 10 = 76 productos por hora. En la sucursal B se cobraron 450 + 90 = 540 productos en 9 + 1 = 10 horas, es decir, 540 ÷ 10 = 54 productos por hora. Como 76 &gt; 54, la sucursal A tiene el mayor promedio.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">En la Sucursal B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. En la sucursal B el promedio total es (450 + 90) ÷ (9 + 1) = 540 ÷ 10 = 54 productos por hora. En la sucursal A el promedio total es (40 + 720) ÷ (1 + 9) = 760 ÷ 10 = 76 productos por hora. Como 54 &lt; 76, la sucursal B no es la que tiene mayor promedio.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En ambas sucursales es igual<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Los promedios no son iguales. En la sucursal A, (40 + 720) ÷ (1 + 9) = 760 ÷ 10 = 76 productos por hora. En la sucursal B, (450 + 90) ÷ (9 + 1) = 540 ÷ 10 = 54 productos por hora. Como 76 ≠ 54, no son iguales.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Con la información entregada no es posible saberlo<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Sí es posible saberlo, porque se conoce para cada sucursal el total de productos cobrados y el total de horas trabajadas por sus dos cajeros. Sucursal A: 40 + 720 = 760 productos y 1 + 9 = 10 horas, entonces 760 ÷ 10 = 76 productos por hora. Sucursal B: 450 + 90 = 540 productos y 9 + 1 = 10 horas, entonces 540 ÷ 10 = 54 productos por hora. Como 76 &gt; 54, sí se puede concluir que la sucursal A tiene mayor promedio.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Sumar los productos cobrados en cada sucursal</strong></p>
+            <p>Sucursal A: Cajero 1 y Cajero 2.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>40</mn>
+                  <mo>+</mo>
+                  <mn>720</mn>
+                  <mo>=</mo>
+                  <mn>760</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Sucursal B: Cajero 3 y Cajero 4.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>450</mn>
+                  <mo>+</mo>
+                  <mn>90</mn>
+                  <mo>=</mo>
+                  <mn>540</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar las horas trabajadas en cada sucursal</strong></p>
+            <p>Sucursal A:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>1</mn>
+                  <mo>+</mo>
+                  <mn>9</mn>
+                  <mo>=</mo>
+                  <mn>10</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Sucursal B:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>9</mn>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                  <mo>=</mo>
+                  <mn>10</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el promedio de productos por hora en cada sucursal</strong></p>
+            <p>Promedio en la sucursal A:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mn>760</mn>
+                    <mn>10</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>76</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Promedio en la sucursal B:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mfrac>
+                    <mn>540</mn>
+                    <mn>10</mn>
+                  </mfrac>
+                  <mo>=</mo>
+                  <mn>54</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar los promedios</strong></p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>76</mn>
+                  <mo>&gt;</mo>
+                  <mn>54</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, la sucursal A cobró en promedio más productos por hora de trabajo.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La respuesta correcta es <strong>En la Sucursal A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,133 @@
+{
+  "source_question_id": "Q49",
+  "source_test_id": "prueba-invierno-2026",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q49_v1",
+      "scenario_description": "Un repartidor en una ciudad con calles en damero se mueve por tramos que quedan registrados en una tabla. La tabla tiene tres columnas: número de tramo, dirección (norte, sur, este, oeste) y distancia en cuadras (enteros positivos). Hay 5 tramos, mezclando desplazamientos en ambos ejes, de forma que el estudiante deba sumar y restar mentalmente en los dos ejes para hallar el resultado neto. La pregunta pide directamente: «¿Cuál es la posición final del repartidor respecto de su punto de partida?» y las alternativas son combinaciones de ‘a ___ cuadras al este/oeste y ___ cuadras al norte/sur’. La tabla reemplaza la lista en texto de la fuente, obligando a leer por filas y separar mentalmente las componentes horizontales y verticales.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe identificar en el registro tabular qué desplazamientos pertenecen al eje horizontal y cuáles al vertical, asignarles signo según la dirección opuesta (este vs oeste, norte vs sur), y luego sumar enteros con signo en cada eje. No basta seguir una ‘receta’ de leer el texto linealmente; debe comprender que cada fila aporta simultáneamente a un eje o al otro, y que el resultado final es la suma vectorial de todos los tramos.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q49_v2",
+      "scenario_description": "Se mantiene un contexto de barco que hace un recorrido con 5 movimientos, descritos en lista (en km) como en la fuente, pero con distancias y orden distintos. Después del recorrido, cuatro estudiantes proponen descripciones distintas de la ubicación final del barco (por ejemplo, «10 km al oeste y 2 km al norte», «… al este y … al sur», etc.). La pregunta es: «¿Cuál de las siguientes afirmaciones es consistente con el recorrido descrito?». Cada opción representa un posible par de sumas de enteros con errores típicos de signo y/o de combinar los ejes.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor"
+      ],
+      "required_reasoning": "El estudiante debe calcular el desplazamiento neto en cada eje y comparar su resultado con las afirmaciones propuestas, descartando aquellas donde se ha confundido el sentido de alguna dirección o se han sumado tramos de ejes distintos. No puede limitarse a ‘seguir la receta y marcar el número que le sale’, sino que debe verificar la consistencia entre su cálculo y la descripción verbal de cada alternativa, identificando errores conceptuales de signo o de suma parcial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q49_v3",
+      "scenario_description": "Se describe un dron que despega desde un punto considerado como origen. En lugar de detallar los movimientos como frases («3 m al norte», etc.), se presenta un registro con dos filas de enteros: una fila de desplazamientos horizontales (positivos para este, negativos para oeste) y otra de desplazamientos verticales (positivos para norte, negativos para sur). Por ejemplo, en el eje horizontal: +4, −7, +2, ...; en el eje vertical: −3, +5, −1, ... La consigna explica brevemente el código de signos y luego pregunta directamente: «¿Cuál es la posición final del dron respecto del punto de partida?». Las alternativas son descripciones en términos de km/m hacia los puntos cardinales, no en notación de pares ordenados.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe entender que los enteros con signo representan desplazamientos en direcciones opuestas y que sumar esos registros equivale a combinar movimientos norte-sur y este-oeste. Debe interpretar correctamente el significado de cada signo antes de sumar, en vez de seguir mecánicamente instrucciones del tipo ‘sumar norte con norte y restar sur’, trasladando conscientemente el código simbólico (+/−) al contexto espacial.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q49_v4",
+      "scenario_description": "Se fija de antemano una ubicación final deseada (por ejemplo, «el bote debe terminar 6 km al oeste y 4 km al norte de donde partió»). Luego se presentan cuatro posibles secuencias de movimientos (cada una es una lista breve de tramos con distancia y dirección cardinal). La pregunta es: «¿Cuál de las siguientes rutas podría llevar al bote desde su posición inicial hasta la ubicación indicada?». Solo una de las secuencias tiene un desplazamiento neto igual al vector final dado; las otras incluyen errores típicos de cancelación o exceso en uno de los ejes.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor"
+      ],
+      "required_reasoning": "En lugar de calcular solo un resultado final, el estudiante debe aplicar la suma de enteros con signo para evaluar el desplazamiento neto de varias rutas y compararlo con la condición final. Debe comprender por qué una combinación de movimientos equivalentes se compensa o se refuerza en cada eje, y no puede limitarse a un procedimiento lineal único; tiene que identificar qué secuencia representa la misma suma vectorial que la ubicación objetivo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q49_v5",
+      "scenario_description": "En un plano cuadriculado, un explorador parte desde un campamento cuya posición inicial se da como coordenadas enteras distintas de (0,0), por ejemplo (3, −2). Luego se entrega un registro (lista o tabla breve) de 5 movimientos en términos de direcciones cardinales y distancias enteras. Se pide: «¿Cuáles son las coordenadas finales del explorador en el plano?». Las alternativas combinan coordenadas enteras posibles, todas obtenibles por suma y resta sencilla.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe primero entender que cada movimiento modifica una de las componentes de la posición (x para este/oeste, y para norte/sur), sumar enteros con signo para hallar el desplazamiento neto en cada eje y luego aplicar ese desplazamiento a una posición inicial que no es el origen. Esto exige comprender la estructura de ‘posición inicial + cambio total’ en lugar de aplicar mecánicamente un cálculo asumido desde (0,0).",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q49_v6",
+      "scenario_description": "Se describe el recorrido de un personaje en una plaza cuadriculada mediante una lista de desplazamientos en pasos hacia el norte, sur, este y oeste. En un diagrama (vista de planta de la plaza) se señalan cuatro puntos A, B, C y D en diferentes posiciones respecto al origen (punto de partida). La pregunta es: «Tras realizar el recorrido descrito, ¿en cuál de los puntos marcados puede encontrarse el personaje?». Cada punto corresponde a un par de desplazamientos posibles (enteros en ambos ejes), de los que solo uno coincide con la suma neta correcta.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El estudiante debe traducir los pasos descritos en la lista a desplazamientos netos en la cuadrícula (sumando enteros con signo) y luego relacionar ese resultado con las posiciones marcadas A, B, C, D en el diagrama. No basta seguir un cálculo numérico aislado; debe conectar el resultado de la operación con una representación espacial y descartar puntos que reflejan errores típicos, como invertir un eje o confundir el sentido de una dirección.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": true,
+      "image_description": "Plano cuadriculado sencillo con el punto de partida en el centro y cuatro puntos etiquetados A, B, C, D en distintas posiciones (por ejemplo, uno al oeste y al sur, otro al este y al norte, etc.), sin mostrar el recorrido, solo la cuadricula y las marcas.",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q49_v7",
+      "scenario_description": "Se narra en un solo párrafo el recorrido de una persona que camina por calles rectas: «Primero avanza 6 cuadras hacia el norte, luego retrocede 3 cuadras hacia el sur…», alternando descripciones con verbos variados (avanza, retrocede, gira y camina, etc.) pero manteniendo siempre movimientos rectilíneos en los cuatro puntos cardinales y distancias enteras. No hay viñetas ni tabla; la información está integrada en el texto. Al final se pregunta: «¿Dónde se encuentra la persona respecto del lugar donde empezó?». Las opciones son descripciones cardinales finales como en la fuente.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe extraer de un texto continuo cada desplazamiento, identificar su dirección y magnitud, y traducirlo al lenguaje de sumas de enteros (positivos y negativos según el eje) antes de poder combinar los tramos. No puede apoyarse en la estructura ya segmentada de una lista; necesita comprender qué parte del texto corresponde a cada contribución a los ejes norte-sur y este-oeste y luego realizar las sumas con sentido de signo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q49_v8",
+      "scenario_description": "Se entrega la descripción de un recorrido de un barco con varios movimientos cardinales (similar en estructura al original). Luego se presentan cuatro ‘cálculos’ hechos por distintos estudiantes, cada uno mostrando cómo sumó los desplazamientos horizontales y verticales (por ejemplo, uno suma mal el oeste con el este, otro intercambia norte con sur, otro omite un tramo). Cada alternativa muestra explícitamente el resultado propuesto, del tipo «Horizontal: 7 km al oeste; Vertical: 1 km al norte». La pregunta: «¿Cuál de los procedimientos presentados conduce a la ubicación final correcta del barco?».",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor"
+      ],
+      "required_reasoning": "El estudiante no solo debe realizar su propio cálculo de sumas de enteros en cada eje, sino también analizar las estrategias de otros, identificando qué operación de signos es correcta. Esto exige entender el porqué de la suma y la asignación de signos a direcciones opuestas, para detectar errores típicos (como tratar movimientos opuestos como si fueran del mismo signo) y escoger el procedimiento consistente con las reglas correctas.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    },
+    {
+      "variant_id": "Q49_v9",
+      "scenario_description": "En lugar de dar el recorrido en palabras, se proporciona directamente la operación a realizar para cada eje. Por ejemplo: «En el eje este-oeste (este positivo, oeste negativo), el desplazamiento total es: (−5) + (+3) + (−4) + (+2). En el eje norte-sur (norte positivo, sur negativo), el desplazamiento total es: (+6) + (−2) + (−5) + (+1).» Se pregunta: «¿Cuál es la posición final del vehículo respecto de su punto de partida?». Las opciones están expresadas en términos de kilómetros hacia los puntos cardinales, no como pares numéricos abstractos.",
+      "non_mechanizable_axes": [
+        "representacion"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que las expresiones dadas son sumas de enteros que representan movimientos opuestos y que la clave está en interpretar correctamente los signos para determinar la dirección final en cada eje. No hay historia de movimiento paso a paso; debe entender la estructura algebraica de la operación (suma de enteros con signo) y relacionarla de vuelta con el contexto espacial cardinal.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "operation_record"
+    },
+    {
+      "variant_id": "Q49_v10",
+      "scenario_description": "Se describe un recorrido original de un barco mediante una lista de movimientos en km hacia norte, sur, este y oeste. A continuación, se plantea una situación hipotética: «Supongamos que, en lugar del recorrido descrito, el barco hubiera realizado exactamente los mismos desplazamientos pero cambiando cada vez norte por sur y este por oeste». Luego se dan cuatro posibles descripciones de la nueva posición final (por ejemplo, el opuesto exacto del vector original y otras con errores de signo en un solo eje). La pregunta es: «¿Cuál de las siguientes posiciones finales sería consistente con este recorrido invertido?».",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El estudiante debe comprender que invertir todas las direcciones equivale a cambiar el signo de cada desplazamiento y, por tanto, a tomar el opuesto del vector total original. Debe ser capaz de sumar los movimientos originales como enteros con signo, conceptualizar el efecto de invertir sistemáticamente los signos, y luego identificar entre las alternativas la que representa ese vector opuesto. No puede apoyarse en una ejecución mecánica única; debe razonar sobre el comportamiento de la suma de enteros ante el cambio de signo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "result_consistency_check"
+    }
+  ]
+}

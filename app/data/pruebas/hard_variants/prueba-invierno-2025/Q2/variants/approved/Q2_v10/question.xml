@@ -1,0 +1,131 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q2_v10" title="Q2_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se elige al azar un número entero positivo que es mayor que -2 y menor o igual que 3. Se proponen las siguientes cantidades posibles de valores distintos que puede tomar ese número. ¿Cuál de ellas es correcta?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">2<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Los números enteros positivos mayores que −2 y menores o iguales que 3 son 1, 2 y 3. Hay 3 valores distintos, no 2.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! El número debe ser entero positivo, mayor que −2 y menor o igual que 3. Los valores que cumplen simultáneamente son 1, 2 y 3. Por lo tanto, puede tomar 3 valores distintos.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">4<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si fuera 4, los valores deberían ser cuatro distintos. Pero los enteros positivos que cumplen ser mayores que −2 y menores o iguales que 3 son solo 1, 2 y 3. Eso da 3 valores, no 4.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">5<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Para que fueran 5 valores, tendría que haber cinco enteros positivos en el intervalo dado. Sin embargo, los únicos enteros positivos mayores que −2 y menores o iguales que 3 son 1, 2 y 3. Entonces la cantidad correcta es 3, no 5.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las condiciones del número</strong></p>
+            <p>El número debe cumplir tres condiciones al mismo tiempo:</p>
+            <p>1) ser entero, 2) ser positivo, 3) ser mayor que −2 y menor o igual que 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Listar los enteros mayores que −2 y menores o iguales que 3</strong></p>
+            <p>Los enteros que cumplen</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>x</mi>
+                  <mo>&gt;</mo>
+                  <mo>−</mo>
+                  <mn>2</mn>
+                  <mo>y</mo>
+                  <mi>x</mi>
+                  <mo>≤</mo>
+                  <mn>3</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>son: −1, 0, 1, 2 y 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Quedarse solo con los enteros positivos</strong></p>
+            <p>Como el número debe ser positivo, se excluyen −1 y 0.</p>
+            <p>Quedan solo: 1, 2 y 3.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Contar los valores posibles</strong></p>
+            <p>Los valores posibles son 3:</p>
+            <p>1, 2 y 3.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La cantidad correcta de valores distintos que puede tomar el número es 3. Por lo tanto, la alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

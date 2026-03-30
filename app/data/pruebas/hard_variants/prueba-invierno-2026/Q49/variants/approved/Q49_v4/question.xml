@@ -1,0 +1,127 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q49_v4" title="Desplazamiento de barco con rutas posibles" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>Se desea que un barco termine su recorrido a <m:math><m:mn>8</m:mn></m:math> kilómetros al este y <m:math><m:mn>3</m:mn></m:math> kilómetros al norte de donde partió. Se proponen las siguientes rutas posibles:</p>
+    <ul>
+      <li>Ruta 1: <m:math><m:mn>10</m:mn></m:math> kilómetros al este; <m:math><m:mn>2</m:mn></m:math> kilómetros al oeste; <m:math><m:mn>6</m:mn></m:math> kilómetros al norte; <m:math><m:mn>1</m:mn></m:math> kilómetro al sur.</li>
+      <li>Ruta 2: <m:math><m:mn>12</m:mn></m:math> kilómetros al este; <m:math><m:mn>4</m:mn></m:math> kilómetros al oeste; <m:math><m:mn>5</m:mn></m:math> kilómetros al norte; <m:math><m:mn>2</m:mn></m:math> kilómetros al sur.</li>
+      <li>Ruta 3: <m:math><m:mn>6</m:mn></m:math> kilómetros al este; <m:math><m:mn>14</m:mn></m:math> kilómetros al este; <m:math><m:mn>9</m:mn></m:math> kilómetros al oeste; <m:math><m:mn>3</m:mn></m:math> kilómetros al sur.</li>
+      <li>Ruta 4: <m:math><m:mn>15</m:mn></m:math> kilómetros al oeste; <m:math><m:mn>7</m:mn></m:math> kilómetros al este; <m:math><m:mn>6</m:mn></m:math> kilómetros al norte; <m:math><m:mn>2</m:mn></m:math> kilómetros al sur.</li>
+    </ul>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Dibujar un diagrama tipo brújula con los puntos cardinales Norte, Sur, Este y Oeste indicados en forma de cruz: flecha hacia arriba con la letra N, flecha hacia abajo con la letra S, flecha hacia la derecha con la letra E y flecha hacia la izquierda con la letra O, sin marcar trayectorias específicas ni distancias." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes rutas podría llevar al barco desde su posición inicial hasta esa ubicación final?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Ruta 1<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la Ruta 1, el desplazamiento horizontal total es 10 kilómetros al este menos 2 kilómetros al oeste, lo que da 8 kilómetros al este. Pero el desplazamiento vertical total es 6 kilómetros al norte menos 1 kilómetro al sur, lo que da 5 kilómetros al norte. La ruta termina 8 kilómetros al este y 5 kilómetros al norte, no 8 kilómetros al este y 3 kilómetros al norte.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Ruta 2<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En la Ruta 2, el desplazamiento horizontal total es 12 kilómetros al este menos 4 kilómetros al oeste, lo que da 8 kilómetros al este. El desplazamiento vertical total es 5 kilómetros al norte menos 2 kilómetros al sur, lo que da 3 kilómetros al norte. Esta ruta termina exactamente en la ubicación pedida.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Ruta 3<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la Ruta 3, el desplazamiento horizontal total es 6 kilómetros al este más 14 kilómetros al este menos 9 kilómetros al oeste, lo que da 11 kilómetros al este. Además, hay 3 kilómetros al sur, por lo que el desplazamiento vertical final es 3 kilómetros al sur. La ruta termina 11 kilómetros al este y 3 kilómetros al sur, no 8 kilómetros al este y 3 kilómetros al norte.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Ruta 4<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En la Ruta 4, el desplazamiento horizontal total es 15 kilómetros al oeste menos 7 kilómetros al este en sentido opuesto, por lo que queda 8 kilómetros al oeste. El desplazamiento vertical total es 6 kilómetros al norte menos 2 kilómetros al sur, lo que da 4 kilómetros al norte. La ruta termina 8 kilómetros al oeste y 4 kilómetros al norte, no 8 kilómetros al este y 3 kilómetros al norte.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso por desplazamiento neto</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la posición final deseada</strong></p>
+            <p>El barco debe terminar a <m:math><m:mn>8</m:mn></m:math> kilómetros al este y <m:math><m:mn>3</m:mn></m:math> kilómetros al norte del punto de partida.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular el desplazamiento neto de la Ruta 1</strong></p>
+            <p>Horizontal: <m:math><m:mrow><m:mn>10</m:mn><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math> kilómetros al este.</p>
+            <p>Vertical: <m:math><m:mrow><m:mn>6</m:mn><m:mo>−</m:mo><m:mn>1</m:mn><m:mo>=</m:mo><m:mn>5</m:mn></m:mrow></m:math> kilómetros al norte.</p>
+            <p>La Ruta 1 termina a <m:math><m:mn>8</m:mn></m:math> kilómetros al este y <m:math><m:mn>5</m:mn></m:math> kilómetros al norte, así que no sirve.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el desplazamiento neto de la Ruta 2</strong></p>
+            <p>Horizontal: <m:math><m:mrow><m:mn>12</m:mn><m:mo>−</m:mo><m:mn>4</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math> kilómetros al este.</p>
+            <p>Vertical: <m:math><m:mrow><m:mn>5</m:mn><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>3</m:mn></m:mrow></m:math> kilómetros al norte.</p>
+            <p>La Ruta 2 termina exactamente a <m:math><m:mn>8</m:mn></m:math> kilómetros al este y <m:math><m:mn>3</m:mn></m:math> kilómetros al norte.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Verificar que las otras rutas no coinciden</strong></p>
+            <p><em>Ruta 3:</em> horizontal <m:math><m:mrow><m:mn>6</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>−</m:mo><m:mn>9</m:mn><m:mo>=</m:mo><m:mn>11</m:mn></m:mrow></m:math> kilómetros al este; vertical <m:math><m:mrow><m:mn>0</m:mn><m:mo>−</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>−3</m:mn></m:mrow></m:math>, es decir, <m:math><m:mn>3</m:mn></m:math> kilómetros al sur.</p>
+            <p><em>Ruta 4:</em> horizontal <m:math><m:mrow><m:mn>15</m:mn><m:mo>−</m:mo><m:mn>7</m:mn><m:mo>=</m:mo><m:mn>8</m:mn></m:mrow></m:math> kilómetros al oeste; vertical <m:math><m:mrow><m:mn>6</m:mn><m:mo>−</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math> kilómetros al norte.</p>
+            <p>Ninguna de estas dos coincide con la ubicación pedida.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única ruta que lleva al barco a <m:math><m:mn>8</m:mn></m:math> kilómetros al este y <m:math><m:mn>3</m:mn></m:math> kilómetros al norte es la <strong>Ruta 2</strong>, que corresponde a la <strong>alternativa B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,201 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q30_v10" title="Q30_v10" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La fórmula de Euler establece que para cierto tipo de poliedros se cumple la relación 
+      <m:math>
+        <m:mi>C</m:mi>
+        <m:mo>+</m:mo>
+        <m:mi>V</m:mi>
+        <m:mo>=</m:mo>
+        <m:mi>A</m:mi>
+        <m:mo>+</m:mo>
+        <m:mn>2</m:mn>
+      </m:math>, donde C es la cantidad de caras, A es la cantidad de aristas y V es la cantidad de vértices del poliedro. Por ejemplo, si un poliedro tiene 6 caras, 8 vértices y 12 aristas, al reemplazar en la igualdad se obtiene 6+8=12+2, pero no se termina el cálculo.</p>
+    <p>Ahora, considera otro caso: un poliedro tiene 18 aristas y 12 caras, y cumple la fórmula de Euler. ¿Cuántos vértices tiene ese poliedro?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-simple-choice identifier="ChoiceA">6<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Si V = 6, entonces C + V = 12 + 6 = 18, mientras que A + 2 = 18 + 2 = 20. Como 18 ≠ 20, esta opción no cumple la fórmula de Euler.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">8<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Al reemplazar C = 12 y A = 18 en la fórmula C + V = A + 2, se obtiene 12 + V = 18 + 2 = 20. Entonces V = 20 − 12 = 8. Además, 12 + 8 = 20 y 18 + 2 = 20, por lo que la igualdad se cumple.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">4<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si V = 4, entonces C + V = 12 + 4 = 16, mientras que A + 2 = 18 + 2 = 20. Como 16 ≠ 20, esta opción no satisface la fórmula de Euler.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">32<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si V = 32, entonces C + V = 12 + 32 = 44, mientras que A + 2 = 18 + 2 = 20. Como 44 ≠ 20, esta opción no cumple la igualdad dada.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso con la fórmula de Euler</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Escribir la fórmula</strong></p>
+            <p>Para este poliedro se cumple:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>C</m:mi>
+                <m:mo>+</m:mo>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>A</m:mi>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 2: Reemplazar los datos del enunciado</strong></p>
+            <p>El poliedro tiene 12 caras y 18 aristas, por lo tanto:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>12</m:mn>
+                <m:mo>+</m:mo>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>18</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 3: Resolver el lado derecho</strong></p>
+            <m:math>
+              <m:mrow>
+                <m:mn>18</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>20</m:mn>
+              </m:mrow>
+            </m:math>
+            <p>Entonces la igualdad queda:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>12</m:mn>
+                <m:mo>+</m:mo>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>20</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 4: Despejar la cantidad de vértices</strong></p>
+            <p>Restamos 12 a ambos lados:</p>
+            <m:math>
+              <m:mrow>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>20</m:mn>
+                <m:mo>−</m:mo>
+                <m:mn>12</m:mn>
+              </m:mrow>
+            </m:math>
+            <m:math>
+              <m:mrow>
+                <m:mi>V</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>8</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Paso 5: Verificar</strong></p>
+            <p>Comprobamos en la fórmula:</p>
+            <m:math>
+              <m:mrow>
+                <m:mn>12</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>8</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>18</m:mn>
+                <m:mo>+</m:mo>
+                <m:mn>2</m:mn>
+              </m:mrow>
+            </m:math>
+            <m:math>
+              <m:mrow>
+                <m:mn>20</m:mn>
+                <m:mo>=</m:mo>
+                <m:mn>20</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>El poliedro tiene <strong>8 vértices</strong>. La alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

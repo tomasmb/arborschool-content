@@ -1,0 +1,137 @@
+{
+  "source_question_id": "Q38",
+  "source_test_id": "seleccion-regular-2025",
+  "variants_planned": 10,
+  "blueprints": [
+    {
+      "variant_id": "Q38_v1",
+      "scenario_description": "Dos compañías de telefonía móvil ofrecen planes para datos extra. La Compañía A cobra $3000 de cargo mensual y $900 por cada GB adicional. La Compañía B cobra $3500 de cargo mensual y $700 por cada GB adicional. Se indica además el precio normal de un GB sin plan (dato irrelevante, análogo al precio sin suscripción de los bidones). Se pregunta: si la persona decide suscribirse a uno de estos planes para todos sus GB extra, ¿cuál es la cantidad mínima de GB adicionales que debe usar en el mes para que convenga económicamente la Compañía B? (opciones 1, 2, 3, 4). La estructura abstracta es la misma: comparar dos costos lineales del tipo costo_A = fijo_A + variable_A·n y costo_B = fijo_B + variable_B·n, con fijo_B > fijo_A y variable_B < variable_A, y hallar el menor entero n para el cual costo_B < costo_A.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "La persona debe entender que no basta con comparar solo el precio por GB, sino que debe construir mentalmente o numéricamente los dos modelos lineales de costo total y resolver la inecuación costo_B < costo_A para obtener un umbral en n. Luego debe interpretar que se pide el mínimo entero que satisface la desigualdad, no el punto de igualdad ni un valor cualquiera mayor.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v2",
+      "scenario_description": "Un servicio de reparto de comida ofrece un plan \"Básico\" y un plan \"Premium\" para restaurantes asociados. El plan Básico cobra $1200 por cada reparto y, opcionalmente, una membresía mensual de $2500 que reduce el valor de cada reparto a $900. El plan Premium cobra una membresía de $3000 y, con ella, cada reparto cuesta $800. Se aclara que la persona, si se suscribe, usará la membresía todo el mes (no hay mezcla). Se pregunta: si la persona decide suscribirse a uno solo de los dos planes, ¿cuál es la cantidad mínima de repartos en el mes para que le convenga económicamente el plan Premium? La información de cada plan se presenta como lista con viñetas separadas (plan Básico, plan Premium), no como párrafo corrido.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Se requiere modelar explícitamente el costo total mensual con membresía de cada plan como función lineal del número de repartos y comparar ambas expresiones mediante una inecuación. El distractor dominante será fijarse solo en que $800 < $900 y elegir cualquier número, sin incorporar el efecto de la membresía más cara del plan Premium. Para responder correctamente se debe entender por qué la cuota fija desplaza el punto donde pasa a convenir el segundo plan y calcular el umbral exacto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v3",
+      "scenario_description": "Dos gimnasios venden plan mensual con acceso a clases grupales. El Gimnasio X ofrece clases sueltas a $600 cada una y un plan de socios de $4000 mensuales que baja el precio de cada clase a $400. El Gimnasio Y cobra una membresía mensual de $4500 y con ella cada clase cuesta $350. Se entrega la información en una pequeña tabla textual de dos filas (Gimnasio X, Gimnasio Y) y tres columnas (cuota mensual, precio por clase con membresía, precio normal sin membresía). Se pregunta: si una persona va a pagar la membresía en uno solo de los gimnasios, ¿cuál es la cantidad mínima de clases al mes para que le convenga más el Gimnasio Y?",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "La tabla obliga a extraer y reorganizar los datos antes de comparar costos. El estudiante debe identificar qué columnas son relevantes (cuota mensual y precio por clase con membresía) y luego plantear la comparación costo_Y < costo_X como inecuación lineal en función de la cantidad de clases. Debe razonar que el costo total crece linealmente con la cantidad de clases y que el mayor costo fijo de Y se compensa por el menor costo variable a partir de cierto umbral, que hay que calcular e interpretar como número entero mínimo.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v4",
+      "scenario_description": "Dos cines ofrecen tarjetas de descuento para entradas 2D. La Tarjeta Plata del Cine A tiene un costo mensual de $1800 y con ella cada entrada cuesta $2600. La Tarjeta Oro del Cine B tiene un costo mensual de $2300 y con ella cada entrada cuesta $2400. Se menciona también el precio normal de la entrada en ambos cines (dato extra irrelevante). El enunciado plantea un diálogo breve donde una persona afirma: \"Si voy pocas veces, me conviene la Tarjeta Plata; pero si voy muchas, me conviene la Tarjeta Oro\" y pregunta: ¿cuál es la menor cantidad mensual de entradas para que efectivamente la Tarjeta Oro resulte más barata que la Tarjeta Plata? Las alternativas son cantidades pequeñas de entradas.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "El formato de diálogo obliga a interpretar la afirmación de 'pocas' vs 'muchas' como referencia al cruce de dos funciones lineales. Para justificar en qué punto comienza a convenir la Tarjeta Oro, el estudiante debe comparar los costos totales mensuales de ambos cines, expresarlos en función de n entradas y resolver la inecuación costo_Oro < costo_Plata. Además, debe entender que el resultado se redondea hacia arriba al entero mínimo que hace cierta la conveniencia, no basta con aproximar sin interpretar el contexto.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v5",
+      "scenario_description": "Una editorial ofrece impresión bajo demanda para profesores. La Opción 1 cobra una tarifa fija mensual de $5000 y $120 por cada cuadernillo impreso. La Opción 2 cobra una tarifa mensual de $6000 y $100 por cuadernillo. Se presenta la información en forma de descripción de contrato, con oraciones separadas que mezclan el costo fijo, el costo por unidad y una nota marginal sobre la calidad del papel (irrelevante). Se pregunta directamente: si un profesor se suscribe a una sola de las opciones y piensa imprimir todos sus cuadernillos con esa suscripción, ¿cuál es la cantidad mínima de cuadernillos que debe imprimir en el mes para que le resulte más barata la Opción 2?",
+      "non_mechanizable_axes": [
+        "representacion",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El texto contractual desordenado obliga a identificar qué montos son fijos y cuáles son por unidad. El distractor típico será comparar solo 120 vs 100 y concluir que siempre conviene la Opción 2. Para responder bien, el estudiante debe formalizar mentalmente los dos modelos lineales, costo_1 = 5000 + 120·n y costo_2 = 6000 + 100·n, y resolver la inecuación costo_2 < costo_1, hallando el n mínimo entero que cumple la condición.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v6",
+      "scenario_description": "Dos servicios de transporte compartido tienen pases mensuales. El Pase Estándar de la empresa R cobra $2000 mensuales y luego $1500 por cada viaje. El Pase Plus de la empresa S cobra $2600 mensuales y luego $1300 por viaje. El enunciado incluye un pequeño cuadro de ejemplo con el costo total en cada empresa para 1 y 2 viajes, mostrando que para esos casos la empresa R es más barata, pero no da el valor para 3 o más viajes. Se pregunta: usando esta información, ¿cuál es la cantidad mínima de viajes mensuales a partir de la cual conviene económicamente el Pase Plus de la empresa S?",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "El ejemplo parcial induce a algunos a extrapolar por intuición, sin cálculo exacto. Para contestar bien, el estudiante debe reconocer que los costos siguen patrones lineales (misma diferencia por viaje) y que el ejemplo para 1 y 2 viajes no basta para ver el punto de cruce. Debe construir las expresiones generales de costo en función del número de viajes y resolver la inecuación costo_S < costo_R, interpretando el resultado como mínima cantidad entera de viajes.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v7",
+      "scenario_description": "Dos plataformas de películas ofrecen un \"pase de estrenos\". La Plataforma A cobra una cuota mensual de $4000 y luego $900 por cada película de estreno vista. La Plataforma B cobra una cuota mensual desconocida C y luego $700 por cada película de estreno. El enunciado afirma: \"A partir de 3 películas de estreno al mes, la Plataforma B resulta más barata que la A\". Se pregunta: ¿cuál puede ser el valor máximo de C para que esa afirmación sea verdadera? (se dan varias cuotas posibles como alternativas). El estudiante debe tratar la cantidad de películas (3) como dato fijo y despejar el valor del costo fijo C a partir de la inecuación de comparación de costos totales.",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "Aquí el umbral de 3 películas ya está dado, por lo que el estudiante debe invertir el razonamiento: en lugar de hallar n, debe usar n = 3 en las expresiones de costo total y resolver la inecuación C + 700·3 < 4000 + 900·3 para obtener una cota sobre C. El distractor conceptual será olvidar que la condición es \"más barata\" (inecuación estricta) o comparar solo el precio por película. La tarea sigue exigiendo comprender cómo se comparan dos funciones lineales y cómo se ubica el valor del parámetro fijo que mantiene la misma relación de conveniencia.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q38_v8",
+      "scenario_description": "Dos empresas de agua purificada ofrecen planes mensuales para dispenser en oficinas. La Empresa M cobra una suscripción de $2500 e incluye bidones a $1900 cada uno. La Empresa N cobra una suscripción desconocida S e incluye bidones a $1700 cada uno. El enunciado dice que, si una oficina compra exactamente 4 bidones al mes, ambas empresas cuestan lo mismo. Se pregunta: ¿cuál es el valor de S? Las alternativas dan distintos valores de suscripción para N. El modelo es el mismo del problema fuente, pero ahora la incógnita es el costo fijo de la segunda empresa, usando como dato el punto de cruce en 4 bidones.",
+      "non_mechanizable_axes": [
+        "representacion",
+        "forma_pregunta"
+      ],
+      "required_reasoning": "Para responder, el estudiante debe reconocer que 'cuestan lo mismo' significa igualar los costos totales lineales: 2500 + 1900·4 = S + 1700·4. Debe manipular esta igualdad (equivalente a resolver una inecuación en el punto de cruce) y despejar S. Aunque parece una ecuación, conceptualmente se trata del mismo esquema de comparación lineal entre dos planes con distinto costo fijo y variable, solo que se busca el valor del parámetro que genera el cruce en un n dado.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    },
+    {
+      "variant_id": "Q38_v9",
+      "scenario_description": "Dos servicios de suscripción a videojuegos cobran por partidas en línea. El Servicio Alpha ofrece un plan con cuota mensual de $3200 y luego $600 por cada sesión de juego. El Servicio Beta ofrece un plan con cuota mensual de $3800 y luego $500 por sesión. El enunciado presenta los datos en un esquema tipo \"ficha técnica\" con campos 'Cuota mensual', 'Precio por sesión con suscripción' y 'Precio sin suscripción'. Se pregunta: si una persona decide contratar solo uno de los planes y usará siempre la suscripción, ¿cuál es el número mínimo de sesiones de juego al mes para que el plan de Beta resulte más barato que el de Alpha?",
+      "non_mechanizable_axes": [
+        "representacion",
+        "orden_pasos"
+      ],
+      "required_reasoning": "La ficha técnica obliga a identificar primero qué filas y campos utilizar, filtrando el precio sin suscripción. Luego debe construirse el costo total de cada servicio como función lineal del número de sesiones y plantear la inecuación costo_Beta < costo_Alpha. El estudiante debe resolverla y traducir el resultado al entero mínimo que hace válida la relación de conveniencia, evitando suposiciones basadas únicamente en los precios por sesión.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "contextual_mutation"
+    },
+    {
+      "variant_id": "Q38_v10",
+      "scenario_description": "Dos servicios de impresión 3D, A y B, manejan un esquema de suscripción. En A, la suscripción cuesta $6000 al mes y cada pieza impresa cuesta $1500. En B, la suscripción cuesta una cantidad desconocida F y cada pieza cuesta $1300. Se informa que, a partir de 5 piezas al mes, conviene económicamente suscribirse al servicio B en lugar de A. Se pide determinar cuánto puede valer F para que esa afirmación sea cierta exactamente en 5 piezas (es decir, que el costo de B sea menor que el de A para 5 piezas, con alternativas que incluyen valores justo por encima o por debajo del umbral).",
+      "non_mechanizable_axes": [
+        "forma_pregunta",
+        "distractor_dominante"
+      ],
+      "required_reasoning": "El estudiante debe reconocer que 'a partir de 5 piezas conviene B' implica que al menos para 5 piezas se cumple F + 1300·5 < 6000 + 1500·5. De ahí surge una inecuación lineal en el parámetro F que debe despejarse. El distractor central es tomar igualdad (o incluso invertir la desigualdad) o ignorar que la condición es solo en ese punto de partida. Resolverlo requiere entender el efecto de los costos fijos y variables en la comparación de dos planes lineales y ajustar un parámetro para que se mantenga la conveniencia declarada.",
+      "difficulty_target": "equal_or_harder",
+      "requires_image": false,
+      "image_description": "",
+      "selected_shape_id": "inverse_parameter_shift"
+    }
+  ]
+}

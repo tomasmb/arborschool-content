@@ -1,0 +1,124 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q62_v1" title="Q62_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En la siguiente imagen se muestra un robot sobre una hoja de papel cuadriculado, en una posición inicial A y en una posición final B.
+      <br />
+      <img src="requiere_nueva_imagen.png" alt="Hoja de papel cuadriculado rectangular, con una cuadrícula de 9 columnas y 7 filas. En una casilla hacia el centro-izquierda de la cuadrícula hay un pequeño dibujo de un robot con la letra 'A' al lado (posición inicial). En otra casilla, ubicada más arriba y más a la derecha, hay el mismo dibujo de robot con la letra 'B' al lado (posición final). No hay números en los bordes; solo se ve la cuadrícula uniforme con las dos posiciones del robot claramente marcadas." />
+    </p>
+    <p>¿Cuál de las siguientes instrucciones de movimiento lleva al robot desde la posición A hasta la posición B?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Selecciona una opción.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Mover el robot 3 casillas a la derecha y 5 casillas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Ese recorrido avanza <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas hacia arriba, pero para llegar desde A hasta B se necesitan <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia arriba. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>≠</mo><mn>5</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>≠</mo><mn>3</mn></math>, esa instrucción no lleva al robot a B.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Mover el robot 5 casillas a la derecha y 3 casillas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde A hasta B hay un desplazamiento horizontal de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha y un desplazamiento vertical de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia arriba. Por eso, la instrucción “<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> hacia arriba” lleva exactamente al robot desde A hasta B.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Mover el robot 5 casillas a la izquierda y 3 casillas hacia abajo.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Esa instrucción mueve el robot en sentido contrario al necesario: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la izquierda y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia abajo. Para ir de A a B se requiere <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia arriba. Ir a la izquierda en vez de a la derecha y hacia abajo en vez de hacia arriba no permite llegar a B.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Mover el robot 4 casillas a la derecha y 3 casillas hacia arriba.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta instrucción sube correctamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas, pero solo avanza <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> casillas a la derecha. Para llegar a B se necesitan <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>≠</mo><mn>5</mn></math>, el robot queda a una casilla de la posición final.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Observar el desplazamiento horizontal</strong></p>
+            <p>Desde la posición A hasta la posición B, el robot debe avanzar hacia la derecha.</p>
+            <p>Al contar las casillas horizontalmente, hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Observar el desplazamiento vertical</strong></p>
+            <p>Desde la posición A hasta la posición B, el robot debe subir.</p>
+            <p>Al contar las casillas verticalmente, hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia arriba.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar con las alternativas</strong></p>
+            <p>Opción A: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> hacia arriba. No coincide.</p>
+            <p>Opción B: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> hacia arriba. Sí coincide.</p>
+            <p>Opción C: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> a la izquierda y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> hacia abajo. Va en dirección contraria.</p>
+            <p>Opción D: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math> a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> hacia arriba. Falta una casilla a la derecha.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La instrucción correcta es mover el robot <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn></math> casillas a la derecha y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn></math> casillas hacia arriba.</p>
+            <p>Por lo tanto, la alternativa correcta es <strong>ChoiceB</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

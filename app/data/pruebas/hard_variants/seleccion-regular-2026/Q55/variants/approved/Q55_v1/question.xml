@@ -1,0 +1,122 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q55_v1" title="Q55_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una estudiante rindió una prueba en cinco asignaturas. En cada una obtuvo un puntaje entre 0 y 100.</p>
+    <p>En el siguiente gráfico de barras se muestran sus puntajes en cada asignatura, y más abajo se indican también esos puntajes en forma de lista:<br />Matemática: 85 puntos; Lengua: 72 puntos; Ciencias: 60 puntos; Historia: 40 puntos; Arte: 90 puntos.<br />
+      <img src="requiere_nueva_imagen.png" alt="[Gráfico de barras verticales con cinco barras rotuladas en el eje horizontal como 'Matemática', 'Lengua', 'Ciencias', 'Historia' y 'Arte'. El eje vertical va de 0 a 100. Las alturas de las barras son, aproximadamente: Matemática 85, Lengua 72, Ciencias 60, Historia 40 y Arte 90. La barra de 'Historia' es visiblemente la más baja.]" />
+    </p>
+    <p>¿En cuál asignatura obtuvo su puntaje más bajo?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>Selecciona una opción.</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">Matemática<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Matemática tiene 85 puntos. Al comparar los puntajes 85, 72, 60, 40 y 90, se observa que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>40</mn><mo>&lt;</mo><mn>85</mn></mrow></math>. Por lo tanto, Matemática no es el puntaje más bajo.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Historia<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Historia tiene 40 puntos. Al comparar los cinco puntajes, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>40</mn><mo>&lt;</mo><mn>60</mn><mo>&lt;</mo><mn>72</mn><mo>&lt;</mo><mn>85</mn><mo>&lt;</mo><mn>90</mn></mrow></math>. Como 40 es el menor valor, la asignatura con el puntaje más bajo es Historia.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">Ciencias<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Ciencias tiene 60 puntos. Sin embargo, Historia tiene 40 puntos, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>40</mn><mo>&lt;</mo><mn>60</mn></mrow></math>. Entonces, Ciencias no corresponde al puntaje más bajo.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">Arte<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Arte tiene 90 puntos. Pero en la lista aparece Historia con 40 puntos, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>40</mn><mo>&lt;</mo><mn>90</mn></mrow></math>. Por eso, Arte no es la asignatura con el puntaje más bajo.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Leer los puntajes de cada asignatura</strong></p>
+            <p>Los puntajes son: Matemática 85, Lengua 72, Ciencias 60, Historia 40 y Arte 90.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Identificar qué se pide</strong></p>
+            <p>La pregunta pide la asignatura en la que la estudiante obtuvo su puntaje más bajo, es decir, el menor número de la lista.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Comparar los valores</strong></p>
+            <p>Comparamos los puntajes: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>40</mn><mo>&lt;</mo><mn>60</mn><mo>&lt;</mo><mn>72</mn><mo>&lt;</mo><mn>85</mn><mo>&lt;</mo><mn>90</mn></mrow></math>.</p>
+            <p>El menor valor es 40.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Asociar el menor puntaje con su asignatura</strong></p>
+            <p>El puntaje de 40 puntos corresponde a Historia.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La asignatura en la que obtuvo su puntaje más bajo es Historia. La alternativa correcta es la B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

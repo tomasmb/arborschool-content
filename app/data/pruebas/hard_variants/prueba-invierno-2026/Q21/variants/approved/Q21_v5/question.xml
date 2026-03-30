@@ -1,0 +1,286 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q21_v5" title="Q21_v5" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      <qti-prompt>
+        Se consideran las siguientes potencias de base negativa:
+        
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+            </m:mrow>
+            <m:mn>1</m:mn>
+          </m:msup>
+        </m:math>,
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+            </m:mrow>
+            <m:mn>2</m:mn>
+          </m:msup>
+        </m:math>,
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+            </m:mrow>
+            <m:mn>3</m:mn>
+          </m:msup>
+        </m:math> y
+        <m:math>
+          <m:msup>
+            <m:mrow>
+              <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+            </m:mrow>
+            <m:mn>4</m:mn>
+          </m:msup>
+        </m:math>.
+        
+        Al calcularlas, se observa que los resultados alternan de signo: primero negativo, luego positivo, después negativo y luego positivo.
+        
+        Se quiere explicar, en general, el signo de una potencia de base -3 con exponente natural.
+        
+        ¿Cuál de las siguientes explicaciones justifica correctamente ese comportamiento del signo?
+      </qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">
+        Porque, al aumentar el exponente, el signo va cambiando de negativo a positivo y de positivo a negativo, de modo que siempre se repite la misma alternancia para cualquier exponente natural.
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Esta alternativa solo describe el patrón observado, pero no lo justifica matemáticamente. Una explicación correcta debe usar que una potencia es un producto reiterado: por ejemplo, con exponente 4 se tiene cuatro factores negativos, y al agruparlos de dos en dos, (−3)×(−3)=9 y 9×9=81, que es positivo. La razón del signo depende de si la cantidad de factores negativos es par o impar.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        Porque una potencia representa un producto reiterado de la base negativa: al tener un exponente par, hay una cantidad par de factores negativos que se pueden agrupar de dos en dos, y cada par de negativos da un resultado positivo; en cambio, con exponente impar queda un factor negativo sin pareja, por lo que el producto total resulta negativo.
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Una potencia de base −3 es un producto reiterado de factores iguales a −3. Si el exponente es par, hay una cantidad par de factores negativos y cada par da positivo; por ejemplo, (−3)×(−3)=9 y ((−3)×(−3))×((−3)×(−3))=9×9=81. Si el exponente es impar, queda un factor negativo sin pareja; por ejemplo, ((−3)×(−3))×(−3)=9×(−3)=−27. Eso justifica que el signo sea positivo para exponentes pares y negativo para exponentes impares.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">
+        Porque al multiplicar varios números negativos, el resultado siempre es negativo, entonces cualquier potencia de base -3 tiene resultado negativo, sin importar cuántas veces se tome la base.
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. La afirmación universal es falsa. Un contraejemplo concreto es (−3)²=(−3)×(−3)=9, que es positivo, y también (−3)⁴=(−3)×(−3)×(−3)×(−3)=81, que sigue siendo positivo. Por lo tanto, no toda potencia de base −3 es negativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">
+        Porque si el exponente es par, hay una cantidad impar de factores negativos y la potencia resulta negativa; en cambio, si el exponente es impar, hay una cantidad par de factores negativos y la potencia es positiva.
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Esta explicación invierte la relación correcta entre exponente y cantidad de factores. Si el exponente es 4, entonces hay exactamente 4 factores negativos, no una cantidad impar: (−3)×(−3)×(−3)×(−3)=81, que es positivo. Si el exponente es 3, hay exactamente 3 factores negativos, no una cantidad par: (−3)×(−3)×(−3)=−27, que es negativo.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso: signo de una potencia de base negativa</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Interpretar qué significa una potencia</strong></p>
+            <p>Una potencia de base <m:math><m:mrow><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math> y exponente natural <m:math><m:mi>n</m:mi></m:math> representa un producto reiterado de <m:math><m:mi>n</m:mi></m:math> factores iguales a <m:math><m:mrow><m:mo>-</m:mo><m:mn>3</m:mn></m:mrow></m:math>:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mrow>
+                      <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                    </m:mrow>
+                    <m:mi>n</m:mi>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mrow>
+                    <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                    <m:mo>×</m:mo>
+                    <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                    <m:mo>×</m:mo>
+                    <m:mo>⋯</m:mo>
+                    <m:mo>×</m:mo>
+                    <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  </m:mrow>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Entonces el signo depende de cuántos factores negativos aparecen en el producto.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Revisar los primeros casos</strong></p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                    <m:mn>1</m:mn>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo><m:mn>3</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                    <m:mn>2</m:mn>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>×</m:mo>
+                  <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>9</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                    <m:mn>3</m:mn>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mn>9</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mo>-</m:mo><m:mn>27</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:msup>
+                    <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                    <m:mn>4</m:mn>
+                  </m:msup>
+                  <m:mo>=</m:mo>
+                  <m:mn>9</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>9</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>81</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Se observa la alternancia de signos, pero todavía falta justificarla en general.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar el caso de exponente par</strong></p>
+            <p>Si el exponente es par, entonces la cantidad de factores negativos es par. Eso permite agruparlos de dos en dos.</p>
+            <p>Cada par cumple:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>×</m:mo>
+                  <m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo>
+                  <m:mo>=</m:mo>
+                  <m:mn>9</m:mn>
+                </m:mrow>
+              </m:math>
+            </p>
+            <p>Como cada par da positivo y todos los factores negativos quedan emparejados, el producto total resulta positivo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Analizar el caso de exponente impar</strong></p>
+            <p>Si el exponente es impar, entonces la cantidad de factores negativos es impar. Se pueden formar varios pares de factores negativos, y cada par da positivo, pero queda un factor negativo sin pareja.</p>
+            <p>Ese último factor negativo hace que el producto total sea negativo.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Comparar con las alternativas</strong></p>
+            <p>La alternativa correcta es la que explica que una potencia es un producto reiterado y que el signo depende de si la cantidad de factores negativos es par o impar. Esa descripción corresponde exactamente a la <strong>opción B</strong>.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>
+              Si <m:math><m:mi>n</m:mi></m:math> es par, entonces
+              <m:math>
+                <m:msup>
+                  <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                  <m:mi>n</m:mi>
+                </m:msup>
+              </m:math>
+              es positiva. Si <m:math><m:mi>n</m:mi></m:math> es impar, entonces
+              <m:math>
+                <m:msup>
+                  <m:mrow><m:mo>(</m:mo><m:mo>-</m:mo><m:mn>3</m:mn><m:mo>)</m:mo></m:mrow>
+                  <m:mi>n</m:mi>
+                </m:msup>
+              </m:math>
+              es negativa. Por eso la respuesta correcta es la <strong>alternativa B</strong>.
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -1,0 +1,169 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q3_v14" title="Q3_v14" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Registro del caso:</p><p>En un sistema de riego por surcos se tiene la siguiente ficha de datos:</p>
+    <p>
+      - Longitud del surco corto: <m:math><m:mn>20</m:mn></m:math> m.<br />
+      - El surco largo mide el doble que el surco corto.<br />
+      - El recorrido del equipo de riego consiste en comenzar en un extremo del surco corto, recorrer por completo el surco corto y luego el surco largo (solo de ida), y finalmente regresar por los mismos surcos hasta el punto inicial.<br />
+      - El sistema consume <m:math><m:mn>5</m:mn></m:math> litros de agua por cada <m:math><m:mn>10</m:mn></m:math> metros de surco recorrido.
+    </p>
+    <p>¿Cuántos litros de agua se requieren para realizar todo este recorrido descrito?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="true" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">12<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. El surco largo mide 40 m porque es el doble de 20 m. El recorrido total es 20 m de ida por el surco corto, 40 m de ida por el surco largo, 40 m de regreso por el surco largo y 20 m de regreso por el surco corto, es decir, 120 m. Como se consumen 5 litros cada 10 m, para 120 m se requieren 60 litros, no 12.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceB">30<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. El surco largo mide 40 m. Entonces el recorrido completo es 20 m + 40 m + 40 m + 20 m, que suma 120 m. Si por cada 10 m se usan 5 litros, en 120 m se necesitan 60 litros. Por lo tanto, 30 litros no alcanza para todo el recorrido descrito.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">40<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El recorrido no considera solo una parte del trayecto. Según el enunciado, se recorre el surco corto completo, luego el surco largo de ida y después se regresa por los mismos surcos hasta el inicio. Eso da 20 m + 40 m + 40 m + 20 m = 120 m. Con un consumo de 5 litros por cada 10 m, el total es 60 litros, no 40.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">60<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">¡Correcto! El surco corto mide 20 m y el largo mide el doble, o sea 40 m. El recorrido total es 20 m + 40 m + 40 m + 20 m = 120 m. Como el sistema consume 5 litros por cada 10 m, en 120 m consume 60 litros.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Determinar la longitud de cada surco</strong></p>
+            <p>El surco corto mide <m:math><m:mn>20</m:mn></m:math> m.</p>
+            <p>El surco largo mide el doble, entonces:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>2</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>20</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>40</m:mn>
+                </m:mrow>
+              </m:math>
+              m
+            </p>
+            <p>Por lo tanto, el surco largo mide <m:math><m:mn>40</m:mn></m:math> m.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el recorrido total</strong></p>
+            <p>Según el enunciado, el equipo:</p>
+            <ol>
+              <li>recorre completo el surco corto,</li>
+              <li>luego recorre el surco largo solo de ida,</li>
+              <li>y finalmente regresa por los mismos surcos hasta el punto inicial.</li>
+            </ol>
+            <p>Entonces la distancia total recorrida es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>20</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>40</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>40</m:mn>
+                  <m:mo>+</m:mo>
+                  <m:mn>20</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>120</m:mn>
+                </m:mrow>
+              </m:math>
+              m
+            </p>
+          </li>
+          <li>
+            <p><strong>Usar la razón de consumo de agua</strong></p>
+            <p>El sistema consume <m:math><m:mn>5</m:mn></m:math> litros por cada <m:math><m:mn>10</m:mn></m:math> m.</p>
+            <p>Como <m:math><m:mn>120</m:mn></m:math> m es <m:math><m:mrow><m:mn>12</m:mn><m:mo>×</m:mo><m:mn>10</m:mn></m:mrow></m:math> m, el agua requerida es:</p>
+            <p>
+              <m:math>
+                <m:mrow>
+                  <m:mn>12</m:mn>
+                  <m:mo>×</m:mo>
+                  <m:mn>5</m:mn>
+                  <m:mo>=</m:mo>
+                  <m:mn>60</m:mn>
+                </m:mrow>
+              </m:math>
+              litros
+            </p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Para realizar todo el recorrido descrito se requieren <m:math><m:mn>60</m:mn></m:math> litros de agua.</p>
+            <p>La alternativa correcta es la <strong>D</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

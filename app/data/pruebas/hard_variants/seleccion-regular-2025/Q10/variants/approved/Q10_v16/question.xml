@@ -1,0 +1,155 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q10_v16" title="Q10_v16" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>1</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La llamada regla de Naegele se usa para estimar la fecha probable de parto a partir de la fecha en que comenzó la última menstruación. De manera general, esta regla indica que primero se agrega una semana completa al día en que se inició la última menstruación y, luego, se retroceden tres meses en el calendario; después, si es necesario, se ajusta el año para que la fecha estimada corresponda al año siguiente.</p>
+    <p>Una matrona explica esta regla a un grupo de estudiantes de obstetricia y menciona el siguiente caso: la fecha de la última menstruación de una mujer embarazada fue el 14/10/2022.</p>
+    <p>Según esta descripción verbal de la regla de Naegele, ¿cuál de las siguientes fechas es consistente con la aplicación correcta del procedimiento para estimar la fecha probable de parto de esta mujer?</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      
+      <qti-simple-choice identifier="ChoiceA">07/07/2023<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. Al aplicar la regla, al día 14 se le suman 7 días y se obtiene 21; además, al mes 10 se le restan 3 meses y se obtiene 7. La fecha consistente es 21/07/2023, no 07/07/2023.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">21/07/2023<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! Desde 14/10/2022, se suma una semana completa al día: 14 + 7 = 21. Luego se retroceden 3 meses: octubre pasa a julio. Como la fecha estimada corresponde al año siguiente, queda 21/07/2023.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">21/01/2023<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. El día 21 sí aparece al sumar 7 días a 14, pero al retroceder 3 meses desde octubre se llega a julio, no a enero. Por eso la fecha consistente es 21/07/2023 y no 21/01/2023.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">14/07/2023<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Al aplicar la regla, el día debe cambiar porque 14 + 7 = 21. Aunque julio sí corresponde a retroceder 3 meses desde octubre, la fecha correcta queda con día 21. Por eso debe ser 21/07/2023 y no 14/07/2023.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso de la regla de Naegele</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar la fecha dada</strong></p>
+            <p>La última menstruación comenzó el 14/10/2022.</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Sumar una semana completa al día</strong></p>
+            <p>El día inicial es 14.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>14</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>=</mo>
+                  <mn>21</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Entonces, el nuevo día es 21.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Retroceder tres meses en el calendario</strong></p>
+            <p>El mes inicial es octubre, es decir, 10.</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>10</mn>
+                  <mo>−</mo>
+                  <mn>3</mn>
+                  <mo>=</mo>
+                  <mn>7</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El mes 7 corresponde a julio.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Ajustar el año si es necesario</strong></p>
+            <p>La fecha original está en 2022 y la fecha probable de parto debe corresponder al año siguiente. Por eso, el año se ajusta a 2023.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La fecha probable de parto estimada es 21/07/2023.</p>
+            <p>Por lo tanto, la alternativa correcta es la <strong>B</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

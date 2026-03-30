@@ -1,0 +1,123 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" identifier="Q53_v1" title="Q53_v1" time-dependent="false" adaptive="false" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float"><qti-default-value><qti-value>0</qti-value></qti-default-value></qti-outcome-declaration><qti-item-body>
+    <p>
+      Considera la siguiente información sobre cuatro bolsas, cada una con bolitas azules y blancas:<br />
+      Bolsa A: 12 bolitas azules y 12 bolitas blancas (24 en total).<br />
+      Bolsa B: 5 bolitas azules y 3 bolitas blancas (8 en total).<br />
+      Bolsa C: 7 bolitas azules y 9 bolitas blancas (16 en total).<br />
+      Bolsa D: 9 bolitas azules y 0 bolitas blancas (9 en total).
+    </p>
+    <p>
+      <img src="requiere_nueva_imagen.png" alt="Tabla que muestra cuatro bolsas etiquetadas A, B, C y D. En la fila de la Bolsa A aparece: 12 bolitas azules y 12 bolitas blancas, para un total de 24 bolitas. En la fila de la Bolsa B aparece: 5 bolitas azules y 3 bolitas blancas, para un total de 8 bolitas. En la fila de la Bolsa C aparece: 7 bolitas azules y 9 bolitas blancas, para un total de 16 bolitas. En la fila de la Bolsa D aparece: 9 bolitas azules y 0 bolitas blancas, para un total de 9 bolitas." />
+    </p>
+    <qti-choice-interaction response-identifier="RESPONSE" shuffle="false" max-choices="1">
+      <qti-prompt>¿En cuál de las bolsas, al sacar al azar una bolita, la probabilidad de que sea azul es mayor que 0,5 y menor que 1?</qti-prompt>
+      
+      <qti-simple-choice identifier="ChoiceA">En la bolsa A<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">Incorrecto. En la bolsa A, la probabilidad de sacar una bolita azul es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>12</mn><mn>24</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>0,5</mn></math>. El problema pide una probabilidad mayor que 0,5 y menor que 1. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> no es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math>, esta bolsa no cumple.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En la bolsa B<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">¡Correcto! En la bolsa B, la probabilidad de sacar una bolita azul es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>5</mn><mn>8</mn></mfrac><mo>=</mo><mn>0,625</mn></math>. Se cumple que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn><mo>&lt;</mo><mn>0,625</mn><mo>&lt;</mo><mn>1</mn></math>, por lo tanto esta bolsa satisface exactamente lo pedido.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceC">En la bolsa C<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. En la bolsa C, la probabilidad de sacar una bolita azul es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>7</mn><mn>16</mn></mfrac><mo>=</mo><mn>0,4375</mn></math>. El problema pide que la probabilidad sea mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math>, pero <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4375</mn><mo>&lt;</mo><mn>0,5</mn></math>. Entonces esta bolsa no cumple.</qti-feedback-inline></qti-simple-choice>
+      
+      <qti-simple-choice identifier="ChoiceD">En la bolsa D<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. En la bolsa D, la probabilidad de sacar una bolita azul es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>9</mn><mn>9</mn></mfrac><mo>=</mo><mn>1</mn></math>. El problema pide una probabilidad menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>. Como aquí la probabilidad es exactamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>, esta bolsa no cumple.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Calcular la probabilidad de obtener una bolita azul en cada bolsa</strong></p>
+            <p>La probabilidad se calcula como:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mtext>número de bolitas azules</mtext><mtext>número total de bolitas</mtext></mfrac></math></p>
+            <p>Bolsa A: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>12</mn><mn>24</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mn>0,5</mn></math></p>
+            <p>Bolsa B: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>5</mn><mn>8</mn></mfrac><mo>=</mo><mn>0,625</mn></math></p>
+            <p>Bolsa C: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>7</mn><mn>16</mn></mfrac><mo>=</mo><mn>0,4375</mn></math></p>
+            <p>Bolsa D: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>9</mn><mn>9</mn></mfrac><mo>=</mo><mn>1</mn></math></p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Comparar cada probabilidad con las condiciones del problema</strong></p>
+            <p>Se pide una probabilidad mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>.</p>
+            <p>Bolsa A: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> no es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math>, por lo tanto no sirve.</p>
+            <p>Bolsa B: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn><mo>&lt;</mo><mn>0,625</mn><mo>&lt;</mo><mn>1</mn></math>, por lo tanto sí sirve.</p>
+            <p>Bolsa C: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4375</mn><mo>&lt;</mo><mn>0,5</mn></math>, por lo tanto no sirve.</p>
+            <p>Bolsa D: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math> no es menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math>, por lo tanto no sirve.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La única bolsa en la que la probabilidad de sacar una bolita azul es mayor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math> y menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn></math> es la bolsa B.</p>
+            <p>La respuesta correcta es la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

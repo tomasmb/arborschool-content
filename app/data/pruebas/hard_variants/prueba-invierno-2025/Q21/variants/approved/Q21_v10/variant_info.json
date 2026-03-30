@@ -1,0 +1,118 @@
+{
+  "variant_id": "Q21_v10",
+  "source_question_id": "Q21",
+  "source_test_id": "prueba-invierno-2025",
+  "is_rejected": false,
+  "planning_blueprint": {
+    "variant_id": "Q21_v10",
+    "scenario_description": "Se dispone una tarjeta informativa con una expresión algebraica: \"Equivalencia de edad para conejos domésticos: E_h = 8·E_c + 1, donde E_c es la edad real del conejo en años\". El problema relata: \"Un conejo llamado Nube llegó al hogar cuando tenía 0,5 años. Desde entonces, la familia lo ha cuidado durante 3 años. Si desean saber cuál será su edad equivalente en años humanos dentro de 2,5 años más, según la tarjeta, ¿qué valor obtendrán?\". Se debe hallar primero la edad futura del conejo (0,5 + 3 + 2,5) y luego evaluar directamente E_h = 8·E_c + 1 sustituyendo ese valor, sin resolver ecuaciones ni hacer pasos adicionales.",
+    "non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "required_reasoning": "La persona debe decidir en qué orden trabajar: primero consolidar la información temporal para obtener la edad futura del conejo y solo después sustituirla en la fórmula. Si se intenta aplicar mecánicamente la expresión con alguno de los valores intermedios, se obtiene un resultado incorrecto. Esto obliga a entender que la variable de la fórmula representa la edad en un instante específico construido a partir de la historia.",
+    "difficulty_target": "equal_or_harder",
+    "requires_image": false,
+    "image_description": "",
+    "selected_shape_id": "formula_card_context"
+  },
+  "generator_self_check": {
+    "task_form_preserved": true,
+    "evidence_mode_preserved": true,
+    "cognitive_action_preserved": true,
+    "solution_structure_preserved": true,
+    "auxiliary_transformations_preserved": true,
+    "distractor_logic_preserved": true,
+    "realized_non_mechanizable_axes": [
+      "representacion",
+      "orden_pasos"
+    ],
+    "main_risk_checked": "Verifiqué no transformar la tarea en resolución de ecuaciones ni añadir pasos intermedios adicionales: solo se construye la edad futura y se sustituye directamente en la misma fórmula dada."
+  },
+  "generator_declared_correct_identifier": "ChoiceB",
+  "construct_contract": {
+    "primary_atoms": [
+      "A-M1-ALG-01-02"
+    ],
+    "primary_atom_titles": [
+      "Evaluación de expresiones algebraicas"
+    ],
+    "family_id": "algebraic_expression_evaluation",
+    "allowed_variant_shapes": [
+      {
+        "shape_id": "verbal_formula_rule",
+        "description": "Reexpresar la regla de sustitución en formato verbal manteniendo una sustitución puramente multiplicativa o del mismo tipo exacto de la fuente.",
+        "required_changes": [
+          "Presentación verbal o contextual de la regla",
+          "Valores y contexto nuevos"
+        ],
+        "forbidden_changes": [
+          "Cambiar la forma algebraica base",
+          "Convertirla en ecuación a resolver"
+        ]
+      },
+      {
+        "shape_id": "formula_card_context",
+        "description": "Mantener una fórmula o tarjeta de regla explícita, pero cambiar el contexto y el foco de lectura dentro de la misma sustitución directa.",
+        "required_changes": [
+          "Nueva tarjeta o fórmula equivalente",
+          "Nueva lectura del dato a sustituir"
+        ],
+        "forbidden_changes": [
+          "Agregar incógnitas",
+          "Aumentar la cantidad de pasos"
+        ]
+      }
+    ],
+    "non_mechanizable_expectation": "low",
+    "main_skill": "RES",
+    "difficulty_level": "Medium",
+    "difficulty_score": 0.6,
+    "task_form": "substitute_expression",
+    "operation_signature": "algebraic_expression_evaluation",
+    "requires_direct_computation": false,
+    "allows_unknowns": false,
+    "requires_visual_support": false,
+    "visual_role": "none",
+    "representation_interpretation": false,
+    "claim_evaluation": false,
+    "cognitive_action": "substitute_and_compute",
+    "solution_structure": "formula_substitution",
+    "auxiliary_transformations": 1,
+    "reference_relation_count": 3,
+    "data_burden_score": 0,
+    "formula_shape": "generic_substitution",
+    "argument_polarity": "not_applicable",
+    "model_family": "not_applicable",
+    "statistic_target_domain": "not_applicable",
+    "percentage_band": "not_applicable",
+    "percentage_change_pattern": "not_applicable",
+    "selection_load": "not_applicable",
+    "base_domain": "not_applicable",
+    "power_base_family": "not_applicable",
+    "result_property_type": "not_applicable",
+    "measure_transition": "not_applicable",
+    "rate_reference_frame": "not_applicable",
+    "parameter_statement_form": "not_applicable",
+    "extremum_polarity": "not_applicable",
+    "presentation_style": "tabular_formula_context",
+    "representation_series_count": "not_applicable",
+    "graph_rate_frame": "not_applicable",
+    "proportional_reasoning_mode": "not_applicable",
+    "response_mode": "label_selection",
+    "evidence_mode": "symbolic_or_textual",
+    "explicit_dataset_policy": "optional",
+    "representation_must_remain_primary": false,
+    "must_preserve_distractor_logic": false,
+    "distractor_archetypes": [],
+    "correct_claim_archetype": "other_claim",
+    "correct_justification_archetype": "not_applicable",
+    "hard_constraints": [
+      "task_form=substitute_expression",
+      "operation_signature=algebraic_expression_evaluation",
+      "must_not_introduce_algebraic_unknowns",
+      "must_not_add_auxiliary_transformations"
+    ]
+  },
+  "postprocess_summary": {}
+}

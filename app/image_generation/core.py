@@ -34,7 +34,7 @@ from app.llm_clients import (
 
 logger = logging.getLogger(__name__)
 
-_VALIDATION_REASONING = "low"
+_VALIDATION_REASONING = "high"
 _MAX_503_RETRIES = 3
 _DEFAULT_GEMINI_RPM = 10
 
