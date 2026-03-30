@@ -1,7 +1,7 @@
 """generate_variant_images.py — Generate images for hard variants.
 
-All images go through: LLM expands alt text into ultra-detailed prompt
-→ Gemini generates image → GPT-5.1 validates → S3 upload.
+OpenAI expands alt text into ultra-detailed prompt → Gemini generates
+image → GPT-5.1 validates → S3 upload.
 
 Processes variants in parallel (ThreadPoolExecutor) for throughput.
 """
@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 _S3_DOMAIN = "paes-question-images.s3"
 _S3_PATH_PREFIX = "images/hard-variants/"
-_IMAGE_TEXT_REASONING_LEVEL = "medium"
+_TEXT_REASONING_LEVEL = "medium"
 
 
 def _is_placeholder_src(src: str) -> bool:
@@ -78,12 +78,12 @@ def _extract_stem_text(qti_xml: str) -> str:
 def _expand_prompt(
     alt_text: str, stem_text: str, llm_service: Any,
 ) -> str:
-    """Expand alt text into an ultra-detailed image prompt via LLM."""
+    """Expand alt text into an ultra-detailed image prompt via OpenAI."""
     prompt = EXPAND_PROMPT.format(alt_text=alt_text, stem_text=stem_text)
     raw = llm_service.generate_text(
         prompt,
         temperature=0.3,
-        **build_reasoning_kwargs("gemini", _IMAGE_TEXT_REASONING_LEVEL),
+        **build_reasoning_kwargs("openai", _TEXT_REASONING_LEVEL),
     )
     text = raw.text if hasattr(raw, 'text') else str(raw)
     return text.strip()
@@ -314,7 +314,7 @@ def main() -> None:
         openai_client=openai_client, gemini_image_client=None,
     )
     engine.ensure_gemini()
-    llm_service = build_text_service("gemini")
+    llm_service = build_text_service("openai")
 
     ok, failed = _run_parallel(
         tasks, engine, llm_service, args.workers, args.dry_run,
