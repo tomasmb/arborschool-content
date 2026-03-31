@@ -45,6 +45,32 @@ configuration files).
   - `validation/`: atom validation logic
   - `scripts/`: generation and export scripts
 
+- `app/prerequisites/`  
+  Prerequisite atom generation and validation (EB1–EM1).
+  - `atoms_generation.py`, `demand_analysis.py`, `standards_generation.py`
+  - `graph_connection.py`, `validation.py`: pipeline phases
+  - `models.py`, `constants.py`: data models and ID patterns
+  - `prompts/`: prompt builders for each phase
+  - `fixing/`: dedicated fix pipeline (issue parser, executor, applier)
+
+- `app/question_generation/`  
+  AI-driven question pool generation per atom.
+  - `pipeline.py`: main per-atom pipeline (Phases 0–9)
+  - `batch_pipeline.py`: OpenAI Batch API orchestration
+  - `helpers.py`: atom loading (M1 + prereq), checkpoint I/O
+  - `models.py`: `PipelineConfig`, `PHASE_GROUPS`, difficulty distribution
+  - `image_generator.py`: Gemini image generation + GPT-5.1 validation
+  - `scripts/`: CLI entry points (`run_generation.py`, `run_batch_api_generation.py`,
+    `run_batch_generation.py`, `generate_missing_images.py`)
+
+- `app/mini_lessons/`  
+  Mini-lesson (HTML) generation per atom.
+  - `pipeline.py`: main per-atom pipeline (Phases 0–6)
+  - `helpers.py`: atom/enrichment/question loading, checkpoint I/O
+  - `models.py`: `PHASE_GROUPS`, `LessonConfig`
+  - `prompts/`: planning, generation, and shared prompt builders
+  - `scripts/`: CLI entry points (`run_generation.py`, `run_batch_generation.py`)
+
 - `app/question_variants/`  
   AI-powered generation of question variants.
   - `pipeline.py`, `variant_generator.py`, `variant_validator.py`
@@ -96,7 +122,22 @@ configuration files).
   Canonical standards JSON files.
 
 - `app/data/atoms/`  
-  Atom definitions JSON.
+  Atom definitions JSON (M1).
+
+- `app/data/prerequisites/`  
+  Prerequisite atom data (EB1–EM1).
+  - `atoms.json`, `standards.json`, `connections.json`
+  - `validation_result.json`, `fix_results/`
+
+- `app/data/question-generation/`  
+  Per-atom question generation output.
+  - `{atom_id}/checkpoints/`: phase checkpoints
+  - `{atom_id}/items/`: final QTI XML files
+
+- `app/data/mini-lessons/`  
+  Per-atom mini-lesson output.
+  - `{atom_id}/mini-class.html`: final HTML lesson
+  - `{atom_id}/.meta.json`: quality metadata
 
 - `app/data/pruebas/`  
   - `raw/`: original PAES test PDFs
@@ -118,6 +159,12 @@ configuration files).
 - `docs/research/`  
   Exploratory research and design options.
 
+- `docs/references/`  
+  Reference material (cost estimates, image pipeline).
+
+- `docs/guides/`  
+  Operational handoff guides and runbooks.
+
 - `docs/analysis/`  
   Content analysis (coverage, gaps).
 
@@ -131,6 +178,9 @@ When you add new functionality, follow this pattern:
    - Temario parsing → `app/temarios/`
    - Standards generation → `app/standards/`
    - Atom definitions, prereqs → `app/atoms/`
+   - Prerequisite atoms (EB1–EM1) → `app/prerequisites/`
+   - Question generation (AI pipeline) → `app/question_generation/`
+   - Mini-lesson generation → `app/mini_lessons/`
    - Question processing → `app/pruebas/`
    - Question variants → `app/question_variants/`
    - Question tagging → `app/tagging/`
