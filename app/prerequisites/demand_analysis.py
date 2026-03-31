@@ -19,13 +19,12 @@ from pathlib import Path
 from typing import Any
 
 from app.llm_clients import LLMResponse, OpenAIClient, load_default_openai_client
-from app.prerequisites.constants import PREREQ_OUTPUT_DIR
 from app.prerequisites.prompts.demand_analysis import (
     build_demand_merge_prompt,
     build_eje_demand_prompt,
 )
 from app.standards.helpers import parse_json_response
-from app.utils.paths import get_atoms_file
+from app.utils.paths import PREREQUISITES_DIR, PREREQ_DEMAND_FILE, get_atoms_file
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +32,7 @@ _REASONING_EFFORT = "high"
 _MERGE_REASONING_EFFORT = "high"
 _REQUEST_TIMEOUT = 1800.0
 _MAX_ATOMS_PER_CALL = 12
-_OUTPUT_FILE = PREREQ_OUTPUT_DIR / "demand_analysis.json"
+_OUTPUT_FILE = PREREQ_DEMAND_FILE
 
 
 def load_m1_atoms() -> list[dict[str, Any]]:
@@ -279,7 +278,7 @@ def run_demand_analysis(
 
 def save_demand_analysis(result: dict[str, Any]) -> Path:
     """Save demand analysis results to disk."""
-    PREREQ_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PREREQUISITES_DIR.mkdir(parents=True, exist_ok=True)
     with _OUTPUT_FILE.open("w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     logger.info("Saved demand analysis to %s", _OUTPUT_FILE)

@@ -17,7 +17,7 @@ from typing import Any
 
 from app.llm_clients import LLMResponse, OpenAIClient, load_default_openai_client
 from app.prerequisites.atoms_generation import load_atoms
-from app.prerequisites.constants import PREREQ_OUTPUT_DIR, grade_order
+from app.prerequisites.constants import grade_order
 from app.prerequisites.demand_analysis import (
     compact_atom_for_prompt,
     find_leaf_atoms,
@@ -27,12 +27,13 @@ from app.prerequisites.prompts.graph_connection import (
     build_graph_connection_prompt,
 )
 from app.standards.helpers import parse_json_response
+from app.utils.paths import PREREQUISITES_DIR, PREREQ_CONNECTIONS_FILE
 
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "medium"
 _REQUEST_TIMEOUT = 1800.0
-_CONNECTIONS_FILE = PREREQ_OUTPUT_DIR / "connections.json"
+_CONNECTIONS_FILE = PREREQ_CONNECTIONS_FILE
 
 
 def _get_top_prereq_atoms(
@@ -139,7 +140,7 @@ def run_graph_connection(
 
 def save_connections(result: dict[str, Any]) -> Path:
     """Save connection results to disk."""
-    PREREQ_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PREREQUISITES_DIR.mkdir(parents=True, exist_ok=True)
     with _CONNECTIONS_FILE.open("w", encoding="utf-8") as f:
         json.dump(result, f, ensure_ascii=False, indent=2)
     logger.info("Saved connections to %s", _CONNECTIONS_FILE)

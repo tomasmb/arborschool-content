@@ -19,7 +19,6 @@ from typing import Any, Protocol
 
 from app.llm_clients import LLMResponse, OpenAIClient, load_default_openai_client
 from app.prerequisites.atoms_generation import load_atoms
-from app.prerequisites.constants import PREREQ_OUTPUT_DIR
 from app.prerequisites.demand_analysis import load_m1_atoms
 from app.prerequisites.models import PrereqAtom
 from app.prerequisites.prompts.validation import (
@@ -27,12 +26,13 @@ from app.prerequisites.prompts.validation import (
 )
 from app.prerequisites.standards_generation import load_standards
 from app.standards.helpers import parse_json_response
+from app.utils.paths import PREREQUISITES_DIR, PREREQ_VALIDATION_FILE
 
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "medium"
 _REQUEST_TIMEOUT = 1800.0
-_VALIDATION_FILE = PREREQ_OUTPUT_DIR / "validation_result.json"
+_VALIDATION_FILE = PREREQ_VALIDATION_FILE
 _MAX_WORKERS = 8
 
 
@@ -338,7 +338,7 @@ def run_full_validation(
 
 def save_validation(result: CombinedValidationResult) -> Path:
     """Save validation results to disk."""
-    PREREQ_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PREREQUISITES_DIR.mkdir(parents=True, exist_ok=True)
     with _VALIDATION_FILE.open("w", encoding="utf-8") as f:
         json.dump(result.to_dict(), f, ensure_ascii=False, indent=2)
     logger.info("Saved validation to %s", _VALIDATION_FILE)

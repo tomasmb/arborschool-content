@@ -17,19 +17,20 @@ from pathlib import Path
 from typing import Any
 
 from app.llm_clients import LLMResponse, OpenAIClient, load_default_openai_client
-from app.prerequisites.constants import GRADE_LEVELS, PREREQ_OUTPUT_DIR, grade_order
+from app.prerequisites.constants import GRADE_LEVELS, grade_order
 from app.prerequisites.demand_analysis import load_demand_analysis
 from app.prerequisites.models import PrereqStandard
 from app.prerequisites.prompts.standards_generation import (
     build_standards_generation_prompt,
 )
 from app.standards.helpers import parse_json_response
+from app.utils.paths import PREREQUISITES_DIR, PREREQ_STANDARDS_FILE
 
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "high"
 _REQUEST_TIMEOUT = 1800.0
-_STANDARDS_FILE = PREREQ_OUTPUT_DIR / "standards.json"
+_STANDARDS_FILE = PREREQ_STANDARDS_FILE
 _MAX_TOPICS_PER_CALL = 8
 _MAX_WORKERS = 8
 
@@ -202,7 +203,7 @@ def run_standards_generation(
 
 def save_standards(standards: list[PrereqStandard]) -> Path:
     """Save prerequisite standards to disk."""
-    PREREQ_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PREREQUISITES_DIR.mkdir(parents=True, exist_ok=True)
     data = {
         "metadata": {
             "type": "prerequisite_standards",

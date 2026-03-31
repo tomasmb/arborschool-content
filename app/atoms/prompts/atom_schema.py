@@ -3,12 +3,17 @@
 from __future__ import annotations
 
 
-def format_atom_schema_example() -> str:
-    """Return example atom JSON schema for prompts."""
-    return """{
-  "id": "A-M1-NUM-01-01",
+def format_atom_schema_example(grade_level: str = "M1") -> str:
+    """Return example atom JSON schema for prompts.
+
+    Args:
+        grade_level: Grade prefix for the example ID (e.g. "M1", "EB5").
+            Defaults to "M1" so existing M1 callers are unaffected.
+    """
+    return f"""{{
+  "id": "A-{grade_level}-NUM-01-01",
   "eje": "numeros",
-  "standard_ids": ["M1-NUM-01"],
+  "standard_ids": ["{grade_level}-NUM-01"],
   "habilidad_principal": "resolver_problemas",
   "habilidades_secundarias": ["representar"],
   "tipo_atomico": "concepto_procedimental",
@@ -27,4 +32,4 @@ def format_atom_schema_example() -> str:
     "Exclusión relevante 1.",
     "Exclusión relevante 2."
   ]
-}"""
+}}"""

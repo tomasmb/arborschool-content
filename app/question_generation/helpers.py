@@ -11,6 +11,7 @@ import logging
 from pathlib import Path
 
 from app.atoms.models import Atom, CanonicalAtomsFile
+from app.prerequisites.models import PrereqAtom, PrereqAtomsFile
 from app.question_generation.models import (
     AtomEnrichment,
     GeneratedItem,
@@ -18,7 +19,7 @@ from app.question_generation.models import (
     PipelineResult,
     PlanSlot,
 )
-from app.utils.paths import ATOMS_DIR
+from app.utils.paths import ATOMS_DIR, PREREQ_ATOMS_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -35,21 +36,34 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
 }
 
 
-def load_atom(atom_id: str) -> Atom | None:
-    """Load an atom by ID from the canonical atoms files."""
-    if not ATOMS_DIR.exists():
-        logger.error("Atoms directory not found: %s", ATOMS_DIR)
-        return None
+def load_atom(atom_id: str) -> Atom | PrereqAtom | None:
+    """Load an atom by ID from canonical M1 or prerequisite files."""
+    if ATOMS_DIR.exists():
+        for atoms_file in ATOMS_DIR.glob("*_atoms.json"):
+            try:
+                data = json.loads(
+                    atoms_file.read_text(encoding="utf-8"),
+                )
+                canonical = CanonicalAtomsFile.model_validate(data)
+                atom = canonical.get_atom_by_id(atom_id)
+                if atom:
+                    return atom
+            except Exception as exc:
+                logger.warning("Error reading %s: %s", atoms_file, exc)
 
-    for atoms_file in ATOMS_DIR.glob("*_atoms.json"):
+    if PREREQ_ATOMS_FILE.exists():
         try:
-            data = json.loads(atoms_file.read_text(encoding="utf-8"))
-            canonical = CanonicalAtomsFile.model_validate(data)
-            atom = canonical.get_atom_by_id(atom_id)
-            if atom:
-                return atom
+            data = json.loads(
+                PREREQ_ATOMS_FILE.read_text(encoding="utf-8"),
+            )
+            prereq_file = PrereqAtomsFile.model_validate(data)
+            for patom in prereq_file.atoms:
+                if patom.id == atom_id:
+                    return patom
         except Exception as exc:
-            logger.warning("Error reading %s: %s", atoms_file, exc)
+            logger.warning(
+                "Error reading prereq atoms: %s", exc,
+            )
 
     logger.error("Atom %s not found in any atoms file", atom_id)
     return None

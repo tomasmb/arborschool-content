@@ -7,14 +7,6 @@ throughout the pipeline. Prerequisite content covers Educación Básica
 
 from __future__ import annotations
 
-from pathlib import Path
-
-# ---------------------------------------------------------------------------
-# Output directory (single source of truth for all phases)
-# ---------------------------------------------------------------------------
-
-PREREQ_OUTPUT_DIR = Path("app/data/prerequisites")
-
 # ---------------------------------------------------------------------------
 # Grade levels
 # ---------------------------------------------------------------------------
@@ -46,6 +38,9 @@ VALID_GRADE_PREFIXES = frozenset(GRADE_LEVELS)
 _GRADE_RE = "|".join(GRADE_LEVELS)
 PREREQ_STANDARD_ID_RE = rf"^({_GRADE_RE})-(NUM|ALG|GEO|PROB)-\d{{2}}$"
 PREREQ_ATOM_ID_RE = rf"^A-({_GRADE_RE})-(NUM|ALG|GEO|PROB)-\d{{2}}-\d{{2}}$"
+
+# Non-capturing version for free-text extraction (findall returns strings).
+PREREQ_ATOM_ID_PATTERN = r"A-(?:EB[1-8]|EM[12])-(?:NUM|ALG|GEO|PROB)-\d{2}-\d{2}"
 
 
 def grade_order(grade: str) -> int:

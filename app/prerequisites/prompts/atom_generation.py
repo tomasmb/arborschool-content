@@ -1,8 +1,9 @@
 """Prompt for Phase 2: prerequisite atom generation.
 
-Generates learning atoms from prerequisite standards. Reuses the same
-granularity guidelines as M1 atom generation and includes the critical
-generation rules that ensure high-quality, non-overlapping atoms.
+Generates learning atoms from prerequisite standards. Imports the same
+comprehensive rules and final-instruction checklist used by the M1 atom
+generation pipeline (DRY) and wraps them with prereq-specific context
+(grade level, available lower-grade atoms, en_alcance_m1=false).
 """
 
 from __future__ import annotations
@@ -10,7 +11,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from app.atoms.prompts.atom_final_instruction import build_final_instruction
 from app.atoms.prompts.atom_guidelines import ATOM_GRANULARITY_GUIDELINES
+from app.atoms.prompts.atom_rules import ATOM_GENERATION_RULES
 from app.atoms.prompts.atom_schema import format_atom_schema_example
 from app.models.constants import EJE_PREFIX_MAP
 from app.prerequisites.constants import GRADE_LEVEL_LABELS
@@ -38,6 +41,10 @@ def build_prereq_atom_generation_prompt(
 ) -> str:
     """Build prompt for generating prerequisite atoms from one standard.
 
+    Uses the same ATOM_GENERATION_RULES and build_final_instruction()
+    as M1 generation, wrapped with prereq-specific context (grade,
+    available lower-grade atoms, en_alcance_m1=false).
+
     Args:
         standard: Prerequisite standard dict.
         grade_level: Grade prefix (e.g. "EB5").
@@ -53,7 +60,8 @@ def build_prereq_atom_generation_prompt(
     eje_prefix = EJE_PREFIX_MAP.get(eje_key, "NUM")
     std_number = standard["id"].split("-")[2]
     available_prereqs = _format_available_prereqs(atoms_below)
-    schema_example = format_atom_schema_example()
+    schema_example = format_atom_schema_example(grade_level=grade_level)
+    final_instruction = build_final_instruction()
 
     return f"""<role>
 Eres un experto en diseño de aprendizaje granular para matemáticas de
@@ -74,7 +82,7 @@ Tu tarea es descomponer estándares curriculares en átomos de aprendizaje.
 
 {ATOM_GRANULARITY_GUIDELINES}
 
-## Ejemplo de átomo canónico (adaptar IDs al nivel {grade_level})
+## Ejemplo de átomo canónico
 
 {schema_example}
 
@@ -104,45 +112,18 @@ este estándar de nivel {grade_label}. Cada átomo debe:
    (referenciándolos por su ID exacto de la lista proporcionada).
 8. Tener "en_alcance_m1": false (estos son átomos prerequisito).
 
+IMPORTANTE: Asegúrate de cubrir tanto aspectos CONCEPTUALES (qué es,
+cómo se define, cómo se reconoce) como PROCEDIMENTALES (cómo se hace,
+qué pasos seguir) del estándar. No te enfoques solo en procedimientos;
+incluye también átomos conceptuales cuando el estándar lo requiera.
+
 Adapta la complejidad al nivel educativo:
 - EB1-EB4: lenguaje simple, ejemplos concretos y manipulativos.
 - EB5-EB8, EM1-EM2: lenguaje técnico gradual, siempre claro.
 </task>
 
 <rules>
-1. Todo en español.
-2. FIEL AL ESTÁNDAR: no agregar contenido fuera de su alcance.
-   Antes de finalizar cada átomo, verifica que descripcion,
-   criterios_atomicos y notas_alcance estén dentro de "incluye" y
-   "no_incluye" del estándar.
-3. Granularidad: cada átomo = una sola intención cognitiva.
-4. Mínimo 1 criterio_atomico por átomo.
-5. 1-4 ejemplos_conceptuales (NO ejercicios completos).
-6. NO usar LaTeX; usar texto plano para notación matemática.
-7. "prerrequisitos": solo IDs de átomos de niveles anteriores o del
-   mismo estándar. Los prerrequisitos son TRANSITIVOS — si A→B→C,
-   C solo necesita B, no A.
-8. "notas_alcance": acotar complejidad con rangos, límites y
-   exclusiones apropiados para {grade_label}.
-9. INDEPENDENCIA DE EVALUACIÓN (más importante): si dos conceptos
-   o procedimientos pueden evaluarse por separado, son átomos
-   separados — incluso si están relacionados o comparten reglas.
-10. Incluir átomos CONCEPTUALES y PROCEDIMENTALES según requiera el
-    estándar.
-11. CONSISTENCIA habilidad_principal / criterios_atomicos: la
-    habilidad declarada DEBE reflejarse en los criterios. Si los
-    criterios son puramente procedimentales, la habilidad no debería
-    ser "argumentar". Si son conceptuales, no debería ser
-    "resolver_problemas".
-12. CORRESPONDENCIA CON subcontenidos_clave: cada subcontenido del
-    estándar debe tener al menos un átomo correspondiente. Antes de
-    finalizar, verifica que no haya subcontenidos sin cubrir.
-13. Si el título contiene "y" conectando dos conceptos evaluables por
-    separado, divídelos en átomos separados.
-14. Procedimientos con versiones simple y compleja deben ser átomos
-    separados si requieren diferente carga cognitiva.
-15. Átomos integradores deben listar TODOS sus prerrequisitos
-    exhaustivamente (conceptuales y procedimentales).
+{ATOM_GENERATION_RULES}
 </rules>
 
 <output_format>
@@ -155,20 +136,5 @@ Cada átomo debe seguir exactamente el schema del ejemplo, con estos campos:
 </output_format>
 
 <final_instruction>
-Basándote en el estándar anterior, genera los átomos. ANTES de
-finalizar, aplica este checklist a cada átomo:
-
-1. ¿Una sola intención cognitiva? Si no, dividir.
-2. ¿Evaluable independientemente? Si no, dividir.
-3. ¿≤4 piezas novedosas de información? Si no, dividir.
-4. ¿Título con "y" entre conceptos separables? Si sí, dividir.
-5. ¿Múltiples algoritmos distintos? Si sí, elegir uno preferente o
-   dividir según estrategia cognitiva.
-6. ¿habilidad_principal se refleja en criterios_atomicos? Si no,
-   ajustar.
-7. ¿notas_alcance acotan complejidad? Si no, agregar.
-8. ¿Cada subcontenido_clave del estándar está cubierto? Si no,
-   agregar átomos faltantes.
-9. ¿Prerrequisitos son directos (no transitivos)? Verificar.
-10. ¿Átomos integradores tienen prerrequisitos exhaustivos?
+{final_instruction}
 </final_instruction>"""

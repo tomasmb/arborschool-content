@@ -16,8 +16,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from app.atoms.validation_helpers import validate_atom_granularity
 from app.llm_clients import LLMResponse, OpenAIClient, load_default_openai_client
-from app.prerequisites.constants import GRADE_LEVELS, PREREQ_OUTPUT_DIR, grade_order
+from app.prerequisites.constants import GRADE_LEVELS, grade_order
 from app.prerequisites.models import (
     PrereqAtom,
     validate_prereq_atom_id_matches_eje,
@@ -27,12 +28,13 @@ from app.prerequisites.prompts.atom_generation import (
 )
 from app.prerequisites.standards_generation import load_standards
 from app.standards.helpers import parse_json_response
+from app.utils.paths import PREREQUISITES_DIR, PREREQ_ATOMS_FILE
 
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "high"
 _REQUEST_TIMEOUT = 1800.0
-_ATOMS_FILE = PREREQ_OUTPUT_DIR / "atoms.json"
+_ATOMS_FILE = PREREQ_ATOMS_FILE
 _MAX_WORKERS = 8
 
 
@@ -49,25 +51,8 @@ class AtomGenResult:
 def _validate_atom_granularity(
     atoms: list[PrereqAtom],
 ) -> list[str]:
-    """Basic granularity heuristics (mirrors M1 checks)."""
-    warnings: list[str] = []
-    for atom in atoms:
-        if len(atom.descripcion) > 300:
-            warnings.append(
-                f"{atom.id}: descripcion may be too long "
-                f"({len(atom.descripcion)} chars)"
-            )
-        if len(atom.criterios_atomicos) > 5:
-            warnings.append(
-                f"{atom.id}: too many criterios_atomicos "
-                f"({len(atom.criterios_atomicos)})"
-            )
-        if len(atom.habilidades_secundarias) > 2:
-            warnings.append(
-                f"{atom.id}: many habilidades_secundarias "
-                f"({len(atom.habilidades_secundarias)})"
-            )
-    return warnings
+    """Basic granularity heuristics — delegates to shared helper."""
+    return validate_atom_granularity(atoms)
 
 
 def _unwrap_atoms_response(raw: Any) -> Any:
@@ -282,7 +267,7 @@ def run_atoms_generation(
 
 def save_atoms(atoms: list[PrereqAtom]) -> Path:
     """Save prerequisite atoms to disk."""
-    PREREQ_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    PREREQUISITES_DIR.mkdir(parents=True, exist_ok=True)
     data = {
         "metadata": {
             "type": "prerequisite_atoms",
