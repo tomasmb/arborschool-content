@@ -12,6 +12,7 @@ from __future__ import annotations
 import json
 import logging
 from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Protocol
@@ -32,6 +33,7 @@ logger = logging.getLogger(__name__)
 _REASONING_EFFORT = "medium"
 _REQUEST_TIMEOUT = 1800.0
 _VALIDATION_FILE = PREREQ_OUTPUT_DIR / "validation_result.json"
+_MAX_WORKERS = 8
 
 
 class _AtomLike(Protocol):
@@ -208,12 +210,48 @@ def run_structural_checks(
     return issues, cycles
 
 
+def _validate_one_standard(
+    client: OpenAIClient,
+    std_id: str,
+    std_dict: dict[str, Any],
+    atom_dicts: list[dict[str, Any]],
+    max_per_batch: int,
+) -> dict[str, Any] | None:
+    """Validate atoms for a single standard (thread-safe)."""
+    batch = atom_dicts[:max_per_batch]
+    prompt = build_prereq_validation_prompt(std_dict, batch)
+    try:
+        resp: LLMResponse = client.generate_text(
+            prompt,
+            reasoning_effort=_REASONING_EFFORT,
+            response_mime_type="application/json",
+            request_timeout_seconds=_REQUEST_TIMEOUT,
+            stream=True,
+        )
+        result = parse_json_response(resp.text)
+        if isinstance(result, dict):
+            result["_standard_id"] = std_id
+            quality = result.get(
+                "evaluation_summary", {},
+            ).get("overall_quality", "?")
+            logger.info(
+                "Validated %s: %s (%d atoms)",
+                std_id, quality, len(batch),
+            )
+            return result
+    except Exception as e:
+        logger.error("Validation failed for %s: %s", std_id, e)
+    return None
+
+
 def run_llm_validation(
     client: OpenAIClient,
     prereq_atoms: list[PrereqAtom],
     max_per_batch: int = 15,
 ) -> list[dict[str, Any]]:
     """Run LLM validation on prerequisite atoms grouped by standard.
+
+    Uses ThreadPoolExecutor to validate all standards in parallel.
 
     Args:
         client: GPT-5.1 client.
@@ -233,38 +271,33 @@ def run_llm_validation(
                 by_standard[sid] = []
             by_standard[sid].append(a.model_dump())
 
-    results: list[dict[str, Any]] = []
-
+    tasks: list[tuple[str, dict[str, Any], list[dict[str, Any]]]] = []
     for std_id, atom_dicts in by_standard.items():
         std_dict = std_map.get(std_id)
         if std_dict is None:
             logger.warning("Standard %s not found, skipping", std_id)
             continue
+        tasks.append((std_id, std_dict, atom_dicts))
 
-        batch = atom_dicts[:max_per_batch]
-        prompt = build_prereq_validation_prompt(std_dict, batch)
+    workers = min(_MAX_WORKERS, len(tasks))
+    logger.info(
+        "LLM validation: %d standards (%d workers)",
+        len(tasks), workers,
+    )
 
-        try:
-            resp: LLMResponse = client.generate_text(
-                prompt,
-                reasoning_effort=_REASONING_EFFORT,
-                response_mime_type="application/json",
-                request_timeout_seconds=_REQUEST_TIMEOUT,
-                stream=True,
-            )
-            result = parse_json_response(resp.text)
-            if isinstance(result, dict):
-                result["_standard_id"] = std_id
+    results: list[dict[str, Any]] = []
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {
+            pool.submit(
+                _validate_one_standard,
+                client, std_id, std_dict, atom_dicts, max_per_batch,
+            ): std_id
+            for std_id, std_dict, atom_dicts in tasks
+        }
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
                 results.append(result)
-                quality = result.get(
-                    "evaluation_summary", {},
-                ).get("overall_quality", "?")
-                logger.info(
-                    "Validated %s: %s (%d atoms)",
-                    std_id, quality, len(batch),
-                )
-        except Exception as e:
-            logger.error("Validation failed for %s: %s", std_id, e)
 
     return results
 

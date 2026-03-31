@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
@@ -29,6 +30,8 @@ logger = logging.getLogger(__name__)
 _REASONING_EFFORT = "high"
 _REQUEST_TIMEOUT = 1800.0
 _STANDARDS_FILE = PREREQ_OUTPUT_DIR / "standards.json"
+_MAX_TOPICS_PER_CALL = 8
+_MAX_WORKERS = 8
 
 
 def _group_topics_by_grade(
@@ -80,8 +83,11 @@ def generate_standards_for_grade(
                 stream=True,
             )
             raw = parse_json_response(resp.text)
-            if isinstance(raw, dict) and "standards" in raw:
-                raw = raw["standards"]
+            if isinstance(raw, dict):
+                for key in ("standards", "estandares"):
+                    if key in raw:
+                        raw = raw[key]
+                        break
             if not isinstance(raw, list):
                 raw = [raw]
 
@@ -107,6 +113,18 @@ def generate_standards_for_grade(
     return []  # unreachable but satisfies type checker
 
 
+def _split_topic_batches(
+    topics: list[dict[str, Any]],
+) -> list[list[dict[str, Any]]]:
+    """Split topics into batches of _MAX_TOPICS_PER_CALL."""
+    if len(topics) <= _MAX_TOPICS_PER_CALL:
+        return [topics]
+    return [
+        topics[i:i + _MAX_TOPICS_PER_CALL]
+        for i in range(0, len(topics), _MAX_TOPICS_PER_CALL)
+    ]
+
+
 def run_standards_generation(
     client: OpenAIClient,
     demand: dict[str, Any] | None = None,
@@ -114,6 +132,7 @@ def run_standards_generation(
     """Run full standards generation for all grade levels.
 
     Processes grades bottom-up so each level can see IDs from below.
+    Within a grade, topic batches run in parallel.
 
     Args:
         client: GPT-5.1 client.
@@ -141,12 +160,40 @@ def run_standards_generation(
         if not grade_topics:
             continue
 
+        batches = _split_topic_batches(grade_topics)
+        n = len(batches)
+        workers = min(_MAX_WORKERS, n)
         logger.info(
-            "--- %s: %d topics ---", grade_level, len(grade_topics),
+            "--- %s: %d topics (%d batch%s, %d workers) ---",
+            grade_level, len(grade_topics),
+            n, "es" if n > 1 else "", workers,
         )
-        standards = generate_standards_for_grade(
-            client, grade_topics, grade_level, existing_ids,
-        )
+
+        if n == 1:
+            standards = generate_standards_for_grade(
+                client, grade_topics, grade_level, existing_ids,
+            )
+        else:
+            frozen_ids = list(existing_ids)
+            grade_standards: list[PrereqStandard] = []
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                futures = {
+                    pool.submit(
+                        generate_standards_for_grade,
+                        client, batch, grade_level, frozen_ids,
+                    ): i
+                    for i, batch in enumerate(batches)
+                }
+                for future in as_completed(futures):
+                    batch_idx = futures[future]
+                    batch_result = future.result()
+                    grade_standards.extend(batch_result)
+                    logger.info(
+                        "  Batch %d/%d: %d standards",
+                        batch_idx + 1, n, len(batch_result),
+                    )
+            standards = grade_standards
+
         all_standards.extend(standards)
         existing_ids.extend(s.id for s in standards)
 

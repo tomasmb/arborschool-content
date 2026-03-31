@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -32,6 +33,7 @@ logger = logging.getLogger(__name__)
 _REASONING_EFFORT = "high"
 _REQUEST_TIMEOUT = 1800.0
 _ATOMS_FILE = PREREQ_OUTPUT_DIR / "atoms.json"
+_MAX_WORKERS = 8
 
 
 @dataclass
@@ -68,6 +70,32 @@ def _validate_atom_granularity(
     return warnings
 
 
+def _unwrap_atoms_response(raw: Any) -> Any:
+    """Unwrap various LLM response formats to a flat list of atom dicts.
+
+    The LLM may wrap atoms in an object with any of several keys.
+    Handles: {"atoms": [...]}, {"array": [...]}, [...], and single dicts.
+    """
+    _KEYS = ("atoms", "atomos", "array", "result", "data")
+
+    if isinstance(raw, dict):
+        for key in _KEYS:
+            if key in raw and isinstance(raw[key], list):
+                return raw[key]
+        vals = [v for v in raw.values() if isinstance(v, list)]
+        if len(vals) == 1:
+            return vals[0]
+        return [raw]
+
+    if isinstance(raw, list) and len(raw) == 1:
+        item = raw[0]
+        if isinstance(item, dict):
+            for key in _KEYS:
+                if key in item and isinstance(item[key], list):
+                    return item[key]
+    return raw
+
+
 def generate_atoms_for_standard(
     client: OpenAIClient,
     standard: dict[str, Any],
@@ -102,8 +130,7 @@ def generate_atoms_for_standard(
                 stream=True,
             )
             raw = parse_json_response(resp.text)
-            if isinstance(raw, dict):
-                raw = [raw]
+            raw = _unwrap_atoms_response(raw)
             if not isinstance(raw, list):
                 logger.error("Expected list, got %s", type(raw))
                 if attempt < max_retries:
@@ -130,8 +157,13 @@ def generate_atoms_for_standard(
                         f"{atom.id}: standard_ids missing {std_id}"
                     )
                 validated.append(atom)
-            except ValueError as e:
-                warnings.append(f"Atom {idx} invalid: {e}")
+            except (ValueError, Exception) as e:
+                err_msg = str(e).split("\n")[0][:200]
+                logger.debug(
+                    "  Atom %d/%d validation: %s",
+                    idx, len(raw), err_msg,
+                )
+                warnings.append(f"Atom {idx} invalid: {err_msg}")
 
         if not validated:
             if attempt < max_retries:
@@ -193,32 +225,49 @@ def run_atoms_generation(
         if not grade_standards:
             continue
 
+        n = len(grade_standards)
+        workers = min(_MAX_WORKERS, n)
         logger.info(
-            "=== %s: %d standards ===",
-            grade_level, len(grade_standards),
+            "=== %s: %d standards (%d workers) ===",
+            grade_level, n, workers,
         )
 
-        for std_dict in grade_standards:
-            result = generate_atoms_for_standard(
-                client, std_dict, grade_level, atoms_below,
-            )
-            if result.success:
-                all_atoms.extend(result.atoms)
-                atoms_below.extend(
-                    _compact_atom(a) for a in result.atoms
-                )
-                logger.info(
-                    "  ✓ %s: %d atoms",
-                    std_dict["id"], len(result.atoms),
-                )
-            else:
-                failed.append(std_dict["id"])
-                logger.error(
-                    "  ✗ %s: %s", std_dict["id"], result.error,
-                )
+        frozen_below = list(atoms_below)
+        grade_atoms: list[PrereqAtom] = []
 
-            for w in result.warnings:
-                logger.warning("    ⚠ %s", w)
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {
+                pool.submit(
+                    generate_atoms_for_standard,
+                    client, std_dict, grade_level, frozen_below,
+                ): std_dict
+                for std_dict in grade_standards
+            }
+            for future in as_completed(futures):
+                std_dict = futures[future]
+                result = future.result()
+                if result.success:
+                    grade_atoms.extend(result.atoms)
+                    logger.info(
+                        "  + %s: %d atoms",
+                        std_dict["id"], len(result.atoms),
+                    )
+                else:
+                    failed.append(std_dict["id"])
+                    logger.error(
+                        "  x %s: %s",
+                        std_dict["id"], result.error,
+                    )
+                for w in result.warnings:
+                    logger.warning("    ! %s", w)
+
+        all_atoms.extend(grade_atoms)
+        atoms_below.extend(
+            _compact_atom(a) for a in grade_atoms
+        )
+        logger.info(
+            "  %s complete: %d atoms", grade_level, len(grade_atoms),
+        )
 
     if failed:
         logger.error(
