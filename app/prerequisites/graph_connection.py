@@ -31,6 +31,7 @@ from app.standards.helpers import parse_json_response
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "medium"
+_REQUEST_TIMEOUT = 1800.0
 _CONNECTIONS_FILE = PREREQ_OUTPUT_DIR / "connections.json"
 
 
@@ -108,6 +109,8 @@ def run_graph_connection(
                 prompt,
                 reasoning_effort=_REASONING_EFFORT,
                 response_mime_type="application/json",
+                request_timeout_seconds=_REQUEST_TIMEOUT,
+                stream=True,
             )
             result = parse_json_response(resp.text)
             if not isinstance(result, dict):

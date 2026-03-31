@@ -27,6 +27,7 @@ from app.standards.helpers import parse_json_response
 logger = logging.getLogger(__name__)
 
 _REASONING_EFFORT = "high"
+_REQUEST_TIMEOUT = 1800.0
 _STANDARDS_FILE = PREREQ_OUTPUT_DIR / "standards.json"
 
 
@@ -75,6 +76,8 @@ def generate_standards_for_grade(
                 prompt,
                 reasoning_effort=_REASONING_EFFORT,
                 response_mime_type="application/json",
+                request_timeout_seconds=_REQUEST_TIMEOUT,
+                stream=True,
             )
             raw = parse_json_response(resp.text)
             if isinstance(raw, dict) and "standards" in raw:
