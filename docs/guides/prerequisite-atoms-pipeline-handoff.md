@@ -213,17 +213,16 @@ python3 -m app.question_generation.scripts.run_generation \
 > `--resume` skips already-completed phases per atom, so you can
 > safely re-run if interrupted.
 
-**Phase groups available** (use `--phase` to run selectively):
+**What each phase does** (use `--phase <group>` to run selectively):
 
-| Group | Phases | Description |
-|-------|--------|-------------|
-| `all` | 0–9 | Full pipeline (default) |
-| `enrich` | 0–1 | Inputs + enrichment |
-| `plan` | 2–3 | Plan generation + validation |
-| `generate` | 4 | Base QTI generation |
-| `validate` | 5–6 | Deduplication + base validation |
-| `feedback` | 7–8 | Feedback enrichment + review |
-| `final_validate` | 9 | Final LLM validation |
+| Group | Phases | What happens |
+|-------|--------|--------------|
+| `enrich` | 0–1 | Loads atom data, generates pedagogical metadata (difficulty calibration, error families, image needs) |
+| `plan` | 2–3 | LLM creates a question pool plan per difficulty tier, then validates the plan against the atom's criteria |
+| `generate` | 4 | Generates ~62 base QTI XML questions from the plan (19 Easy + 24 Medium + 19 Hard with 1.3x buffer) |
+| `validate` | 5–6 | Removes duplicates, then LLM checks each question for solvability and correctness |
+| `feedback` | 7–8 | LLM adds pedagogical feedback to each answer option, then reviews + corrects the feedback quality |
+| `final_validate` | 9 | Final LLM validation: each question scored against rubric, low-scorers rejected |
 
 **Output:** `app/data/question-generation/{atom_id}/items/*.xml`
 
@@ -357,6 +356,32 @@ python3 -m app.question_generation.scripts.generate_missing_images \
 
 ---
 
+### Step 7: Final end-to-end QA
+
+After all steps above are complete for a layer, do a final
+holistic review before considering that layer "done":
+
+- [ ] **Coverage check:** Every atom in the layer has a
+  `pipeline_report.json` with >= 40 final items
+- [ ] **Question coherence:** Pick 3 atoms, read 2 questions per
+  difficulty (Easy/Medium/Hard) — verify they match the atom's
+  `criterios_atomicos` and are grade-appropriate
+- [ ] **Feedback quality:** For those same questions, verify each
+  distractor has a pedagogically useful feedback explanation
+  (not just "Incorrect")
+- [ ] **Lesson anchoring:** For atoms with lessons, open the HTML
+  and confirm it references concepts the questions actually test
+- [ ] **Prerequisite chain sanity:** Pick 2 Layer 1 atoms, follow
+  their `prerrequisitos` down to Layer 2+, and verify the
+  difficulty progression makes sense pedagogically
+- [ ] **No orphaned atoms:** All atoms in the layer file were
+  processed (compare line count vs output directories)
+
+If any atom fails this final review, re-run its failing phase
+or flag it for manual correction before moving to the next layer.
+
+---
+
 ## 4. Cost tracking and budget management
 
 ### Per-atom cost reference (sync pipeline, GPT-5.1)
@@ -367,36 +392,23 @@ python3 -m app.question_generation.scripts.generate_missing_images \
 | Mini-lesson generation (P0–P6) | $0.50 | $1–$2 | $3.00 |
 | **Total per atom** | **$3.58** | **$7–$12** | **$17.06** |
 
-> Sync pipeline costs are 2x Batch API costs. The question gen
-> costs above are sync (standard pricing). If Batch API support
-> is added for prereq atoms, divide question gen costs by 2.
+> Sync costs are 2x Batch API. If Batch API is extended to
+> support prereq atoms, divide question gen costs by 2.
 
-### Budget projection
+### Budget strategy
 
-| Scenario | Atoms | Est. cost (questions only) | + Lessons |
-|----------|------:|---------------------------:|----------:|
+| Scenario | Atoms | Questions only | + Lessons |
+|----------|------:|---------------:|----------:|
 | Layer 1 only | 54 | $324–$540 | $378–$648 |
 | Layer 1 + partial L2 | ~70 | $420–$700 | $490–$840 |
-| Layer 1 + full L2 | 145 | $870–$1,450 | $1,015–$1,740 |
 
-**Recommendation:** With a $500 budget for questions only:
-
-1. Run 10 Layer 1 atoms first as a calibration batch.
-2. Check actual spend on the
-   [OpenAI usage dashboard](https://platform.openai.com/usage).
-3. Compute: `actual_cost / 10 = cost_per_atom`.
-4. Calculate: `remaining_budget / cost_per_atom = atoms_left`.
-5. Run the next batch accordingly.
-6. Reserve ~$50–$80 for mini-lessons on successfully generated atoms.
-
-### Decision points
-
-- **After 10 atoms:** Calibrate cost per atom. If > $8/atom,
-  consider reducing scope to Layer 1 only.
-- **After Layer 1 (54 atoms):** Assess remaining budget.
-  If < $150 left, skip Layer 2 and move to mini-lessons.
-- **Before mini-lessons:** Ensure you have enough budget for
-  ~$1–$2 per atom for lessons on all question-generated atoms.
+1. Run **10 atoms first** as a calibration batch.
+2. Check actual spend on the [OpenAI dashboard](https://platform.openai.com/usage).
+3. Compute `actual_cost / 10 = cost_per_atom`, then
+   `remaining_budget / cost_per_atom = atoms_left`.
+4. Reserve ~$50–$80 for mini-lessons.
+5. **After Layer 1:** if < $150 left, skip Layer 2 and
+   move to mini-lessons. If > $8/atom, reduce to Layer 1 only.
 
 ---
 
@@ -445,17 +457,7 @@ python3 -m app.question_generation.scripts.generate_missing_images \
 ### Resuming interrupted runs
 
 Both pipelines support `--resume` which skips completed phases
-per atom based on checkpoint files in the output directory:
-
-```bash
-# Resume question generation
-python3 -m app.question_generation.scripts.run_generation \
-  --atoms-file layer_1_atoms.txt --resume -v
-
-# Resume mini-lessons
-python3 -m app.mini_lessons.scripts.run_generation \
-  --atoms-file layer_1_atoms.txt --resume -v
-```
+per atom. Safe to re-run the same command after any interruption.
 
 ---
 
