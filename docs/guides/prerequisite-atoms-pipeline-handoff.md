@@ -5,6 +5,56 @@ Budget: **$500 USD OpenAI** (Gemini for images is a separate budget)
 
 ---
 
+## 0. Engineering principles (READ FIRST)
+
+### SOLID / DRY — non-negotiable
+
+Any code changes made during this pipeline **must** follow SOLID
+and DRY principles. The M1 question generation pipeline produced
+high-quality results precisely because shared components (prompts,
+validators, helpers) are centralized and reused. Specific rules:
+
+- **Do NOT duplicate logic.** If a function already exists in a
+  shared module (`app/atoms/`, `app/utils/`, `app/question_generation/helpers.py`),
+  import and reuse it. Never copy-paste and tweak.
+- **Do NOT create parallel implementations.** If you need to extend
+  existing behavior (e.g., `load_atom()`), extend the original
+  function — do not create a `load_prereq_atom()` alongside it.
+- **Do NOT inline rules or prompts.** All atom generation rules
+  live in `app/atoms/prompts/atom_rules.py` (`ATOM_GENERATION_RULES`)
+  and `app/atoms/prompts/atom_final_instruction.py`
+  (`build_final_instruction()`). These are the proven, shared
+  components. Import them — never duplicate or simplify them.
+
+### Prompt consistency — why it matters
+
+The prerequisite atoms were generated using the **exact same**
+`ATOM_GENERATION_RULES` (25 rules) and `build_final_instruction()`
+(20+ item checklist) as the M1 atoms. This was a deliberate fix
+after an earlier run produced over-granular atoms due to "prompt
+drift" — simplified inline rules that diverged from the proven
+M1 prompts.
+
+**If you modify any prompt or pipeline step:**
+
+1. Check whether the same prompt component is shared with M1.
+   If so, change the shared version (not a local copy).
+2. Verify the change does not regress M1 quality by spot-checking
+   a few M1 atoms through the modified pipeline.
+3. Keep `reasoning_effort` settings consistent with what worked:
+   `"high"` for generation, `"medium"` for validation, `"low"`
+   for enrichment. Do not lower these to save cost — the quality
+   difference is significant and rework costs more than the
+   token savings.
+
+### Code over documentation
+
+If you find that documentation and code disagree, **the code is
+the source of truth**. Update the docs to match the code. Never
+silently change code to match outdated docs.
+
+---
+
 ## 1. Atom inventory and priority layers
 
 ### Current state
@@ -45,9 +95,6 @@ Each subsequent layer is one step further from M1.
    Layers 1–2 finish under budget.
 
 ### Generating the prioritized atom lists
-
-Run the following script from the repo root to produce text files
-with one atom ID per line, grouped by layer:
 
 See `extract_priority_layers.py` in the repo root. Run:
 
@@ -413,6 +460,11 @@ python3 -m app.mini_lessons.scripts.run_generation \
 ---
 
 ## 6. Known issues and required code changes
+
+> **Reminder:** All code changes below must follow the SOLID/DRY
+> principles from Section 0. Extend existing functions — do not
+> create parallel copies. Keep prompts and reasoning_effort
+> settings identical to the proven M1 pipeline.
 
 ### 6.1 Mini-lessons `load_atom()` does not support prereq atoms
 
