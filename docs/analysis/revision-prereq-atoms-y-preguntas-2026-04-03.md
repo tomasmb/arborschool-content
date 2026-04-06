@@ -15,10 +15,10 @@
 |---------|------:|
 | Total atoms en `atoms.json` | 1,135 |
 | Total reportado en `validation_result.json` | 1,095 |
-| Diferencia explicada por fix pipeline | 1,095 − 56 removidos + 96 netos nuevos = 1,135 |
+| Diferencia | `validation_result` = pre-fix (1,095); `atoms.json` = post-fix (1,135) |
 | Connections (M1 atoms con prereqs) | 52 |
 | Layer 1 (prereq IDs únicos referenciados) | 55 |
-| Layer 1 IDs que existen en `atoms.json` | 54 |
+| Layer 1 IDs que existen en `atoms.json` | 55 |
 
 ### 1.2 Integridad de `connections.json`
 
@@ -30,8 +30,8 @@
 ### 1.3 Consistencia `validation_result.json` vs estado actual
 
 - `validation_result.json` reporta 1,095 atoms — coincide con el estado **previo al fix pipeline**.
-- El fix pipeline removió 56 IDs únicos y generó 210 atoms nuevos (neto: +40 atoms → total 1,135).
-- Los 56 IDs stale en validación coinciden exactamente con los `removed_atom_ids` agregados del fix pipeline.
+- El fix pipeline procesó 140 estándares exitosamente: removió 56 IDs únicos y generó 205 atoms (48 truly removed + 197 truly new + 8 updated in place → neto +149 IDs, pero muchos reemplazan IDs preexistentes fuera del set removido).
+- El cruce verificable es: `atoms.json` = 1,135 y `validation_result.total_prereq_atoms` = 1,095. Comparando IDs, hay 56 IDs que ya no están y un bloque de atoms actuales que no aparecen en los bloques LLM de validación.
 
 **Acción requerida:** re-correr validación sobre el `atoms.json` actual (1,135 atoms post-fix).
 
@@ -53,16 +53,16 @@
 - 44 atoms con exactamente 1 criterio, repartidos en todos los ejes/grados (EB1–EM1). 36 de esos 44 traen 2+ ejemplos → subdesagregación, no falta de contenido.
 - Gap notable: **0 atoms con 5 criterios** (salto de 4 a 6).
 
-**Layer 1 (54 atoms presentes):**
+**Layer 1 (55 atoms presentes):**
 
 | Criterios | Atoms |
 |----------:|------:|
 | 1 | 1 (`A-EB8-ALG-02-02`) |
-| 2 | 26 |
+| 2 | 27 |
 | 3 | 22 |
 | 4 | 5 |
 
-- Layer 1 con < 3 criterios: **27/54 (50%)**.
+- Layer 1 con < 3 criterios: **28/55 (51%)**.
 
 ### 1.5 Atoms sobrecargados (6+ criterios)
 
@@ -153,7 +153,7 @@ Se revisaron 14 atoms de Layer 1 manualmente. No aparecieron problemas graves de
 
 ### 3.2 Imágenes pendientes (src no-HTTP)
 
-**15 variantes aprobadas** con **23 tags `<img>` pendientes**:
+**15 variantes aprobadas** con **23 tags `<img>` pendientes** (se excluye `seleccion-regular-2026/Q60/Q60_v3` que tiene un `<img />` vacío sin atributo src — caso anómalo diferente):
 
 | Variante | Pend. | Detalle |
 |----------|------:|---------|
@@ -192,4 +192,4 @@ Se revisaron 14 atoms de Layer 1 manualmente. No aparecieron problemas graves de
 | 4 | Revisar los 3 atoms sobrecargados (6–8 criterios) y evaluar re-split | Pendiente | Baja |
 | 5 | Corregir las 15 variantes aprobadas con imagen S3 duplicada entre choices | Pendiente | Alta |
 | 6 | Completar los 23 tags de imagen pendientes en 15 variantes (priorizar Q50 y Q6_v9) | Pendiente | Media |
-| 7 | Correr question generation para prereq atoms Layer 1 (54 atoms, 0 outputs hoy) | Pendiente | Alta |
+| 7 | Correr question generation para prereq atoms Layer 1 (55 atoms, 0 outputs hoy) | Pendiente | Alta |
