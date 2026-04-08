@@ -94,13 +94,21 @@ def parse_json_response(response: str) -> dict[str, Any] | list[Any]:
     try:
         return json.loads(cleaned)
     except json.JSONDecodeError as e:
+        # Fix trailing commas before } or ] (common LLM mistake)
+        import re
+        no_trailing = re.sub(r",\s*([}\]])", r"\1", cleaned)
+        if no_trailing != cleaned:
+            try:
+                return json.loads(no_trailing)
+            except json.JSONDecodeError:
+                pass
+
         # If error mentions invalid escape, try fixing it
         if "Invalid \\escape" in str(e) or "Invalid escape" in str(e):
             try:
                 fixed = _fix_invalid_escapes(cleaned)
                 return json.loads(fixed)
             except json.JSONDecodeError:
-                # If fixing didn't work, continue with original error handling
                 pass
 
         # If that fails, try to find the first valid JSON object/array

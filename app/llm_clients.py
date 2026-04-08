@@ -2,13 +2,17 @@ import base64
 import io
 import logging
 import os
+import platform
 import random
+import socket
 import time
 from dataclasses import dataclass, field
 from typing import Any, List, Optional, Union
 
 import requests
 from dotenv import load_dotenv
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 # PIL is imported lazily inside _pil_to_base64 to avoid breaking
 # text-only callers when Pillow is not installed or has arch issues.
 
@@ -27,6 +31,57 @@ _RETRY_MAX_DELAY = 120.0  # seconds
 def _is_retryable_status(status_code: int) -> bool:
     """HTTP 429 (rate-limit) and 5xx (server errors) are transient."""
     return status_code == 429 or status_code >= 500
+
+
+class _KeepAliveAdapter(HTTPAdapter):
+    """HTTPAdapter that enables TCP keepalive on every socket.
+
+    Prevents firewalls/proxies from killing idle connections during
+    long-running reasoning calls (5+ minutes of silent thinking).
+    Sends keepalive probes every 30 seconds.
+    """
+
+    _KEEPALIVE_IDLE = 30  # seconds before first probe
+
+    def init_poolmanager(self, *args: Any, **kwargs: Any) -> None:
+        opts = [
+            (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1),
+        ]
+        if platform.system() == "Darwin":
+            opts.append((
+                socket.IPPROTO_TCP,
+                getattr(socket, "TCP_KEEPALIVE", 0x10),
+                self._KEEPALIVE_IDLE,
+            ))
+        else:
+            tcp_keepidle = getattr(socket, "TCP_KEEPIDLE", None)
+            tcp_keepintvl = getattr(socket, "TCP_KEEPINTVL", None)
+            tcp_keepcnt = getattr(socket, "TCP_KEEPCNT", None)
+            if tcp_keepidle is not None:
+                opts.append((
+                    socket.IPPROTO_TCP,
+                    tcp_keepidle,
+                    self._KEEPALIVE_IDLE,
+                ))
+            if tcp_keepintvl is not None:
+                opts.append((
+                    socket.IPPROTO_TCP, tcp_keepintvl, 10,
+                ))
+            if tcp_keepcnt is not None:
+                opts.append((
+                    socket.IPPROTO_TCP, tcp_keepcnt, 6,
+                ))
+        kwargs["socket_options"] = opts
+        super().init_poolmanager(*args, **kwargs)
+
+
+def _build_keepalive_session() -> requests.Session:
+    """Create a requests.Session with TCP keepalive enabled."""
+    session = requests.Session()
+    adapter = _KeepAliveAdapter()
+    session.mount("https://", adapter)
+    session.mount("http://", adapter)
+    return session
 
 
 def _retry_delay(
@@ -249,6 +304,7 @@ class OpenAIClient:
         self._api_key = api_key
         self._model = model
         self._url = "https://api.openai.com/v1/chat/completions"
+        self._session = _build_keepalive_session()
 
     def _pil_to_base64(self, pil_img: "Image.Image") -> str:
         """Convert a PIL image to a base64-encoded JPEG string."""
@@ -272,9 +328,14 @@ class OpenAIClient:
         temperature: float = 0.0,
         request_timeout_seconds: float | None = None,
         transport_max_attempts: int | None = None,
+        stream: bool = False,
         **kwargs: Any,
     ) -> LLMResponse:
-        """Call Chat Completions API, return ``LLMResponse(text, usage)``."""
+        """Call Chat Completions API, return ``LLMResponse(text, usage)``.
+
+        Set *stream=True* to use SSE streaming, which avoids server-side
+        idle-connection timeouts on long-running reasoning calls.
+        """
         messages = [
             {"role": "user", "content": self._build_content(prompt)},
         ]
@@ -305,6 +366,7 @@ class OpenAIClient:
             data,
             request_timeout_seconds=request_timeout_seconds,
             max_attempts=transport_max_attempts,
+            stream=stream,
         )
 
         text = body["choices"][0]["message"]["content"]
@@ -336,12 +398,18 @@ class OpenAIClient:
         *,
         request_timeout_seconds: float | None = None,
         max_attempts: int | None = None,
+        stream: bool = False,
     ) -> dict[str, Any]:
         """POST to the completions API with exponential-backoff retry.
 
         Retries on transient errors (timeouts, connection resets,
         HTTP 429 / 5xx).  Non-retryable HTTP errors (4xx except 429)
         are raised immediately.
+
+        When *stream=True*, enables SSE streaming to keep long-running
+        connections alive (avoids server-side idle timeouts ~5 min).
+        The streamed chunks are reassembled into the same dict shape
+        as a non-streaming response.
         """
         headers = {
             "Authorization": f"Bearer {self._api_key}",
@@ -353,11 +421,21 @@ class OpenAIClient:
         for attempt in range(attempts):
             is_last = attempt == attempts - 1
             try:
-                resp = requests.post(
+                req_data = dict(data)
+                if stream:
+                    req_data["stream"] = True
+                    req_data["stream_options"] = {
+                        "include_usage": True,
+                    }
+                resp = self._session.post(
                     self._url, headers=headers,
-                    json=data, timeout=timeout_seconds,
+                    json=req_data, timeout=timeout_seconds,
+                    stream=stream,
                 )
-                if not is_last and _is_retryable_status(resp.status_code):
+                if (
+                    not is_last
+                    and _is_retryable_status(resp.status_code)
+                ):
                     delay = _retry_delay(attempt, resp)
                     _logger.warning(
                         "HTTP %d (attempt %d/%d), "
@@ -369,6 +447,8 @@ class OpenAIClient:
                     time.sleep(delay)
                     continue
                 resp.raise_for_status()
+                if stream:
+                    return self._consume_sse(resp)
                 return resp.json()
             except (
                 requests.exceptions.Timeout,
@@ -386,6 +466,55 @@ class OpenAIClient:
                 time.sleep(delay)
 
         raise RuntimeError("Retry loop ended unexpectedly")
+
+    @staticmethod
+    def _consume_sse(resp: requests.Response) -> dict[str, Any]:
+        """Reassemble an SSE stream into a single completions response.
+
+        Collects ``delta.content`` from each chunk and merges the
+        final ``usage`` object (sent when ``include_usage`` is True).
+        Returns a dict identical to a non-streaming API response.
+        """
+        import json as _json
+
+        content_parts: list[str] = []
+        usage: dict[str, Any] = {}
+        model = ""
+        finish_reason: str | None = None
+
+        for raw_line in resp.iter_lines(decode_unicode=True):
+            if not raw_line or not raw_line.startswith("data: "):
+                continue
+            payload = raw_line[len("data: "):]
+            if payload.strip() == "[DONE]":
+                break
+            try:
+                chunk = _json.loads(payload)
+            except _json.JSONDecodeError:
+                continue
+            if not model:
+                model = chunk.get("model", "")
+            if chunk.get("usage"):
+                usage = chunk["usage"]
+            choices = chunk.get("choices", [])
+            if not choices:
+                continue
+            delta = choices[0].get("delta", {})
+            if delta.get("content"):
+                content_parts.append(delta["content"])
+            if choices[0].get("finish_reason"):
+                finish_reason = choices[0]["finish_reason"]
+
+        return {
+            "choices": [{
+                "message": {
+                    "content": "".join(content_parts),
+                },
+                "finish_reason": finish_reason,
+            }],
+            "usage": usage,
+            "model": model,
+        }
 
     # ------------------------------------------------------------------
     # JSON-mode helper  (used by mini-lessons pipeline)

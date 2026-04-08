@@ -36,20 +36,19 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
 
 
 def load_atom(atom_id: str) -> Atom | None:
-    """Load an atom by ID from the canonical atoms files."""
-    if not ATOMS_DIR.exists():
-        logger.error("Atoms directory not found: %s", ATOMS_DIR)
-        return None
-
-    for atoms_file in ATOMS_DIR.glob("*_atoms.json"):
-        try:
-            data = json.loads(atoms_file.read_text(encoding="utf-8"))
-            canonical = CanonicalAtomsFile.model_validate(data)
-            atom = canonical.get_atom_by_id(atom_id)
-            if atom:
-                return atom
-        except Exception as exc:
-            logger.warning("Error reading %s: %s", atoms_file, exc)
+    """Load an atom by ID from canonical M1 atoms files."""
+    if ATOMS_DIR.exists():
+        for atoms_file in ATOMS_DIR.glob("*_atoms.json"):
+            try:
+                data = json.loads(
+                    atoms_file.read_text(encoding="utf-8"),
+                )
+                canonical = CanonicalAtomsFile.model_validate(data)
+                atom = canonical.get_atom_by_id(atom_id)
+                if atom:
+                    return atom
+            except Exception as exc:
+                logger.warning("Error reading %s: %s", atoms_file, exc)
 
     logger.error("Atom %s not found in any atoms file", atom_id)
     return None
@@ -415,6 +414,7 @@ def load_existing_items_summary(atom_id: str) -> dict | None:
     Returns None if the atom has no Phase 9 checkpoint.
     """
     from collections import Counter
+
     from app.utils.paths import QUESTION_GENERATION_DIR
 
     ckpt = load_checkpoint(

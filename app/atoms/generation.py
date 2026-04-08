@@ -20,6 +20,7 @@ from typing import Any
 
 from app.atoms.models import Atom, validate_atom_id_matches_eje
 from app.atoms.prompts import build_atom_generation_prompt
+from app.atoms.validation_helpers import validate_atom_granularity
 from app.llm_clients import GeminiService
 from app.standards.helpers import parse_json_response
 
@@ -177,24 +178,8 @@ def generate_atoms_for_standard(
 
 
 def _validate_atom_granularity(atoms: list[Atom]) -> list[str]:
+    """Perform basic granularity validation checks.
+
+    Delegates to the shared helper in app.atoms.validation_helpers.
     """
-    Perform basic granularity validation checks.
-
-    Returns list of warning messages (empty if all valid).
-    """
-    warnings: list[str] = []
-
-    for atom in atoms:
-        # Check: one cognitive intention (heuristic: descripcion length)
-        if len(atom.descripcion) > 300:
-            warnings.append(f"Atom {atom.id}: descripcion may be too long ({len(atom.descripcion)} chars), might contain multiple intentions")
-
-        # Check: reasonable working memory load (heuristic: criterios count)
-        if len(atom.criterios_atomicos) > 5:
-            warnings.append(f"Atom {atom.id}: too many criterios_atomicos ({len(atom.criterios_atomicos)}), might overload working memory")
-
-        # Check: assessment independence (heuristic: multiple habilidades principales)
-        if len(atom.habilidades_secundarias) > 2:
-            warnings.append(f"Atom {atom.id}: many habilidades_secundarias ({len(atom.habilidades_secundarias)}), might need splitting")
-
-    return warnings
+    return validate_atom_granularity(atoms)
