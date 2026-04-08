@@ -11,7 +11,6 @@ import logging
 from pathlib import Path
 
 from app.atoms.models import Atom, CanonicalAtomsFile
-from app.prerequisites.models import PrereqAtom, PrereqAtomsFile
 from app.question_generation.models import (
     AtomEnrichment,
     GeneratedItem,
@@ -19,7 +18,7 @@ from app.question_generation.models import (
     PipelineResult,
     PlanSlot,
 )
-from app.utils.paths import ATOMS_DIR, PREREQ_ATOMS_FILE
+from app.utils.paths import ATOMS_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -36,8 +35,8 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
 }
 
 
-def load_atom(atom_id: str) -> Atom | PrereqAtom | None:
-    """Load an atom by ID from canonical M1 or prerequisite files."""
+def load_atom(atom_id: str) -> Atom | None:
+    """Load an atom by ID from canonical M1 atoms files."""
     if ATOMS_DIR.exists():
         for atoms_file in ATOMS_DIR.glob("*_atoms.json"):
             try:
@@ -50,20 +49,6 @@ def load_atom(atom_id: str) -> Atom | PrereqAtom | None:
                     return atom
             except Exception as exc:
                 logger.warning("Error reading %s: %s", atoms_file, exc)
-
-    if PREREQ_ATOMS_FILE.exists():
-        try:
-            data = json.loads(
-                PREREQ_ATOMS_FILE.read_text(encoding="utf-8"),
-            )
-            prereq_file = PrereqAtomsFile.model_validate(data)
-            for patom in prereq_file.atoms:
-                if patom.id == atom_id:
-                    return patom
-        except Exception as exc:
-            logger.warning(
-                "Error reading prereq atoms: %s", exc,
-            )
 
     logger.error("Atom %s not found in any atoms file", atom_id)
     return None
@@ -429,6 +414,7 @@ def load_existing_items_summary(atom_id: str) -> dict | None:
     Returns None if the atom has no Phase 9 checkpoint.
     """
     from collections import Counter
+
     from app.utils.paths import QUESTION_GENERATION_DIR
 
     ckpt = load_checkpoint(

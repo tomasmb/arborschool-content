@@ -37,30 +37,37 @@ cp .env.example .env  # Then edit with your API keys
 
 ```
 arborschool-content/
-├── app/                    # Python code and data
-│   ├── llm_clients.py      # LLM API wrappers (Gemini, OpenAI)
-│   ├── temarios/           # DEMRE temario PDF parsing
-│   ├── standards/          # Standards generation pipeline
-│   ├── atoms/              # Learning atom definitions
-│   ├── question_variants/  # AI variant generation
-│   ├── tagging/            # Question-atom tagging
-│   ├── sync/               # Database sync
-│   ├── pruebas/            # Question processing pipelines
-│   │   ├── pdf-splitter/   # Split multi-question PDFs
-│   │   └── pdf-to-qti/     # Convert PDFs to QTI XML
-│   ├── utils/              # Shared utilities
-│   └── data/               # All data files
-│       ├── temarios/       # Temario PDFs and JSON
-│       ├── standards/      # Canonical standards
-│       ├── atoms/          # Atom definitions
-│       ├── pruebas/        # Test questions (raw, processed, finalized)
-│       └── diagnostico/    # Diagnostic test variants
-├── docs/                   # Documentation
-│   ├── specifications/     # Normative specs (data models, guidelines)
-│   ├── research/           # Exploratory research
-│   └── analysis/           # Content coverage analysis
-├── tests/                  # Test fixtures and data
-└── pyproject.toml          # Project configuration
+├── app/                        # Python code and data
+│   ├── llm_clients.py          # LLM API wrappers (Gemini, OpenAI)
+│   ├── temarios/               # DEMRE temario PDF parsing
+│   ├── standards/              # Standards generation pipeline
+│   ├── atoms/                  # Learning atom definitions
+│   ├── question_generation/    # AI question pool generation per atom
+│   ├── mini_lessons/           # Mini-lesson (HTML) generation per atom
+│   ├── question_variants/      # AI variant generation
+│   ├── tagging/                # Question-atom tagging
+│   ├── sync/                   # Database sync
+│   ├── pruebas/                # Question processing pipelines
+│   │   ├── pdf-splitter/       # Split multi-question PDFs
+│   │   └── pdf-to-qti/         # Convert PDFs to QTI XML
+│   ├── utils/                  # Shared utilities
+│   └── data/                   # All data files
+│       ├── temarios/           # Temario PDFs and JSON
+│       ├── standards/          # Canonical standards
+│       ├── atoms/              # Atom definitions (M1)
+│       ├── question-generation/# Per-atom question pools
+│       ├── mini-lessons/       # Per-atom mini-lesson HTML
+│       ├── pruebas/            # Test questions (raw, processed, finalized)
+│       └── diagnostico/        # Diagnostic test variants
+├── _archive/                   # Archived experimental work (not in production)
+├── docs/                       # Documentation
+│   ├── specifications/         # Normative specs (data models, guidelines)
+│   ├── research/               # Exploratory research
+│   ├── references/             # Reference material (costs, pipelines)
+│   ├── plans/                  # Improvement plans
+│   └── analysis/               # Content coverage analysis
+├── tests/                      # Test fixtures and data
+└── pyproject.toml              # Project configuration
 ```
 
 ## Key Modules
@@ -70,7 +77,10 @@ arborschool-content/
 | `app/temarios/` | Parse DEMRE temario PDFs into structured JSON |
 | `app/standards/` | Generate canonical learning standards from temarios |
 | `app/atoms/` | Define fine-grained learning atoms with prerequisites |
+| `app/question_generation/` | AI-driven question pool generation per atom |
+| `app/mini_lessons/` | Mini-lesson HTML generation per atom |
 | `app/question_variants/` | Generate question variants using AI |
+| `app/tagging/` | Tag questions with atoms and skills |
 | `app/pruebas/pdf-to-qti/` | Convert question PDFs to QTI 3.0 XML |
 | `app/sync/` | Sync content to student app PostgreSQL database |
 

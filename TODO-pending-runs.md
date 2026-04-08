@@ -55,50 +55,6 @@ Stage **all** changes — both code (`.py`) and data (`.xml`, `.json`) files.
 
 ---
 
-## 2. Prerequisite atoms pipeline — phases 1-4
-
-Phase 0 (demand analysis) is complete. Phases 1-4 still need to run.
-These use **OpenAI GPT-5.1 only** (no Gemini quota needed).
-
-**Estimated cost:** ~$5-15 total (phases 1-3 use `reasoning_effort=high`,
-phase 4 uses `medium`; each phase makes 10-80 LLM calls depending on
-number of grade levels / standards).
-
-| Phase | Name | Output | LLM calls |
-|-------|------|--------|-----------|
-| 0 | Demand Analysis | `demand_analysis.json` | done |
-| 1 | Standards Generation | `standards.json` | ~10 (1 per grade) |
-| 2 | Atom Generation | `atoms.json` | ~80 (1 per standard) |
-| 3 | Graph Connection | `connections.json` | 1 |
-| 4 | Validation | `validation_result.json` | ~80 (1 per standard) |
-
-Output dir: `app/data/prerequisites/`
-
-**How to run** (all remaining phases at once):
-
-```bash
-source .venv/bin/activate
-python -m app.prerequisites.pipeline --from-phase 1
-```
-
-Or one at a time (recommended for review between phases):
-
-```bash
-python -m app.prerequisites.pipeline --phase 1   # then review standards.json
-python -m app.prerequisites.pipeline --phase 2   # then review atoms.json
-python -m app.prerequisites.pipeline --phase 3   # then review connections.json
-python -m app.prerequisites.pipeline --phase 4   # validation report
-```
-
-**How to verify:** Phase 4 runs structural checks (cycles, missing prereqs,
-duplicates) and LLM quality validation. Check `validation_result.json` —
-`"passed": true` means the graph is clean.
-
-**After success:** Run `/git-commit` (follows `.cursor/commands/git-commit.md`).
-Stage **all** changes — both code (`.py`) and data (`.json`) files.
-
----
-
 ## Commit protocol
 
 After each pipeline completes, use `/git-commit` which follows the full
@@ -108,8 +64,7 @@ code-review protocol in `.cursor/commands/git-commit.md`. Key points:
   code changes (`.py`) should be committed together.
 - Code review checks only apply to `.py` files (skip `.xml`, `.json`, `.md`).
 - The commit message should describe what the pipeline produced
-  (e.g., "generate remaining variant images" or "generate prereq atoms
-  phases 1-4").
+  (e.g., "generate remaining variant images").
 - Push automatically after commit.
 
-*Delete this file once both pipelines are complete.*
+*Delete this file once the variant images pipeline is complete.*
